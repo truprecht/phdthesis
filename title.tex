@@ -1,0 +1,51 @@
+\documentclass[document.tex]{subfiles}
+
+\begin{document}
+    \begin{titlepage}
+        \makeatletter
+        \def\thetitle{\@title}
+        \def\thesubtitle{Dissertation}
+        \def\theauthor{\@author}
+        \def\thedate{\@date}
+        \makeatother
+        \def\thedegree{Doktoringenieur (Dr.-Ing.)}
+        \def\theinstitution{Technische Universität Dresden \\* Fakultät Informatik}
+        \def\thesupervisor{Prof.\ Dr.-Ing.\ habil.\ Dr.\ h.c./Univ.\ Szeged Heiko Vogler, \\* Technische Universität Dresden}
+        \def\thereviewer{tba}
+        \def\thecrossexaminer{tba}
+        \def\thedefensedate{tba}
+        \def\thedefenseplace{Dresden}
+        {
+            \centering
+            {\bfseries\huge\textsf{\thetitle}\par}
+            \vspace{.6cm}
+            {\bfseries\LARGE\thesubtitle\par}
+            \vspace{.7cm}
+            {\large zur Erlangung des akademischen Grades\par}
+            {\Large\thedegree\par}
+            \vspace{.5cm}
+            {\large vorgelegt an der\par}
+            {\Large\theinstitution\par}
+            \vspace{.5cm}
+            {\large eingereicht am\par}
+            {\Large\thedate\par}
+            \vspace{.5cm}
+            {\large von\par}
+            {\Large\theauthor\par}
+        }
+        \vfill
+        \noindent{\large\textbf{Gutachter*innen:}\par}
+        \begin{itemize}
+            \item {\large\thesupervisor\hfill(Betreuer)\par}
+            \item {\large\thereviewer\par}
+        \end{itemize}
+        \vspace{.5cm}
+        \noindent{\large\textbf{Fachreferent*in:}\par}
+        \begin{itemize}
+            \item {\large\thecrossexaminer\par}
+        \end{itemize}
+        \vspace{.5cm}
+        \noindent{\large\textbf{Verteidigt am:}\quad\thedefensedate\ in \thedefenseplace}
+    \end{titlepage}
+\end{document}
+

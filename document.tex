@@ -1,0 +1,35 @@
+\documentclass{scrbook}
+
+\usepackage{xr, subfiles}
+\usepackage[german, english, iso]{isodate}
+
+\externaldocument[M-]{\subfix{main}}
+
+\author{Thomas Ruprecht}
+\title{%
+    Something Old and Something New:\\
+    A Symbiosis of Grammars\\
+    and Artificial Neural Networks\\
+    for Constituent Parsing%
+}
+\date{tba}
+
+\begin{document}
+    \subfile{title.tex}
+    \subfileinclude{acknowledgements.tex}
+
+    \tableofcontents
+
+    \subfileinclude{chapters/introduction.tex}
+    \subfileinclude{chapters/preliminaries.tex}
+    \subfileinclude{chapters/lexical-grammar-formalisms.tex}
+    \subfileinclude{chapters/extraction.tex}
+    \subfileinclude{chapters/parsing.tex}
+    \subfileinclude{chapters/experiments.tex}
+    \subfileinclude{chapters/related-work.tex}
+    \subfileinclude{chapters/conclusion.tex}
+
+    \nocite{*}
+    \bibliographystyle{alpha}
+    \bibliography{references}
+\end{document}
