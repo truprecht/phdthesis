@@ -1,11 +1,155 @@
 \documentclass[../document.tex]{subfiles}
 
 \begin{document}
-    \chapter{Automatic Lexical Grammar Extraction from Treebanks}
-    \section{Read-off Grammars}
+    \chapter{Lexical Grammar Extraction from Treebanks}
+    This chapter deals with the induction of \glsxtr{lexical} grammars from \glsxtrpl{treebank}.
+    It describes the extraction process in two different orders:
+    \begin{compactenum}
+        \item
+            The process described in \cref{sec:extraction:readoff} first extracts a derivation in a \glsxtr{simple} \glsxtr{lcfrs} for each tree in a treebank.
+            After that, the rules within each derivation are \glsxtr{lexicalized} by transporting the terminal symbols occurring in the leaves of the derivation into inner nodes.
+            With the help of annotations that are added to the rules and nonterminals within the rules, this transportation is reversible.
+        \item
+            The extraction procedure described in \cref{sec:extraction:guided} first assigns a sentence position to each inner node of the constituent structure.
+            In the following, it extracts a \gls{lderiv} of lexical hybrid grammar rules according to the positions assigned to the inner nodes in each subtree.
+    \end{compactenum}
+
+
+    \section{Read-off Grammars} \label{sec:extraction:readoff}
+
     \subsection{Reading-off Simple LCFRS}
+
     \subsection{Lexicalizing LCFRS}
-    \section{Guided Extraction}
+    Our lexicalization scheme is based on \citet{MoeRup20}.
+    However, we ignore all weights and perform lexicalization on individual derivations rather than on a grammar induced from the entire treebank.
+    More specifically, we directly read off a set of lexical rules from each tree in the treebank; then the union of these rules forms our uni-lexical LCFRS $\lexG$.
+    In contrast to that, \citet{MoeRup20} first induce an LCFRS $G$ from the entire treebank and then lexicalize $G$.
+    Thus $\lexG$ may have a different language than the lexicalization of $G$.
+
+    We obtain a set of uni-lexical rules from each tree $t$ in the treebank by the following procedure.
+    \begin{enumerate}
+        \item Binarize the tree.
+        The symbol $|$ is appended to constituents that result from binarization (this reflects Markovization with a vertical context of $1$ and a horizontal context of $0$).
+        \label[step]{step:binarize}
+        \item Transform the tree into an LCFRS derivation using the standard technique for induction of LCFRS \cite{MaierSogaard08}.
+        \label[step]{step:induce}
+        \item Collapse every chain of monic rules; the nonterminals of each chain are combined to a new nonterminal.
+        \label[step]{step:dechain}
+        \item Remove every terminating rule that has a parent and insert the terminal from its composition into the parent.%
+        \label[step]{step:fuseterm}%
+        \item Propagate terminals from double-lexical terminating rules into non-lexical branching rules.
+        All rules in the resulting derivation are lexical.
+        \label[step]{step:propterm}
+        \item Split all remaining double-lexical terminating rules into two uni-lexical rules.
+        All rules in the resulting derivation are uni-lexical.
+        The resulting derivation is called $d_{\mathrm{lex}}(t)$.
+        \label[step]{step:split}
+        \item Read off the rules of $d_{\mathrm{lex}}(t)$; call them $R(t)$.
+        \label[step]{step:readoff}
+    \end{enumerate}
+
+    These steps are defined such that in the LCFRS formed by $R(t)$, $d_{\mathrm{lex}}(t)$ is a derivation for the sentence of $t$.
+    Moreover, we are able to reconstruct $t$ from $d_{\mathrm{lex}}(t)$ by reverting \crefrange{step:split}{step:binarize} (we will give the details later).
+
+    Finally, we obtain the uni-lexical LCFRS $\lexG$ by combining the rules $R(t)$ for each tree $t$.
+    The initial nonterminals of $\lexG$ are all left-hand sides of roots of $d_{\mathrm{lex}}(t)$.
+
+    Let $t$ be a tree in the treebank.
+    \Cref{step:binarize,step:induce} and their reversal are standard techniques for trees and LCFRS.
+    After applying them to $t$, we obtain an LCFRS derivation in which each occurring rule is either of the form
+    \begin{itemize}[nosep]
+        \item \(A \to (\sigma)\), where $\sigma$ is a terminal and \(A\) is the part-of-speech tag of $\sigma$,
+        \item \(A \to c(B_1)\) where \(\fanout(A) = \fanout(B)\) and \(c = \id_{\fanout(A)}\), or
+        \item \(A \to c (B_1, B_2)\) where \(c\) contains no terminals and none of \(B_1, B_2\) is an initial nonterminal.
+    \end{itemize}
+    Let us denote this derivation by $d$.
+
+    In the following, we describe \crefrange{step:dechain}{step:split} of the above procedure in more detail (showing examples in \crefrange{fig:dechain}{fig:split}) and also glimpse at how the individual steps are reverted.
+
+
+    \paragraph{\Cref{step:dechain}.}
+    We \emph{repeatedly} replace parts in \(d\) of the form
+    \(A \to c (B) \big( B \to c' \big) \) by \( A\text+B \to c' \), and
+    \(A \to c (B) \Big( B \to c'(C_1, C_2) \big( \ldots \big) \Big) \) by \( A\text+B \to c' (C_1, C_2) \big( \ldots \big) \),
+    until there is no monic rule in \(d\) left.
+    If the occurrence of \(A \to c (B)\) is not the root of \(d\), then the corresponding nonterminal in the parent's rhs is replaced by \(A\text+B\).\footnote{
+        Note that root nodes in the derivation may be collapsed, this is why we use LCFRS with \emph{multiple} initial nonterminals.
+    }
+    After this step, there are only branching rules and terminating rules in \(d\).
+    \Cref{fig:dechain} shows an example for this step.
+
+    This step is easy to reverse, as the composition of every removed rule is $c = \id_{\fanout(B)}$.
+    We give the formal description in \cref{unlex:dechain}.
+
+    \paragraph{\Cref{step:fuseterm}.}
+    We remove every non-root occurrence $r$ of a terminating rule $A \to (\sigma)$ in $d$.
+    Let $r$ be the $i$th child of its parent (with $i \in [2]$), then we replace the parent's composition $c$ by $\sem{c}_i(\sigma)$ and remove the $i$th nonterminal in the parent's rhs.
+
+    %We replace all occurrences in \(d\) of the form
+    %\begin{itemize}
+    %  \item \(A \to c(B_1, B_2) \Big(B_1 \to (\sigma_1), B_2 \to (\sigma_2)\Big)\) by \(A \to \sem{c}(\sigma_1, \sigma_2)\),
+    %  \item \(A \to c(B_1, B_2) \Big(B_1 \to (\sigma_1), \ldots \Big)\) by \(A \to \sem{c}_1(\sigma_1)\,(B_2)\Big( \ldots \Big)\), and
+    %  \item \(A \to c(B_1, B_2) \Big(\ldots, B_2 \to (\sigma_2) \Big)\) by \(A \to \sem{c}_2(\sigma_2)\,(B_1)\Big( \ldots \Big)\).
+    %\end{itemize}
+    We note that the parent becomes lexical, and after this step, every rule in $d$ is either branching or lexical.
+    Moreover, every terminal rule in $d$ is either double-lexical (if both children were removed) or the root of \(d\) (and thus its only node).
+    \Cref{fig:fuseterm} shows an example for this step.
+
+    Clearly, this step loses information, namely the left-hand sides of the removed rules.
+    These nonterminals are part-of-speech tags (that may be enriched with nonterminals of collapsed monic rules from the previous step).
+    For the reversal of this step, we opted to predict them along with the supertags as part of the supertagger.
+    The formal description of the reversal is given in \cref{unlex:fuseterm}.
+
+    \paragraph{\Cref{step:propterm}.}
+    For each occurrence \(r\) of a branching rule $A \to c(A_1, A_2)$ in \(d\), let us consider the occurrence \(t\) of the leftmost terminating rule (i.e.\@ \(t\) is a leaf) that is reachable via the second successor of \(r\).
+    For example, in \cref{fig:propterm:pre}, the two binary rules (\(r\)) are end points of gray arrows; these arrows start at the mentioned leaves (\(t\)).
+    Our goal is to remove one terminal from $t$ and propagate it all the way up to $r$.
+    For this, at each node \(s\) on the path from \(t\) to \(r\) (from bottom up):
+    \begin{itemize}[nosep]
+        \item If \(s\) is \(t\), we remove the leftmost terminal in the rule's composition at \(s\).
+        \item
+        If \(s\) is neither \(t\) nor \(r\), we insert the last removed terminal right before the variable \(\x_1\) and then remove the leftmost terminal in the rule's composition at \(s\).
+
+        We note that if the rule at $s$ is monic and the variable $\x_1$ occurs right of the terminal in its composition, then we propagate a different terminal than the one received from the child.
+        In order to be able to reverse this step, we need to remember whether the terminal in the rule's composition stayed the same or was swapped with the terminal received from the child.
+        In the following, we consider this information as part of the rule (cf.\@ the gray annotation \textsuperscript{swapped} in \cref{fig:propterm}).
+        \item If \(s\) is \(r\), we insert the last removed terminal right before the variable \(\y_1\) in the rule's composition at \(s\).
+    \end{itemize}
+    If \(s \neq r\), let \(s'\) be the parent of $s$ and $s$ the \(i\)th child of $s'$.
+    If, after removal of a terminal at \(s\), the first component in the composition is empty:
+    \begin{itemize}[noitemsep,topsep=1pt]
+        \item we annotate the lhs nonterminal at \(s\) and the \(i\)th rhs nonterminal at \(s'\) with $^-$ and remove the empty component, and
+        \item if \(i = 1\) (resp.\@ \(i = 2\)), we remove \(\x_1\) (resp.\@ \(\y_1\)) and replace every other occurrence of \(\x_i\) by \(\x_{i-1}\) (resp.\@ \(\y_j\) by \(\y_{j-1}\)) at $s'$.
+    \end{itemize}
+    Otherwise, we annotate the nonterminals with \(^+\).
+
+    We note that the rule at $r$ is uni-lexical and branching now, the rule at \(t\) is uni-lexical and terminating, and the number of terminals in each rule between them did not change.
+    After this step, every rule in $d$ is lexical.
+    \Cref{fig:propterm} shows an example for this step.
+
+    There is a suitable leaf $t$ for every branching rule $r$.
+    Intuitively, this holds since (a) after \cref{step:fuseterm} every leaf of $d$ is a double-lexical rule and (b) for each branching rule we first go to its second successor and then follow the path of first successors until we reach a leaf.
+    Here, (a) guarantees that there exists a double-lexical rule for each branching rule and (b) guarantees that a terminal in each double-lexical rule is transported to at most one branching rule, thus at most one terminal is removed from it.
+    We refer the more interested reader to consult the proof of correctness by \citet{EngMalMan18};
+    this proof also applies to our method.
+
+    The reversal of this step removes all annotation ($^+$, $^-$, and \textsuperscript{swapped}) and restores each composition in $d$ to its original form.
+    We note that the original composition can be obtained deterministically; the construction is given in \cref{unlex:propterm}.
+
+    \paragraph{\Cref{step:split}.}
+    We replace the rightmost terminal $\sigma_2$ in the composition of each double-lexical terminating rule by a variable and add a new nonterminal $A^{\text{R}}$ to the rule's right-hand side (making it a uni-lexical monic rule).
+    Then we insert the rule $A^{\text{R}} \to (\sigma_2)$ as a child.
+    %Each occurrence of the form
+    %  \(A \to (\sigma_1 \sigma_2)\) is replaced by \(A \to (\sigma_1 \x_1) (A^\text{R}) \Big(A^\text{R} \to (\sigma_2)\Big)\), and
+    %  \(A \to (\sigma_1, \sigma_2)\) is replaced by \(A \to (\sigma_1, \x_1) (A^\text{R}) \Big(A^\text{R} \to (\sigma_2)\Big)\),
+    %where \(A^\text{R}\) is a new nonterminal.
+    After this step, every rule in $d$ is uni-lexical.
+    \Cref{fig:propterm:post,fig:split} show an example for this step.
+    The reversal of this step is straightforward.
+    %We formally describe it in \cref{unlex:split}.
+
+
+    \section{Guided Extraction} \label{sec:extraction:guided}
     \subsection{Guides}
     \subsection{Nonterminal Constructors}
 \end{document}

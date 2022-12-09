@@ -22,3 +22,8 @@
 *.sav
 .vscode
 auto
+*.glg
+*.glo
+*.gls
+*.ist
+*.glstex

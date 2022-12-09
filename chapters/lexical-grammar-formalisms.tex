@@ -1,8 +1,228 @@
 \documentclass[../document.tex]{subfiles}
 
 \begin{document}
-    \chapter{Lexical Grammar Formalisms}
-    \section{Linear Context-free Rewriting Systems}
-    \section{Definite Clause Programs}
+    \chapter{Grammar Formalisms}
+    This chapter describes three grammar formalisms that we use for parsing natural language sentences.
+    For the subject of this thesis, let us consider a grammar as a collection of rules that are capable of deriving either strings or trees.
+    All considered grammar formalisms share the same fundamental structure of their rules:
+        Each consists of a sequence of \glsxtr[noindex]{nonterminal} symbols, one of which is called the \glsfmtlongpl{lhs} nonterminal and the rest the \glsfmtlongpl{rhs} nonterminals, and an expression that computes strings or trees based on an argument for each \gls{rhs} nonterminal.
+        The symbols, that are occurring in these expressions and are part of the result, are called \glsxtr[noindex]{terminal} symbols.
+    The \glspl{nonterminal} already hint at the recursive structure of grammar derivations: the arguments used to compute the result are computed by successor rules whose \gls{lhs} nonterminal match the \gls{rhs} nonterminals.
+
+%    However, we will not use grammars to derive any strings, but the opposite:
+%        We analyze strings in consideration which collection of grammar rules may be used to derive a given string.
+%    This process is called parsing.
+%    Usually, the result of this process is not a collection of grammar rules but a digest of it, called derivation tree.
+
+    First, we focus on \glsfmtlongpl{lcfrs}, an extension of context-free grammars introduced by \citet{VijWeiJos87} and extensively studied by \citet{SekMatFujKas91}.
+    In this formalism, each rule produces a tuple of strings which may occur in non-consecutive parts in a finally derived string.
+    This is used to model sentence positions in the yield of discontinuous constituents.
+    When \gls{lcfrs} are used for parsing of constituency structures, we typically find a rule derivation that computes the input sentence and assume the nonterminals occurring in the derivation as constituency structure.
+
+    Secondly, we have a look at a subset of \glsfmtlongpl{dcp}, which were introduced by \cite{???} as a logic characterization of attribute grammars.
+    They were used in the context of parsing by \cite{Geb,Geb} in combination with \gls{lcfrs} forming hybrid grammars (see next paragraph).
+    In contrast to context-free grammars and \glspl{lcfrs}, each rule in this grammar formalism computes a collection of trees instead of strings.
+    However, in the scope of this thesis, we consider only \gls{dcp} rules that produce consecutive parts in trees.
+    During parsing with these \gls{dcp}, we find a derivation with the rules in a grammar that produces a tree with the input sentence as yield and assume the tree as constituency structure.
+
+    The last formalism among the considered are \gls{lcfrs}/\gls{dcp} hybrid grammars as introduced by \citet{Geb}.
+    They combine the two aforementioned grammar formalisms:
+        Besides the nonterminals, each rule contains the expression of an \gls{lcfrs} as well as the expression of a \gls{dcp}.
+    During parsing, we find a derivation such that the \gls{lcfrs} expressions produce the input sentence, the \gls{dcp} expressions yield the constituency structure.
+
+    In the following sections for each of the three formalisms, the grammars are described gradually:
+    \begin{inparaenum}[(i)]
+        \item Each section starts with the expressions contained in each rule that compose strings or trees.
+        \item After that, they express the rules and the other components in a grammar.
+        \item Finally, they explain the derivations in a grammar in tandem with their computed yield and parse\todo{find a name for the string/tree of a derivation}.
+    \end{inparaenum}
+    Each of these subsections is accompanied by examples that give intuitions for the described structures.
+
+    \section{\Glsfmtlongpl{lcfrs}}
+
+    In \glspl*{lcfrs}, each rule composes a tuple of strings from arguments that are string tuples as well.
+    The first definition formalizes the notation for such functions using binary variables that determine an argument (subscript) and one of its components (superscript).
+    The sets of compositions are restricted such that the variables occur ordered according to their sub- and superscripts, and no variables for consecutive components of the same argument occur next to each other.
+    These restrictions enforce a normal form for \glspl{lcfrs} that matches the properties of grammars extracted from treebanks.
+    The normal form itself, however, is not restrictive: For every \gls{lcfrs}, there is an equivalent \gls{lcfrs} in normal form. \cite{???}
+
+    \begin{definition}[Compositions]
+        We fix a set of variables \(\X = \big\{ \x_i^j \mid i, j \in \DN_+ \big\}\) and the \(\DN_+^*\)-indexed family of finite subsets \(\X_{s_1\cdots s_k} = \big\{ \x_i^j \mid i \in [k], j \in [s_i] \big\}\) for each \(k \in \DN\), and \(s_1, \ldots, s_k \in \DN_+\).
+        Let \(\varSigma\) be a finite set disjoint from \(\X\).
+        The family of \glspl{lcomp} over \(\varSigma\), denoted by \(\C^\varSigma\), is the \(\DN_+^+\)-indexed family over sets of non-empty sequences over strings in \((\varSigma \cup \X)^+\) such that for each \(k \in \DN\) and \(s_1, \ldots, s_k, s \in \DN_+\), the set \(\C^\varSigma_{s_1 \cdots s_k s}\) contains each sequence \(u_1, \ldots, u_s \in (\varSigma \cup \X_{s_1 \cdots s_k})^+\) of length \(s\) such that
+        \begin{compactenum}[(i)]
+            \item each variable in \(\X_{s_1 \cdots s_k}\) occurs exactly once in the string \(u_1 \cdots u_s\),
+            \item for each \(i \in [k-1]\), the variable \(\x_i^1\) occurs to the left of \(\x_{i+1}^1\) in the string \(u_1 \cdots u_s\),
+            \item for each \(i \in [k]\) and \(j \in [s_i-1]\), the variable \(\x_i^j\) occurs to the left of \(\x_i^{j+1}\) in the string \(u_1 \cdots u_s\),
+            \item there are no \(i \in [k]\) and \(j \in [s_i-1]\) such that \(\x^j_i\x^{j+1}_i\) is a subsequence in any of \(u_1, \ldots, u_s\).
+        \end{compactenum}
+        We identify the identifier \(\C^\varSigma\) with the set of all such \glspl*{lcomp} \(\bigcup_{k \in \DN, s_1, \ldots, s_k, s \in \DN_+} \C^{\varSigma}_{s_1 \cdots s_k s}\).
+
+        We associate a function, denoted by \(\sem{(u_1, \ldots, u_s)}\), from \(k\) string tuples, where the \(i\)-th tuple is of length \(s_i\), to a string tuple of length \(s\) with each composition in \((u_1, \ldots, u_s) \in \C^\varSigma_{(s_1\cdots s_k s)}\).
+        Given the arguments \(\big(v_i = (v_i^j \mid j \in [s_i]) \mid i \in [k]\big)\), the result is the string tuple \(
+            \sem{(u_1, \ldots, u_s)}(v_1, \ldots, v_k) = (u_1[\phi], \ldots, u_s[\phi])
+        \) where \(\phi\) is the \(\X_{s_1 \cdots s_k}\)-indexed family with \(\phi_{x_i^j} = v_i^j\).
+        Intuitively, this function replaces each occurring variable of the form \(\x_i^j\) in \(u_1, \ldots, u_s\) with the \(j\)-th component of the \(i\)-th argument.
+    \end{definition}
+
+    \begin{example}
+        Consider the sequences of strings \(c_1 = (\x_1^1\,\x_1^2)\), \(c_2 = (\x_1^1 \text{a}, \x_1^2 \text{b})\) and \(c_3 = (\text{a}, \text{b})\) over the alphabet \(\Sigma=\{\text{a}, \text{b}\}\) and the variables \(\X_{2}\).
+        We interpret them as functions \(\sem{c_1}\colon \Sigma^* \times \Sigma^* \to \Sigma^*\), \(\sem{c_2}\colon \Sigma^* \times \Sigma^* \to \Sigma^* \times \Sigma^*\), and \(\sem{c_3}\colon \{\varepsilon\} \to \Sigma^* \times \Sigma^*\)\todo{constants as nullary functions} such that, e.g.
+        \begin{align*}
+            \sem{c_3}() &= (\text{a}, \text{b}) \\
+            \sem{c_2}((\text{a}, \text{b})) &= (\text{aa}, \text{bb}) \\
+            \sem{c_1}((\text{aa}, \text{bb})) &= \text{aabb}
+        \end{align*}
+    \end{example}
+
+    \begin{definition}[\gls*{lcfrs} grammar]
+        An \gls{lcfrs} is a tuple \(G=(N, \varSigma, S, R)\) where
+        \begin{compactenum}[(i)]
+            \item \(N\) is a finite set (\glspl{nonterminal}),
+            \item \(\varSigma\) is an alphabet (\glspl{terminal}),
+            \item \(S \in N\) (initial non-terminal),
+            \item \(R\) is a finite subset of \(N \times \C^\varSigma \times N^*\) (\glsxtrpl{rule}),\todo{define set of rules over \(N, \varSigma\) and families} and
+            \item there is an implicit positive integer \(\fanout(A) \in \DN_+\), called the \glsxtr{fanout} for each nonterminal \(A \in N\), such that
+            for each \((A, c, B_1\cdots B_k) \in R\), the \gls{lcomp} \(c\) is an element of \(\C^\varSigma_{\fanout(B_1) \cdots \fanout(B_k) \fanout(A)}\).
+        \end{compactenum}
+
+        Rules are denoted in the form \(A \to c\,(B_1, \ldots, B_k)\) instead of \((A, c, B_1 \cdots B_k)\); \(A\) is called the \gls{lhs} and \(B_1, \ldots B_k\) are the \gls{rhs}, \(c\) is the \gls*{lcomp} of the \gls*{rule}.
+        The natural \(k\) is the \glsxtr{rank} of the rule; the \gls*{rank} of the grammar \(G\) is the maximum rank occurring in the rules of \(G\).
+    \end{definition}
+
+    \begin{definition}[Grammar forms]
+        We distinguish rules and grammars of the following form:
+        \begin{compactitem}
+            \item Rules of rank zero, one and two are called \glsxtr{nullary}, \glsxtr{unary} and \glsxtr{binary}, respectively.
+            \item Lcfrs containing only nullary, unary and binary rules are called \gls*{binary}.
+            \item Rules whose composition contains exactly one terminal in \(\varSigma\) are called \glsxtr{lexical}.
+            \item Lcfrs containing only lexical rules are called \gls*{lexical}.
+            \item Rules whose composition contain no terminal at all are called \glsxtr{non-lexical}.
+            \item Lcfrs that contain only lexical nullary rules and non-lexical rules of rank \(\ge 1\) are called \glsxtr{simple}.
+        \end{compactitem}
+    \end{definition}
+
+    \begin{example}
+        -- examples for lcfrs, rules, forms --
+    \end{example}
+
+    \begin{definition}[Derivation]
+        Let us consider an lcfrs \(G = (N, \varSigma, S, R)\).
+        An \gls{lderiv} is a tree over rules in \(\T_R\) that suffices the following conditions:
+        \begin{compactitem}
+            \item Each leaf is equipped with a nullary rule as symbol.
+            \item Each inner node is a rule with the same amount of \gls{rhs} nonterminals as children in the tree such that the \(i\)-th \gls{rhs} nonterminal is the \(i\)th child's \gls{lhs} nonterminal.
+        \end{compactitem}
+        The set of all \glspl{lderiv} is denoted by \(\derivs^R\).
+        We identify this set with the \(N\)-indexed partition of \(\derivs^R\) that assigns each nonterminal \(A\) to the derivations whose root is equipped with \gls{lhs} \(A\).
+    \end{definition}
+
+    \begin{definition}[Yield and Parse]
+        Consider a derivation \(d\) in \(\derivs^R_A\) of the form \(d = r\,(d_1, \ldots, d_k)\) where the root \(r\) is of the form \(A \to c\,(B_1, \ldots, B_k)\).
+        The yield of \(d\) is defined recursively: \(\yield(d) = \sem{c}(\yield(d_1), \ldots, \yield(d_k))\).
+        For the definition of the parse of \(d\), let us consider the sequences of terminal symbols \(w_1, \ldots, w_{k+1} \in \varSigma^*\) such that,
+        \begin{compactitem}
+            \item \(w_1\) is the sequence of terminal symbols occurring before the variable \(\x_1^1\) in \(c\),
+            \item for each \(i \in \{2, \ldots, k\}\), \(w_i\) is the sequence of terminal symbols occurring between the variables \(\x_{i-1}^1\) and \(\x_i^1\) in \(c\), and
+            \item \(w_{k+1}\) is the sequence of terminal symbols occurring after the variable \(\x_k^1\) in \(c\).
+        \end{compactitem}
+        Then the parse of \(d\) is the tree \[
+        \parse(d) = A(w_1, \parse(d_1), w_2, \parse(d_2), \ldots, w_k, \parse(d_k), w_{k+1}) \text{.}
+        \]
+    \end{definition}
+
+    \begin{example}
+        -- example derivation, with yield and parse --
+    \end{example}
+
+    \section{\Glsfmtlongpl{dcp}}
+
+    \Glspl{dcp} are, in contrast to \glspl{lcfrs}, a formalism where each rule produces trees instead of plain strings.
+    The most striking difference to the previous formalism, however, lies in the composition expressions contained in each rule:
+        They do not only allow substitution with parameters produced by successors in a derivation (first order substitution), but each single parameter may also contain variables that are substituted in the same step (second order substitution).
+    This corresponds to the information flow from bottom to the top in a derivation as expressed by synthetic attributes (first order substitution), as well as the information flow from top to the bottom in a derivation by inherent attributes (second order substitution) in attribute grammars.
+    The implementation of these two systems of substitution, two pairwise distinct sets of variables are used: \(\X\) for the first (as in \gls{lcfrs}), and \(\Y\) for the second order substitution.
+
+    In their most general form, the object produced by a derivation in such a \gls{dcp} is not necessarily computable, as the two types of substitution may mutually recur.
+    To solve this issue, there were some restrictive forms introduced which exclude circular dependencies in the expressed productions. \cite{???}
+    It is easy to see that the definition shown in this section supersedes each of these restricted forms, as it exclusively allows fixed terminal objects or a single second order variable as parameter for second order substitution.
+    To avoid unnecessarily complicated definitions, the subset of \gls{dcp} shown in this section is even further restricted such that
+    \begin{inparaenum}
+        \item it deals with ranges\todo{def. range} of consecutive subtrees (and not sequences of ranges), and
+        \item each rule's composition expression allows exactly one second-order substitution (which may be the empty sequence).
+    \end{inparaenum}
+
+    \begin{definition}[Composition]
+        We fix the \(\DN\)-\gls{family} of finite sets of variables \((\X_k = \{\x_i \mid i \in [k]\} \mid k \in \DN)\), and the singleton set \(\Y = \{\y\}\).
+        The identifier \(\X\) denotes the union \(\bigcup_{k \in \DN} \X_k = \{\x_i \mid i \in \DN\}\).
+        Let \(\varSigma\) and \(\varGamma\) be alphabets disjoint from \(\X \cup \Y\).
+        The \(\DN\)-\gls{family} \((S_k = \{x(y) \mid x \in \X_k, y \in \T_\varGamma(\varSigma \cup Y)^*\} \mid k \in \DN)\) denotes expressions for occurrences of first-order substitutions using \(k\) variables.
+        The \(\DN\)-\gls{family} of \glspl{dcomp} is \((\C^{\varGamma\varSigma}_k \mid k \in \DN)\) such that \(\C^{\varGamma\varSigma}_k\) contains each nonempty sequence \(c\) in \((\T_\varGamma(\varSigma \cup S_k))^+\) such that each variable in \(\X_k \cup \Y\) occurs exactly once in \(c\).
+        We identify the identifier \(\C^{\varGamma\varSigma}\) with the set of all such \glspl*{dcomp} \(\bigcup_{k \in \DN} \C^{\varGamma\varSigma}_{k}\).
+
+        Let us denote the type of functions \(\T_\varGamma(\varSigma)^+ \to \T_\varGamma(\varSigma)^+\) by \(T\).
+        Each composition \(c \in \C^{\varGamma\varSigma}_k\) is associated with a function \(\sem{c}\colon T^k \to T\) that yields ... \todo[inline]{introduce function notation for leftover 2nd order substitution?}
+    \end{definition}
+
+    The occurrences of variables are abbreviated in the following two ways:
+    \begin{compactenum}
+        \item Variables in \(\X\) with successor \(\varepsilon\) are abbreviated by omitting the parentheses and the successor as a whole; e.g.\@ instead of \(\x_1(\varepsilon)\), we just write \(\x_1\).
+        \item We omit trailing occurrences of the variable \(\y\), if it does not occur as a successor of any node; e.g.\@ instead of \(\text{S}(\x_1)\,\y \), we just write \(\text{S}(\x_1)\).
+    \end{compactenum}
+
+    \begin{example}
+        Consider the following sequences of trees over the alphabet \(\varSigma = \{ \cn{sbar}, \cn{s}, \cn{vp}, \cn{np} \}\)
+        \begin{align*}
+            \xi_1 &= \cn{sbar} (\cn{s} (\x_1(\y) \, \x_2(\tn{the}))) \\
+            \xi_2 &= \cn{vp}(\x_1(\y) \, \tn{was}) \\
+            \xi_3 &= \cn{vp}(\x_1(\y) \, \x_2(\tn{carried}))\\
+            \xi_4 &= \tn{where}\\
+            \xi_5 &= \y \, \tn{out} \\
+            \xi_6 &= \cn{np} (\y \, \tn{survey}) \\
+        \end{align*}
+    \end{example}
+
+    \begin{definition}[\gls*{dcp} grammar]
+    A \gls{dcp} is a tuple \(G=(N, \varSigma, S, R)\) where
+    \begin{compactenum}[(i)]
+        \item \(N\) is a finite set (\glspl{nonterminal}),
+        \item \(\varSigma\) is an alphabet (\glspl{terminal}),
+        \item \(S \in N\) (initial non-terminal),
+        \item \(R\) is a finite subset of \(\bigcup_{k \in \DN} N \times \C^\varSigma_k \times N^k\).
+    \end{compactenum}
+
+    Rules are denoted in the form \(A \to c\,(B_1, \ldots, B_k)\) instead of \((A, c, B_1 \cdots B_k)\); \(A\) is called the \gls{lhs} and \(B_1, \ldots B_k\) are the \gls{rhs}, \(c\) is the \gls*{lcomp} of the \gls*{rule}.
+    The natural \(k\) is the \glsxtr{rank} of the rule; the \gls*{rank} of the grammar \(G\) is the maximum rank occurring in the rules of \(G\).
+    \end{definition}
+
+    \begin{example}
+    -- examples for lcfrs, rules, forms --
+    \end{example}
+
+    We use the same definition for derivations for \gls{dcp} as for \gls{lcfrs}.
+    However, the terms yield and parse differ, since the grammar produces trees instead of strings.
+
+    \todo[inline]{define yield as set of positions, each rule must be equipped with a unique symbol}
+
+    \begin{definition}[Yield and Parse]
+        Consider a derivation \(d\) in \(\derivs^R_A\) of the form \(d = r\,(d_1, \ldots, d_k)\) where the root \(r\) is of the form \(A \to c\,(B_1, \ldots, B_k)\).
+%        The yield of \(d\) is defined recursively: \(\yield(d) = \sem{c}(\yield(d_1), \ldots, \yield(d_k))\).
+%        For the definition of the parse of \(d\), let us consider the sequences of terminal symbols \(w_1, \ldots, w_{k+1} \in \varSigma^*\) such that,
+%        \begin{compactitem}
+%            \item \(w_1\) is the sequence of terminal symbols occurring before the variable \(\x_1^1\) in \(c\),
+%            \item for each \(i \in \{2, \ldots, k\}\), \(w_i\) is the sequence of terminal symbols occurring between the variables \(\x_{i-1}^1\) and \(\x_i^1\) in \(c\), and
+%            \item \(w_{k+1}\) is the sequence of terminal symbols occurring after the variable \(\x_k^1\) in \(c\).
+%        \end{compactitem}
+        Then the parse of \(d\) is the tree \[
+            \parse(d) = \big(\sem{c}(\parse(d_1),\ldots,\parse(d_k))\big)(\varepsilon) \text{.}
+        \]
+    \end{definition}
+
+
     \section{Hybrid Grammars}
+
+    \ifSubfilesClassLoaded{%
+        \printunsrtglossaries
+        \bibliography{../references}%
+    }{}
 \end{document}

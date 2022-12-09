@@ -1,18 +1,41 @@
 \documentclass{scrbook}
 
-\usepackage{xr, subfiles}
+\usepackage{xr, subfiles, standalone}
 \usepackage[german, english, iso]{isodate}
+\input{mathops}
+\usepackage[pdfborderstyle={/S/U/W 1}]{hyperref}
+\usepackage{natbib, cleveref, paralist}
+\bibliographystyle{abbrvnat}
 
-\externaldocument[M-]{\subfix{main}}
+% index setup via glossaries package
+\usepackage[indexonlyfirst]{glossaries-extra}
+\usepackage{glossary-bookindex}
+\setabbreviationstyle{long-short-sc}
+\setabbreviationstyle[common]{long-only-short-only}
+\GlsXtrEnableOnTheFly
+\input{\subfix{glossary.tex}}
+
+% tikz setup
+\usepackage{tikz}
+\usetikzlibrary{matrix,positioning,fit}
+
+\usepackage{todonotes}
+
+\externaldocument[M-]{\subfix{document}}
 
 \author{Thomas Ruprecht}
-\title{%
-    Something Old and Something New:\\
-    A Symbiosis of Grammars\\
-    and Artificial Neural Networks\\
-    for Constituent Parsing%
+\title{ %
+    The Impact of Different Lexicalizations in Parsing Discontinuous Constituents with Formal Grammars via Supertagging
+        % a new approach of lexicalization formal grammars for parsing discontinuous constituents
+%    Combining Formal Grammars\\
+%    and Artificial Neural Networks\\
+%    for Discontinuous Constituent Parsing%
 }
 \date{tba}
+
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}
+\newtheorem{example}{Example}
 
 \begin{document}
     \subfile{title.tex}
@@ -29,7 +52,8 @@
     \subfileinclude{chapters/related-work.tex}
     \subfileinclude{chapters/conclusion.tex}
 
+    \printglossary[title=Index]
+
     \nocite{*}
-    \bibliographystyle{alpha}
     \bibliography{references}
 \end{document}

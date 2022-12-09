@@ -1,0 +1,92 @@
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amsthm}
+\usepackage{mathtools}
+\usepackage{stmaryrd}
+
+\newcommand{\tn}[1]{\text{#1}}
+\newcommand{\cn}[1]{\textsc{#1}}
+\newcommand{\nt}[1]{\textsc{\textsl{#1}}}
+\DeclarePairedDelimiter{\sem}{\llbracket}{\rrbracket}
+
+\newcommand{\DN}{\ensuremath{\mathbb{N}}}
+\newcommand{\DZ}{\ensuremath{\mathbb{Z}}}
+\newcommand{\DR}{\ensuremath{\mathbb{R}}}
+
+\newcommand{\power}{\mathcal{P}}
+\DeclareMathOperator{\id}{id}
+\DeclareMathOperator{\sort}{sort}
+\DeclareMathOperator{\rank}{rk}
+\DeclareMathOperator{\head}{head}
+\DeclareMathOperator{\modifier}{mod}
+\DeclareMathOperator{\argmin}{arg min}
+
+
+% trees
+\DeclareMathOperator{\sTrees}{T}
+\DeclareMathOperator{\T}{T}
+\DeclareMathOperator{\pos}{pos}
+\DeclareMathOperator{\lpos}{lpos}
+\DeclareMathOperator{\npos}{npos}
+\DeclareMathOperator{\ancestors}{anc}
+\DeclareMathOperator{\toPos}{toPos}
+
+% tree transducer
+\newcommand{\qi}{q_{\mathrm{i}}}
+
+% variables and compositions
+\newcommand{\X}{\textsl{X}}
+\newcommand{\x}{\textsl{x}}
+\newcommand{\Y}{\textsl{Y}}
+\newcommand{\y}{\textsl{y}}
+\newcommand{\C}{\mathrm{C}}
+
+\newcommand{\guide}{\ensuremath{\texttt{G}}}
+\newcommand{\ntcon}{\ensuremath{\texttt{NT}}}
+
+% lcfrs
+\DeclareMathOperator{\fanout}{fo}
+\DeclareMathOperator{\yield}{yd}
+\DeclareMathOperator{\parse}{parse}
+\DeclareMathOperator{\weight}{wt}
+\DeclareMathOperator{\lang}{L}
+\DeclareMathOperator{\derivs}{D}
+\DeclareMathOperator{\maxrk}{maxrk}
+\DeclareMathOperator\lhs{lhs}
+\newcommand{\nullaries}[1]{#1^{(\mathrm{T})}}
+\newcommand{\unaries}[1]{#1^{(\mathrm{M})}}
+\newcommand{\binaries}[1]{#1^{(\mathrm{B})}}
+
+% supertags
+\newcommand*\wildcard{\ensuremath{\mathbf{\_}}}
+
+% lexicalization
+\newcommand\lexG{\ensuremath{G_{\mathrm{lex}}}}
+\DeclareMathOperator{\squash}{squash}
+\DeclareMathOperator{\pull}{pull}
+\DeclareMathOperator{\cut}{cut}
+\DeclareMathOperator{\paste}{paste}
+\newcommand{\dechain}[1]{{#1}_{\mathrm{dc}}}
+\newcommand{\fuseterm}[1]{{#1}_{\mathrm{ft}}}
+\newcommand{\propterm}[1]{{#1}_{\mathrm{pt}}}
+\newcommand\dstar{d^{*}}
+\newcommand\dprop{d^{\mathrm p}}
+\newcommand\R{\mathrm R}
+% deprecated
+%\newcommand{\dechainfunc}{\operatorname{dc}}
+%\newcommand{\dechainauto}{\dechain{T}}
+%\newcommand{\dechaintrans}{\dechain{\tau}}
+%\newcommand{\fusetermfunc}{\operatorname{ft}}
+%\newcommand{\fusetermauto}{\dechain{T}}
+%\newcommand{\fusetermtrans}{\dechain{\tau}}
+%\newcommand{\proptermfunc}{\operatorname{pt}}
+%\newcommand{\proptermauto}{\dechain{T}}
+%\newcommand{\proptermtrans}{\dechain{\tau}}
+
+% delexicalization
+%\DeclareMathOperator{\dissect}{ds}
+%\newcommand{\dissectauto}{T_{\dissect}}
+%\newcommand{\dissecttrans}{\tau_{\dissect}}
+%\DeclareMathOperator{\stretchlong}{sl}
+%\newcommand{\stretchauto}{T_{\stretchlong}}
+%\newcommand{\stretchtrans}{\tau_{\stretchlong}}
