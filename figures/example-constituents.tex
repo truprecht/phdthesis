@@ -43,5 +43,16 @@
         (term3) -- (pos-1-4)
         (term4) -- (pos-1-5)
         (term5) -- (pos-1-6);
+
+     % redraw corssing edges with white foundation
+     \begin{scope}
+         \draw[white, line width=.7ex] (vp1.south) -- ++(0,-1ex) -| (term3.north);
+         \draw (vp1.south) -- ++(0,-1ex) -| (vp2.north);
+         \draw (vp1.south) -- ++(0,-1ex) -| (term3.north);
+
+         \draw[white, line width=.7ex] (s.south) ++(.5pt,-.5ex) -| (np.north);
+         \draw (s.south) -- ++(0,-1ex) -| (np.north);
+         \draw (s.south) -- ++(0,-1ex) -| (vp1.north);
+     \end{scope}
   \end{tikzpicture}
 \end{document}

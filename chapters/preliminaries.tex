@@ -95,7 +95,12 @@
     Let's consider a single distinct variable \(y \notin X\), a set of shallow trees \(X(\varSigma^*) = \{ x(w) \mid x \in X, w \in \Sigma^* \}\) and a string \(c\) in \((X(\varSigma^*) \cup \varSigma)^*\).
     A second-order substitution of \(X\) in \(c\) defined by an \(X\)-indexed family \((v_x \in (\varSigma \cup \{y\})^* \mid x \in X)\) yields the string in \(\varSigma^*\) obtained from \(c\) by replacing each occurrence of shallow trees \(x(w) \in X(\varSigma^*)\) by \(v_x[y=w]\).
     We specifically stress that the variable \(y\) may be an element in \(\varSigma\) and the result \(c[v]\) might also contain it.
-    Moreover, because trees are nothing more than specific strings, both definitions of substitution carry over to them as long as the variables do not coincide with parentheses.
+
+    Because trees are just specific strings, both definitions of substitution are easily lift to trees and sequences of trees, as long as the variables do not coincide with parentheses.
+    Let \(\varGamma\) be an alphabet distinct from \(X\), and \(\{ (, ) \} \cap (X \cup \{y\}) = \emptyset\), and \(y \notin \varSigma\).
+    Now, the variable occurrences are of the form \(X(\T_\varSigma(\varGamma)^*) = \{x(t_1, \ldots, t_k) \mid k \in \DN, t_1, \ldots, t_k \in \T_{\varSigma}(\varGamma)\}\) where each element has a root in \(X\), in the following the set is abbreviated by \(\hat{X}\).
+    A second-order substitution of \(X\) in \(c \in \T_\varSigma(\varGamma \cup \hat{X})^*\)\todo{The set of leaves is not finite, either adapt def. of trees or allow only leaves as arguments. \(\T_{\varSigma \cup X}(\varGamma)\) is not an option.} defined by an \(X\)-indexed family \((v_x \in \T_\varSigma(\varGamma \cup \{y\})^* \mid x \in X)\) yields a sequence of trees in \(\T_\varSigma(\varGamma)*\) obtained from \(c\) by replacing each occurrence of \(x(v) \in \hat{X}\) by \(v_x[y=v]\).
+    The variable \(\y\) may be an element of \(\varGamma\).
 
     \begin{example}[Substitution]
         Consider an alphabet \(\Sigma = \{\text{a}, \ldots, \text{g}\}\) of (terminal) symbols and two sets of variables \(\X = \{\x_1, \x_2, \x_3\}\) and \(\Y = \{\y\}\).
@@ -110,7 +115,7 @@
             \x_1(\text{bb}) \, \x_1(\varepsilon) \, [\x_1=\text{a}\,\y\,\text{a}] = (\text{a}\,\y\,\text{a})[\y=\text{bb}] (\text{a}\,\y\,\text{a})[\y=\varepsilon] &= \text{abbaaa}
         \end{align*}
 
-        We do also consider substitution in trees, like the following:\todo{def. symbol alphabets, etc.}
+        The following case considers trees over the alphabets \(\Sigma=\{\cn{vp}\}\) and \(\Gamma=\{\tn{was}, \tn{carried}, \y\}\):
         \begin{align*}
             \cn{vp}( \x_1(\y) \, \tn{was} )[\x_1=\cn{vp}(\tn{carried}\,\y)]
                 &= \cn{vp}( \cn{vp}(\tn{carried}\,\y)[\y=\y] \, \tn{was} ) \\
@@ -283,6 +288,20 @@
     \end{figure}
 
     \section{Classification Devices}
+    contents:
+    \begin{itemize}
+        \item what is a classification
+        \item statistical classification
+        \item generative models vs. discriminative models
+        \item sequence tagging = classification for each position in a sequence
+
+        \item models for sequence tagging:
+        \begin{itemize}
+            \item hidden markov models (generative model)
+            \item conditional random fields (discriminative)
+            \item neural networks (discriminative)
+        \end{itemize}
+    \end{itemize}
 
 
     \ifSubfilesClassLoaded{%

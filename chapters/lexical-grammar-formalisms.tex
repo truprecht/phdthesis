@@ -65,13 +65,31 @@
         Intuitively, this function replaces each occurring variable of the form \(\x_i^j\) in \(u_1, \ldots, u_s\) with the \(j\)-th component of the \(i\)-th argument.
     \end{definition}
 
-    \begin{example}
-        Consider the sequences of strings \(c_1 = (\x_1^1\,\x_1^2)\), \(c_2 = (\x_1^1 \text{a}, \x_1^2 \text{b})\) and \(c_3 = (\text{a}, \text{b})\) over the alphabet \(\Sigma=\{\text{a}, \text{b}\}\) and the variables \(\X_{2}\).
-        We interpret them as functions \(\sem{c_1}\colon \Sigma^* \times \Sigma^* \to \Sigma^*\), \(\sem{c_2}\colon \Sigma^* \times \Sigma^* \to \Sigma^* \times \Sigma^*\), and \(\sem{c_3}\colon \{\varepsilon\} \to \Sigma^* \times \Sigma^*\)\todo{constants as nullary functions} such that, e.g.
+    \begin{example}\label{ex:lcfrs:comp}
+       Consider an alphabet \(\Sigma=\{\tn{A}, \tn{hearing}, \tn{is}, \tn{scheduled}, \tn{on}, \tn{the}, \tn{issue}, \tn{today}\}\) and the following compositions:
         \begin{align*}
-            \sem{c_3}() &= (\text{a}, \text{b}) \\
-            \sem{c_2}((\text{a}, \text{b})) &= (\text{aa}, \text{bb}) \\
-            \sem{c_1}((\text{aa}, \text{bb})) &= \text{aabb}
+            c_1 &= (\tn{A}), & c_2 &= (\tn{today}), & c_3 &= (\tn{issue}) && \in \C^\Sigma_{(1)} \\
+            c_4 &= (\tn{the} \, \x_1^1), & c_5 &= (\x_1^1 \, \tn{hearing}) & & && \in \C^\Sigma_{(1\,1)} \\
+            c_6 &= (\x_1^1 \, \tn{is} \, \x_1^2) && && && \in \C^\Sigma_{(2\,1)} \\
+            c_7 &= (\x_1^1, \tn{on} \, \x_2^1) && && && \in \C^\Sigma_{(1\,1\,2)}   \\
+            c_8 &= (\x_1^1, \tn{scheduled} \, \x_1^2 \, \x_2^1) && && && \in \C^\Sigma_{(2\,1\,2)}
+        \end{align*}
+
+        The subscript indexing the family of compositions \(\C^\Sigma\) determines the arity of the associated functions.
+        E.g.\@ \(\sem{c_1} \in \C^\Sigma_{(1)}\) takes no arguments (it is constant) and yields a single string,
+            \(\sem{c_8} \in \C^\Sigma_{(2\,1\,2)}\) takes two arguments, a sequence over strings of length 2 and 1, and gives a sequence of length 2 as a result.
+        For example:
+        \begin{align*}
+            \sem{c_8}\Big( \; \big( \tn{A hearing}, \: \tn{on the issue} \big), \, \big( \tn{today} \big) \; \Big)
+                &= \big( \tn{A hearing}, \: \tn{scheduled on the issue today} \big)
+        \end{align*}
+
+        The functions may form terms, e.g.
+        \begin{align*}
+            \sem{c_7}\Big( \; \sem{c_5}\big(\,\sem{c_1}()\,\big), \: \sem{c_4}\big(\,\sem{c_3}()\,\big) \; \Big)
+                =& \sem{c_7}\Big( \; \sem{c_5}\big(\tn{A}\big), \: \sem{c_4}\big(\tn{issue}\big) \; \Big) \\
+                =& \sem{c_7}\Big( \; (\tn{A hearing}), \: (\tn{the issue}) \; \Big) \\
+                =& (\tn{A hearing}, \: \tn{on the issue})
         \end{align*}
     \end{example}
 
@@ -102,8 +120,21 @@
         \end{compactitem}
     \end{definition}
 
-    \begin{example}
-        -- examples for lcfrs, rules, forms --
+    \begin{example}[Continues \cref{ex:lcfrs:comp}]\label{ex:lcfrs:rules}
+        Consider the alphabet of nonterminal symbols \(\mathrm{N} = \{\nt{vp}, \nt{vp}_2, \nt{np}, \nt{np}_2, \nt{pp}, \nt{np}^\text{L}\}\) and the \gls*{lcfrs} \(\mathrm{G} = (\mathrm{N}, \Sigma, \nt{vp}, \mathrm{R})\) with
+        \begin{align*}
+            \mathrm{R} = \big\{\;
+                \nt{n}^\nt{l} &\to (\tn{A})\:(), &\nt{n} &\to (\tn{issue})\:(), &\nt{n} &\to (\tn{today})\:(), &\\
+                \nt{n} &\to (\x_1^1 \, \tn{hearing})\:(\nt{n}^\nt{l}), &\nt{p} &\to (\tn{the}\,\x_1^1)\:(\nt{n}), \\
+                \nt{n}_2 &\to (\x_1^1, \tn{on} \, \x_2^1)\:(\nt{n}, \nt{p}), \\
+                \nt{v}_2 &\to (\x_1^1, \tn{scheduled} \, \x_1^2 \, \x_2^1)\:(\nt{n}_2, \nt{n}), \\
+                \nt{v} &\to (\x_1^1 \, \tn{is} \, \x_1^2)\:(\nt{v}_2)
+            &&&&&\;\big\}
+        \end{align*}
+        The fanout for each nonterminal \(A\) determines the length of the composition with \gls*{lhs} \(A\) and the number of variables if \(A\) occurs in the \gls*{rhs} nonterminals of a rule.
+        In the above example, the nonterminal symbols with subscript \(_2\), i.e.\@ \(\nt{n}_2\) and \(\nt{v}_2\), are of fanout 2, and all others of fanout 1.
+        The composition of the rule \(\nt{v}_2 \to (\x_1^1, \tn{scheduled} \, \x_1^2 \, \x_2^1)\:(\nt{n}_2, \nt{n})\) is of length \(\fanout(\nt{v}_2) = 2\) and there are \(\fanout(\nt{n}_2) = 2\) variables for the first \gls*{rhs} nonterminal and \(\fanout(\nt{n}) = 1\) for the second.
+        \todo{G is lexical, example for simple lcfrs?}
     \end{example}
 
     \begin{definition}[Derivation]
@@ -127,16 +158,44 @@
             \item \(w_{k+1}\) is the sequence of terminal symbols occurring after the variable \(\x_k^1\) in \(c\).
         \end{compactitem}
         Then the parse of \(d\) is the tree \[
-        \parse(d) = A(w_1, \parse(d_1), w_2, \parse(d_2), \ldots, w_k, \parse(d_k), w_{k+1}) \text{.}
+            \parse(d) = A(w_1, \parse(d_1), w_2, \parse(d_2), \ldots, w_k, \parse(d_k), w_{k+1}) \text{.}
         \]
     \end{definition}
 
-    \begin{example}
-        -- example derivation, with yield and parse --
+    \begin{example}[Continues \cref{ex:lcfrs:comp,ex:lcfrs:rules}]\label{ex:lcfrs:deriv}
+        Let's consider the two trees illustrated below, the left one \(d\) is a tree over rules in the \gls*{lcfrs} \(\mathrm{G} = (N, \Sigma, \nt{v}, R)\), the right one is an element in \(\T_N(\Sigma)\).
+        Its root has the \gls*{lhs} \(\nt{n}_2\), the tree is an element of \(\derivs^R_{\nt{n}_2}\).
+        The yield of \(d\) is term over compositions computed in \cref{ex:lcfrs:comp}: \(\yield(d) = (\tn{A hearing}, \: \tn{on the issue})\).
+        The parse of \(d\) is illustrated to the right of \(d\).
+
+        \null\hfill
+        \begin{tikzpicture}[level distance=6ex, font=\small, sibling distance=3.7cm, inner sep=2pt]
+            \node {\(\nt{n}_2 \to (\x_1^1, \tn{on} \, \x_2^1)\:(\nt{n}, \nt{p})\)}
+            child {node {\(\nt{n} \to (\x_1^1 \, \tn{hearing})\:(\nt{n}^\nt{L})\)}
+                child {node {\(\nt{n}^\nt{L} \to (\tn{A})\:()\)}}}
+            child {node {\(\nt{p} \to (\tn{the}\,\x_1^1)\:(\nt{n})\)}
+                child {node {\(\nt{n} \to (\tn{issue})\:()\)}}};
+        \end{tikzpicture}
+        \hfill
+        \begin{tikzpicture}[level distance=4.5ex, font=\small, inner sep=2pt]
+            \node {\(\nt{n}_2\)}
+            child {node {\(\nt{n}\)}
+                [sibling distance=3em]
+                child {node {\(\nt{n}^\nt{L}\)}
+                    child { node {\(\tn{A}\)}}}
+                child {node {\(\tn{hearing}\)}}}
+            child {node {\(\tn{on}\)}}
+            child {node {\(\nt{p}\)}
+                [sibling distance=2em]
+                child {node {\(\tn{the}\)}}
+                child {node {\(\nt{n}\)}
+                    child { node {\(\tn{issue}\)}}}};
+        \end{tikzpicture}
+        \hfill\null
     \end{example}
 
-    \section{\Glsfmtlongpl{dcp}}
 
+    \section{\Glsfmtlongpl{dcp}}
     \Glspl{dcp} are, in contrast to \glspl{lcfrs}, a formalism where each rule produces trees instead of plain strings.
     The most striking difference to the previous formalism, however, lies in the composition expressions contained in each rule:
         They do not only allow substitution with parameters produced by successors in a derivation (first order substitution), but each single parameter may also contain variables that are substituted in the same step (second order substitution).
