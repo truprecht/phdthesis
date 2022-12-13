@@ -216,67 +216,107 @@
         The identifier \(\X\) denotes the union \(\bigcup_{k \in \DN} \X_k = \{\x_i \mid i \in \DN\}\).
         Let \(\varSigma\) and \(\varGamma\) be alphabets disjoint from \(\X \cup \Y\).
         The \(\DN\)-\gls{family} \((S_k = \{x(y) \mid x \in \X_k, y \in \T_\varGamma(\varSigma \cup Y)^*\} \mid k \in \DN)\) denotes expressions for occurrences of first-order substitutions using \(k\) variables.
-        The \(\DN\)-\gls{family} of \glspl{dcomp} is \((\C^{\varGamma\varSigma}_k \mid k \in \DN)\) such that \(\C^{\varGamma\varSigma}_k\) contains each nonempty sequence \(c\) in \((\T_\varGamma(\varSigma \cup S_k))^+\) such that each variable in \(\X_k \cup \Y\) occurs exactly once in \(c\).
-        We identify the identifier \(\C^{\varGamma\varSigma}\) with the set of all such \glspl*{dcomp} \(\bigcup_{k \in \DN} \C^{\varGamma\varSigma}_{k}\).
+        The \(\DN\)-\gls{family} of \glspl{dcomp} over \(\varSigma\) and \(\varGamma\) is \((\C^{\varGamma\varSigma}_k \mid k \in \DN)\) such that \(\C^{\varGamma\varSigma}_k\) contains each nonempty sequence \(c\) in \((\T_\varGamma(\varSigma \cup \Y \cup S_k))^+\) such that each variable in \(\X_k \cup \Y\) occurs exactly once in \(c\).
+        We associate the identifier \(\C^{\varGamma\varSigma}\) with the set of all such \glspl*{dcomp} \(\bigcup_{k \in \DN} \C^{\varGamma\varSigma}_{k}\).
 
-        Let us denote the type of functions \(\T_\varGamma(\varSigma)^+ \to \T_\varGamma(\varSigma)^+\) by \(T\).
-        Each composition \(c \in \C^{\varGamma\varSigma}_k\) is associated with a function \(\sem{c}\colon T^k \to T\) that yields ... \todo[inline]{introduce function notation for leftover 2nd order substitution?}
+        Each composition \(c \in \C^{\varGamma\varSigma}_k\) is associated with a function \[
+            \sem{c}\colon \big(\T_\varGamma(\varSigma \cup Y)^*\big)^k \to \T_\varGamma(\varSigma \cup Y)^*
+        \] such that \(\sem{c}(\xi_1, \ldots, \xi_k) = c[\x_1=\xi_1, \ldots, \x_k=\xi_k]\) is the second-order substitution of \(\X_k\) in \(c\).
     \end{definition}
 
-    The occurrences of variables are abbreviated in the following two ways:
-    \begin{compactenum}
-        \item Variables in \(\X\) with successor \(\varepsilon\) are abbreviated by omitting the parentheses and the successor as a whole; e.g.\@ instead of \(\x_1(\varepsilon)\), we just write \(\x_1\).
-        \item We omit trailing occurrences of the variable \(\y\), if it does not occur as a successor of any node; e.g.\@ instead of \(\text{S}(\x_1)\,\y \), we just write \(\text{S}(\x_1)\).
-    \end{compactenum}
+%    The occurrences of variables are abbreviated in the following two ways:
+%    \begin{compactenum}
+%        \item Variables in \(\X\) with successor \(\varepsilon\) are abbreviated by omitting the parentheses and the successor as a whole; e.g.\@ instead of \(\x_1(\varepsilon)\), we just write \(\x_1\).
+%        \item We omit trailing occurrences of the variable \(\y\), if it does not occur as a successor of any node; e.g.\@ instead of \(\text{S}(\x_1)\,\y \), we just write \(\text{S}(\x_1)\).
+%    \end{compactenum}
 
-    \begin{example}
-        Consider the following sequences of trees over the alphabet \(\varSigma = \{ \cn{sbar}, \cn{s}, \cn{vp}, \cn{np} \}\)
+    \begin{example}\label{ex:dcp:comp}
+        Consider the following compositions over  \(\varSigma = \{ \cn{sbar}, \cn{s}, \cn{vp}, \cn{np} \}\) and \(\varGamma = \{\tn{where}, \tn{the}, \tn{survey}, \tn{was}, \tn{carried}, \tn{out}\}\):
         \begin{align*}
-            \xi_1 &= \cn{sbar} (\cn{s} (\x_1(\y) \, \x_2(\tn{the}))) \\
-            \xi_2 &= \cn{vp}(\x_1(\y) \, \tn{was}) \\
-            \xi_3 &= \cn{vp}(\x_1(\y) \, \x_2(\tn{carried}))\\
-            \xi_4 &= \tn{where}\\
-            \xi_5 &= \y \, \tn{out} \\
-            \xi_6 &= \cn{np} (\y \, \tn{survey}) \\
+             c_1 &= \tn{where} \, \y,
+            &c_2 &= \y \, \tn{out},
+            &c_3 &= \cn{np} (\y \, \tn{survey}) && \in \C_0\\
+             c_4 &= \cn{vp}(\x_1(\y) \, \tn{was}) && && && \in \C_1 \\
+             c_5 &= \cn{sbar} (\cn{s} (\x_1(\y) \, \x_2(\tn{the}))),
+            &c_6 &= \cn{vp}(\x_1(\y) \, \x_2(\tn{carried})) && && \in \C_2
+        \end{align*}
+        The subscript indexing the family of compositions \(\C\) determines the number of arguments for the functions represented by the elements in \(\C\).
+        E.g.\@ \(\sem{c_1}\) takes no arguments, and \(\sem{c_6}\) takes two arguments.
+        Evaluating any term of such compositions yields a sequence tree in \(\T_\varSigma(\varGamma \cup \Y)\) with exactly one occurrence of \(\y\), for example:
+        \begin{align*}
+            \sem{c_6} \big( \sem{c_1}(), \sem{c_2}() \big)
+                &= \sem{c_6} \big( \: (\tn{where} \, \y), \: (\y \, \tn{out}) \: \big) \\
+                &= \cn{vp}(\x_1(\y) \, \x_2(\tn{carried}))[\x_1=(\tn{where} \, \y), \x_2=(\y \, \tn{out})] \\
+                &= \cn{vp}(\x_1 \, \x_2)[\x_1=(\tn{where} \, \y)[\y=\y], \x_2=(\y \, \tn{out})[\y=\tn{carried}]] \\
+                &= \cn{vp}(\x_1 \, \x_2)[\x_1=(\tn{where} \, \y), \x_2=(\tn{carried out})] \\
+                &= \cn{vp}(\tn{where} \, \y \, \tn{carried out})
         \end{align*}
     \end{example}
 
     \begin{definition}[\gls*{dcp} grammar]
-    A \gls{dcp} is a tuple \(G=(N, \varSigma, S, R)\) where
-    \begin{compactenum}[(i)]
-        \item \(N\) is a finite set (\glspl{nonterminal}),
-        \item \(\varSigma\) is an alphabet (\glspl{terminal}),
-        \item \(S \in N\) (initial non-terminal),
-        \item \(R\) is a finite subset of \(\bigcup_{k \in \DN} N \times \C^\varSigma_k \times N^k\).
-    \end{compactenum}
+        A \gls{dcp} is a tuple \(G=(N, \varSigma, S, R)\) where
+        \begin{compactenum}[(i)]
+            \item \(N\) is a finite set (\glspl{nonterminal}),
+            \item \(\varSigma\) is an alphabet (\glspl{terminal}),
+            \item \(S \in N\) (initial non-terminal),
+            \item \(R\) is a finite subset of \(\bigcup_{k \in \DN} N \times \C^\varSigma_k \times N^k\) such that for each rule \((A, c, B_1\cdots B_k)\) holds: if \(A = S\) then \(c\) is of length 1.
+        \end{compactenum}
 
-    Rules are denoted in the form \(A \to c\,(B_1, \ldots, B_k)\) instead of \((A, c, B_1 \cdots B_k)\); \(A\) is called the \gls{lhs} and \(B_1, \ldots B_k\) are the \gls{rhs}, \(c\) is the \gls*{lcomp} of the \gls*{rule}.
-    The natural \(k\) is the \glsxtr{rank} of the rule; the \gls*{rank} of the grammar \(G\) is the maximum rank occurring in the rules of \(G\).
+        Rules are denoted in the form \(A \to c\,(B_1, \ldots, B_k)\) instead of \((A, c, B_1 \cdots B_k)\); \(A\) is called the \gls{lhs} and \(B_1, \ldots B_k\) are the \gls{rhs}, \(c\) is the \gls*{lcomp} of the \gls*{rule}.
+        The natural \(k\) is the \glsxtr{rank} of the rule; the \gls*{rank} of the grammar \(G\) is the maximum rank occurring in the rules of \(G\).
     \end{definition}
 
-    \begin{example}
-    -- examples for lcfrs, rules, forms --
-    \end{example}
+    \todo{grammar forms: at least lexical}
 
     We use the same definition for derivations for \gls{dcp} as for \gls{lcfrs}.
     However, the terms yield and parse differ, since the grammar produces trees instead of strings.
-
-    \todo[inline]{define yield as set of positions, each rule must be equipped with a unique symbol}
+    We cannot easily enforce that compositions for a start nonterminal produce a single tree.
+    Therefore, the definition introduces a fresh symbol \(\cn{root}\) that governs the sequence of trees produced by the compositions of a derivation.
 
     \begin{definition}[Yield and Parse]
         Consider a derivation \(d\) in \(\derivs^R_A\) of the form \(d = r\,(d_1, \ldots, d_k)\) where the root \(r\) is of the form \(A \to c\,(B_1, \ldots, B_k)\).
-%        The yield of \(d\) is defined recursively: \(\yield(d) = \sem{c}(\yield(d_1), \ldots, \yield(d_k))\).
-%        For the definition of the parse of \(d\), let us consider the sequences of terminal symbols \(w_1, \ldots, w_{k+1} \in \varSigma^*\) such that,
-%        \begin{compactitem}
-%            \item \(w_1\) is the sequence of terminal symbols occurring before the variable \(\x_1^1\) in \(c\),
-%            \item for each \(i \in \{2, \ldots, k\}\), \(w_i\) is the sequence of terminal symbols occurring between the variables \(\x_{i-1}^1\) and \(\x_i^1\) in \(c\), and
-%            \item \(w_{k+1}\) is the sequence of terminal symbols occurring after the variable \(\x_k^1\) in \(c\).
-%        \end{compactitem}
-        Then the parse of \(d\) is the tree \[
-            \parse(d) = \big(\sem{c}(\parse(d_1),\ldots,\parse(d_k))\big)(\varepsilon) \text{.}
+        We fix a symbol \(\cn{root}\) that is not in \(\varGamma \cup \varSigma\) and define the parse of \(d\) as the tree \[
+            \parse(d) = \cn{root}\Big( \sem{c}(\parse(d_1),\ldots,\parse(d_k))[\y=\varepsilon]\Big) \text{.}
         \]
+        The yield of \(d\) is \(\yield(d) = \yield(\parse(d))\).
     \end{definition}
 
+    \begin{example}[Continues \cref{ex:dcp:comp}]
+        Consider the alphabet \(N = \{\nt{v}^\nt{L}, \nt{v}, \nt{n}, \nt{s} \}\) and the \gls*{dcp} \(G = (N, \varSigma, \nt{s}, R)\) where
+        \begin{align*}
+            R = \Big\{ \quad
+            \nt{v}^\nt{L} &\to (\tn{where} \, \y)\:(),
+            \quad \nt{v} \to (\y \, \tn{out})\:(),
+            &\nt{n} &\to (\cn{np} (\y \, \tn{survey}))\:(), \\
+            \nt{v} &\to (\cn{vp}(\x_1(\y) \, \tn{was}))\:(\nt{v}),  \\
+            \nt{s} &\to (\cn{sbar} (\cn{s} (\x_1(\y) \, \x_2(\tn{the}))))\:(\nt{v}, \nt{n}),
+            &\nt{v} &\to (\cn{vp}(\x_1(\y) \, \x_2(\tn{carried})))\:(\nt{v}^\nt{L}, \nt{v})
+            \quad \Big\} \text{.}
+        \end{align*}
+
+        The tree \(d\) illustrated below (left) is a derivation in \(\derivs^R_\nt{v}\), its parse is shown to the right of \(d\).
+        A part of the computations (for the bottom \(\cn{vp}\)-node) was already shown in the previous example in detail.
+        We can read the yield of \(d\) from the leave of the parse: \(\tn{where carried out was}\).
+
+        \null\hfill
+        \begin{tikzpicture}[level distance=6ex, font=\small, sibling distance=3.7cm, inner sep=2pt]
+            \node {\(\nt{v} \to (\cn{vp}(\x_1(\y) \, \tn{was}))\:(\nt{v})\)}
+            child {node {\(\nt{v} \to (\cn{vp}(\x_1(\y) \, \x_2(\tn{carried})))\:(\nt{v}^\nt{L}, \nt{v})\)}
+                child {node {\(\nt{v}^\nt{L} \to (\tn{where} \, \y)\:()\)}}
+                child {node {\(\nt{v} \to (\y \, \tn{out})\:()\)}}};
+        \end{tikzpicture}
+        \hfill
+        \begin{tikzpicture}[level distance=4.5ex, font=\small, inner sep=2pt]
+            \node {\(\cn{root}\)}
+            child{ node {\(\cn{vp}\)}
+                child {node {\(\cn{vp}\)}
+                    child {node {\(\tn{where}\)}}
+                    child {node {\(\tn{carried}\)}}
+                    child {node {\(\tn{out}\)}}}
+                child {node {\(\tn{was}\)}}};
+        \end{tikzpicture}
+        \hfill\null
+    \end{example}
 
     \section{Hybrid Grammars}
 
