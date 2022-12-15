@@ -14,6 +14,8 @@
             In the following, it extracts a \gls{lderiv} of lexical hybrid grammar rules according to the positions assigned to the inner nodes in each subtree.
     \end{compactenum}
 
+    \section{Binarization}
+
 
     \section{Read-off Grammars} \label{sec:extraction:readoff}
 
@@ -150,6 +152,84 @@
 
 
     \section{Guided Extraction} \label{sec:extraction:guided}
-    \subsection{Guides}
+    In the evaluation of supertagging with lexical \gls*{lcfrs} according to the extraction in the previous section, it was already noted that the extracted sets of supertags were rather large and their prediction less accurate compared to other publications in the field. \cite{RupMoe21}
+    In this section, we focus on a generalization of the extraction of lexical grammar rules as introduced by \citet{Rup22} that were investigated with the aim to tackle these two issues.
+    The generalization deals with the following two limitations of the process described in the previous section:
+    \begin{compactenum}
+        \item
+            Constructing lexical LCFRS rules picked a sentence position for each inner node of the constituent structure according to a fixed strategy.\todo{link to the subsection/paragraph}
+            Such a strategy is now formalized by a \emph{guide} that maps each inner node position of a constituent structure to sentence position in its yield.
+            The concept is generalized by introducing multiple strategies to define guides for a given constituent structure, which are called \emph{guide constructors}.
+        \item
+            LCFRS rules were constructed with constituent symbols as nonterminals, which were then supplemented with annotations during the lexicalization process.
+            This section decouples the nonterminals from the other extraction processes and introduce multiple strategies to define them, called \emph{nonterminal constructors}.
+    \end{compactenum}
+    To implement the two generalizations, the extraction described in this section will produce \gls*{dcp} and hybrid grammars.
+    \todo{describe the different formalisms: supertags as tuples with lcfrs rules <-> hybrid grammar rules}
+
+    \subsection{Guides and Guide Constructors}
+    The concept of guides for the extraction was introduced by \citet{Rup22}.
+    In that publication, a guide is a function \(\varphi\) that assigns a sentence position to each inner node position \(\rho\) of a binary constituent structure \(\xi\) such that
+    \begin{inparaenum}
+        \item \(\varphi(\rho)\) is in the yield below the position \(\yield(\xi|_\rho)\), and
+        \item \(\varphi\) is injective, i.e.\@ each sentence position is assigned to at most one inner node position.
+    \end{inparaenum}
+    As \(\xi\) is binary, there is exactly one sentence position that is not assigned to any inner node.
+    During the grammar extraction process, that constructs a rule for each inner node position in the constituent structure, the guide is used to determine the lexical symbol in the rule.
+    Intuitively, it can be seen to assign a ``responsibility'' for each inner node by a sentence position.
+    The remaining sentence position is handled by a special rule that produces no constituent node.
+
+    In this thesis, we will generalize the guide concept by relaxing the second condition: each sentence position may be mapped to multiple inner node positions in the constituent structure.
+    This allows us to define rules that produce multiple constituent nodes.
+    \todo[inline]{
+        The concept can be generalized further: decouple the guides in to two, a lexical decomposition for the string grammar derivation and a guide that constructs the tree grammar.
+        That would be able to derive hybrid grammars with, for example, strictly-inorder guided string derivations and head-driven \gls{dcp} functions.
+    }
+    We will use this in \cref{sec:extraction:guided:head} to derive lexical grammars for constituent structures that are inspired by those extracted for dependency parsing.
+    They are extracted such that each rule contains a lexical symbol in tandem with each inner node position of the constituent structure that it is a head of.
+
+    \begin{definition}[Guide]
+        Let \(\xi\) be an indexed tree.
+        The function \(\varphi\colon \npos(\xi) \to \yield(\xi)\) is called \emph{guide for \(\xi\)} if, for each \(\rho \in \npos\)
+        \begin{inparaenum}[(i)]
+            \item \(\varphi(\rho) \in \yield(\xi|_\rho)\), and
+            \item if there is any child position \(\rho' \in \npos(\xi)\) of \(\rho\) with \(\varphi(\rho) = \varphi(\rho')\), then each position \(\omega\) between \(\rho\) and \(\rho'\) has the same value \(\varphi(\rho) = \varphi(\omega) = \varphi(\rho')\).
+        \end{inparaenum}
+        \(\guide(\xi)\) denotes the set of all guides for the indexed tree \(\xi\).
+    \end{definition}
+
+    The second constraint in the definition ensures that there are no intermediate nodes assigned to a different position between an ancestor and an antecedent position in the constituent structure.
+    So the guide may only assign the same leaf to connected node positions.
+
+    \begin{example}
+        Consider the constituent structure \(\xi\) illustrated in the bottom figure.
+        The gray encircled integers shown next to each inner node give the value of a guide \(\varphi\) for the node's position.
+        For example \(\varphi(\varepsilon) = \varphi(1) = \varphi(1\,1) = 3\).
+        The leaves 0, 1 and 5 are not assigned to any inner node position.
+
+        \begin{center}
+            \includestandalone{../figures/guides/example-constituents}
+        \end{center}
+    \end{example}
+
+    \begin{definition}[Guide Constructor]
+        Let \(\varSigma\) be an alphabet of constituent symbols and \(T \subseteq \itrees^\varSigma\) be some subset of indexed trees.
+        A guide constructor for \(T\) is a function \(\varPhi\colon T \to (\DN^* \parto \DN)\) such that for each indexed tree \(\xi \in T\), the partial function \(\varPhi(\xi)\) is a guide constructor for \(\xi\).
+    \end{definition}
+
+    In the following, we will give the instances for guide constructors that were investigated by \citet{Rup22} plus one additional instance (\emph{headed guide}).
+
+    \paragraph{Vanilla Guide Constructor}
+    This guide constructor aims to formalize the assignment of lexical items to inner nodes that is achieved by the transportation in the extraction of lexical \gls*{lcfrs} rules described in the previous section.
+    A guide produced by this constructor maps each node position either to the leftmost leaf that is a direct successor, or (if not available) to the leftmost leaf in the yield of its right successor.
+    The assignment is determined for each node from top to bottom.
+%    \begin{align*}
+%        \mathrm{van}(\xi)(\rho) = \begin{cases}
+%            \min_{\rho' \in \children(\rho) \cap \lpos(\xi)\)}\:\xi(\rho') & \text{if $\children(\rho) \cap \lpos(\xi) \neq \emptyset$} \\
+%            \mathrm{van}(\xi)(\rho \cdot 1) & \text{if $|\children(\rho) \cap \npos(\xi)| = 1$} \\
+%            \min_{i \in \yield(\rho\cdot 2)} i &\text{otherwise}
+%        \end{cases}
+%    \end{align*}
+
     \subsection{Nonterminal Constructors}
 \end{document}

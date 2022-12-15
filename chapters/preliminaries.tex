@@ -21,8 +21,13 @@
 
     Let \(A\) and \(B\) be some sets.
     The cross product \(A \times B\) the the set of all tuples \(\{(a,b) \mid a \in A, b\in B\}\).
-    A function from \(A\) to \(B\) is a subset \(f \subseteq A \times B\) such that for each \(a \in A\), there is exactly one \(b\) with \((a,b) \in f\).
-    As usually, we denote a quantification for such a function by \(f\colon A \to B\) and the argument-value relation by \(f(a) = b\).
+    A (total) function from \(A\) to \(B\) is a subset \(f \subseteq A \times B\) such that for each \(a \in A\), there is exactly one \(b\) with \((a,b) \in f\).
+    As usually, we denote the type of such a function by \(A \to B\), a quantification by \(f\colon A \to B\), and the argument-value relation by \(f(a) = b\).
+    A partial function from \(A\) to \(B\) is a subset \(f \subseteq A \times B\) such that for each \(a \in A\), there is at most one \(b\) with \((a,b) \in f\).
+    The type of a partial function is denoted with a upper half arrow e.g. \(f\colon A \parto B\).
+    The image of a (total or partial) function is the set of elements in \(B\) that are assigned to any value in \(A\), denoted my \(\im(f) = \{b\in B \mid (A \times \{B\}) \cap f \neq \emptyset\}\).
+    The domain of definition of a partial function is the set of elements in \(A\) with an assigned value in \(B\), denoted by \(\dom(f) = \{a\in A \mid (\{a\} \times B) \cap f \neq \emptyset\}\).
+    In some contexts, a partial function \(f\) is just handled in the same manner as a total function from \(\dom(f)\) to \(B\) without further notice.
 
     An \(A\)-\gls{family} over \(B\) is a function \(f\colon A \to B\), often  denoted in a builder notation of the form \(\big(\mathrm{term}(a) \mid a \in A\big)\).
     The left-hand side \(\mathrm{term}(a)\) may assume any term and/or equation that depends on the index variable \(a\) to express an element of \(B\), and the right-hand side expresses the domain of the index variable \(a\).
@@ -83,7 +88,7 @@
     All leaves are positive integers such that each occurs at most once in each \gls*{tree}.
     For each \gls*{inode} in an \gls*{itree}, the \glspl{child} occur ordered by their least \gls*{leaf}.
     The notation for positions, indexing, substitution are inherited from trees; the yield of an \gls*{itree} is its set of leaves instead of a string.
-    \todo{def. sets of indexed trees, maybe as $\DN_+$-indexed family using $T_\varSigma([k])$}
+    The set of all indexed trees over \(\varSigma\) is denoted by \(\itrees^\varSigma\).
 
     Let \(X\) be a finite set, \(\varSigma\) some alphabet that is disjoint from \(X\), and \(c\) a string in \((X \cup \varSigma)^*\).
     A (first-order) substitution of \(X\) in \(c\) defined by an \(X\)-indexed family \((v_x \in \varSigma^* \mid x \in X)\) is denoted by \(c[v]\) and yields the string in \(\varSigma^*\) obtained from \(c\) by replacing every occurrence of symbols \(x \in X\) by \(v_x\).
