@@ -2,27 +2,163 @@
 
 \begin{document}
     \chapter{Lexical Grammar Extraction from Treebanks}
-    This chapter deals with the induction of \glsxtr{lexical} grammars from \glsxtrpl{treebank}.
+    This chapter deals with the extraction of supertag grammars from treebanks.
     It describes the extraction process in two different orders:
     \begin{compactenum}
         \item
-            The process described in \cref{sec:extraction:readoff} first extracts a derivation in a \glsxtr{simple} \glsxtr{lcfrs} for each tree in a treebank.
-            After that, the rules within each derivation are \glsxtr{lexicalized} by transporting the terminal symbols occurring in the leaves of the derivation into inner nodes.
+            The process described in \cref{sec:extraction:readoff} first extracts a derivation in a simple \abrv{lcfrs} for each tree in a treebank.
+            After that, the rules within each derivation are lexicalized by transporting the terminal symbols occurring in the leaves of the derivation into inner nodes.
             With the help of annotations that are added to the rules and nonterminals within the rules, this transportation is reversible.
         \item
             The extraction procedure described in \cref{sec:extraction:guided} first assigns a sentence position to each inner node of the constituent structure.
-            In the following, it extracts a \gls{lderiv} of lexical hybrid grammar rules according to the positions assigned to the inner nodes in each subtree.
+            In the following, it extracts an \abrv{lcfrs} derivation of lexical hybrid grammar rules according to the positions assigned to the inner nodes in each subtree.
     \end{compactenum}
 
-    \section{Binarization}
+    \todo{describe what we understand under lexical grammar, or supertag grammar; in case of lcfrs supertags these are not only plain rules (swapped annotation)}
+    \todo{Can the guided extraction be implemented for lexical lcfrs? -- the already existing marker `swapped` can be abused to give the transportation direction}
+    \todo{describe some common topics: extracted grammar = set of all extracted rules, wildcard as terminal, sentence position as terminal during extraction}
+    \todo{describe why binarization is a common topic for both extraction algorithms}
+    \todo{discuss why we show both extractions if the first is an instance of the second: it is not that the guided extraction cannot be implemented for lcfrs rules + swapped annotation, but the different concept of transportation vs. guides}
+
+    \section{Binarization} \todo{clearify the term binarization: construct constituent tree where each node has exactly 0 or 2 successors}
+    In a treebank, we may encounter nodes in constituent trees with arbitrary amounts of successors.
+    \todo{add an example of successor distributions in a treebank}
+    Most grammar extraction procedures share the common property that they construct a rule for each inner node (or a set of inner nodes) in a constituent tree with the rank matching the number of successors of the node (or the sum of successor in the set of nodes).
+    Usually it is desirable to obtain binary grammars, because the design of efficient parsing algorithms is more straightforward.
+    And more importantly, these binary grammars can be constructed in such a way that rules contained in similar derivations are shared and allow more general derivations.
+    This can be achieved by \deflab<binarization>[bin:markov]{markovization} and choosing appropriate \deflab<binarization>[bin:strat]{binarization strategies}, which has shown to improve the parsing quality and time. \citep{Son08,Cra12}
+    There are also specific binarization strategies for \abrv{lcfrs} capable of minimizing the parsing complexity of the resulting grammar. \citep{Gil10}
+
+    In the scope of this thesis, we view binarization as a preprocessing step for constituent trees rather than grammars.
+    I.e.\@ it is an operation that transforms a given constituent tree into a \hyperlink{binctree}{binary} constituent tree such that it can be transformed back into the original constituent tree.
+    The binarization process affords new constituent symbols that will appear in the place of nodes with one or more than two successors.
+    The form of these additional symbols is determined by the chosen binarization strategy and markovization parameters.
+
+    \subsection{Binarization Strategies}\todo{what exactly is a binarization strategy}
+    The \deflab{binarization} of constituent structures removes and replaces nodes that have either one or more than two successors.
+    These two cases are handled separately.
+
+    All of the binarization strategies described in this section share the approach for dealing with chains of nodes having one successor:
+    \begin{inparaenum}
+        \item if the successor of the bottom-most node in the chain is an inner node, they are merged into this successor, or
+        \item if the successor of the bottom-most node in the chain is a leaf, they are merged with the \abrv{pos} symbol for the leaf.
+    \end{inparaenum}
+    The merged symbols must not occur in the original alphabets of constituent and \abrv{pos} symbols, and must be unique for each sequence of merged constituent/\abrv{pos} symbols.
+    Here, the merged nodes are denoted by concatenating the symbols interleaved by \cn{+}.
+    E.g.\@ a chain of unary nodes ``\cn{root}'', ``\cn{s}'' that is merged with the \abrv{pos} symbol ``\cn{\$.}'' is the new symbol ``\cn{root+s+\$.}''.
+    This approach of handling nodes with one successor\todo{introduce terms: rank of a node, unary, binary nodes, and nodes of higher rank} is done after dealing with nodes with more than two successors.
+    Because this is common among all binarization strategies, we view only the other case as an actual part of the strategies.
+
+    Each node carrying \( n > 2 \) successors is split into \( n-1 \) binary nodes that are connected in some parent-child constellation.
+    The topmost of these nodes will carry the label of the original node, each following is a new symbol (i.e.\@ the symbol must not be a constituent symbol in the original tree) determined by the binarization strategy.
+    The strategy also dictates how each node is split and how the new nodes are connected.
+    Because all binarization strategies are defined per-node, we will formalize each binarization strategy as a function that replaces the root node in a constituent tree (if has more than 2 successors) with a collection of binary nodes.
+    The function is then called recursively to handle each subtree.
+
+    The reversal of the binarization procedure is also independent of the strategy:
+    \begin{compactenum}
+        \item all binary nodes with symbols that were introduced by the binarization procedure are removed and their children are appended to their parent, and
+        \item each node originating from a merge of unary nodes is expanded by replacing it with the chain of unary nodes, and
+        \item each \abrv{pos} symbol originating from a merge is replaced by the trailing pos symbol and the sequence of unary nodes is inserted atop of the corresponding leaf in the constituent structure.
+    \end{compactenum}
+
+%    \begin{definition}
+%        Let \(\varSigma, \varPi\) and \(\varGamma\) be some alphabets.
+%        A binarization strategy \(b\) for \(\CT_{\varGamma \varPi \varSigma}\) defines
+%        \begin{compactenum}
+%            \item an alphabet of constituent symbols \(b(\varGamma)\),
+%            \item an alphabet of \abrv{pos} symbols \(b(\varPi)\),
+%            \item a function \(f\colon \CT_{\varGamma \varPi \varSigma} \to \CT_{b(\varGamma) b(\varPi) \varSigma}\) that transforms a constituent tree into a constituent tree with binary root, and
+%            \item a partial function \(f^{-1} \colon \CT_{b(\varGamma) b(\varPi) \varSigma} \parto \CT_{\varGamma \varPi \varSigma}\) that reverses the transformation \(f\).
+%        \end{compactenum}
+%        The binarization operation, denoted just by \(b\), extends the function \(f\) such that \todo{formal definition is complicated, as we deal with constituent trees}
+%    \end{definition}
+
+    \paragraph{Left- or Right-Branching Factorization}
+    These strategies replace each node with \( n>2 \) successors with a series of \( n-1 \) binary nodes.
+    The \deflab<binarization!binarization strategies>[binarization:l2r]{right-branching factorization} constructs nodes such that
+    \begin{itemize}
+        \item the first (and top-most) node has the same symbol as the original node,
+        \item for each \(2 \leq i \leq n-1\), the \(i\)-th node's symbol consists of the original node's symbol and the symbols of its rightmost \(n-i-1\) successors. Those symbols are denoted in the form \(\binnode{A}{B_i,B_{i+1},\ldots,B_n}\) where \(A\) is the root node and \(B_1, \ldots, B_n\) are its
+        \item for each \(1 \leq i \leq n-2\), the left successor of the \(i\)-th node is the \(i\)-th successor of the original node, and its right successor is the \((i+1)\)-th constructed node, and
+        \item the successors of the last (an bottom-most) node are the two rightmost successors of the original node.
+    \end{itemize}
+    The \deflab<binarization!binarization strategies>[binarization:r2l]{left-branching factorization} mirrors the right-branching strategy: It constructs a series of binary nodes connected via their left successors in the opposite direction.
+
+    \paragraph{Head-Outward Binarization.}
+    This \deflab<binarization!binarization strategies>[binarization:r2l]{head-outward binarization}[strategy] mixes left- and right-branching factorization depending on the successor that contains the head symbol of the node.
+    If the node's head symbol is contained in its \(n\)-th successor, then
+    \begin{enumerate}
+        \item the first \(k-n\) (top-most) binary nodes are constructed according to the left-branching binarization strategy for the trailing \(k-n\) successors, and
+        \item the remaining \(n-1\) binary nodes are constructed according to the right-branching strategy for the first \(n\) successors.
+    \end{enumerate}
+    In the resulting constituent tree, the head symbol is in the yield of the bottom-most constructed node.
+    The motivation for choosing this strategy is that in bottom-up parsers the head symbol is processed first and determines the constituent symbol.
+    There are distinct notations for the introduced top left-branching nodes and the bottom right-branching nodes to avoid ambiguities during parsing with the extracted grammars (which is pretty common in combination with markovization).
+    In these notations, the left symbol \(\langle\) is doubled in left-branching nodes, and the right symbol \(\rangle\) is doubled in right-branching nodes.
+
+    \paragraph{Minimizing Fanout or Parsing Complexity.}
+    These two strategies replace non-binary nodes with a combination of new binary nodes such that an assessment function for the resulting tree is minimized.
+    In the \deflab<binarization!binarization strategies>[bin:minfo]{minimal fanout binarization}[first case], this function coincides with the occurring fanouts.
+    In the \deflab<binarization!binarization strategies>[bin:minpc]{minimal parsing complexity binarization}[latter case], it is a combination of the the parsing complexity and fanout.
+    In contrast to the previous binarization strategies, these two may not only scramble the order of the successors in the constructed subtrees, but also construct branches of intermediate nodes in both directions.
+    As the two previous strategies, the symbols at the constructed nodes contain the parent constituent symbol and the constituent symbol of the processed successors.
+
+    \begin{figure}
+        \todo[inline]{beispiel für binarisierung einfügen}
+        \caption{\label{fig:ex:binarization}
+            Comparing different binarization strategies, in order from left to right: right-branching, left-branching factorization, head-outward binarization, minimal fanout and minimal parsing complexity binarization.}
+    \end{figure}
+
+    \subsection{Head-Inward Ternarization: Not Quite Binarization} \label{sec:extraction:bin:hi}
+    The strategy to binarize constituent trees head-outward takes account of the head assignment for each inner node of the constituent structure.
+    For each node of rank \(\ge 2\), it produces a series of nodes such that the child containing the head is attached to the bottom-most node.
 
 
-    \section{Read-off Grammars} \label{sec:extraction:readoff}
 
-    \subsection{Reading-off Simple LCFRS}
+    \subsection{Markovization}
+    The symbols introduced by all binarization strategies contain the symbol of the substituted node \(A\) and the symbols in the successors \(B_1, \ldots, B_k\) below these (intermediate) nodes.
+    They are chosen such that there are represent an intermediate state in parsing the original non-binary rule.
 
-    \subsection{Lexicalizing LCFRS}
-    Our lexicalization scheme is based on \citet{MoeRup20}.
+    Markovization is an extension to the binarization strategies that changes the constructed labels such that they contain only the symbols of the last \(h\) successors that were recently processed.
+    The value \(h\) is called the \emph{horizontal markovization window} and is considered a parameter for the binarization.
+    With very large values for \(h\), the symbols are unchanged to the formulation in the binarization strategy.
+    If the value for \(h\) is chosen small, this generalizes the symbols such that they are common in binarized constituent trees where nodes with the same symbol and similar successors were binarized.
+    In the edge case of \(h=0\), there is no information about the children and all symbols constructed during the binarization of node with the same symbol are the same.
+
+    Additional to the horizontal window \(h\), there is a \emph{vertical context} \(v\) that may add information from the parent symbols for each node in the constituent tree (and not just the nodes introduced during the binarization).
+    With values greater than 1, the last \(v-1\) parents are added to each node in the constituent structure.
+    The additions are denoted without ambiguity, such that they can be easily removed and the original constituent tree is obtained.
+    Here, a sequence of additional parent symbols are denoted by concatenating them, interleaved by ``\cn{$\wedge$}'', to the right of the symbol.
+
+    \begin{figure}
+        \todo[inline]{beispiel oben im vgl. mit Markovisierung einfügen}
+        \caption{\label{fig:ex:markovization}
+            Comparing two constituent trees and their binarized forms with markovization parameters \(v=2\) and \(h=0\).}
+    \end{figure}
+
+
+    \section{Extracting Lexical \abrv{Lcfrs}} \label{sec:extraction:readoff}
+    The extraction procedure in this section was introduced by \citet{RupMoe21}.
+    It is based on simple \abrv{lcfrs} read-off from treebanks as shown by \citet{KalMai13} followed by a per-tree lexicalization inspired by the procedures presented by \citet{EngMalMan18, MoeRup20}.
+    During the extraction, each constituent tree in the treebank is first binarized and a derivation of simple binary lcfrs rules is constructed for it (described in \cref{sec:extraction:readoff:simple}).
+    I.e.\@ only the rules occurring at the leaves in the derivations contain terminal symbols.
+    Each derivation consisting of simple \abrv{lcfrs} rules is transformed into a derivation of lexical rules by \emph{transporting} terminal symbols from the leaf rules into inner nodes (described in \cref{sec:extraction:readoff:lex}).
+    \todo{discuss the form of lcfrs supertags: the swapped label is nor necessary if the transportation direction can be inferred from the rest of the rule. E.g. with a transportation as def. by the strict guide it were regular lcfrs rules.}
+
+    \subsection{Reading-off Simple LCFRS Rules}\label{sec:extraction:readoff:simple}\todo{title: treebank grammars}
+    The extraction of statistical \abrv{lcfrs} from treebanks was formulated by \citet{MaierSogaard08} and extends the concept of context-free treebank grammar studied by \citet{Cha96}.
+    Such treebank grammars are essentially read of from each constituent tree in a treebank by defining a non-lexical rule for each inner node of the tree with its symbol as \abrv{lhs} nonterminal and its successors (or the corresponding \abrv{pos} symbols if we encounter leaves) as \abrv{rhs} nonterminals.
+    The compositions are defined according to the yield of the node and the yields of its successors.
+    Lastly, lexical, nullary rules are defined such that the \abrv{pos} symbol is the \abrv{lhs} and the composition contains exactly the token at the same position in the sentence.
+    The grammar is usually put into a statistical framework where a probability is induced for each rule counting the occurrences in the treebank where it was read-off.
+    The probabilities are normalized according to the \abrv{lhs} nonterminal.
+
+    \todo{formalize read-off rules, especially the composition functions}
+    \todo{example constituent tree $\rightarrow$ derivation}
+
+    \subsection{Lexicalizing \abrv{Lcfrs} Derivations}\label{sec:extraction:readoff:lex}
+    The lexicalization scheme is based on \citet{MoeRup20}.
     However, we ignore all weights and perform lexicalization on individual derivations rather than on a grammar induced from the entire treebank.
     More specifically, we directly read off a set of lexical rules from each tree in the treebank; then the union of these rules forms our uni-lexical LCFRS $\lexG$.
     In contrast to that, \citet{MoeRup20} first induce an LCFRS $G$ from the entire treebank and then lexicalize $G$.
@@ -152,7 +288,7 @@
 
 
     \section{Guided Extraction} \label{sec:extraction:guided}
-    In the evaluation of supertagging with lexical \gls*{lcfrs} according to the extraction in the previous section, it was already noted that the extracted sets of supertags were rather large and their prediction less accurate compared to other publications in the field. \cite{RupMoe21}
+    In the evaluation of supertagging with lexical \abrv{lcfrs} according to the extraction in the previous section, it was already noted that the extracted sets of supertags were rather large and their prediction less accurate compared to other publications in the field. \cite{RupMoe21}
     In this section, we focus on a generalization of the extraction of lexical grammar rules as introduced by \citet{Rup22} that were investigated with the aim to tackle these two issues.
     The generalization deals with the following two limitations of the process described in the previous section:
     \begin{compactenum}
@@ -164,7 +300,7 @@
             LCFRS rules were constructed with constituent symbols as nonterminals, which were then supplemented with annotations during the lexicalization process.
             This section decouples the nonterminals from the other extraction processes and introduce multiple strategies to define them, called \emph{nonterminal constructors}.
     \end{compactenum}
-    To implement the two generalizations, the extraction described in this section will produce \gls*{dcp} and hybrid grammars.
+    To implement the two generalizations, the extraction described in this section will produce \abrv{dcp} and hybrid grammars.
     \todo{describe the different formalisms: supertags as tuples with lcfrs rules <-> hybrid grammar rules}
 
     \subsection{Guides and Guide Constructors}
@@ -183,7 +319,7 @@
     This allows us to define rules that produce multiple constituent nodes.
     \todo[inline]{
         The concept can be generalized further: decouple the guides in to two, a lexical decomposition for the string grammar derivation and a guide that constructs the tree grammar.
-        That would be able to derive hybrid grammars with, for example, strictly-inorder guided string derivations and head-driven \gls{dcp} functions.
+        That would be able to derive hybrid grammars with, for example, strictly-inorder guided string derivations and head-driven \abrv{dcp} functions.
     }
     We will use this in \cref{sec:extraction:guided:head} to derive lexical grammars for constituent structures that are inspired by those extracted for dependency parsing.
     They are extracted such that each rule contains a lexical symbol in tandem with each inner node position of the constituent structure that it is a head of.
@@ -208,7 +344,7 @@
         The leaves 0, 1 and 5 are not assigned to any inner node position.
 
         \begin{center}
-            \includestandalone{../figures/guides/example-constituents}
+          \subfile{figures/guides/example-constituents.tex}
         \end{center}
     \end{example}
 
@@ -219,17 +355,81 @@
 
     In the following, we will give the instances for guide constructors that were investigated by \citet{Rup22} plus one additional instance (\emph{headed guide}).
 
-    \paragraph{Vanilla Guide Constructor}
-    This guide constructor aims to formalize the assignment of lexical items to inner nodes that is achieved by the transportation in the extraction of lexical \gls*{lcfrs} rules described in the previous section.
+    \paragraph{Vanilla Guide Constructor.}
+    This guide constructor aims to formalize the assignment of lexical items to inner nodes that is achieved by the transportation in the extraction of lexical \abrv{lcfrs} rules described in the previous section.
     A guide produced by this constructor maps each node position either to the leftmost leaf that is a direct successor, or (if not available) to the leftmost leaf in the yield of its right successor.
     The assignment is determined for each node from top to bottom.
-%    \begin{align*}
-%        \mathrm{van}(\xi)(\rho) = \begin{cases}
-%            \min_{\rho' \in \children(\rho) \cap \lpos(\xi)\)}\:\xi(\rho') & \text{if $\children(\rho) \cap \lpos(\xi) \neq \emptyset$} \\
-%            \mathrm{van}(\xi)(\rho \cdot 1) & \text{if $|\children(\rho) \cap \npos(\xi)| = 1$} \\
-%            \min_{i \in \yield(\rho\cdot 2)} i &\text{otherwise}
-%        \end{cases}
-%    \end{align*}
+    It is formally defined as follows:\todo{the first and second cases are not mutually exclusive}
+    \[
+        \mathrm{van}(\xi)(\rho) = \begin{cases}
+            \min L_\rho & \text{if $L_\rho \neq \emptyset$} \\
+            \mathrm{van}(\xi)(\rho \cdot 1) & \text{if $|\children(\rho) \cap \npos(\xi)| = 1$} \\
+            \min_{i \in \yield(\rho\cdot 2)} i &\text{otherwise}
+        \end{cases}
+    \]
+    Where the set \(L_\rho\) denotes the leaves just below a node that were not assigned to an ancestor node:
+    \[
+        L_\rho = \{\xi(\rho) \in \yield(\xi) \mid \rho \in \lpos(\xi) \cap \children(\rho) \} \setminus \{\mathrm{van}(\xi)(\rho') \in \yield(\xi) \mid \rho' \in \ancestors(\rho)\}
+    \]
+
+    \paragraph{Strict Guide Constructor.}
+    This is a small adjustment of the vanilla guide constructor that removes the special case where an inner node is assigned to a leaf below it.
+    A guide constructed by it maps each inner node of rank \(\ge 2\) to the least leaf of the second successor.
+    Each inner node of rank 1 assumes the assignment of its child.
+    Formally, it is defined as follows:
+    \[
+        \mathrm{strict}(\xi)(\rho) = \begin{cases}
+            \mathrm{van}(\xi)(\rho \cdot 1) & \text{if $|\children(\rho) \cap \npos(\xi)| = 1$} \\
+            \min_{i \in \yield(\rho\cdot 2)} i &\text{otherwise}
+        \end{cases}
+    \]
+
+    \paragraph{Least and Near Guide Constructors.}
+    These two guides were developed with the intention to
+    \begin{inparaenum}
+        \item assign as few nodes as possible to leaves that are not direct children, and
+        \item assign many nodes to leaves that are as close as possible.
+    \end{inparaenum}
+    Both of those intentions are pretty similar, but may exclude each other in certain cases.\todo{example}
+    The leaf for each inner position is determined in both cases via a breadth-first search for the first leaf that was not assigned to
+    \begin{inparaenum}
+        \item a descendant node (the assignment is determined bottom-up), or
+        \item an antecedent node (the assignment is determined top-down), respectively.
+    \end{inparaenum}
+    This is formalized in the equation
+    \[
+        g(\xi)(\rho) = \xi\big( \min^{\unlhd} \: \big\{\rho' \in \descendants(\rho) \cap \lpos(\xi) \mid \xi(\rho') \notin L_\rho \big\} \big)
+    \]
+    where \(\unlhd\) is the total ordering of tree positions according to breadth-first search and set \(L_\rho\) keeps track of the previously assigned leaves.
+    The total order \(\unlhd \subseteq \DN^* \times \DN^*\) is defined such that \(\rho \unlhd \tau\) if and only if \(|\rho| < |\tau|\) or \(|\rho| = |\tau| \land \rho <^* \tau\).
+    In case
+    \begin{inparaenum}
+        \item it excludes all assigned leaves below \(\rho\) from the breadth-first search:
+            \(L_\rho = \{ g(\xi)(\rho') \in \yield(\xi) \mid \rho' \in \descendants(\rho) \cap \npos(\xi) \}\); in case
+        \item it excludes all leaves assigned to nodes above \(\rho\):
+            \(L_\rho = \{ g(\xi)(\rho') \in \yield(\xi) \mid \rho' \in \ancestors(\rho) \cap \npos(\xi) \}\).
+    \end{inparaenum}
+
+    Whereas the previous constructors were defined solely according to the constituent structure, the remaining two take some additional linguistic information into account: heads and modifiers.
+    This also requires a special treatment with respect to binarization which is applied to the constituent structures for the two following guide constructors.
+    This is explained further within the following paragraphs.
+
+    \paragraph{Head Guide Constructors.}
+    As the name suggests, these guides assign the head position to each inner node of the constituent structure.
+    This implements an intuitive approach to deal with the relation between the inner nodes and their assigned head position: For each lexical symbol, there will be a lexical rule that contains the information to produce exactly the inner nodes it is head of.
+    Naturally, this requires that the constituent structure is equipped with the necessary head assignment.
+    And we have to keep in mind, that there is no sensible head assignment for binarized constituent trees in general.
+    Therefore, we limit the this guide constructor to the cases of plain (i.e.\@ unbinarized) or head-inward ternarized (cf.\@ \cref{sec:extraction:bin:hi}) constituent trees.
+
+    \paragraph{Modifier Guide Constructors.}
+    Modifier guides aim to offer leaf assignments that complement head-outward binarized constituent structures.
+    They assign the head of a modifier to each inner node in the constituent structure.
+    We consider these guides only for head-outward binarized constituent structures, as there is exactly one modifier for each inner node.
 
     \subsection{Nonterminal Constructors}
+
+    \ifSubfilesClassLoaded{%
+        \printindex
+        \bibliography{../references}%
+    }{}
 \end{document}

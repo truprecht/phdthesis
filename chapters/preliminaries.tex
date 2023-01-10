@@ -1,11 +1,6 @@
 \documentclass[../document.tex]{subfiles}
 
-
 \begin{document}
-    \newabbreviation{pos}{pos}{part-of-speech}
-%    \newabbreviation[category=common, shortplural=families, longplural={indexed families}]{family}{family}{indexed family}
-    \newabbreviation[category=common]{partition}{partition}{indexed partition}
-
     \chapter{Preliminaries}\label{chap:preliminaries}
     This chapter deals with the mathematical foundations and notation used throughout all chapters.
     \Cref{sec:preliminaries:math} starts with the most basic notions.
@@ -17,11 +12,23 @@
     Sets are considered with the usual notation \(\subseteq\), \(\subset\), \(\cup\), \(\cap\) and \(\setminus\) for the inclusive and exclusive subset relation, as well as the operations for union, intersection and difference.
     \(\emptyset\) is the empty set and \(\power(A)\) is the power set, i.e.\@ the set containing all subsets, of some set \(A\).
     The sets of integers, naturals (including zero), positives and rationals are denoted by $\DZ$, $\DN$, $\DN_+$ and $\DR$, respectively.
-    For any positive integer \(n\), the notion \([n]\) denotes the set \(\{1, \ldots, n\}\), and \([0]\) is the empty set \(\emptyset\).
+    The \deflab{range} of integers between the pair \(n, m \in \DZ\) with \(n \leq m\) is denoted by \([n,m] = \{i \in \DZ \mid n \leq i \leq m\}\).
+    For any positive integer \(n\), the notion \([n]\) abbreviates \([1,n]\), and \([0]\) is the empty set \(\emptyset\).
 
+    \paragraph{Relations.}
     Let \(A\) and \(B\) be some sets.
-    The cross product \(A \times B\) the the set of all tuples \(\{(a,b) \mid a \in A, b\in B\}\).
-    A (total) function from \(A\) to \(B\) is a subset \(f \subseteq A \times B\) such that for each \(a \in A\), there is exactly one \(b\) with \((a,b) \in f\).
+    The cross product \(A \times B\) is the set of all tuples \(\{(a,b) \mid a \in A, b\in B\}\).
+    A \deflab{relation} from \(A\) to \(B\) is a set \(R \subseteq A \times B\).
+    In case \(A\) and \(B\) coincide, we call \(R\) an \deflab<relation>{endorelation} on \(A\).
+    For two elements \(a \in A\) and \(b \in B\), the term \(a \mathrel{R} b\) denotes the boolean statement \((a,b) \in R\) and \(a \not\mathrel{R} b\) denotes \((a,b) \notin R\).
+    A \deflab{total order} on \(A\) is an endorelation \(\rel\) on \(A\) such that for each \(a, b \in A\)
+    \begin{inparaenum}
+        \item if \(a = b\) then \(a \rel b\),
+        \item otherwise either \(a \rel b\) and \(b \not\rel a\), or \(b \rel a\) and \(a \not\rel b\).
+    \end{inparaenum}
+
+    \paragraph{Functions.}
+    A (total) function from \(A\) to \(B\) is a relation from \(A\) to \(B\) such that for each \(a \in A\), there is exactly one \(b\) with \((a,b) \in f\).
     As usually, we denote the type of such a function by \(A \to B\), a quantification by \(f\colon A \to B\), and the argument-value relation by \(f(a) = b\).
     A partial function from \(A\) to \(B\) is a subset \(f \subseteq A \times B\) such that for each \(a \in A\), there is at most one \(b\) with \((a,b) \in f\).
     The type of a partial function is denoted with a upper half arrow e.g. \(f\colon A \parto B\).
@@ -29,38 +36,67 @@
     The domain of definition of a partial function is the set of elements in \(A\) with an assigned value in \(B\), denoted by \(\dom(f) = \{a\in A \mid (\{a\} \times B) \cap f \neq \emptyset\}\).
     In some contexts, a partial function \(f\) is just handled in the same manner as a total function from \(\dom(f)\) to \(B\) without further notice.
 
-    An \(A\)-\gls{family} over \(B\) is a function \(f\colon A \to B\), often  denoted in a builder notation of the form \(\big(\mathrm{term}(a) \mid a \in A\big)\).
+    \paragraph{Families.}
+    An \(A\)-indexed \deflab{family} over \(B\) is a function \(f\colon A \to B\), often  denoted in a builder notation of the form \(\big(\mathrm{term}(a) \mid a \in A\big)\).
     The left-hand side \(\mathrm{term}(a)\) may assume any term and/or equation that depends on the index variable \(a\) to express an element of \(B\), and the right-hand side expresses the domain of the index variable \(a\).
     There may be multiple index variables, in that case \(A\) is a cross product of the index variables' domains.
     E.g.\@ if there are two indices \(x\) and \(y\) in the domains \(X\) and \(Y\), then we may also denote them individually in the builder notation as follows: \(\big( f(x,y) \mid x \in X, y \in Y \big)\).
     As an alternative to the builder notation, we also denote the argument-value relation in a form similar to the usual function notation, e.g.\@ an \(A\)-indexed family \(f\) is defined such that \(f_a = \mathrm{term}(a)\) for each \(a \in A\), where \(\mathrm{term}(a)\) is some term that may use the variable \(a\).
     Usually, we identify a family by some variable name and access its elements using this identifier and the index variables in its subscript or in function notation.
-    If the index set is defined in the builder notation or clear from the context, it the term \(A\)-indexed may be dropped and leaves family.
+    If the index set is defined in the builder notation or clear from the context, it the term \(A\)-indexed may be dropped and leaves the term family.
 
-    \Glspl*{family} are used implicitly in terms where an associative and commutative binary operation is lifted to a collection of elements.
+    Families are used implicitly in terms where an associative and commutative binary operation is lifted to a collection of elements.
     For example, the union of \(k\) sets \(\big(U_i \mid i \in [k]\big)\) may be written as \(\bigcup_{i \in [k]} U_i\).
     Besides the union (\(\bigcup\)), we will use such operators for the sum (\(\sum\)), product (\(\prod\)), minimum (\(\min\)) and maximum (\(\max\)).
+    If the values and index set of a family coincide in such a notation, then the index is omitted completely.
+    For example, we write \(\min [k]\) instead of \(\min_{i \in [k]} i\).
+    The minima and maxima are determined according to the usual numerical order.
+    In case we encounter different objects or we use any other total ordering \(\unlhd\), we denote it as a superscript, e.g. \(\min^{\unlhd}\).
 
-    A \glsxtr{sequence} over \(A\) of length \(k \in \DN\) is a \([k]\)-\gls*{family} over \(A\); \(A^k\) denotes all sequences over \(A\) of length \(k\).
-    When quantifying a sequence, its elements are usually enumerated in the form of an ellipsis, e.g.\@ \(a_1, \ldots, a_k \in A\) is used instead of the builder notation \(\big(a_i \mid i \in [k]\big)\).
-    The set of all finite sequences over \(A\) is \(A^* = \bigcup_{n \in \DN} A^k\).
-    \(A^+\) denotes the set of all non-empty sequences \(\bigcup_{n \in \DN_+} A^k\).
-
-    An \(A\)-\gls{partition} of \(B\) is a \(A\)-indexed family \(p\) over subsets in \(\power(B)\) such hat:
+    An \(A\)-indexed \deflab<family>{partition} of \(B\) is a \(A\)-indexed family \(p\) over subsets in \(\power(B)\) such hat:
     \begin{inparaenum}[(i)]
         \item For each pair \(a, a' \in A\) of distinct elements \(a \neq a'\), the assigned subsets are disjoint: \(p(a) \cap p(a') = \emptyset\).
         \item The union of all subsets \(\bigcup_{a \in A} p(a)\) is the set \(B\).
     \end{inparaenum}
 
-    \section{Strings and Trees}\label{sec:preliminaries:trees}
-    An \glsxtr{alphabet} is a non-empty and finite set, its elements are called \glsxtr{symbols}.
-    Usually, we use uppercase Greek letters to denote alphabets, like \(\varSigma\), \(\varPi\) or \(\varGamma\).
-    For any alphabet \(\varSigma\), the set \(\varSigma^*\) is the set of all \glsxtrpl{string} over the symbols in \(\varSigma\).
-    I.e.\@ each string \(w\) in \(\varSigma^*\) has a distinct length, denoted by \(|w|\), and there is a set of positions in \(w\) that identifies each occurrence of a symbol in \(w\).
-    This set of positions is identified with the set of positive integers \([|w|]\).
-    Any sequence of symbols that occurs in consecutive positions in \(w\) is called a \glsxtr{substring} of \(w\).
+    \paragraph{Sequences.}
+    A (finite) \deflab{sequence} over \(A\) of length \(k \in \DN\) is a \([k]\)-indexed family over \(A\); \(A^k\) denotes all sequences over \(A\) of length \(k\).
+    When a collection of \(k\) elements in \(A\) is quantified, they are usually enumerated with an ellipsis and separated by commas; this notation of the form \(a_1, \ldots, a_k \in A\) defines an implicit sequence \((a_i \in A \mid i \in [k])\).
+    With a collection of fixed elements \(a_1, \ldots, a_k \in A\), the sequence \((a_i \in A \mid i \in [k])\) is abbreviated by an ellipsis without commas \(a_1 \ldots a_k\) (when there is a clear enumeration of items, like the index of the variables \(a_1, \ldots, a_k\)).
+    An occurrence of the single element \(a_1\) may also denote the singleton sequence (of length 1).
+    The \deflab<sequence>{empty sequence} (of length 0) is denoted by \(\varepsilon\).
+    The set of all finite sequences over \(A\) is \(A^* = \bigcup_{k \in \DN} A^k\).
+    \(A^+\) denotes the set of all non-empty sequences \(\bigcup_{k \in \DN_+} A^k\).
+    The length of a sequence \(w \in A^*\) is denoted by \(|w|\).
+    For any pair of sequences \(u,v \in A^*\), the \deflab<sequence>{concatenation} \(u \cdot v\) is the sequence \(w\in A^{|u|+|v|}\) such that \(w_i=u_i\) for each \(i \in [|u|]\) and \(w_{|u|+j} = v_j\) for each \(j \in [|v|]\).
+    The concatenation is abbreviated by dropping the dot, and it is taken advantage of its associativity to drop parenthesis in terms, so that e.g. \(w_1 w_2 w_3 w_4\) denotes \(((w_1 \cdot w_2) \cdot w_3) \cdot w_4\)
+    The concatenation of a whole collection of sequences \((w_i \in A^* \mid i \in [k])\) in order of their indices is denoted with an ellipsis \(w_1 \ldots w_k\).
 
-    \Glsxtrpl{tree} are particular strings that contain opening and closing parentheses to denote nesting hierarchies.
+    A \deflab<sequence>{subsequence} \(v \in A^*\) in \(w\in A^*\) is a sequence of elements occurring consecutively within \(w\).
+    The subsequence \(v\) may be located within \(w\) by a pair of indices for its start \(s \in [|w|+1]\) and its end \(e \in [s, |w|+1]\) such that \(v_i = w_{s-1+i}\) for each \(i \in [e-s])\).
+    Whenever such a subsequence in \(w\) is identified using its location between the indices \(s\) and \(e\), it is denoted by \(w_{s:e}\).
+    If one of the two indices is left empty, it denotes a prefix or postfix of the sequence \(w\).
+    E.g. \(w_{:s}\) are the first \(s-1\) items and \(w_{s:}\) are the trailing \(|w|-s-1\) items in \(w\).
+
+    Let \(\unlhd\) be a total order on \(A\), the \deflab<relation>[lexorder]{lexicographic order} on \(A^*\), denoted by \(\unlhd^*\), is defined such that
+    \begin{compactenum}
+        \item \(w \unlhd^* w \cdot v\) for each \(w, v \in A^*\), and
+        \item \(w\cdot a\cdot u \rel^* w\cdot b\cdot v \) for each \(a,b \in A\) with \(a \rel b\) and each \(w,u,v \in A^*\).
+    \end{compactenum}
+    For example, \(\leq^*\) is the lexicographic order over sequences of numerical values where \(\varepsilon \leq^* 1\:1\:2\) and \(1\:1\:2\leq^*1\:2\).
+
+
+    \section{Strings and Trees}\label{sec:preliminaries:trees}
+    \paragraph{Alphabets and Strings.}
+    An \deflab{alphabet} is a non-empty and finite set, its elements are called \deflab<alphabet>{symbol}[symbols].
+    Usually, uppercase Greek letters are used to denote alphabets, like \(\varSigma\), \(\varPi\) or \(\varGamma\).
+    A \deflab<sequence>{string} is a (finite) sequence over an alphabet \(\varSigma\).
+    The set of all strings over \(\varSigma\) is \(\varSigma^*\).
+    The notation for sequences is also used for strings.
+    Subsequences in a string are called \emph{substrings}.
+
+    \paragraph{Trees.}
+    \deflab{tree}[Trees] are particular strings that contain opening and closing parentheses to denote nesting hierarchies.
     For any alphabet \(\varSigma\) and finite set \(\varGamma\), the set of trees \(\T_\varSigma(\varGamma)\) is defined inductively: it is the smallest subset \(T\) of \((\varSigma \cup \varGamma \cup \{ (, )\})^*\) such that
     \begin{inparaenum}[(i)]
         \item \(\varGamma \subseteq T\) and
@@ -69,33 +105,53 @@
     As such, trees are finite structures, but unlike strings, we do not consider empty trees.
     In case \(\varGamma = \emptyset\), trees exclusively contain symbols in \(\varSigma\); then the set \(\T_\varSigma(\varGamma)\) is abbreviated by \(\T_\varSigma\).
 
-    A \glsxtr{node} in the tree \(t \in \T_\varSigma\) is an occurrence of a symbol in \(\varSigma\).
-    If a node a accompanied by a sequence of trees denoted in parentheses behind its symbol, these trees are called the \glsxtrpl[][plural={children}]{child} of the node.
-    The leftmost node is called the \glsxtr{root} of the tree; each node without \glspl*{child} is called a \glsxtr{leaf} of the \gls*{tree}; and each node with \glspl*{child} is called an \glsxtr[][name={inner node}]{inode}.
-    Each \gls{substring} in \(t\) that is also a \gls*{tree} in \(T_\varSigma\) is called a \glsxtr{subtree} in \(t\).
+    A \deflab<tree>{node} in the tree \(t \in \T_\varSigma(\varGamma)\) is an occurrence of a symbol in \(\varSigma \cup \varGamma\).
+    If a node a accompanied by a sequence of trees denoted in parentheses behind the symbol, these trees are called the \deflab<tree!node>{child}[children] of the node.
+    Vice versa, from viewpoint of a child node, the node before the wrapping parenthesis is called the \deflab<tree!node>{parent}.
+    Each other node within the parenthesis is called a \deflab<tree!node>{sibling}.
+    The leftmost node is called the \deflab<tree>{root} of the tree; each node without children is called a \deflab<tree>{leaf} of the tree; and each node with children is called an \deflab<tree>[inode]{inner node}.
+    The \deflab<tree!node>{rank} of a node is its number of children, \(\rank(t)\) denotes the rank of the root in \(t\).
+    Each leaf is of rank zero.
+    A tree is called \deflab<tree>[bintree]{binary}, if each inner node has exactly two successors.
 
-    A \glsxtr{position} in \(t\) is a sequence $w \in \DN^*$ that identifies a node in the tree.
+    Each illustration of a tree usually starts with the root node at the top, below that are its children connected by edges, this scheme recurs until the leaves at the bottom.
+    \cref{fig:pre:ctree} shows an example.
+
+    \paragraph{Positions.}
+    A \deflab<tree>{position} in \(t\) is a sequence $w \in \DN^*$ that identifies a node in the tree.
     Starting with the root, each integer in \(w\) indicates to the index of a child whose root is the reference for the remaining integers in \(w\).
     Alas, the set of positions, denoted by \(\pos(t)\), is defined recursively over the structure of trees:
     \begin{inparaenum}
         \item if \(t \in \varSigma\), then it is \(\pos(t) = \{\varepsilon\}\), and
         \item if \(t = \sigma(t_1 \cdots t_k)\) for some \(\sigma\in \varSigma\) and \(t_1, \ldots, t_k \in \T_\varSigma\), then it is \(\pos(t) = \{\varepsilon\} \cup \bigcup_{i\in[k]} \{i\}\cdot \pos(t_i)\).
     \end{inparaenum}
-    When illustrating trees, we usually start with the root node at the top, draw its children connected by edges below and recur until the leaves at the bottom.
-    \cref{fig:pre:ctree} shows an example.
+    The set of all inner node positions in \(t\) is denoted by \(\npos(t)\), the set of leaf positions is \(\lpos(t)\).
+    Let \(\rho \in \pos(t)\) be some position.
+    Each subsequence in \(t\) that is also a tree in \(T_\varSigma\) is called a \deflab<tree>{subtree} in \(t\).
+    The subtree below a position \(\rho\) is denoted by \(t|_\rho\).
+    The \deflab<tree>{ancestor}[ancestors] of \(\rho\) are all prefixes of the sequence \(\rho\), denoted by \(\ancestors(\rho) = \{ \rho_{:e} \mid e \in [|\rho|+1] \}\).
+    The \deflab<tree>{descendant}[descendants] of \(\rho\) in \(t\) are all positions in the subtree below \(\rho\), denoted by \(\descendants_t(\rho) = \{ \rho \cdot \rho' \in \pos(t) \mid \rho' \in \DN^* \}\).
+    The symbol at a position \(\rho\) in \(t\) is denoted  \(t(\rho)\).
 
-    In \glsxtrpl[][name={indexed tree}]{itree}, the symbols of an alphabet \(\varSigma\) occur only at \glspl*{inode}.
-    All leaves are positive integers such that each occurs at most once in each \gls*{tree}.
-    For each \gls*{inode} in an \gls*{itree}, the \glspl{child} occur ordered by their least \gls*{leaf}.
-    The notation for positions, indexing, substitution are inherited from trees; the yield of an \gls*{itree} is its set of leaves instead of a string.
+    A \deflab<tree>{subforest} of \(t\) is a sequence of trees occurring consecutively (as siblings) within \(t\).
+    A subforest may be located within \(t\) using a position \(\rho\) accompanied by a concluding child index that is greater or equal to the last child index in \(\rho\).
+    Let \(i, e \in \DN_+\) and \(\rho' \in \pos(t)\) such that \(\rho = \rho' \cdot i\) and \(e \in [i,\rank(t|_{\rho'})+1]\).
+    Analogously to the location of subsequences, the notation \(t|_{\rho:e}\) denotes the subforest in \(t\) at positions \(\rho' \cdot i, \rho' \cdot (i+1), \ldots, \rho \cdot (e-1)\).
+
+    \paragraph{Indexed Trees.}
+    In \deflab<tree>[itree]{indexed tree}[indexed trees], the symbols of an alphabet \(\varSigma\) occur only at inner nodes.
+    All leaves are positive integers such that each occurs at most once in each tree.
+    For each inner node in an indexed tree, the children occur ordered by their least leaf.
+    The notation for positions, indexing, substitution are inherited from trees; the yield of an indexded tree is its set of leaves instead of a string.
     The set of all indexed trees over \(\varSigma\) is denoted by \(\itrees^\varSigma\).
 
+    \paragraph{Substitution.}
     Let \(X\) be a finite set, \(\varSigma\) some alphabet that is disjoint from \(X\), and \(c\) a string in \((X \cup \varSigma)^*\).
-    A (first-order) substitution of \(X\) in \(c\) defined by an \(X\)-indexed family \((v_x \in \varSigma^* \mid x \in X)\) is denoted by \(c[v]\) and yields the string in \(\varSigma^*\) obtained from \(c\) by replacing every occurrence of symbols \(x \in X\) by \(v_x\).
+    A (first-order) \deflab{substitution} of \(X\) in \(c\) defined by an \(X\)-indexed family \((v_x \in \varSigma^* \mid x \in X)\) is denoted by \(c[v]\) and yields the string in \(\varSigma^*\) obtained from \(c\) by replacing every occurrence of symbols \(x \in X\) by \(v_x\).
     To avoid explicitly defining a family for a substitution, we may also denote the substitution by enumerating the values in the form \(c[x_1=v_{x_1}, \ldots, x_{k}=v_{x_k}]\) where \(k\) is some natural number and \(X = \{x_1, \ldots, x_k\}\) with \(x_i \neq x_j\) for each pair \(i,j \in [k]\) if \(i\neq j\).
     If the string \(c\) does not contain some variables in \(\X\), we may omit them in this notation.
 
-    The concept of second-order substitution introduces a second layer by parameterizing the values before inserting them.
+    The concept of \deflab<substitution>{second-order substitution} introduces a second layer by parameterizing the values before inserting them.
     For the scope of this thesis, the number of parameters for each value is limited to exactly one to keep the definition simple.
     Let's consider a single distinct variable \(y \notin X\), a set of shallow trees \(X(\varSigma^*) = \{ x(w) \mid x \in X, w \in \Sigma^* \}\) and a string \(c\) in \((X(\varSigma^*) \cup \varSigma)^*\).
     A second-order substitution of \(X\) in \(c\) defined by an \(X\)-indexed family \((v_x \in (\varSigma \cup \{y\})^* \mid x \in X)\) yields the string in \(\varSigma^*\) obtained from \(c\) by replacing each occurrence of shallow trees \(x(w) \in X(\varSigma^*)\) by \(v_x[y=w]\).
@@ -120,7 +176,7 @@
             \x_1(\text{bb}) \, \x_1(\varepsilon) \, [\x_1=\text{a}\,\y\,\text{a}] = (\text{a}\,\y\,\text{a})[\y=\text{bb}] (\text{a}\,\y\,\text{a})[\y=\varepsilon] &= \text{abbaaa}
         \end{align*}
 
-        The following case considers trees over the alphabets \(\Sigma=\{\cn{vp}\}\) and \(\Gamma=\{\tn{was}, \tn{carried}, \y\}\):
+        The following case considers trees over \(\Sigma=\{\cn{vp}\}\) and \(\Gamma=\{\tn{was}, \tn{carried}, \y\}\):
         \begin{align*}
             \cn{vp}( \x_1(\y) \, \tn{was} )[\x_1=\cn{vp}(\tn{carried}\,\y)]
                 &= \cn{vp}( \cn{vp}(\tn{carried}\,\y)[\y=\y] \, \tn{was} ) \\
@@ -129,17 +185,17 @@
     \end{example}
 
     \section{Modeling Natural Languages using Formal Methods}\label{sec:preliminaries:ctrees}
-    When dealing with natural languages, we assume an \gls*{alphabet} of \glsxtr{tokens} \(\Sigma\), i.e.\@ words, punctuation marks, parentheses, etc.\@ that are used to form sentences.
+    When dealing with natural languages, we assume an alphabet of \deflab{token}[tokens] \(\Sigma\), i.e.\@ words, punctuation marks, parentheses, etc.\@ that are used to form sentences.
     Then \(\Sigma^*\) denotes the set of all strings over these tokens, a superset that contains all grammatical sentences.
 
-    In the syntactic analysis of sentences in natural languages, we deal with \glsxtrpl[][name={constituent tree}]{ctree}.
-    They illustrate a hierarchy of sub-phrases in the sentence, where each element in the hierarchy is labeled by a category, called \glsxtr[][name={constituent symbol}]{csymbol}.
+    In the syntactic analysis of sentences in natural languages, we deal with \deflab[ctree]{constituent tree}[constituent trees].
+    They illustrate a hierarchy of sub-phrases in the sentence, where each element in the hierarchy is labeled by a category, called \deflab<constituent tree>[csymbol]{constituent symbol}.
     These sub-phrases do not necessarily form contiguous regions in the sentence:
-    If such a tree contains a node with a non-contiguous sub-phrase, we call it \glsxtr{discontinuous}; otherwise it is \glsxtr{continuous}.
+    If such a tree contains a node with a non-contiguous sub-phrase, we call it \deflab<constituent tree>{discontinuous}; otherwise it is \deflab<constituent tree>{continuous}.
 
     \begin{figure}
         \null\hfill
-        \includestandalone{../figures/example-constituents}
+        \subfile{figures/example-constituents.tex}
 %        \hfill
 %        \includestandalone{file}
         \hfill\null
@@ -147,42 +203,51 @@
         \caption{\label{fig:pre:ctree}
             Discontinuous constituent tree for the phrase \emph{where the survey was carried out}.
             The tree is illustrated with crossing branches, so that the leaves appear ordered.
-%            For each constituent, the path to its lexical head is double-struck.
+            For each constituent, the path to its lexical head is double-struck.
         }
     \end{figure}
 
-    Usually, the first layer of nodes in a constituent tree above phrase positions contains \gls{pos} tag.
+    Usually, the first layer of nodes in a constituent tree above phrase positions contains \emph{part of speech} (\abrv{pos}) tag.
     They indicate the most primitive categorization of individual tokens in the sentence.
 
-    Let us assume an \gls*{alphabet} \(\varPi\) of \gls*{pos} tags and an \gls*{alphabet} \(\varGamma\) of \glspl{csymbol}.
-    A \glsxtr[][name={constituent structure}]{cstructure} is an \gls{itree} over \(\varGamma\).
-    A \gls{ctree} is a triple \((t, p, w)\) where
+    Let us assume an alphabet \(\varPi\) of \abrv{pos} tags and an alphabet \(\varGamma\) of constituent symbols.
+    A \emph{constituent structure} is an indexed tree over \(\varGamma\).
+    A \emph{constituent tree} is a triple \((t, p, w)\) where
     \begin{compactitem}
-        \item \(w\) is a \gls*{string} of tokens in \(\varSigma^*\),
-        \item \(t\) is an \gls*{itree} over \(\varGamma\) such that each position in \([|w|]\) occurs exactly once as a leaf, and
-        \item \(p \in \) is a \gls*{string} of \gls*{pos} tags in \(\varPi^{|w|}\).
+        \item \(w\) is a string of tokens in \(\varSigma^*\),
+        \item \(t\) is an indexed tree over \(\varGamma\) such that each position in \([|w|]\) occurs exactly once as a leaf, and
+        \item \(p\) is a string of \abrv{pos} tags in \(\varPi^{|w|}\).
     \end{compactitem}
-%
-%    Within a constituent structure, we may also consider a \emph{lexical head} as the critical token for a syntactic category in a phrase.
-%    We denote the leaf for the head symbol in a tree by \(\head(t)\).
+
+    Within a constituent structure, we may also consider a \emph{lexical head} as the critical token for a syntactic category in a phrase.
+    The leaf for the head symbol in a constituent structure \(t\) is denoted by \(\head(t)\).
+    \todo{maybe formalize the notation and explain some more: if the lexical symbol is also present in a child inner node, then it must also be the head of it}
+    When a tree is illustrated and its lexical heads are considered, then the path to the leaf for the lexical head is double-struck.
+    \Cref{fig:pre:ctree} shows an example.
 %    We call each direct child that does not contain the lexical head a \emph{modifier}.
 
-    A \glsxtr{treebank} is a set of constituent trees.
+    A \emph{treebank} is a set of constituent trees.
     They are assembled by linguists for texts collected from news articles, written speeches, etc.\@ and annotated with their constituent structure.
     In the scope of this thesis, treebanks form data sets used for learning models that are able to predict constituent structures for input sentences.
-    The process of learning a model is called \glsxtr{training}, predicting constituent structures is called \glsxtr{parsing}, and the used models are called \glsxtrpl{parser}.
+    The process of learning a model is called \emph{training}, predicting constituent structures is called \emph{parsing}, and the used models are called \emph{parser}.
+
+    Besides constituent trees, there are \emph{dependency trees} that express a syntactic analysis of natural language.
+    They present grammatical relations between phrases within a sentence, such as arguments, adjuncts and complements, sometimes even more fine-grained ones like distinctions between subjects and objects.
+    These relations are illustrated in a tree where each phrase is represented by its head.
+    There are similar phenomena as (dis-)continuity in dependency trees, they are referred to as \emph{(un-)projectivity}.
+    We will not engage in dependency trees in this work, some references are discussed in \cref{sec:literature}.
 
     \section{Assessing the Prediction of Constituent Structures}
     When dealing with the assessment of parsers, we compare predicted constituent structures to the ones found in treebanks.
-    In this context, the structures found in these treebanks are called \glsxtr{gold} or ground truth.
+    In this context, the structures found in these treebanks are called \emph{gold} or ground truth.
     In general, it is desired to avoid using the same gold constituent trees for learning the parser as well as for the assessment.
     Therefore, the treebanks are partitioned into distinct parts for training and assessment; usually there are three parts:
     \begin{inparaenum}[(i)]
-        \item a \glsxtr[][name={training portion}]{train} that is solely used to learn a parsing model,
-        \item a \glsxtr[][name={development portion}]{dev} that is used to monitor the model \emph{during} the training process, and
-        \item a \glsxtr[][name={test portion}]{test} that is used to assess the model \emph{after} the training process.
+        \item a \emph{training portion}]that is solely used to learn a parsing model,
+        \item a \emph{development portion} that is used to monitor the model \emph{during} the training process, and
+        \item a \emph{test portion} that is used to assess the model \emph{after} the training process.
     \end{inparaenum}
-    Such a partition is called a \glsxtr{split}.
+    Such a partition is called a \emph{split}.
     For each treebank that is publicly available, there is also a split that is shared in the parsing community.
     So when different parsers are compared for the same treebank, they were trained and assessed using the same sets of trees.
 
@@ -195,15 +260,16 @@
         The time is taken for the prediction of a constituent structure for each sentence in the test portion of a treebank.
     This time is reported either as sum for the whole test portion or as quotient \(\frac{\text{number of sentences}}{\text{parsing time}}\) for the number of parsed sentences per second.
 
-    The evalb-style labeled \glsxtr{f1-score}\cite{black} is the standard for measuring the accuracy of predicted constituent structures.
+    The evalb-style labeled \emph{f1-score} \citep{Black91,Col97} established as the standard for measuring the accuracy of predicted constituent structures.
     This score is computed as follows:
         The sets of predicted and the gold constituent structures are mapped each into a set that contains a tuple \((\xi, A, \mathit{yd})\) for each constituent structure \(\xi\) and each of its inner nodes with label \(A\) and yield \(\mathit{yd}\).
         According these two sets, \(P\) for all predictions and \(G\) for the gold constituent trees, the precision (\(p = \frac{|P \cap G|}{|P|}\)), recall (\(r = \frac{|P \cap G|}{|G|}\)) and f1-score (\(\frac{2\cdot p\cdot r}{p + r}\)) are computed in the usual fashion.
-    The \gls*{pos} tags are often part of the prediction but not assessed as part the f1-score.
-    They are rather reported separately as the accuracy of the predicted \gls*{pos} tags compared to the gold ones.
-    The python tool \glsxtr{discodop} supplies an implementation for both, the f1-score of constituent structures and the accuracy of \gls*{pos} tags. \citep{CraSchBod16}
+    The \abrv{pos} tags are often part of the prediction but not assessed as part the f1-score.
+    They are rather reported separately as the accuracy of the predicted \abrv{pos} tags compared to the gold ones.
+    The python tool \emph{discodop} supplies an implementation for both, the f1-score of constituent structures and the accuracy of \abrv{pos} tags. \citep{CraSchBod16}
 
     \begin{figure}
+        \null\hfill
         \begin{tikzpicture}[baseline=(t1mid.base)]
             \begin{scope}[every node/.style={inner sep=2pt, font=\small}, level distance=3ex, level 3/.style={sibling distance=2em}]
                 \node {\cn{sbar}}
@@ -239,7 +305,7 @@
             \node[left=2em of t2] {\(\xi_\text{P}\):};
         \end{tikzpicture}
         \hfill
-        \begin{minipage}[c]{.3\linewidth}
+        \begin{minipage}{.3\linewidth}
             \small
             \begin{align*}
                 \mathit{precision} &= \tfrac{4}{5} \\
@@ -247,8 +313,9 @@
                 \mathit{f1} &= \tfrac{2}{3} \\
             \end{align*}
         \end{minipage}
+        \hfill\null
 
-        \begin{minipage}{.3\linewidth}
+        \begin{minipage}{.35\linewidth}
             \small
             \begin{align*}
                 G = \{
@@ -310,7 +377,7 @@
 
 
     \ifSubfilesClassLoaded{%
-        \printglossaries
+        \printindex
         \bibliography{../references}%
     }{}
 \end{document}

@@ -20,6 +20,7 @@
 \DeclareMathOperator{\head}{head}
 \DeclareMathOperator{\modifier}{mod}
 \DeclareMathOperator{\argmin}{arg min}
+\newcommand{\rel}{\mathrel{\unlhd}}
 
 \DeclareMathOperator{\dom}{dom}
 \DeclareMathOperator{\im}{im}
@@ -27,16 +28,18 @@
 
 
 % trees
-\DeclareMathOperator{\sTrees}{T}
+%\DeclareMathOperator{\sTrees}{T}
 \DeclareMathOperator{\itrees}{I}
 \DeclareMathOperator{\T}{T}
+\DeclareMathOperator{\CT}{CT}
 \DeclareMathOperator{\pos}{pos}
 \DeclareMathOperator{\lpos}{lpos}
 \DeclareMathOperator{\npos}{npos}
 \DeclareMathOperator{\ancestors}{anc}
+\DeclareMathOperator{\children}{child}
+\DeclareMathOperator{\descendants}{desc}
 \DeclareMathOperator{\toPos}{toPos}
-% tree transducer
-\newcommand{\qi}{q_{\mathrm{i}}}
+\newcommand{\binnode}[2]{\ensuremath{{#1}|\!\left<{#2}\right>}}
 
 % variables and compositions
 \newcommand{\X}{\textsl{X}}
