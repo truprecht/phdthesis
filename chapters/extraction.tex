@@ -3,7 +3,23 @@
 \begin{document}
     \chapter{Lexical Grammar Extraction from Treebanks}
     This chapter deals with the extraction of supertag grammars from treebanks.
-    It describes the extraction process in two different orders:
+    Here, the term \emph{supertag grammar} is understood as an lexical instance of any grammar formalism where the only terminal symbol occurring in the rules is a wildcard, which will be denoted by \tn{*}.
+    Each rule in the instance of such a formalism is called a \emph{supertag}.
+    In this chapter, we will consider the three previously discussed formalisms: \abrv{lcfrs}, \abrv{dcp} and hybrid grammars.
+    Beyond the previous definitions, there are two small extensions to \abrv{lcfrs} and \abrv{dcp}:
+    \begin{compactenum}
+        \item
+            In the case of \abrv{lcfrs}, there is a boolean (i.e.\@ either it is present or not) label that accompanies each rule.
+            It stores information from the lexicalization process and is needed to reverse the process in order to transform a derivation in the supertag grammar into a constituent tree.
+        \item
+            In the case of \abrv{dcp}, there is an integer value added to each rule.
+            It will indicate the maximum fanout that is admissible during parsing.
+    \end{compactenum}
+    These extensions are considered an integral part of each supertag for the parsing process.
+    Their purpose will be further discussed in \cref{sec:extraction:readoff,sec:extraction:guided}.
+    These two additions will not be part in the case of instances of hybrid grammars, even though they are a combination of \abrv{lcfrs} and \abrv{dcp} grammars.
+
+    There are two approaches for the extraction described in this chapter:
     \begin{compactenum}
         \item
             The process described in \cref{sec:extraction:readoff} first extracts a derivation in a simple \abrv{lcfrs} for each tree in a treebank.
@@ -11,10 +27,9 @@
             With the help of annotations that are added to the rules and nonterminals within the rules, this transportation is reversible.
         \item
             The extraction procedure described in \cref{sec:extraction:guided} first assigns a sentence position to each inner node of the constituent structure.
-            In the following, it extracts an \abrv{lcfrs} derivation of lexical hybrid grammar rules according to the positions assigned to the inner nodes in each subtree.
+            In the following, it extracts a derivation of lexical grammar rules according to the positions assigned to the inner nodes in each subtree.
     \end{compactenum}
 
-    \todo{describe what we understand under lexical grammar, or supertag grammar; in case of lcfrs supertags these are not only plain rules (swapped annotation)}
     \todo{Can the guided extraction be implemented for lexical lcfrs? -- the already existing marker `swapped` can be abused to give the transportation direction}
     \todo{describe some common topics: extracted grammar = set of all extracted rules, wildcard as terminal, sentence position as terminal during extraction}
     \todo{describe why binarization is a common topic for both extraction algorithms}
@@ -46,7 +61,7 @@
     The merged symbols must not occur in the original alphabets of constituent and \abrv{pos} symbols, and must be unique for each sequence of merged constituent/\abrv{pos} symbols.
     Here, the merged nodes are denoted by concatenating the symbols interleaved by \cn{+}.
     E.g.\@ a chain of unary nodes ``\cn{root}'', ``\cn{s}'' that is merged with the \abrv{pos} symbol ``\cn{\$.}'' is the new symbol ``\cn{root+s+\$.}''.
-    This approach of handling nodes with one successor\todo{introduce terms: rank of a node, unary, binary nodes, and nodes of higher rank} is done after dealing with nodes with more than two successors.
+    This approach of handling nodes with one successor is done after dealing with nodes with more than two successors.
     Because this is common among all binarization strategies, we view only the other case as an actual part of the strategies.
 
     Each node carrying \( n > 2 \) successors is split into \( n-1 \) binary nodes that are connected in some parent-child constellation.
@@ -111,9 +126,9 @@
     \end{figure}
 
     \subsection{Head-Inward Ternarization: Not Quite Binarization} \label{sec:extraction:bin:hi}
-    The strategy to binarize constituent trees head-outward takes account of the head assignment for each inner node of the constituent structure.
-    For each node of rank \(\ge 2\), it produces a series of nodes such that the child containing the head is attached to the bottom-most node.
-
+%    The strategy to binarize constituent trees head-outward takes account of the head assignment for each inner node of the constituent structure.
+%    For each node of rank \(\ge 2\), it produces a series of nodes such that the child containing the head is attached to the bottom-most node.
+    \todo[inline]{ist das nötig? die Struktur der Ableitung sollte ausschließlich vom Guide abhängen.}
 
 
     \subsection{Markovization}
@@ -427,6 +442,93 @@
     We consider these guides only for head-outward binarized constituent structures, as there is exactly one modifier for each inner node.
 
     \subsection{Nonterminal Constructors}
+    A \emph{nonterminal constructor} computes a lhs nonterminal for the grammar rule included in each supertag.
+    Each of the following constructors computes a nonterminal for the position \(\rho\) in \(\xi\) from the constituent symbol \(\xi(\rho)\), the set of leaves \(\yield(\xi|_\rho)\) below \(\rho\) and the set of leaves \(L\) assigned by \(\guide\) to the ancestors of \(\rho\).
+    We omit the fanout subscripts if they are \(1\).
+    We give examples using the \emph{shortest guide}, as shown in \cref{fig:constituent:bin}, for the root position \(\varepsilon\) where \(\xi(\varepsilon) = \text{SBAR+S}\), \(\yield(\xi|_\varepsilon) = \{0,\ldots,5\}\) and \(L = \emptyset\) and the position \(1.1\) of the bottom VP node where \(\xi(1.1) = \text{VP}\), \(\yield(\xi|_{1.1}) = \{0,4,5\}\), \(L = \{0,3\}\) and \(\fanout(\yield(\xi|_{1.1}) \setminus L) = 1\).
+
+    \paragraph{Vanilla Nonterminals.}
+    The nonterminal consists of the symbol \(\xi(\rho)\), the fanout \(\fanout(\yield(\xi|_\rho))\) as subscript, and if \(L\) contains any leaf in \(\yield(\xi|_\rho)\), then the difference in fanout \(\fanout(\yield(\xi|_\rho) \setminus L) - \fanout(\yield(\xi|_\rho))\) as superscript.
+    This superscript indicates the difference in fanout at \(\rho\) in the original constituent tree compared to the leaves assigned to the nodes in the subtree at \(\rho\) by the guide.
+    (At most one leaf is assigned to an ancestor of \(\rho\).)
+    In our two examples, we construct the nonterminals \(\text{SBAR+S}\) and \(\text{VP}_2^{-1}\)
+
+    \paragraph{Classic Nonterminals.}
+    The nonterminal consists of the first symbol\footnote{
+           After merging unary nodes in step (i) of the extraction, each node may consist of multiple constituent symbols.}
+    in \(\xi(\rho)\) (including markers introduced during binarization) and the fanout \(\fanout(\yield(\xi|_\rho) \setminus L)\) as subscript.
+    This constructor omits annotations that depend on the guide and is more akin to usual strategies in LCFRS extraction \cite{MaierSogaard08}.
+    For our examples, the nonterminals are \(\text{SBAR}\) and \(\text{VP}\).
+
+    \paragraph{Coarse Nonterminals.} Like the \emph{classic} nonterminals, but we replace the constituent symbols occurring in the treebank by their first letter.
+    This is a very rough approximation of nonterminals in coarse-to-fine parsing \cite{Cha06} that does not need a specific clustering for each treebank.
+    For our examples, the nonterminals are \(\text{S}\) and \(\text{V}\).
+
+    \subsection{Extraction Algorithm}
+    The process described in this section is used to extract a sequence of supertags, one for each word in a sentence, from a given constituent tree.
+    We distinguish four steps (i--iv) which are executed consecutively.
+    The parameters for steps (i--iii) are described in detail in the next section.
+
+%    \begin{figure}
+%        \centering
+%        \includestandalone{figures/example-constituents-bin}
+%        \caption{\label{fig:constituent:bin}
+%            Constituent structure and pos symbols after binarization (\(v=1\), \(h=0\); ho and lr binarization coincide) of \cref{fig:constituent}.
+%            The symbol ``VP\!\texttt{|\!<\!>}'' was introduced during binarization; former unary nodes were joined by ``+''.
+%            Gray integers next to inner nodes show the leafs assigned by a guide for the constituent structure.
+%            %        The guides were defined using the guide constructors from \cref{sec:con:para} in the following order: vanilla (plain), strict (rectangle), modifier (diamond), least (circle), shortest (pentagon).
+%        }
+%    \end{figure}
+
+    \paragraph{(i) Binarization.}
+    We construct a binary constituent tree with the usual strategies in constituent parsing \cite{KalMai13}:
+    Each unary node is merged with its child (or pos symbol, if the child is a leaf), and nodes with arity \(n>2\) are split into \(n-1\) binary nodes according to the parameters described in \cref{sec:con:para}.
+    After this step, the constituent tree for a sentence \(w\) is equipped with \(|w|-1\) inner nodes.
+    \Cref{fig:constituent:bin} shows a binary tree resulting from binarization of the tree in \cref{fig:constituent}.
+
+    \paragraph{(ii) Guide.}
+    In this step, we define a \emph{guide} for the binary constituent structure \(\xi\), i.e.\@ a mapping \(\guide\) between inner node positions and leaves in the constituent structure.
+    In the following step, a lexical LCFRS rule will be constructed for the constituent at each inner node and the assigned leaf.
+    Intuitively, the guide determines which sentence position is ``responsible'' for the constituent at each position.
+    Formally, a guide for \(\xi\) is an injective function \(\guide\colon \npos(\xi) \to \yield(\xi)\) such that, for each \(\rho \in \npos(\xi)\), the assigned leaf \(\guide(\rho)\) is in \(\yield(\xi|_\rho)\).
+    \Cref{fig:constituent:bin} shows a guide for our example constituent structure, assigning a leaf (illustrated in gray circles) to each inner node.
+    As \(\guide\) is injective and there is one less inner node than leaves in \(\xi\), there is exactly one leaf that is not in the image of \(\guide\).
+    We will investigate multiple strategies, called \emph{guide constructors}, to define guides for a given constituent tree as discussed in \cref{sec:con:para}.
+
+    \paragraph{(iii) Lexical rule induction.}
+    In this step, we will construct a lexical LCFRS rule \(r'\) and the components \(c\), \(t\) and \(p\) of the supertag for each leaf in the constituent structure.
+    The nonterminals in the rule are determined by a chosen hyperparameter \(\ntcon\), called the \emph{nonterminal constructor}, in terms of the constituent symbol and the guide \(\guide\) as described in \cref{sec:con:para}.
+    We give examples for (the root position in) the tree in \cref{fig:constituent:bin}, the guide values shown in pentagons (shortest guide constructor) and constituent symbols as nonterminals (classic nonterminal constructor).
+
+    We start with the leaf \(i'\) that is not in the image of \(\guide\) and define a new nonterminal \(\text{L-}A\) using the fixed string ``L-'' and the nonterminal \(A\) produced by \(\ntcon\) for the parent of \(i'\).
+    In that case \(c = t = \text{None}\), \(p = \mathit{pos}(i')\), and \(r' = \text{L-}A \to [i']\).
+    In \cref{fig:constituent:bin}, the leaf \(i'=2\) is not in the image of \(\guide\), it yields \(r' = \text{L-NP} \to [2]\), and \(p = \text{NN})\).
+
+    After that, we define the following for each position \(\rho \in \npos(\xi)\) (from bottom up) and its assigned leaf \(i = \guide(\rho)\):
+    \begin{asparaitem}
+        \item
+        The LCFRS rule \(r'\) is assembled in the usual manner from \(i\) as lexical symbol and variables for the spans formed by the leaves in each successor except those leaves that are assigned by \(\guide\) to \(\rho\)'s ancestors.
+        \(\ntcon\) produces the lhs nonterminal for \(\rho\), the rhs nonterminals are the lhs nonterminals constructed for \(\rho\)'s children.
+        In our example, \(r\) is assembled from the lexical symbol \(3\), the left successor's leaves are \(\{\underline{0\vphantom{,}}_{(x_1)}, \underline{4,5} _{(x_2)}\}\) and the right one's are \(\{\underline{1,2} _{(y_1)}\}\);
+        hence \(r = \text{S} \to [x_1 \, y_1 \, 3 \, x_2] (\text{VP}_2, \text{NP})\).
+
+        \item
+        \(t\) is \emph{None} if the leaf \(\guide(\rho)\) is a direct child of \(\rho\), otherwise it is the index among the children where \(\guide(\rho)\) is located.
+        In our example, 3 is not a child of the root, it is in its first successor; therefore \(t=1\).
+
+        \item
+        \(c\) is \(\xi(\rho)\) if it was not introduced during binarization (i.e.\@ the symbol \(\xi(\rho)\) does not contain some markers \texttt{|<..>}), otherwise it is None.
+        In our example, \(c = \text{SBAR+S}\).
+
+        \item
+        \(p\) is the pos symbol at \(\guide(\rho)\) in \(\mathit{pos}\).
+        In our example \(p = \text{VBD}\).
+    \end{asparaitem}
+
+    \paragraph{(iv) Supertag extraction.}
+    The tuples constructed in the previous step closely resemble supertags as described in the previous subsection.
+    We pull them from the constructed tree and order them according to the sentence position included in the lexical rule.
+    Lastly, the sentence position in each rule is replaced by a wildcard symbol ``\_''.
 
     \ifSubfilesClassLoaded{%
         \printindex
