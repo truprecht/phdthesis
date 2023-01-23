@@ -1,0 +1,18 @@
+\documentclass[../../document.tex]{subfiles}
+
+\begin{document}
+    \section{Hybrid Grammars}
+    Hybrid grammars combine the capabilities of \abrv{lcfrs} and \abrv{dcp} by equipping each rule with a composition of each grammar formalism.
+    Whereas the \abrv{lcfrs} compositions are solely in charge of composing the string for a parse, the \abrv{dcp} compositions deal with the structure of the parse itself.
+    The remaining structure of the rules and the grammar resembles the two aforementioned formalisms.
+
+    \begin{definition}[Hybrid Grammar]
+        A \deflab[hgrammar]{hybrid grammar} is a tuple \(G = (N, \varGamma, \varSigma, S, R)\) where
+        \begin{compactitem}
+            \item \(N\) is a finite set (\emph{nonterminals}),
+            \item \(\varGamma\) and \(\varSigma\) are alphabets (\emph{terminals}),
+            \item \(S \in N\) (\emph{initial non-terminal}),
+            \item \(R\) is a finite subset of \(\bigcup_{k \in \DN} N \times \C^{\varGamma\varSigma}_k \times N^k\) (\deflab<\dcp>{rule}[rules]).
+        \end{compactitem}
+    \end{definition}
+\end{document}

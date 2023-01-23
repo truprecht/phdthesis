@@ -54,7 +54,7 @@
     In case we encounter different objects or we use any other total ordering \(\unlhd\), we denote it as a superscript, e.g. \(\min^{\unlhd}\).
 
     An \(A\)-indexed \deflab<family>{partition} of \(B\) is a \(A\)-indexed family \(p\) over subsets in \(\power(B)\) such hat:
-    \begin{inparaenum}[(i)]
+    \begin{inparaenum}
         \item For each pair \(a, a' \in A\) of distinct elements \(a \neq a'\), the assigned subsets are disjoint: \(p(a) \cap p(a') = \emptyset\).
         \item The union of all subsets \(\bigcup_{a \in A} p(a)\) is the set \(B\).
     \end{inparaenum}
@@ -98,7 +98,7 @@
     \paragraph{Trees.}
     \deflab{tree}[Trees] are particular strings that contain opening and closing parentheses to denote nesting hierarchies.
     For any alphabet \(\varSigma\) and finite set \(\varGamma\), the set of trees \(\T_\varSigma(\varGamma)\) is defined inductively: it is the smallest subset \(T\) of \((\varSigma \cup \varGamma \cup \{ (, )\})^*\) such that
-    \begin{inparaenum}[(i)]
+    \begin{inparaenum}
         \item \(\varGamma \subseteq T\) and
         \item for each symbol \(\sigma \in \varSigma\), natural number \(k\) and trees \(t_1, \ldots, t_k \in T\), the string \(\sigma(t_1 \cdots t_k)\) is in \(T\).
     \end{inparaenum}
@@ -242,7 +242,7 @@
     In this context, the structures found in these treebanks are called \emph{gold} or ground truth.
     In general, it is desired to avoid using the same gold constituent trees for learning the parser as well as for the assessment.
     Therefore, the treebanks are partitioned into distinct parts for training and assessment; usually there are three parts:
-    \begin{inparaenum}[(i)]
+    \begin{inparaenum}
         \item a \emph{training portion}]that is solely used to learn a parsing model,
         \item a \emph{development portion} that is used to monitor the model \emph{during} the training process, and
         \item a \emph{test portion} that is used to assess the model \emph{after} the training process.
@@ -252,7 +252,7 @@
     So when different parsers are compared for the same treebank, they were trained and assessed using the same sets of trees.
 
     When assessing the quality of a parser, we measure two dimensions:
-    \begin{inparaenum}[(i)]
+    \begin{inparaenum}
         \item the time needed for the prediction process, and
         \item the accuracy of predicted structures.
     \end{inparaenum}
