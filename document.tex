@@ -4,7 +4,7 @@
 \usepackage[german, english, iso]{isodate}
 \input{mathops}
 \usepackage[pdfborderstyle={/S/U/W 1}]{hyperref}
-\usepackage{natbib, cleveref, paralist, makeidx, xifthen}
+\usepackage{natbib, cleveref, paralist, makeidx, xifthen, wrapfig, subcaption, needspace}
 \bibliographystyle{abbrvnat}
 \crefname{step}{step}{steps}
 \makeindex
@@ -25,6 +25,13 @@
 \newcommand{\lcfrs}{linear context-free rewriting system}
 \newcommand{\dcp}{definite clause program}
 \newcommand{\hg}{hybrid grammar}
+\newcounter{parexamplecnt}
+\NewDocumentCommand{\parexample}{so}{%
+    \IfBooleanF{#1}{\bigskip}\noindent%
+    \textbf{Example \refstepcounter{parexamplecnt}\theparexamplecnt}%
+    \IfNoValueF{#2}{\space(#2)}%
+    \textbf{.}\space%
+}
 
 \setdefaultenum{(i)}{(a)}{}{}
 
