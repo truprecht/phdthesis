@@ -65,7 +65,7 @@
 
     \begin{definition}[Guide Constructor]
         Let \(\varSigma\) be an alphabet of constituent symbols.
-        A \deflab[gconst]{guide constructor} is a function \(\varPhi\colon \itrees^\varSigma \parto (\DN^* \parto \DN)\) such that for each indexed tree \(\xi\) in the domain \(\dom(\varPhi)\), the partial function \(\varPhi(\xi)\) is a guide constructor for \(\xi\).
+        A \deflab<guide>[gconst]{guide constructor} is a function \(\varPhi\colon \itrees^\varSigma \parto (\DN^* \parto \DN)\) such that for each indexed tree \(\xi\) in the domain \(\dom(\varPhi)\), the partial function \(\varPhi(\xi)\) is a guide constructor for \(\xi\).
     \end{definition}
 
     Guide constructors are defined as partial functions, because some of them can only be sensibly defined for binary constituent structures.
@@ -73,7 +73,7 @@
     Each instance \(\varPhi\) will carry a name of the form \emph{\(x\) guide constructor}.
     For each \(\xi \in \dom(\varPhi)\), the guide \(\varPhi(\xi)\) will analogously be called \emph{\(x\) guide for \(\xi\)}.
 
-    \paragraph{Vanilla Guide Constructor.}
+    \paragraph{Vanilla Guide Constructor.}\deflab<guide>[vguide]{vanilla guide (constructor)}[]
     This guide constructor aims to formalize the assignment of lexical items to inner nodes that is achieved by the transportation in the extraction of lexical \abrv{lcfrs} rules described in the previous section.
     Similar to the prerequisites in that section, the guide is defined for binary indexed trees.
     A guide produced by this constructor maps each node position either to the leftmost leaf that is a direct successor, or (if not available) to the leftmost leaf in the yield of its right successor.
@@ -105,7 +105,7 @@
     In case of position \(2\), the set \(L_{2}\) is \(\{2,3\} \setminus \{2\} = \{3\}\) and \(\mathrm{van}(\xi)(1)=3\).
     As we continue with the nodes to the bottom, the second set in the term for \(L_\rho\) grows with the values that we assigned to the positions on the path from the root to \(\rho\) and may thus exclude considered leaves in the yield below \(\rho\).
 
-    \paragraph{Strict Guide Constructor.}
+    \paragraph{Strict Guide Constructor.}\deflab<guide>[sguide]{strict guide (constructor)}[]
     This is a small adjustment of the vanilla guide constructor that removes the special case where an inner node is assigned to a leaf below it.
     As the previous, this constructor is sensibly defined for binary indexed trees.
     A guide constructed by it maps each inner node to the least leaf of the second successor.
@@ -123,7 +123,7 @@
     The values assigned by the strict guide are independent of each other.
     E.g.\@ we may determine the values \(\mathrm{strict}(\xi)(2) = \min\;\yield(\xi|_{2\,2}) = \min\;\{3\} = 3\) or \(\mathrm{strict}(\xi)(1\,1) = \min\;\yield(\xi|_{1\,1\,2}) = \min\;\{5,6\}\) without computing any other values beforehand.
 
-    \paragraph{Least and Near Guide Constructors.}
+    \paragraph{Least and Near Guide Constructors.}\deflab<guide>[lguide]{least guide (constructor)}[]\deflab<guide>[nguide]{near guide (constructor)}[]
     These two guides were developed for binary indexed trees with the intention to
     \begin{inparaenum}
         \item assign as few nodes as possible to leaves that are not direct children (\emph{least guide constructor}), and
@@ -199,14 +199,14 @@
     This also requires a special treatment with respect to binarization which is applied to the constituent structures for the two following guide constructors.
     This is explained further within the following paragraphs.
 
-    \paragraph{Head Guide Constructor.}
+    \paragraph{Head Guide Constructor.}\deflab<guide>[hguide]{head guide (constructor)}[]
     As the name suggests, these guides assign the head position to each inner node of the constituent structure.
     This implements an intuitive approach to deal with the relation between the inner nodes and their assigned head position: For each lexical symbol, there will be a lexical rule that contains the information to produce exactly the inner nodes it is head of.
     Naturally, this requires that the constituent structure is equipped with the necessary head assignment.
     And we have to keep in mind, that there is no sensible head assignment for binarized constituent trees in general.
     Therefore, we limit the this guide constructor to the cases of plain (i.e.\@ unbinarized) or head-inward ternarized (cf.\@ \cref{sec:extraction:bin:hi}) constituent trees.
 
-    \paragraph{Dependent Guide Constructor.}
+    \paragraph{Dependent Guide Constructor.}\deflab<guide>[vguide]{dependent guide (constructor)}[]
     Dependent guides aim to offer leaf assignments that complement head-outward binarized constituent structures.
     They assign the head of a dependent to each inner node in the constituent structure.
     We consider these guides only for head-outward binarized constituent structures, as there is exactly one dependent for each inner node.
@@ -274,7 +274,7 @@
     Similar to the guide constructors, each instance \(\varphi\) will carry a name of the form \emph{\(x\) nonterminal constructor}.
     The nonterminal symbols constructed by \(\varphi\) are called \emph{\(x\) nonterminals}.
 
-    \paragraph{Vanilla Nonterminal Constructor.}
+    \paragraph{Vanilla Nonterminal Constructor.}\deflab<nonterminal constructor>[vnont]{vanilla nonterminal (constructor)}[]
     This resembles the nonterminals occurring in the extraction in \cref{sec:extraction:lcfrs}.
     The nonterminal \(\phi(\xi, \rho, L)\) consists of the node symbol \(\xi(\rho)\), the fanout \(\fanout(\yield(\xi|_\rho))\) as subscript, and if \(L \neq \yield(\xi|_\rho)\), then the difference in fanout \(\fanout(L) - \fanout(\yield(\xi|_\rho))\) as superscript.
     This superscript indicates the difference in fanout at \(\rho\) in the original constituent tree compared to the leaves assigned to the nodes in the subtree at \(\rho\) by the guide.
@@ -289,7 +289,7 @@
     The nonterminal is a combination of the symbol \(\xi(1\,1) = \cn{vp}\), the fanout \(\fanout(\yield(\xi|_{1\,1})) = \fanout(\{1,5,6\}) = 2\), and \(\fanout(L) - 2 = \fanout(\{1,5\})-2=0\).
     It is denoted in the form \(\cn{vp}^0_2\).
 
-    \paragraph{Classic Nonterminal Constructor.}
+    \paragraph{Classic Nonterminal Constructor.}\deflab<nonterminal constructor>[cnont]{classic nonterminal (constructor)}[]
     This constructor is intended to produce nonterminals that are akin to usual strategies in LCFRS extraction \cite{MaierSogaard08}.
     Therefore, it omits some of the annotations from the previous instance.
     The nonterminal consists of the symbol \(\xi(\rho)\) and the fanout \(\fanout(L)\) as subscript.
@@ -299,7 +299,7 @@
     For the classic nonterminal constructed for the root in the example indexed tree above, we determine the set \(L = \yield(\xi) = \{1,\ldots,6\}\).
     The nonterminal consists of the symbol \(\cn{sbar}\) and the fanout \(\fanout(L) = 1\) and is illustrated as \(\cn{sbar}_1\).
 
-    \paragraph{Coarse Nonterminal Constructors.}
+    \paragraph{Coarse Nonterminal Constructors.}\deflab<nonterminal constructor>[coarsenont]{coarse nonterminal (constructor)}[]
     This constructor equals the classic nonterminal constructor for the most part, but it replaces the constituent symbol \(\xi(\rho)\) either by
     \begin{inparaenum}
         \item a symbol that subsumes multiple constituent symbols given in a separate table, or
