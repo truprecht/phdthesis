@@ -277,7 +277,7 @@
     \paragraph{Vanilla Nonterminal Constructor.}\deflab<nonterminal constructor>[vnont]{vanilla nonterminal (constructor)}[]
     This resembles the nonterminals occurring in the extraction in \cref{sec:extraction:lcfrs}.
     The nonterminal \(\phi(\xi, \rho, L)\) consists of the node symbol \(\xi(\rho)\), the fanout \(\fanout(\yield(\xi|_\rho))\) as subscript, and if \(L \neq \yield(\xi|_\rho)\), then the difference in fanout \(\fanout(L) - \fanout(\yield(\xi|_\rho))\) as superscript.
-    This superscript indicates the difference in fanout at \(\rho\) in the original constituent tree compared to the leaves assigned to the nodes in the subtree at \(\rho\) by the guide.
+    This superscript indicates the difference in fanout at \(\rho\) in the original constituent tree compared to the leaves assigned to the nodes in the subtree at \(\rho\) by the guide.\todo{equip each nt constructor with a distinct symbol and image set}
 
     \begin{wrapfigure}[6]{r}{0pt}
         \subfile{figures/running-example-1.tex}
@@ -342,17 +342,6 @@
     The process described in this section is used to extract a sequence of supertags, one for each word in a sentence, from a given constituent tree.
     We distinguish four steps (i--iv) which are executed consecutively.
     The parameters for steps (i--iii) are described in detail in the next section.
-
-    %    \begin{figure}
-        %        \centering
-        %        \includestandalone{figures/example-constituents-bin}
-        %        \caption{\label{fig:constituent:bin}
-            %            Constituent structure and pos symbols after binarization (\(v=1\), \(h=0\); ho and lr binarization coincide) of \cref{fig:constituent}.
-            %            The symbol ``VP\!\texttt{|\!<\!>}'' was introduced during binarization; former unary nodes were joined by ``+''.
-            %            Gray integers next to inner nodes show the leafs assigned by a guide for the constituent structure.
-            %            %        The guides were defined using the guide constructors from \cref{sec:con:para} in the following order: vanilla (plain), strict (rectangle), modifier (diamond), least (circle), shortest (pentagon).
-            %        }
-        %    \end{figure}
 
     \paragraph{(i) Binarization.}
     We construct a binary constituent tree with the usual strategies in constituent parsing \cite{KalMai13}:

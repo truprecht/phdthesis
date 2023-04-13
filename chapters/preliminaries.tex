@@ -185,19 +185,17 @@
     \end{example}
 
     \section{Modeling Natural Languages using Formal Methods}\label{sec:preliminaries:ctrees}
-    When dealing with natural languages, we assume an alphabet of \deflab{token}[tokens] \(\Sigma\), i.e.\@ words, punctuation marks, parentheses, etc.\@ that are used to form sentences.
-    Then \(\Sigma^*\) denotes the set of all strings over these tokens, a superset that contains all grammatical sentences.
-
     In the syntactic analysis of sentences in natural languages, we deal with \deflab[ctree]{constituent tree}[constituent trees].
     They illustrate a hierarchy of sub-phrases in the sentence, where each element in the hierarchy is labeled by a category, called \deflab<constituent tree>[csymbol]{constituent symbol}.
     These sub-phrases do not necessarily form contiguous regions in the sentence:
     If such a tree contains a node with a non-contiguous sub-phrase, we call it \deflab<constituent tree>{discontinuous}; otherwise it is \deflab<constituent tree>{continuous}.
+    E.g.\@ \cref{fig:pre:ctree} illustrates a discontinuous constituent tree.
+    The symbols at inner nodes, like \(\cn{s}\) and \(\cn{vp}\), are constituent symbols.
+    The lower node labeled by \(\cn{vp}\) governs a noncontiguous region in the sentence: \emph{where} and \emph{carried out}.
 
     \begin{figure}
         \null\hfill
         \subfile{figures/example-constituents.tex}
-%        \hfill
-%        \includestandalone{file}
         \hfill\null
 
         \caption{\label{fig:pre:ctree}
@@ -207,24 +205,33 @@
         }
     \end{figure}
 
-    Usually, the first layer of nodes in a constituent tree above phrase positions contains \emph{part of speech} (\abrv{pos}) tag.
+    The first layer of nodes in a constituent tree above phrase positions contains distinct symbols, called \emph{part of speech} (\abrv{pos}) tags.
+    They are mutually exclusive to constituent symbols in upper layers, i.e.\@ each symbol occurring at the first layer must be a \abrv{pos} tag and no other constituent symbol, and each symbol above the first layer must not be a \abrv{pos} symbol.
     They indicate the most primitive categorization of individual tokens in the sentence.
+    In our example tree, the symbols \(\cn{wrb}\) and \(\cn{pt}\) are \abrv{pos} tags.
 
-    Let us assume an alphabet \(\varPi\) of \abrv{pos} tags and an alphabet \(\varGamma\) of constituent symbols.
-    A \emph{constituent structure} is an indexed tree over \(\varGamma\).
+    Within a constituent tree, we consider a \emph{lexical head} as the critical token for a syntactic category (i.e. the constituent symbol) of a phrase.
+    For each inner node in the constituent tree, there is exactly one position in the sentence predestined for this role.
+    Vice versa, a position may be the lexical head of multiple inner nodes.
+    However, there is one condition: The lexical head must either be a leaf directly below the node or a lexical head of a child node.
+
+    Now, let us formalize the above.
+    We assume an alphabet of \deflab{token}[tokens] \(\Sigma\), i.e.\@ words, punctuation marks, parentheses, etc.\@ that are used to form sentences, and two additional alphabets, \(\varPi\) of \abrv{pos} tags, and \(\varGamma\) of constituent symbols.
+    \(\Sigma^*\) denotes the set of all strings over these tokens, a superset that contains all grammatical sentences (and also everything else that consists of the tokens in \(\Sigma\)).
+
     A \emph{constituent tree} is a triple \((t, p, w)\) where
     \begin{compactitem}
         \item \(w\) is a string of tokens in \(\varSigma^*\),
         \item \(t\) is an indexed tree over \(\varGamma\) such that each position in \([|w|]\) occurs exactly once as a leaf, and
         \item \(p\) is a string of \abrv{pos} tags in \(\varPi^{|w|}\).
     \end{compactitem}
+    In each constituent tree, we distinguish three parts: the sequence of tokens, the \abrv{pos} tag above each token, and the \deflab<constituent tree>[cstruct]{constituent structure} that contains the constituent symbols an defines the hierarchical structure.
+    To accommodate discontinuous constituents, each constituent structure is defined as an indexed tree over \(\varGamma\) so that each leaf is the position of a token.
 
-    Within a constituent structure, we may also consider a \emph{lexical head} as the critical token for a syntactic category in a phrase.
-    The leaf for the head symbol in a constituent structure \(t\) is denoted by \(\head(t)\).
-    \todo{maybe formalize the notation and explain some more: if the lexical symbol is also present in a child inner node, then it must also be the head of it}
-    When a tree is illustrated and its lexical heads are considered, then the path to the leaf for the lexical head is double-struck.
+    \(\head(t)\) denotes the leaf that indexes the lexical head for the root in the constituent structure \(t\).
+    When a tree is illustrated and its lexical heads are considered, then, for each inner node in the constituent structure, the path to its lexical head is double-struck.
     \Cref{fig:pre:ctree} shows an example.
-%    We call each direct child that does not contain the lexical head a \emph{modifier}.
+    %    We call each direct child that does not contain the lexical head a \emph{modifier}.
 
     A \emph{treebank} is a finite set of constituent trees.
     They are assembled by linguists for texts collected from news articles, written speeches, etc.\@ and annotated with their constituent structure.
@@ -237,33 +244,200 @@
     There are similar phenomena as (dis-)continuity in dependency trees, they are referred to as \emph{(un-)projectivity}.
     We will not engage in dependency trees in this work, some references are discussed in \cref{sec:literature}.
 
-    \section{Assessing the Prediction of Constituent Structures}
-    When dealing with the assessment of parsers, we compare predicted constituent structures to the ones found in treebanks.
-    In this context, the structures found in these treebanks are called \emph{gold} or ground truth.
-    In general, it is desired to avoid using the same gold constituent trees for learning the parser as well as for the assessment.
-    Therefore, the treebanks are partitioned into distinct parts for training and assessment; usually there are three parts:
-    \begin{inparaenum}
-        \item a \emph{training portion}]that is solely used to learn a parsing model,
-        \item a \emph{development portion} that is used to monitor the model \emph{during} the training process, and
-        \item a \emph{test portion} that is used to assess the model \emph{after} the training process.
-    \end{inparaenum}
-    Such a partition is called a \emph{split}.
-    For each treebank that is publicly available, there is also a split that is shared in the parsing community.
-    So when different parsers are compared for the same treebank, they were trained and assessed using the same sets of trees.
+    \section{Empirical Predictions}
+    Under the broad term \deflab{prediction}[(empirical) prediction], we subsume each process that assigns an output of predetermined shape to an input based on previously seen data consisting and prior knowledge.
+    In our cases, such an assignment is determined by choosing an output that optimizes a \deflab<empirical prediction>{confidence} value (e.g. a score or probability) among a predefined set of possible outputs.
+    The following defines some important terms that are used in conjunction with empirical predictions.
+    Here, we will cover some basic terms that are used throughout this thesis.
+    For more detailed elaborations in this field, refer to \Citet{Moh12,Dau17}.
 
+%    \paragraph{Prediction discipline}
+%    There are certain tasks that do not only fall under the abstract label \emph{prediction}, but also share other similarities.
+%    Some models may have been proven advantageous in their setting, we can build upon these experiences.
+%    \begin{asparaitem}
+%        \item
+%            We call a prediction a \emph{classification}, if it assigns a single label in a predetermined set to the input.
+%        \item
+%            \emph{Sequence tagging} assigns a single label for each position in an input sequence, it can be seen as a classification for each element in the input.
+%        \item
+%
+%    \end{asparaitem}
+
+    \paragraph{Models.}
+    A \deflab<empirical prediction>{model}[(prediction) model] defines the domain of inputs, outputs, confidence values and variables as well as how confidence values are determined.
+    The variables (called \deflab<prediction!model>{parameters}) steer the computed confidence values.
+    Consider a model as a parametrized function \(\varphi_\theta\colon X \times Y \to \mathcal{C}\) where \(\theta\) are some parameters (or variables) in an associated domain \(\Theta\), \(X\) is the set of inputs, \(Y\) is the set of outputs and \(\mathcal{C}\) the domain of confidence values, and a total order on \(\mathcal{C}\) denoted by \(\rel\).\todo{prelim: parametrized function}
+    Usually, the domain of confidence values are real numbers and the order \(\rel\) is \(\leq\), such that the confidence is interpreted as a score.
+    In the following, we will silently assume this coincidence.
+
+    In general, we distinguish two types of models: \deflab<prediction!model>{generative models} and \deflab<prediction!model>{discriminative models}.
+    While generative models define a joint probability distribution of in- and outputs, discriminative models define a probability or score of their output conditioned on the input.
+    Generative models can be used to generate samples of pairs containing in- and outputs.
+    Discriminative models on the other hand, are not able to do this in general, as they do not model the structure of the input.
+
+    \begin{example}[Statistical parsing in the empirical prediction framework.]
+        Parsing is a process that predicts a constituent structure for a given sequence of tokens.
+        A statistical grammar formalism is a model that has proven successful in this setting in the past.\cite{}
+        It defines a probability distribution for constituent trees \(p\colon \mathcal{C} \to \DR\), usually by the sum over all derivations per constituent tree and by the product of all rules' weights per derivation.
+        This is formalized in the equation \[
+            p(\xi) = \sum_{d \in D(\xi)} \prod_{\rho \in \pos(d)} \hat{p}(d(\rho))
+        \]
+        where \(\xi \in \mathcal{C}\) is a constituent tree, \(D(\xi)\) is the set of all derivations in the grammar for the constituent tree \(\xi\), and \(\hat{p}\) is a weight function for the rules in the grammar.
+        The function \(\hat{p}\) is defined such that the term \(\prod_{\rho \in \pos(d)} \hat{p}(d(\rho))\) is a probability distribution over all derivation trees \(d \in D\) in the grammar.
+        As the sequence of tokens \(w\) is part of the constituent tree \(\xi\), this is trivially equivalent to a joint probability distribution \(p(\xi) = p(w, \xi)\), which is characteristic for a generative model.
+        The values assigned by the function \(\hat{p}\) form the model parameters, they are restricted to form probability distributions.
+        Probabilistic grammars can easily be used to generate constituent trees (again, trivially in tandem with a sequence of tokens) by probabilistically sampling rules.
+    \end{example}
+
+    \begin{example}[Sequence tagging in the empirical prediction framework.]
+        \todo[inline]{dazu müssten erst \abrv{ann} erklärt werden}
+    \end{example}
+
+    \paragraph{Parameters.}
+    We distinguish two essential sets of parameters: \deflab<prediction!model!parameters>{hyper parameters} and \deflab<prediction!model!parameters>{model parameters}.
+    Hyper parameters determine details about the model and training process itself. %, to some extend, the model and the training objective can also be seen as hyper parameters.
+    They are not trained upon, but are chosen for the training either by prior knowledge or by trying different combinations and manually evaluating their results.
+    Model parameters are variables defined by a model that are tuned during the training process to match a training objective.
+
+    \paragraph{Training.}
+    \deflab<prediction>{training}[Training] is the process of tuning the parameters of a model in terms of a \deflab<prediction!training>{training objective}.
+    A training objective assesses the assigned confidence values of a model in a sample of input and output pairs and defines a criterion for optimal parameters.
+    In some cases, it is possible to compute the model parameters that optimize the training objective in closed form.
+    In other cases, there are iterative processes that change the parameters to gradually improve upon the criterion.
+    \todo{supervised vs. semi-supervised (i.e. what are pretrained models and what is fine-tuning) vs. unsupervised training}
+
+    \paragraph{Data and splits.}
+    The \deflab<prediction>{data sets} contain pairs of input and output that we use to deduce a prediction model.
+    In this context the, the output (i.e. the to-be predicted) component of these instances is referred to as \deflab<prediction!data sets>{gold}.
+    The data instances are used in two roles: for training, and for assessing a prediction model.
+    The data sets are usually split into three parts to accommodate these roles:
+    \begin{inparaenum}
+        \item a \deflab<prediction!data sets>{training portion} that is solely used to train a model,
+        \item a \deflab<prediction!data sets>{development portion} that is used to monitor the model during the training process and assess the selection of hyper parameters, and
+        \item a \deflab<prediction!data sets>{test portion} that is used to assess a final model.
+    \end{inparaenum}
+    For common data sets that are used within a community, specific partitions are shared to enable fair comparisons between publications.
+    In such publications, the results of different models are compared using the same test portions of the same data sets.
+
+    There are two distinct examples for empirical predictions in (or at least near) the scope of this thesis.
+
+    \begin{example}[Statistical parsing in the empirical prediction framework.]
+        Parsing is a process that predicts a constituent structure for a given sequence of tokens.
+        Statistical grammar formalisms are models that have proven successful in this setting in the past.
+        They define a joint probability for each sentence and constituent tree, and therefore are generative models.
+        The specific grammar formalism, certain restrictions of the probability distributions, or details about the grammar induction (such as binarization) may form the set of hyper parameters.
+        The process of training tunes the probability assignment for each rule to maximize the likelihood in a given treebank.
+        In case of naive probabilistic grammars, this is computed in closed form by relative frequency estimation.
+    \end{example}
+
+    \begin{example}[Supertagging in the empirical prediction framework.]
+        In the case of parsing with supertagging, an integral part of the parsing process is an assembly of a small grammar by choosing some rules out of a predetermined set of rule blueprints (this specific process is called supertagging).
+        The process may also be described using a generative model.
+        But in practice, we use specific neural networks for this task, as they have proven very accurate in the past; they are textbook examples for discriminative models.
+        They define many hyper parameters that determine the \emph{architecture} (i.e. the shape of the neural network), e.g.\@ the used word embeddings, its depth or the number of parameters in a certain layer, and many details about the training process, e.g.\@ the learning rate or some condition that ends the iterative training process.
+        During the training process, a treebank is transformed into tuples of the token sequence and the optimal choice of blueprints for each constituent tree.
+        The training objective maximizes the likelihood of the blueprints conditioned on the input tokens.
+    \end{example}
+
+    \subsection{Neural Networks}
+    As mentioned in the last example, we use neural networks to implement certain prediction models.
+    They are a family of parametrized functions that emerged in the last decades and proved extremely useful in many tasks, including ones settled in natural language processing. \todo{ref examples}
+    As in the parent section, we will only give a brief overview for the concepts needed to understand further sections of this theses.
+    For further elaborations in the field of neural networks for natural language processing, consult \cref{Gol17}.
+
+    In general, we consider a neural network (short \abrv{ann} for \emph{artificial} neural network) a parametrized function  where the outputs are vectors of real numbers, i.e.\@ they are of the form \(f_\theta\colon X \to \DR^n\) where \(\theta\) denotes the parameters, \(X\) the set of inputs and \(n > 0\) is the output dimension.
+    There is a set of well studied \abrv{ann}s that are used as \emph{modules} to form new \abrv{ann}s by composition; such a composition is called an \emph{architecture}.
+    In the following, some of these modules are briefly explained.
+
+    \subsubsection{Embeddings}
+    Embeddings are used to assign vectors to any other type of objects.
+    These assigned values are the foundation for computations in other modules, which usually assume real vectors as input.
+    The most simple form of embeddings are \deflab<>{static embeddings}.
+    Let us consider a set of input objects \(X\), a bijection \(\mathit{idx}\colon X \to [|X|]\) and an output dimension \(n \in \DN_+\).
+    A static embedding for \(X\) of dimension \(n\) is a parametrized function \(f_W\colon X \to \DR^n\) which assumes a matrix of parameters \(W \in \DR^{(|X| \times n)}\) and assigns a row vector to each element in \(X\), i.e.\@ \(f_W(x) = W_{\mathit{idx}(x)}\) for each \(x \in X\).
+    In some applications, it is sensible to add a vector for unknown elements, e.g.\@ for unknown tokens that do not occur in the data used for training.
+    If the input is a sequence, static embeddings are often applied element-wise.
+    E.g.\@ a sequence of tokens \(\sigma_1 \cdots \sigma_n\) is usually embedded as a sequence of vectors \((f_W(\sigma_i) \mid i \in [n])\).
+    There are pretrained token embeddings that have proven convenient in many tasks and are shared in the community, such as fasttext \citep{} and word2vec \citep{}.
+
+    Some architectures complement element-wise token embeddings by \emph{character-wise embeddings}. \citep{}
+    These are recurrent modules (cf.\@ \cref{sec:preliminaries:nn:recurrent}) that process the sequence of characters and yield a vector of specified length for each token (which, in turn, requires a static embedding for the set of characters).
+    This type of modules is associated with the handling of unknown words with the following intuition:
+        If a token does not occur in the training data, there is no specific element-wise embedding for it.
+        But the character-wise embedding might have learned some sensible information based on similar tokens in the training data.
+
+    Recently, specialized methods for sequence embedding that do also consider positional and contextual information in the assignment were published, such as \abrv{bert} \citep{Devlin2019} and flair embeddings \citep{Akb19}.
+    However, they are (in some cases rather large) compositions of \abrv{ann} modules for sequence tagging themselves, using a transformers and \abrv{lstm} units, respectively.
+
+    \subsubsection{Linear Layers, Activation Functions and Multi-Layer Perceptrons}
+    After embeddings, linear layers are an essential part in \abrv{ann}s.
+    They are a linear transformation of vectors from an a specified input to an output dimension.
+    Formally, let \(m, n \in \DN_+\) by some input and output dimensions.
+    Then a linear layer is a function \(f_{(W,b)}\colon R^m \to R^n\) where the matrix \(W \in R^{(m\times n)}\) and the bias vector \(b\in R^n\) are parameters and \(f_{(W,b)}(x) = Wx+b\).
+
+    Activation functions is a general term for non-linear functions that are used in between compositions of linear layers such that the result of the composition is not linear.
+    There are some options that implement desirable properties or interpretations in some settings, such as the following:
+    \begin{enumerate}
+        \item
+            A \emph{Rectified Linear Unit (ReLU)} is very easy to compute and used in large architectures to save computational power.
+            It is defined for each vector \(x\in R^n\) for any dimension \(n \in \DN_+\) by cutting-off negative values: \(\mathrm{relu}(x) = (\max(0, x_i) \mid i \in [n])\).
+        \item
+            The \emph{sigmoid function} is applied point-wise to each component of a vector and assigns values in the interval between \(0\) and \(1\) as follows: \(\mathrm{sigmoid}(x) = (\frac{1}{1-e^{x_i}} \mid i \in [n])\) for each \(x \in \DR^n\) and \(n \in \DN_+\).
+            These values are often interpreted as one value of a binary probability distribution.
+        \item
+            The \emph{softmax function} also maps each value in a vector to the interval between \(0\) and \(1\).
+            They are normalized such that they sum to \(1\) and are therefore often interpreted as a probability distribution over the set of indices of the vector.
+            It is defined as follows: \(\mathrm{softmax}(x) = (\frac{e^{x_i}}{z} \mid i \in [n])\) for each \(x\in \DR^n\) and \(n \in \DN_+\) where \(z = \sum_{i \in [n]} e^{x_i}\).
+    \end{enumerate}
+    The latter two are also used as outer-most modules in many architecture, specifically because of their interpretation as probabilities.
+
+    A \emph{multi-layer perceptron} is a composition of multiple linear layers with activation functions.
+
+
+    \subsubsection{Recurrent Neural Networks}
+    Recurrent modules are a foundation for the processing of sequence inputs in neural networks.
+    They are defined, such that each input vector is complemented with the previous output, starting with an initialization vector for the first input.
+    Formally, this concept of recurrence uses some inherent module \(f_\theta\colon \DR^{n+m} \to \DR^m\) parametrized by some \(\theta\) and incrementally computes, for an input sequence \(x_1, \ldots, x_n \in \DR^n\), a sequence of outputs \(g_{(f, \theta, h_0)}(x_1, \ldots, x_n) = (h_i = f_\theta(x_i \cdot h_{i-1}) \in \DR^m \mid i \in [n])\) where \(h_0 \in \DR^m\) is an initial value and parameter of the recurrent module \(g\).
+
+    Linear short-term memory (short \abrv{lstm}) cells \citep{Hoc97} established as a quasi-standard for these inherent modules.
+    In addition to the previous output \(h_{i-1}\) that is used to compute \(h_i\), they also carry a cell state between the computations for each position, which is not part of the output.
+
+    Bidirectional recurrent modules combine the vectors obtained by two recurrent modules, one for the sequence from left to right and the other in the opposite direction, by concatenating the vectors for each position.
+
+
+    \subsubsection{Transformers}
+    The transformer architecture \citep{vaswani2017attention} became a standard tool in sequence processing with neural networks, and in some cases even superseded recurrent modules in the last few years. \citep{}
+    Specifically in the form of pretrained models that are shared in the community, they have shown impressive accuracy. \citep{}
+    Transformers do not employ the concept of recurrence, but are based around \emph{self-attention} and \emph{positional embeddings} to process sequences.
+
+
+    \subsection{Assessing the Prediction of Constituent Structures}
+%    When dealing with the assessment of parsers, we compare predicted constituent structures to the ones found in treebanks.
+%    In this context, the structures found in these treebanks are called \emph{gold} or ground truth.
+%    In general, it is desired to avoid using the same gold constituent trees for learning the parser as well as for the assessment.
+%    Therefore, the treebanks are partitioned into distinct parts for training and assessment; usually there are three parts:
+%    \begin{inparaenum}
+%        \item a \emph{training portion}]that is solely used to learn a parsing model,
+%        \item a \emph{development portion} that is used to monitor the model \emph{during} the training process, and
+%        \item a \emph{test portion} that is used to assess the model \emph{after} the training process.
+%    \end{inparaenum}
+%    Such a partition is called a \emph{split}.
+%    For each treebank that is publicly available, there is also a split that is shared in the parsing community.
+%    So when different parsers are compared for the same treebank, they were trained and assessed using the same sets of trees.
+%
     When assessing the quality of a parser, we measure two dimensions:
     \begin{inparaenum}
         \item the time needed for the prediction process, and
         \item the accuracy of predicted structures.
     \end{inparaenum}
     The process for measuring the first dimension is rather intuitive:
-        The time is taken for the prediction of a constituent structure for each sentence in the test portion of a treebank.
+    The time is taken for the prediction of a constituent structure for each sentence in the test portion of a treebank.
     This time is reported either as sum for the whole test portion or as quotient \(\frac{\text{number of sentences}}{\text{parsing time}}\) for the number of parsed sentences per second.
 
     The evalb-style labeled \emph{f1-score} \citep{Black91,Col97} established as the standard for measuring the accuracy of predicted constituent structures.
     This score is computed as follows:
-        The sets of predicted and the gold constituent structures are mapped each into a set that contains a tuple \((\xi, A, \mathit{yd})\) for each constituent structure \(\xi\) and each of its inner nodes with label \(A\) and yield \(\mathit{yd}\).
-        According these two sets, \(P\) for all predictions and \(G\) for the gold constituent trees, the precision (\(p = \frac{|P \cap G|}{|P|}\)), recall (\(r = \frac{|P \cap G|}{|G|}\)) and f1-score (\(\frac{2\cdot p\cdot r}{p + r}\)) are computed in the usual fashion.
+    The sets of predicted and the gold constituent structures are mapped each into a set that contains a tuple \((\xi, A, \mathit{yd})\) for each constituent structure \(\xi\) and each of its inner nodes with label \(A\) and yield \(\mathit{yd}\).
+    According these two sets, \(P\) for all predictions and \(G\) for the gold constituent trees, the precision (\(p = \frac{|P \cap G|}{|P|}\)), recall (\(r = \frac{|P \cap G|}{|G|}\)) and f1-score (\(\frac{2\cdot p\cdot r}{p + r}\)) are computed in the usual fashion.
     The \abrv{pos} tags are often part of the prediction but not assessed as part the f1-score.
     They are rather reported separately as the accuracy of the predicted \abrv{pos} tags compared to the gold ones.
     The python tool \emph{discodop} supplies an implementation for both, the f1-score of constituent structures and the accuracy of \abrv{pos} tags. \citep{CraSchBod16}
@@ -319,25 +493,25 @@
             \small
             \begin{align*}
                 G = \{
-                    &(\cn{sbar}, [6]),
-                     (\cn{s}, [6]), \\
-                    &(\cn{vp}, \{1,4,5,6\}),\\
-                    &(\cn{vp}, \{1,5,6\}),
-                     (\cn{np}, \{2,3\}), \\
-                    &(\cn{wh}, \{1\}),
-                     (\cn{prt}, \{6\}) \}
-             \end{align*}
-         \end{minipage}
+                &(\cn{sbar}, [6]),
+                (\cn{s}, [6]), \\
+                &(\cn{vp}, \{1,4,5,6\}),\\
+                &(\cn{vp}, \{1,5,6\}),
+                (\cn{np}, \{2,3\}), \\
+                &(\cn{wh}, \{1\}),
+                (\cn{prt}, \{6\}) \}
+            \end{align*}
+        \end{minipage}
         \hfill
-         \begin{minipage}{.3\linewidth}
-             \small
-             \begin{align*}
+        \begin{minipage}{.3\linewidth}
+            \small
+            \begin{align*}
                 P = \{
-                    &(\cn{s}, [6]), \\
-                    &(\cn{vp}, \{1,4,5,6\}),\\
-                    &(\cn{np}, \{2,3\}),
-                     (\cn{nn}, \{3\}) \\
-                    &(\cn{prt}, \{6\}) \}
+                &(\cn{s}, [6]), \\
+                &(\cn{vp}, \{1,4,5,6\}),\\
+                &(\cn{np}, \{2,3\}),
+                (\cn{nn}, \{3\}) \\
+                &(\cn{prt}, \{6\}) \}
             \end{align*}
         \end{minipage}
         \hfill
@@ -358,23 +532,6 @@
             The upper right corner shows the values for precision, recall and f1-score.
         }
     \end{figure}
-
-    \section{Classification Devices}
-    contents:
-    \begin{itemize}
-        \item what is a classification
-        \item statistical classification
-        \item generative models vs. discriminative models
-        \item sequence tagging = classification for each position in a sequence
-
-        \item models for sequence tagging:
-        \begin{itemize}
-            \item hidden markov models (generative model)
-            \item conditional random fields (discriminative)
-            \item neural networks (discriminative)
-        \end{itemize}
-    \end{itemize}
-
 
     \ifSubfilesClassLoaded{%
         \printindex
