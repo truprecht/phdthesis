@@ -1,7 +1,7 @@
 \documentclass[../../document.tex]{subfiles}
 
 \begin{document}
-    \section{Linear Context-Free Rewriting Systems}
+    \section{Linear Context-Free Rewriting Systems}\label{sec:grammar:lcfrs}
     In linear context-free rewriting systems (\abrv{lcfrs}), each rule composes a tuple of strings from arguments that are string tuples as well.
     The first definition formalizes the notation for such functions using binary variables that determine an argument (subscript) and one of its components (superscript).
     The sets of compositions are restricted such that the variables occur ordered according to their sub- and superscripts, and no variables for consecutive components of the same argument occur next to each other.
@@ -72,6 +72,7 @@
 
         Rules are denoted in the form \(A \to c\,(B_1, \ldots, B_k)\) instead of \((A, c, B_1 \cdots B_k)\); \(A\) is called the left-hand side (\abrv{lhs}) nonterminal and \(B_1, \ldots B_k\) are the right-hand side (\abrv{rhs}) nonterminals, \(c\) is the composition of the rule.
         The natural \(k\) is the \deflab<\lcfrs!rule>[lcfrs:rk]{rank} of the rule; the \emph{rank} of the grammar \(G\) is the maximum rank occurring in the rules of \(G\).
+        The set of all rules over \(N\) and \(\varSigma\) that fit a given fanout function \(\mathit{fo}\colon N \to \DN_+\) is denoted by \(\Rules^\varSigma(N, \mathit{fo}))\).
     \end{definition}
 
     \begin{definition}[\abrv{Lcfrs} Grammar Forms]
@@ -114,33 +115,72 @@
         We identify this set with the \(N\)-indexed partition of \(\derivs^R\) that assigns each nonterminal \(A\) to the derivations whose root is equipped with \abrv{lhs} \(A\).
     \end{definition}
 
-    \begin{definition}[Yield and Parse]
+    \begin{definition}[Yield]
         Consider a derivation \(d\) in \(\derivs^R_A\) of the form \(d = r\,(d_1, \ldots, d_k)\) where the root \(r\) is of the form \(A \to c\,(B_1, \ldots, B_k)\).
         The \deflab<\lcfrs!derivation>[lcfrs:yd]{yield} of \(d\) is defined recursively: \(\yield(d) = \sem{c}(\yield(d_1), \ldots, \yield(d_k))\).
-        For the definition of the parse of \(d\), let us consider the sequences of terminal symbols \(w_1, \ldots, w_{k+1} \in \varSigma^*\) such that,
+        For each set of derivations \(D \subseteq \derivs_G\), we denote the set fo all derivations for a given string \(w \in \varSigma^*\) by \(D(w) = \{d\in D \mid \yield(d) = w\}\).
+    \end{definition}
+
+    \vspace{.2cm}
+
+    \noindent
+    \begin{minipage}[b]{.5\linewidth}
+        \begin{example}[Continues \cref{ex:lcfrs:comp,ex:lcfrs:rules}]\label{ex:lcfrs:deriv}
+            Let's consider the tree illustrated to the right:
+                It is a tree over rules in the \abrv{lcfrs} \(\mathrm{G} = (N, \Sigma, \nt{v}, R)\).
+            Its root has the \abrv{lhs} \(\nt{n}_2\), the tree is an element of \(\derivs^R_{\nt{n}_2}\).
+            The yield of \(d\) is term over compositions computed in \cref{ex:lcfrs:comp}: \(\yield(d) = (\tn{A hearing}, \: \tn{on the issue})\).
+        \end{example}
+    \end{minipage}
+    \hfill
+    \begin{tikzpicture}[level distance=6ex, font=\small, sibling distance=3.7cm, inner sep=2pt]
+        \node (root) {\(\nt{n}_2 \to (\x_1^1, \tn{on} \, \x_2^1)\:(\nt{n}, \nt{p})\)}
+        child {node {\(\nt{n} \to (\x_1^1 \, \tn{hearing})\:(\nt{n}^\nt{L})\)}
+            child {node {\(\nt{n}^\nt{L} \to (\tn{A})\:()\)}}}
+        child {node {\(\nt{p} \to (\tn{the}\,\x_1^1)\:(\nt{n})\)}
+            child {node {\(\nt{n} \to (\tn{issue})\:()\)}}};
+    \end{tikzpicture}
+
+    \vspace{\baselineskip}
+
+    During the extraction and parsing rules are instantiated with sentence positions. (Cf.\@ \cite[Def. 6.8]{Kal10})
+    I.e.\@ instead of terminals that resemble objects in the sentence, we will assume matching sentence positions as lexical symbols in the rules.
+    All derivations are assembled such that the compositions only concatenate consecutive sequences of positions.
+    Each derivation is considered equivalent to a constituent tree that assumes the \abrv{lhs} nonterminals as inner nodes and the sentence positions as leaves.
+
+    \begin{definition}[Position Instantiation]
+        Let \(G = (N, \varSigma, S, R)\) be a grammar, \(w \in \varSigma^*\) a word over the same alphabet.
+        A grammar \(G' = (N, [|w|], S, R')\) is called a \deflab[\lcfrs]{position instantiation} of \(G\) in \(w\) if each \(r' = A \to c' (B_1, \ldots, B_k) \in R'\) is obtained from a rule \(r = A \to c (B_1, \ldots, B_k) \in R\) by replacing each lexical symbol \(\varsigma\) in \(c\) by a position \(i \in [|w|]\) such that \(w(i) = \varsigma\).
+        For such a pair of rules \(r\) and \(r'\), \(r'\) is called a position instance of \(r\) in \(w\).
+
+        A derivation \(d \in \derivs^{R'}\) is called \deflab[\lcfrs]{admissible}, if the yield \(\yield(d)\) of the form \((s_1, \ldots, s_k)\) contains contiguous sequences of positions \((s_i\mid i \in [k])\) in \(w\) and the last position in \(s_i\) is at least by 2 smaller than the first position in \(s_{i+1}\) for each \(i \in [k-1]\).
+    \end{definition}
+
+    \begin{definition}[Constituent Structure for Derivation]
+        Consider a grammar \((N, [|w|], S, R)\) that is a position instantiation of some grammar in a word \(w\), and an admissible derivation \(d \in \derivs^R\) of the form \(d = r\,(d_1, \ldots, d_k)\) where the root \(r\) is of the form \(A \to c\,(B_1, \ldots, B_k)\).
+        The composition \(c\) contains (possibly empty) sequences of positions \(w_1, \ldots, w_{k+1} \in []\) such that,
         \begin{compactitem}
-            \item \(w_1\) is the sequence of terminal symbols occurring before the variable \(\x_1^1\) in \(c\),
-            \item for each \(i \in \{2, \ldots, k\}\), \(w_i\) is the sequence of terminal symbols occurring between the variables \(\x_{i-1}^1\) and \(\x_i^1\) in \(c\), and
-            \item \(w_{k+1}\) is the sequence of terminal symbols occurring after the variable \(\x_k^1\) in \(c\).
-        \end{compactitem}
-        Then the \deflab<\lcfrs!derivation>[lcfrs:parse]{parse} of \(d\) is the tree \[
-        \parse(d) = A(w_1, \parse(d_1), w_2, \parse(d_2), \ldots, w_k, \parse(d_k), w_{k+1}) \text{.}
+                \item \(w_1\) is the sequence of terminal symbols occurring before the variable \(\x_1^1\) in \(c\),
+                \item for each \(i \in \{2, \ldots, k\}\), \(w_i\) is the sequence of terminal symbols occurring between the variables \(\x_{i-1}^1\) and \(\x_i^1\) in \(c\), and
+                \item \(w_{k+1}\) is the sequence of terminal symbols occurring after the variable \(\x_k^1\) in \(c\).
+            \end{compactitem}
+        Then the \deflab<\lcfrs!derivation>[lcfrs:parse]{constituent structure} for \(d\) is the tree \[
+            \parse(d) = A(w_1, \parse(d_1), w_2, \parse(d_2), \ldots, w_k, \parse(d_k), w_{k+1}) \text{.}
         \]
     \end{definition}
 
     \begin{example}[Continues \cref{ex:lcfrs:comp,ex:lcfrs:rules}]\label{ex:lcfrs:deriv}
-        Let's consider the two trees illustrated below, the left one \(d\) is a tree over rules in the \abrv{lcfrs} \(\mathrm{G} = (N, \Sigma, \nt{v}, R)\), the right one is an element in \(\T_N(\Sigma)\).
-        Its root has the \abrv{lhs} \(\nt{n}_2\), the tree is an element of \(\derivs^R_{\nt{n}_2}\).
-        The yield of \(d\) is term over compositions computed in \cref{ex:lcfrs:comp}: \(\yield(d) = (\tn{A hearing}, \: \tn{on the issue})\).
-        The parse of \(d\) is illustrated to the right of \(d\).
+        Let's consider the two trees illustrated below:
+            The left figure illustrates is a derivation in the instantiated grammar \(\mathrm{G'} = (N, [8], \nt{v}, R)\) of \(\mathrm{G}\) in \(w = \text{A hearing is scheduled for the issue today}\).
+            The right figure illustrates the constituent structure for \(d\).
 
         \null\hfill
         \begin{tikzpicture}[level distance=6ex, font=\small, sibling distance=3.7cm, inner sep=2pt]
-            \node {\(\nt{n}_2 \to (\x_1^1, \tn{on} \, \x_2^1)\:(\nt{n}, \nt{p})\)}
-            child {node {\(\nt{n} \to (\x_1^1 \, \tn{hearing})\:(\nt{n}^\nt{L})\)}
-                child {node {\(\nt{n}^\nt{L} \to (\tn{A})\:()\)}}}
-            child {node {\(\nt{p} \to (\tn{the}\,\x_1^1)\:(\nt{n})\)}
-                child {node {\(\nt{n} \to (\tn{issue})\:()\)}}};
+            \node {\(\nt{n}_2 \to (\x_1^1, \tn{5} \, \x_2^1)\:(\nt{n}, \nt{p})\)}
+            child {node {\(\nt{n} \to (\x_1^1 \, \tn{2})\:(\nt{n}^\nt{L})\)}
+                child {node {\(\nt{n}^\nt{L} \to (\tn{1})\:()\)}}}
+            child {node {\(\nt{p} \to (\tn{6}\,\x_1^1)\:(\nt{n})\)}
+                child {node {\(\nt{n} \to (\tn{7})\:()\)}}};
         \end{tikzpicture}
         \hfill
         \begin{tikzpicture}[level distance=4.5ex, font=\small, inner sep=2pt]
@@ -148,15 +188,34 @@
             child {node {\(\nt{n}\)}
                 [sibling distance=3em]
                 child {node {\(\nt{n}^\nt{L}\)}
-                    child { node {\(\tn{A}\)}}}
-                child {node {\(\tn{hearing}\)}}}
-            child {node {\(\tn{on}\)}}
+                    child { node {\(\tn{1}\)}}}
+                child {node {\(\tn{2}\)}}}
+            child {node {\(\tn{5}\)}}
             child {node {\(\nt{p}\)}
                 [sibling distance=2em]
-                child {node {\(\tn{the}\)}}
+                child {node {\(\tn{6}\)}}
                 child {node {\(\nt{n}\)}
-                    child { node {\(\tn{issue}\)}}}};
+                    child { node {\(\tn{7}\)}}}};
         \end{tikzpicture}
         \hfill\null
     \end{example}
+
+    \begin{definition}
+        Consider a collection of \(k \in \DN\) mutual exclusive and finite sets of positions \((\pi_i \subset \DN_+ \mid i \in [k])\) and a superset \(\pi_0 \supseteq \bigcup_{i \in [k]} \pi_i\).
+        For each set \(\pi_i\), there are a distinct positive integer \(s_i\) (and \(s\)) and a sequence of strings \(w_i = (w_i^j \in \pi_i^+ \mid j \in [s_i])\) such that
+        \begin{itemize}
+            \item each \(w_i^j\) is a non-empty sequence of consecutive positions and each position in \(\pi_i\) occurs exactly once in \(w_i\),
+            \item for each \(j \in [s-1]\), the difference between the least (and left-most) position in \(w_i^{(j+1)}\) and the greatest (and right-most) position in \(w_i^j\) is at least 2, and
+            \item for each \(i \in [k-1]\), the positions in \(w_i^1\) are smaller than the positions in \(w_{i+1}^1\).
+        \end{itemize}
+
+        The composition \(c \in \C^{\pi_0}\) such that \(\sem{c}(w_1, \ldots, w_k) = w_0\) is denoted by \(\mathrm{comp}(\pi_0, \pi_1, \ldots, \pi_k)\).
+    \end{definition}
+
+    \begin{definition}
+        Let \(G = (N, \varSigma, S, R)\) be an \abrv{lcfrs} and \(\weight \colon R \to \DR_{\ge 0}\) an assignment of a non-negative value to each rule in \(G\).
+        We call \(\weight\) a \deflab{weight assignment} for \(G\) and the tuple \((G, \weight)\) a \deflab{weighted \abrv{lcfrs}}.
+        The weight of a derivation \(d \in \derivs_G\) is the sum over all positions' weights: \[ \weight(d) = \sum_{\rho \in \pos(d)} \weight(d(\rho))\text{.} \]
+        The set of \emph{least parses for \(w \in \varSigma\)} is \(\derivs^{\mathrm{min}}_G(w) = \{ d \in \derivs_G(w) \mid \weight(d) \leq \weight(d') \text{for each} d' \in \derivs_G(w) \}\).
+    \end{definition}
 \end{document}

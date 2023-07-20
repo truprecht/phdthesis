@@ -59,82 +59,61 @@
         \end{align*}
     \end{example}
 
-    \begin{definition}[\abrv{Dcp} Grammar]
-        A \deflab[dcp]{definite clause program}%
-        \defabrv{\dcp}{\abrv{dcp}}
-        is a tuple \(G=(N, \varGamma, \varSigma, S, R)\) where
-        \begin{compactenum}
-            \item \(N\) is a finite set (\emph{nonterminals}),
-            \item \(\varGamma\) and \(\varSigma\) are alphabets (\emph{terminals}),
-            \item \(S \in N\) (\emph{initial non-terminal}),
-            \item \(R\) is a finite subset of \(\bigcup_{k \in \DN} N \times \C^{\varGamma\varSigma}_k \times N^k\) (\deflab<\dcp>{rule}[rules]). % such that for each rule \((A, c, B_1\cdots B_k)\) holds: if \(A = S\) then \(c\) is of length 1.
-        \end{compactenum}
+    Aside from the form of the compositions (and therefore also the concept of fan-out), \abrv{dcp} grammars, derivations and most of the concepts of rule and grammar forms are defined analogously to \abrv{lcfrs} grammars and we will refrain from repeating them completely but focus on the differences to \abrv{lcfrs} grammars.
+    As we have seen \abrv{dcp} compositions contain elements from two alphabets, \(\varGamma\) for inner nodes (which we will assume to be constituent symbols) and  \(\varSigma\) for leaf nodes (tokens or sentence positions, respectively), only the symbols in \(\varSigma\) are considered lexical symbols.
+    The tuple for a \abrv{dcp} grammar is hence extended by the additional alphabet and assumes the form \((N, \varGamma, \varSigma, S, R)\).
+    There is no fanout in \abrv{dcp} grammars, because the sequences of trees produced by compositions are not meant to be separated.
+    To avoid that a complete derivation produces more than one tree, we require that the composition in each non-nullary rule whose \abrv{lhs} nonterminal is the initial nonterminal \(S\) is of the form \(\gamma ( \omega )\) for some \(\gamma \in \varGamma\) and \(\omega \in \C^{\varGamma \varSigma}\), i.e.\@ there is at least one inner node that assembles the results of all successor rules.
+    As in other grammar formalisms, the yield for a derivation recursively computes the composition functions.
+    In contrast to string grammars, like \abrv{lcfrs}, the yield of a complete derivation is a tree in \(\T_\varGamma(\varGamma)\).
 
-        Rules are denoted in the form \(A \to c\,(B_1, \ldots, B_k)\) instead of \((A, c, B_1 \cdots B_k)\); \(A\) is called the \abrv{lhs} and \(B_1, \ldots B_k\) are the \abrv{rhs}, \(c\) is the composition of the rule.
-        The natural \(k\) is the \deflab<\dcp!rule>{rank} of the rule; the rank of the grammar \(G\) is the maximum rank occurring in the rules of \(G\).
-    \end{definition}
-
-    \begin{definition}[\abrv{Dcp} Grammar Forms]
-        The concepts around rule and grammar forms are equal in \abrv{lcfrs} and \abrv{dcp}:
-        \begin{compactitem}
-            \item Rules are called \deflab<\dcp!rule>{nullary}, \deflab<\dcp!rule>{unary} and \deflab<\dcp!rule>{binary} according to their rank.
-            \item A grammar that contains only rules of rank \(\leq 2\) is called \deflab<\dcp>{binary}.
-            \item A rule whose composition contains exactly one symbol in \(\varGamma\) is called \deflab<\dcp!rule>{lexixal}.
-            \item A grammar that contains only lexical rules is called \deflab<\dcp>{lexical}.
-            \item A rule that does not contain any symbol in \(\varGamma\) is called \deflab<\dcp!rule>{non-lexical}.
-        \end{compactitem}
-    \end{definition}
-
-    The concept of derivations in \abrv{dcp} is equal to those in \abrv{lcfrs}.
-    However, the terms yield and parse differ, since the grammar produces trees instead of strings.
-    We cannot easily enforce that compositions for a start nonterminal produce a single tree.
-    Therefore, the definition introduces a fresh symbol \(\cn{root}\) that governs the sequence of trees produced by the compositions of a derivation.
-
-    \begin{definition}[Derivation, Yield and Parse]
-        A \deflab<\dcp>{derivation} in a \abrv{dcp} \(G = (N, \varSigma, S, R)\) is a tree in \(\T_R\) such that each node's \abrv{rhs} nonterminals match the \abrv{lhs} nonterminals of its children.
-        The family of derivations \((\derivs^R_A \mid A \in N)\) is defined such that \(\derivs^R_A\) contains all derivations where the root is equipped with the \abrv{lhs} nonterminal \(A\).
-        The set of all derivations is \(\derivs^R = \bigcup_{A \in N} \derivs^R_A\).
-
-        Consider a derivation \(d\) in \(\derivs^R_A\) of the form \(d = r\,(d_1, \ldots, d_k)\) where the root \(r\) is of the form \(A \to c\,(B_1, \ldots, B_k)\).
-        We fix a symbol \(\cn{root}\) that is not in \(\varGamma \cup \varSigma\) and define the \deflab<\dcp!derivation>[dcp:parse]{parse} of \(d\) as the tree \[
-        \parse(d) = \cn{root}\Big( \sem{c}(\parse(d_1),\ldots,\parse(d_k))[\y=\varepsilon]\Big) \text{.}
-        \]
-        The \deflab<\dcp!derivation>[dcp:yd]{yield} of \(d\) is \(\yield(d) = \yield(\parse(d))\).
-    \end{definition}
+    As \abrv{lcfrs}, we deal with \abrv{dcp} grammars that are instantiated with sentence positions as lexical symbols during the rule extraction as well as parsing.
+    The formalism does not restrict the composition functions with respect to the lexical symbols of assembled trees; each derivation is inherently \emph{admissible}.\footnote{
+        Such ``unrestricted \abrv{dcp}'' showed to be infeasible for parsing during our experiments, so we equipped each rule with a fanout (which does not need to be consistent among all rules for a \abrv{lhs} nonterminal).
+        This is discussed in more detail in \cref{sec:parsing}.
+    }
+    For each derivation \(d\) in a position instantiated \abrv{dcp}, the constituent structure for \(d\) is the yield of \(d\).
 
     \begin{example}[Continues \cref{ex:dcp:comp}]
-        Consider the alphabet \(N = \{\nt{v}^\nt{L}, \nt{v}, \nt{n}, \nt{s} \}\) and the \abrv{dcp} \(G = (N, \varSigma, \nt{s}, R)\) where
+        Consider a \abrv{dcp} \((N, \varGamma, [|w|], \nt{s}, R)\) that is a position instantiation for \(w = \text{''where the survey was carried out''}\), with the alphabets \(N = \{\nt{v}^\nt{L}, \nt{v}, \nt{n}, \nt{s} \}\) and \(\varGamma = \{\cn{vp}, \cn{sbar}, \cn{s}, \cn{np}\}\), and
         \begin{align*}
             R = \Big\{ \quad
-            \nt{v}^\nt{L} &\to (\tn{where} \, \y)\:(),
-            \quad \nt{v} \to (\y \, \tn{out})\:(),
-            &\nt{n} &\to (\cn{np} (\y \, \tn{survey}))\:(), \\
-            \nt{v} &\to (\cn{vp}(\x_1(\y) \, \tn{was}))\:(\nt{v}),  \\
-            \nt{s} &\to (\cn{sbar} (\cn{s} (\x_1(\y) \, \x_2(\tn{the}))))\:(\nt{v}, \nt{n}),
-            &\nt{v} &\to (\cn{vp}(\x_1(\y) \, \x_2(\tn{carried})))\:(\nt{v}^\nt{L}, \nt{v})
+            \nt{v}^\nt{L} &\to (\tn{1} \, \y)\:(),
+            \quad \nt{v} \to (\y \, \tn{6})\:(),
+            &\nt{n} &\to (\cn{np} (\y \, \tn{3}))\:(), \\
+            \nt{v} &\to (\cn{vp}(\x_1(\y) \, \tn{4}))\:(\nt{v}),  \\
+            \nt{s} &\to (\cn{sbar} (\cn{s} (\x_1(\y) \, \x_2(\tn{2}))))\:(\nt{v}, \nt{n}),
+            &\nt{v} &\to (\cn{vp}(\x_1(\y) \, \x_2(\tn{5})))\:(\nt{v}^\nt{L}, \nt{v})
             \quad \Big\} \text{.}
         \end{align*}
 
-        The tree \(d\) illustrated below (left) is a derivation in \(\derivs^R_\nt{v}\), its parse is shown to the right of \(d\).
+        The tree \(d\) illustrated below (left) is a derivation in \(\derivs^R_\nt{s}\), its constituent structure \(\yield(d)\) is shown to the right.
         A part of the computations (for the bottom \(\cn{vp}\)-node) was already shown in the previous example in detail.
-        We can read the yield of \(d\) from the leave of the parse: \(\tn{where carried out was}\).
 
         \null\hfill
         \begin{tikzpicture}[level distance=6ex, font=\small, sibling distance=3.7cm, inner sep=2pt]
-            \node {\(\nt{v} \to (\cn{vp}(\x_1(\y) \, \tn{was}))\:(\nt{v})\)}
-            child {node {\(\nt{v} \to (\cn{vp}(\x_1(\y) \, \x_2(\tn{carried})))\:(\nt{v}^\nt{L}, \nt{v})\)}
-                child {node {\(\nt{v}^\nt{L} \to (\tn{where} \, \y)\:()\)}}
-                child {node {\(\nt{v} \to (\y \, \tn{out})\:()\)}}};
+            \node {\(\nt{s} \to (\cn{sbar} (\cn{s} (\x_1(\y) \, \x_2(\tn{2}))))\:(\nt{v}, \nt{n})\)}
+                child {node {\(\nt{v} \to (\cn{vp}(\x_1(\y) \, \tn{4}))\:(\nt{v})\)}
+                    child {node {\(\nt{v} \to (\cn{vp}(\x_1(\y) \, \x_2(\tn{5})))\:(\nt{v}^\nt{L}, \nt{v})\)}
+                        child {node {\(\nt{v}^\nt{L} \to (\tn{1} \, \y)\:()\)}}
+                        child {node {\(\nt{v} \to (\y \, \tn{6})\:()\)}}}}
+                child {node {\(\nt{n} \to (\cn{np} (\y \, \tn{3}))\:()\)}};
         \end{tikzpicture}
         \hfill
-        \begin{tikzpicture}[level distance=4.5ex, font=\small, inner sep=2pt]
-            \node {\(\cn{root}\)}
-            child{ node {\(\cn{vp}\)}
+        \begin{tikzpicture}[level distance=4.5ex, font=\small, inner sep=2pt, sibling distance=4em]
+            \node {\(\cn{sbar}\)} child {node {\(\cn{s}\)}
                 child {node {\(\cn{vp}\)}
-                    child {node {\(\tn{where}\)}}
-                    child {node {\(\tn{carried}\)}}
-                    child {node {\(\tn{out}\)}}}
-                child {node {\(\tn{was}\)}}};
+                    [sibling distance=3em]
+                    child {node {\(\cn{vp}\)}
+                        [sibling distance=2em]
+                        child {node {\(\tn{1}\)}}
+                        child {node {\(\tn{5}\)}}
+                        child {node {\(\tn{6}\)}}}
+                    child {node {\(\tn{4}\)}}}
+                child {node {\(\cn{np}\)}
+                    [sibling distance=2em]
+                    child {node {\(\tn{2}\)}}
+                    child {node {\(\tn{3}\)}}}};
         \end{tikzpicture}
         \hfill\null
     \end{example}

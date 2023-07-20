@@ -1,24 +1,38 @@
 \documentclass[../../document.tex]{subfiles}
 
 \begin{document}
-    \section{Extracting Lexical \abrv{Lcfrs}} \label{sec:extraction:readoff}
-    The extraction procedure in this section was introduced by \citet{RupMoe21}.
-    It is based on simple \abrv{lcfrs} read-off from treebanks as shown by \citet{KalMai13} followed by a per-tree lexicalization inspired by the procedures presented by \citet{EngMalMan18, MoeRup20}.
-    During the extraction, each constituent tree in the treebank is first binarized and a derivation of simple binary lcfrs rules is constructed for it (described in \cref{sec:extraction:readoff:simple}).
-    I.e.\@ only the rules occurring at the leaves in the derivations contain terminal symbols.
-    Each derivation consisting of simple \abrv{lcfrs} rules is transformed into a derivation of lexical rules by \emph{transporting} terminal symbols from the leaf rules into inner nodes (described in \cref{sec:extraction:readoff:lex}).
-    \todo{discuss the form of lcfrs supertags: the swapped label is nor necessary if the transportation direction can be inferred from the rest of the rule. E.g. with a transportation as def. by the strict guide it were regular lcfrs rules.}
+    \section{Extracting and Lexicalizing Simple \abrv{Lcfrs}} \label{sec:extraction:readoff}
+    This extraction scheme for supertags with \abrv{lcfrs} rules was the product of a joint work with Richard Mörbitz. \citep{MoeRup20,RupMoe21}
+    It is based on simple \abrv{lcfrs} read-off from treebanks as shown by \citet{KalMai13} followed by a per-tree lexicalization inspired by the procedures presented by \citet{EngMalMan18}.
 
-    \subsection{Reading-off Simple LCFRS Rules}\label{sec:extraction:readoff:simple}\todo{title: treebank grammars}
-    The extraction of statistical \abrv{lcfrs} from treebanks was formulated by \citet{MaierSogaard08} and extends the concept of context-free treebank grammar studied by \citet{Cha96}.
-    Such treebank grammars are essentially read of from each constituent tree in a treebank by defining a non-lexical rule for each inner node of the tree with its symbol as \abrv{lhs} nonterminal and its successors (or the corresponding \abrv{pos} symbols if we encounter leaves) as \abrv{rhs} nonterminals.
-    The compositions are defined according to the yield of the node and the yields of its successors.
-    Lastly, lexical, nullary rules are defined such that the \abrv{pos} symbol is the \abrv{lhs} and the composition contains exactly the token at the same position in the sentence.
-    The grammar is usually put into a statistical framework where a probability is induced for each rule counting the occurrences in the treebank where it was read-off.
-    The probabilities are normalized according to the \abrv{lhs} nonterminal.
+    Here, an \abrv{lcfrs} supertag is a tuple \((r, s)\) consisting of a lexical rule \(r\) and a transportation marker \(s\).
+    The lexical symbol in \(r\) is a sentence position in the yield of the constituent tree.
+    The boolean transportation marker \(s\) is used to undo the lexicalization procedure and obtain a constituent tree from a derivation of supertags.
+    We describe the extraction procedure independently for each constituent tree in a treebank in six steps:\footnote{
+        The original formulation contained an additional step (that was called \emph{dechain}) to remove unary non-lexical rules.
+        Our formulation of binarization already merges unary nodes in the same way as this step, and we can just skip it with equal results.
+    }
+    \begin{enumerate}
+        \item The constituent tree is binarized.
+        \item
+            A simple (binary) \abrv{lcfrs} derivation is read from the constituent tree.
+            The derivation is instantiated in the sequence of tokens of the constituent tree.
+            For a sentence of length \(n\), it contains exactly \(n-1\) inner nodes with non-lexical rules and \(n\) leaves with lexical rules.
+        \item\label{enum:lcfrs:step1}
+            The derivation's leaves are dismissed and their lexical symbols are moved into their parents by each replacing a variable.
+            The \abrv{rhs} nonterminals of all rules are adjusted to accommodate the removed rules.
+        \item\label{enum:lcfrs:step2}
+            The derivation is then transformed by \emph{transporting} the lexical symbols into remaining unlexical rules according to a fixed strategy.
+            During this step, the rules' \abrv{rhs} nonterminals are annotated according to the transportation.
+            Moreover, each node with rule \(r\) is replaced by a tuple \((r, s)\) where \(s\) is true if and only if the node was equipped another lexical symbol before the step.
+        \item\label{enum:lcfrs:step3}
+            One rule in the derivation is equipped with two lexical symbols.
+            It is split by replacing one of the symbols with a variable and adding a new nullary rule.
+        \item
+            In the final step, the rules are collected as a sequence in order of the positions according to the instantiation.
+    \end{enumerate}
+    In the following, the steps \crefrange{enum:lcfrs:step1}{enum:lcfrs:step3} are described in more detail.
 
-    \todo{formalize read-off rules, especially the composition functions}
-    \todo{example constituent tree $\rightarrow$ derivation}
 
     \subsection{Lexicalizing \abrv{Lcfrs} Derivations}\label{sec:extraction:readoff:lex}
     The lexicalization scheme is based on \citet{MoeRup20}.
