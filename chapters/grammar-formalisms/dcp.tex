@@ -63,7 +63,7 @@
     As we have seen \abrv{dcp} compositions contain elements from two alphabets, \(\varGamma\) for inner nodes (which we will assume to be constituent symbols) and  \(\varSigma\) for leaf nodes (tokens or sentence positions, respectively), only the symbols in \(\varSigma\) are considered lexical symbols.
     The tuple for a \abrv{dcp} grammar is hence extended by the additional alphabet and assumes the form \((N, \varGamma, \varSigma, S, R)\).
     There is no fanout in \abrv{dcp} grammars, because the sequences of trees produced by compositions are not meant to be separated.
-    To avoid that a complete derivation produces more than one tree, we require that the composition in each non-nullary rule whose \abrv{lhs} nonterminal is the initial nonterminal \(S\) is of the form \(\gamma ( \omega )\) for some \(\gamma \in \varGamma\) and \(\omega \in \C^{\varGamma \varSigma}\), i.e.\@ there is at least one inner node that assembles the results of all successor rules.
+    To avoid that a complete derivation produces more than one tree, we require that the composition in each non-nullary rule whose \abrv{lhs} nonterminal is an initial nonterminal in \(S\) is of the form \(\gamma ( \omega )\) for some \(\gamma \in \varGamma\) and \(\omega \in \C^{\varGamma \varSigma}\), i.e.\@ there is at least one inner node that assembles the results of all successor rules.
     As in other grammar formalisms, the yield for a derivation recursively computes the composition functions.
     In contrast to string grammars, like \abrv{lcfrs}, the yield of a complete derivation is a tree in \(\T_\varGamma(\varGamma)\).
 

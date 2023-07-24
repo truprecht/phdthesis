@@ -64,7 +64,7 @@
         \begin{compactenum}
             \item \(N\) is a finite set (\emph{nonterminals}),
             \item \(\varSigma\) is an alphabet (\emph{terminals}),
-            \item \(S \in N\) (initial non-terminal),
+            \item \(S \subseteq N\) (initial non-terminals),
             \item \(R\) is a finite subset of \(N \times \C^\varSigma \times N^*\) (\deflab<\lcfrs>{rule}[rules]),\todo{define set of rules over \(N, \varSigma\) and families} and
             \item there is an implicit positive integer \(\fanout(A) \in \DN_+\), called the \deflab<\lcfrs>[lcfrs:fo]{fanout} for each nonterminal \(A \in N\), such that
             for each \((A, c, B_1\cdots B_k) \in R\), the \abrv{lcfrs} composition \(c\) is an element of \(\C^\varSigma_{\fanout(B_1) \cdots \fanout(B_k) \fanout(A)}\).
@@ -83,7 +83,8 @@
             \item Rules whose composition contains exactly one terminal in \(\varSigma\) are called \deflab<\lcfrs!rule>[lcfrs:lex]{lexical}.
             \item Lcfrs containing only lexical rules are called \deflab<\lcfrs>{lexical}.
             \item Rules whose composition contain no terminal at all are called \deflab<\lcfrs!rule>{non-lexical}.
-            \item Lcfrs that contain only lexical nullary rules and non-lexical rules of rank \(\ge 1\) are called \deflab<\lcfrs>[lcfrs:simple]{simple}.
+            \item
+                An \abrv{lcfrs} that contains only lexical nullary rules and non-lexical rules of rank \(\ge 1\) and whose initial nonterminals do not occur as \abrv{rhs} nonterminals in any rule is called \deflab<\lcfrs>[lcfrs:simple]{simple}.
         \end{compactitem}
     \end{definition}
 
