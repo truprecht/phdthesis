@@ -22,64 +22,107 @@
     }
     \begin{enumerate}
         \item The constituent tree is binarized.
-        \item\label{enum:lcfrs:readoff}
+        \item\label{enum:lcfrs:step2}
             A binary \abrv{lcfrs} derivation is read from the constituent tree.
             The derivation is instantiated in the sequence of tokens of the constituent tree.
 %        \item\label{enum:lcfrs:step1}
 %            The derivation's leaves are dismissed and their lexical symbols are moved into their parents by each replacing a variable.
 %            The \abrv{rhs} nonterminals of all rules are adjusted to accommodate the removed rules.
-        \item\label{enum:lcfrs:step2}
-            The derivation is transformed by \emph{transporting} the lexical symbols into unlexical rules according to a fixed strategy.
-            During this step, the rules' \abrv{rhs} nonterminals are annotated according to the transportation.
-            Moreover, each node with rule \(r\) is replaced by a tuple \((r, s)\) where \(s\) is true if and only if the node was equipped another lexical symbol before the step.
         \item\label{enum:lcfrs:step3}
+            The derivation is transformed by \emph{transporting} the lexical symbols into unlexical rules according to a fixed strategy.
+            During this step, the rules' nonterminals are annotated according to the transportation.
+            Moreover, each node with rule \(r\) is replaced by a tuple \((r, s)\) where \(s\) is true if and only if the node was equipped another lexical symbol before the step.
+        \item\label{enum:lcfrs:step4}
             At most one rule in the derivation is equipped with two lexical symbols.
             It is split by replacing one of the symbols with a variable and adding a new nullary rule.
         \item
             In the final step, the rules are collected as a sequence in order of the positions according to the instantiation.
     \end{enumerate}
-    During \cref{enum:lcfrs:readoff}, the topmost \abrv{lhs} nonterminal is collected for each tree, and set aside as initial nonterminal for later.
-    In the following, the steps \cref{enum:lcfrs:step2,enum:lcfrs:step3} are described in more detail.
+    After step \ref{enum:lcfrs:step2}, the topmost \abrv{lhs} nonterminal is collected for each tree, and set aside as initial nonterminal for later.
+    In the following, the steps \ref{enum:lcfrs:step2} to \ref{enum:lcfrs:step4} are described in more detail.
     The section concludes with a procedure to revert the process and transform an \abrv{lcfrs} supertag derivation into a constituent structure.
 
+    \begin{figure}
+        \null\hfill
+        \subfile{figures/lcfrs/ctree.tex}
+        \hspace{.5cm}
+        \begin{minipage}{.4\linewidth}
+            \subcaption{Example for a binary constituent structure from the running example shown in \cref{ex:blabla}.}
+        \end{minipage}
 
-%    \paragraph{Step \cref{enum:lcfrs:step1}.}
-%    Let us consider a simple binary \abrv{lcfrs} derivation \(d\) that was read from a binarized constituent structure \((\xi, \pi, w)\).
-%    Each rule in \(d\) is either of the form
-%    \begin{itemize}[nosep]
-%        \item \(A \to (\sigma)\), where $\sigma$ is a position in \([|w|]\) and \(A\) is the part-of-speech tag for $\sigma$ (possible plus some concatenated symbols from unary nodes above \(\sigma\)), or
-%        \item \(A \to c (B_1, B_2)\) where \(c\) contains no terminals.
-%    \end{itemize}
-%    Let \(F = \{\rho \in \npos(d) \mid \children(\rho) \cap \lpos(d) \neq \emptyset \}\) denote the set of positions in \(\rho\) with leaf positions as children.
-%    We define the derivation \(d_1\) with \(\pos(d_1) = \npos(d)\) such that if \(d\) is a singleton (\(\pos(d) = \{\varepsilon\}\)), then \(d_1 = d\), and otherwise:
-%    \begin{itemize}[nosep]
-%        \item \(d_1(\rho) = d(\rho)\) for each position without leaf position in their children \(\rho \in \npos(d) \setminus F\).
-%        \item For each \(\rho \in F\), the rule \(d_1(\rho)\) is obtained from \(d(\rho)\) by
-%        \begin{itemize}[nosep]
-%            \item replacing the variable \(\x_1^1\) in the composition with \(\varsigma\) and removing the first \abrv{rhs} nonterminal \(B_1\) if \(\rho\cdot1 \in \lpos(d)\) and \(d(\rho\cdot 1)\) is of the form \(B_1 \to (\varsigma)\), and analogously
-%            \item replacing \(\x_2^1\) with \(\varsigma\) and removing the second \abrv{rhs} nonterminal \(B_2\) if \(\rho\cdot2 \in \lpos(d)\) and \(d(\rho\cdot 2)\) is of the form \(B_2 \to (\varsigma)\).
-%        \end{itemize}
-%        If only the first successor of \(\rho\) in \(d\) is a leaf and \(\x_1^1\) was replaced by a terminal symbol, then each variable of the form \(\x_2^j\) for the second argument is replaced with \(\x_1^j\).
-%        \todo{maybe elaborate with partial application in composition functions}
-%    \end{itemize}
-%    The constituent structure for \(d\) and \(d_1\) are equal, except the constituent structure for \(d\) includes the \abrv{pos} symbols \(\pi\) as parents of the leaf positions, which are missing in the constituent structure for \(d_1\).
+        \vspace{1cm}
+
+        \begin{minipage}{.4\linewidth}
+            \subcaption{
+                Result of step \ref{enum:lcfrs:step2}: A binary \abrv{lcfrs} derivation for the constituent structure above.
+                Gray dashed arrows indicate the transportation moves terminal symbols in step \ref{enum:lcfrs:step3}.
+            }
+        \end{minipage}
+        \hspace{.5cm}
+        \subfile{figures/lcfrs/step2.tex}
+        \hfill\null
+
+        \vspace{1cm}
+
+        \null\hfill
+        \subfile{figures/lcfrs/step3.tex}
+        \hspace{.5cm}
+        \begin{minipage}{.4\linewidth}
+            \subcaption{
+                After the transportation in step \ref{enum:lcfrs:step3}, there is at least one terminal symbol in each rule.
+                The nodes of the tree are not illustrated as tuples but as the rules found in the first component where the superscript ``$^{\mathrm{swap}}$'' is added if and only if the transportation marker in the second component is ``true''.
+                The bottom-left-most rule in the derivation is equipped with two terminals.
+            }
+        \end{minipage}
+
+        \vspace{1cm}
+
+        \begin{minipage}{.4\linewidth}
+            \subcaption{
+                After splitting the rule with two terminals in step \ref{enum:lcfrs:step4}, each rule in the derivation is lexical.
+            }
+        \end{minipage}
+        \hspace{.5cm}
+        \subfile{figures/lcfrs/step4.tex}
+        \hfill\null
+
+        \vspace{1cm}
+
+        \caption{\label{fig:extraction:lcfrs}
+            Examples for the steps \ref{enum:lcfrs:step2} to \ref{enum:lcfrs:step4} in the extraction for \abrv{lcfrs} supertags.
+        }
+    \end{figure}
+
 
     \paragraph{Step \ref{enum:lcfrs:step2}.}
-    Let us consider an \abrv{lcfrs} derivation \(d\) that was read from a binarized constituent structure \((\xi, \pi, w)\).
-    Each rule in the derivation is either
-    \begin{itemize}[nosep]
+    Let \((\xi, \pi, w)\) be a binary constituent tree.
+    We use the usual techniques for \abrv{lcfrs} rule induction to read a derivation \(d\) off the constituent structure \(\xi\), but end at the leaves in \(\xi\).
+    I.e.\@ there are no rules for the \abrv{pos} symbols \(\pi\) in the derivation \(d\).
+    The terminal symbols in \(d\) are the leaves in \(\xi\), we can think of it as an implicit instantiation in the string \(w\).
+    Specifically, \(d\) is a tree over \abrv{lcfrs} rules such that \(\pos(d) = \npos(\xi)\) and at each position \(\rho \in \pos(d)\) the rule \(d(\rho) = r\) is as follows:
+    \begin{compactitem}
+        \item The \abrv{lhs} nonterminal in \(r\) is \(\xi(\rho)\).
+        \item The \abrv{rhs} nonterminals in \(r\) are \(\xi(\rho')\) for each child \(\rho'\) of \(\rho\) in \(\npos(\xi)\) and ordered from left to right.
+        \item The composition in \(r\) is \(\mathrm{comp}(\yield(\xi|_\rho), \vec{ys})\) where \(\vec{ys}\) is the sequence of yields at each inner child node from left to right.
+    \end{compactitem}
+    By the shape of the binary constituent structure \(\xi\), each rule in \(d\) is either
+    \begin{inparaitem}[]
         \item nullary and its composition contains two terminals,
         \item unary and its composition contains one terminal, or
         \item binary and its composition contains no terminal.
-    \end{itemize}
+    \end{inparaitem}
+
+
+    \paragraph{Step \ref{enum:lcfrs:step3}.}
+    Let us consider an \abrv{lcfrs} derivation \(d\) as obtained by the previous step.
     Consider an occurrence of a binary rule $A \to c(A_1, A_2)$ at position \(r\) in \(d\).
     The aim of this step is to move the first terminal from the yield of the right subtree below \(\rho\) into the composition \(c\).
     We descent into the subtree and transport terminal symbols accordingly while adjusting the compositions as well as adding annotations to the nonterminal symbols.
     The reason for these annotations is twofold:
-    \begin{itemize}[nosep]
-        \item In the case that a transport changes the length of a composition, the annotation is necessary to acclimate the fanout of the \abrv{lhs} nonterminal.
+    \begin{itemize}
+        \item In the case that a transport changes the length of a composition, the annotation is necessary to acclimate the assigned fanout for the \abrv{lhs} nonterminal.
         \item
-            During the work on the extraction procedure we had the intuition that it could be useful to distinguish nonterminals for at subtrees that were affected by the transportation and miss a terminal symbol and those that are left unchanged.
+            During the work on the extraction procedure we had the intuition that it could be useful to distinguish nonterminals at subtrees that were affected by the transportation and miss a terminal symbol and those that are left unchanged.
     \end{itemize}
     Moreover, a marker is added that indicates if terminal symbols were swapped out in a unary rule during the transportation.
     It is of relevance every time the first symbol in a subtree's yield coincides with a terminal in a unary rule, because it has to be replaced to keep it lexical.
@@ -91,42 +134,42 @@
     Consider the occurrence of the leftmost nullary rule at position \(t\) (i.e.\@ \(s\) is a leaf) that is reachable via the second successor of \(r\).
 %    For example, in \cref{fig:propterm:pre}, the two binary rules (\(r\)) are end points of gray arrows; these arrows start at the mentioned leaves (\(t\)).
     For this, at each node \(s\) on the path from \(t\) to \(r\) (from bottom up):
-    \begin{itemize}[nosep]
+    \begin{compactitem}
         \item If \(s\) is \(t\), we remove the leftmost terminal in the rule's composition at \(s\).
         \item
             If \(s\) is neither \(t\) nor \(r\), we insert the last removed terminal right before the variable \(\x^1_1\) and then remove the leftmost terminal in the rule's composition at \(s\).
             In case that the inserted and removed terminal are not equal, then the position \(s\) is added to the set \(S\).
         \item If \(s\) is \(r\), we insert the last removed terminal right before the variable \(\x^1_2\) in the rule's composition at \(s\).
-    \end{itemize}
+    \end{compactitem}
     If \(s \neq r\), let \(s'\) be the parent of $s$ and $s$ the \(i\)th child of $s'$.
     If, after removal of a terminal at \(s\), the first component in the composition is empty:
-    \begin{itemize}[noitemsep,topsep=1pt]
+    \begin{compactitem}
         \item we annotate the \abrv{lhs} nonterminal at \(s\) and the \(i\)th \abrv{rhs} nonterminal at \(s'\) with $^{-1}$ and remove the empty component, and
         \item if \(i = 1\) (resp.\@ \(i = 2\)), we remove \(\x^1_1\) (resp.\@ \(\x_2^1\)) and replace every other occurrence of \(\x_1^i\) by \(\x_1^{i-1}\) (resp.\@ \(\x_2^j\) by \(\x_2^{j-1}\)) at $s'$.
-    \end{itemize}
+    \end{compactitem}
     Otherwise, we annotate the nonterminals with \(^{\pm 0}\).
 
-    With the strategy to transport the first symbol in the second successor, each position can only assume the role of \(s\) between \(r\) and \(t\) at most once, and there is a suitable leaf $t$ for every occurrence $r$.
+    With the strategy to transport the first symbol in the second successor, each position can only assume the role of \(s\) between \(r\) and \(t\) at most once, and there is a suitable leaf $t$ for every occurrence $r$.\todo{name clash \(s\)}
     As we start with two terminals in the compositions of each leaf node, the rules at \(r\) and \(t\) become both lexical, and the number of terminals in each rule between them does not change.
     To conclude the step, we replace the rule \(r\) at each position \(\rho\) with the tuple \((r, \rho \in S?)\) where the second component is ``true'' if and only if \(\rho \in S\).
 
     Instead of the procedure we can also describe the result of this step in terms of properties that characterize each node.
-    Let \(M = \pos(d) \cap \DN_+^* \cdot \{2\} \cdot \DN_+^*\) denote the set of positions that are in the right subtree below any binary node, and are thus affected by a transportation.
+    Let \(M = \pos(d) \cap {\DN_+}^* \cdot \{2\} \cdot {\DN_+}^*\) denote the set of positions that are in the right subtree below any binary node, and are thus affected by a transportation.
     The result for this step is a tree \(t\) over \abrv{lcfrs} supertags with \(\pos(t) = \pos(d)\).
-    Let us denote the \abrv{lcfrs} derivation in \(t\), i.e. projection into the first components for each node in \(t\), by \(t'\).
+%    Let us denote the \abrv{lcfrs} derivation in \(t\), i.e. the projection into the first components for each node in \(t\), by \(t'\).
     Each position \(\rho\) in \(t\) is a tuple \((r, s)\) as follows:
-    \begin{itemize}
-        \item If \(\rho \notin M\), then \(r = d(\rho)\) and \(s\) is ``false''.
+    \begin{compactitem}
+        \item If \(\rho \notin M\), then the \abrv{lhs} and composition in \(r\) are equal to those in \(d(\rho)\) and \(s\) is ``false''.
         \item
-            Otherwise, let \(\pi\) be the set of positions in \(d|_\rho\) (i.e.\@ the set of symbols in the strings \(\yield(\d|_\rho)\)) with \(i = \min \pi\).
+            Otherwise, let \(\pi\) be the set of positions in \(d|_\rho\) (i.e.\@ the set of symbols in the strings \(\yield(d|_\rho)\)) and \(i = \min \pi\).
             Then \(\pi' = \pi \setminus \{i\}\) is the set of positions in \(t|_\rho\).
-            The \abrv{lhs} nonterminal in \(r\) is that in \(d(\rho)\) plus the annotation \(^{\pm 0}\) if \(gaps(\pi') = gaps(\pi)\), otherwise it is \(^{-1}\) and \(gaps(\pi') = gaps(\pi)-1\).
-            The composition in \(r\) is unambiguously determined by \(\mathrm{comp}\) using \(\pi'\) and the sets of positions in the subtrees below \(\rho\) in \(t\).
-            The boolean \(s\) is ``true'' if and only if \(i\) is the lexical symbol in \(d(\rho)\).
-    \end{itemize}
+            The \abrv{lhs} nonterminal in \(r\) is that in \(d(\rho)\) plus the annotation \(^{\pm 0}\) if \(gaps(\pi') = gaps(\pi)\), otherwise plus the annotation \(^{-1}\) and it holds \(gaps(\pi') = gaps(\pi)-1\).
+            The composition in \(r\) is unambiguously determined by \(\mathrm{comp}\) via \(\pi'\) and the sets of positions in the subtrees below \(\rho\) in \(t\).
+            The boolean \(s\) is ``true'' if and only if \(d(\rho)\) is unary and \(i\) is the lexical symbol in \(d(\rho)\).
+    \end{compactitem}
 
 
-    \paragraph{Step \ref{enum:lcfrs:step2}.}
+    \paragraph{Step \ref{enum:lcfrs:step4}.}
     After the previous step, there is at most one leaf where the \abrv{lcfrs} composition contains two terminal symbols, either of the form \(A \to (\sigma_1 \sigma_2)\) or \(A \to (\sigma_1, \sigma_2)\).
     It is split into a chain of two, one unary and one nullary rule, such that the bottom nullary rule contains the first/left, and the top rule the second/right symbol.\footnote{
         In the previous formulation of the extraction procedure, it was the other way around: the top rule contained the left symbol and vice versa.
@@ -134,5 +177,5 @@
     }
     E.g.\@ we obtain \(A \to (\x_1^1, \sigma_2)\;(\text{arg}(A))\) or \(A \to (\x_1^1 \sigma_2)\;(\text{arg}(A))\) and \(\text{arg}(A) \to (\sigma_1)\) where the top \abrv{rhs}/bottom \abrv{lhs} nonterminal \(\text{arg}(A)\) is determined by the original and and still top \abrv{lhs} nonterminal \(A\).
     In practice, our \(\text{arg}(A)\) is literally the string \(\text{arg}\) as a prefix to the original nonterminal \(A\).
-    Concluding this step, we obtained a derivation of lexical rules.
+    Concluding this step, each rule in the derivation is equipped with exactly one position in the token sequence.
 \end{document}

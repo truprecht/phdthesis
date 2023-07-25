@@ -1,0 +1,101 @@
+\documentclass[../../../document.tex]{subfiles}
+
+\begin{document}
+    \begin{tikzpicture}[
+        level distance=7mm,
+        font=\small,
+        sibling distance=10mm,
+        anchor=center,
+        every node/.style={text height=2.5mm},
+        rounded corners=0
+        ]
+%        \matrix (pos) [matrix of nodes, outer sep=0pt, inner sep=0pt, row sep=0pt, column sep=20pt, ampersand replacement=\&] {
+%            ~ \& ~ \& ~  \& ~ \& ~ \& ~ \& ~ \& ~ \\};
+%
+%        \node[above=40mm of pos, xshift=-5mm] {\cn{VP}}
+%        child { node[above=1mm of pos-1-3] {3}}
+%        child { node {\cn{VP}}
+%            child { node[above=1mm of pos-1-4] {4}}
+%            child { node (np1) {\cn{NP}}
+%                child { node[xshift=-2.7cm] (np2) {\cn{NP}}
+%                    [sibling distance=8mm]
+%                    child { node[above=1mm of pos-1-1] {1}}
+%                    child { node[above=1mm of pos-1-2] {2}}}
+%                child { node (pp) {\cn{PP}}
+%                    child { node[above=1mm of pos-1-5] {5}}
+%                    child { node {\cn{NP}}
+%                        [sibling distance=7mm]
+%                        child { node[above=1mm of pos-1-6] {6}}
+%                        child { node[above=1mm of pos-1-7] {7}}}}}
+%            child { node at (pos-1-8) {8}}};
+        \begin{scope}[edge from parent path={(\tikzparentnode.south) -- ++(0,-1mm) -| (\tikzchildnode.north)}, every path/.style={line width=.2ex}]
+            \node (croot) {\cn{vp}}
+            [sibling distance=11ex]
+            child { node {\cn{vp}}
+                [sibling distance=12ex]
+                child { node {\cn{np}}
+                    [sibling distance=8ex]
+                    child { node {\cn{np}}
+                        [sibling distance=2.5ex]
+                        child { node {1}}
+                        child { node {2}}}
+                    child { node {\cn{pp}}
+                        [sibling distance=4ex]
+                        child { node {5}}
+                        child { node {\cn{np}}
+                            [sibling distance=2.5ex]
+                            child { node {6}}
+                            child { node {7}}}}}
+                child { node {\cn{vp\binsym}}
+                    [sibling distance=2.5ex]
+                    child {node {4}}
+                    child {node {8}}}}
+            child { node {3}};
+        \end{scope}
+
+        \begin{scope}[level distance=7.5mm]
+            \node[below right=5cm of croot] (droot) {\(\cn{vp} \to (\x^1_1\,3\,\x^1_2)\;(\cn{vp}_2)\)}
+            child {node {\(\cn{vp}_2 \to (\x^1_1, \x^2_1\,\x^1_2\,\x^2_2)\;(\cn{np}_2, \cn{vp\binsym}_2)\)}
+                [sibling distance=8em, level distance=9mm]
+                child {node {\(\cn{np}_2 \to (\x_1^1, \x^2_1)\;(\cn{np}, \cn{pp})\)}
+                    [sibling distance=7em]
+                    child {node {\(\cn{np} \to (1\;2)\)}}
+                    child {node {\(\cn{pp} \to (5\,\x^1_1)\;(\cn{np})\)}
+                        [level distance=7.5mm]
+                        child {node {\(\cn{np} \to (6\;7)\)}}}}
+                child {node {\(\cn{vp\binsym}_2 \to (4\;8)\)}}};
+        \end{scope}
+
+
+
+        \begin{scope}[level distance=7.5mm]
+            \node[below left=5cm of droot] (troot) {\(\cn{vp} \to (\x^1_1\,3\,\x^1_2)\;(\cn{vp}_2)\)}
+            child {node {\(\cn{vp}_2 \to (\x^1_1, 4\,\x^1_2\,\x^2_1)\;(\cn{np}_2, \cn{vp\binsym}_2^{-1})\)}
+                [sibling distance=9em, level distance=9mm]
+                child {node {\(\cn{np}_2 \to (\x_1^1, 5\,\x^2_1)\;(\cn{np}, \cn{pp}^{\pm 0})\)}
+                    [sibling distance=7.5em]
+                    child {node {\(\cn{np} \to (1\;2)\)}}
+                    child {node {\(\cn{pp}^{\pm 0} \to (6\,\x^1_1)\;(\cn{np}^{\pm 0})\)}
+                        [level distance=7.5mm]
+                        child {node {\(\cn{np}^{\pm 0} \to (7)\)}}}}
+                child {node {\(\cn{vp\binsym}_2^{-1} \to (8)\)}}};
+        \end{scope}
+
+
+
+        \begin{scope}[level distance=7.5mm]
+            \node[below right=5cm of troot] (sroot) {\(\cn{vp} \to (\x^1_1\,3\,\x^1_2)\;(\cn{vp}_2)\)}
+            child {node {\(\cn{vp}_2 \to (\x^1_1, 4\,\x^1_2\,\x^2_1)\;(\cn{np}_2, \cn{vp\binsym}_2^{-1})\)}
+                [sibling distance=9em, level distance=9mm]
+                child {node {\(\cn{np}_2 \to (\x_1^1, 5\,\x^2_1)\;(\cn{np}, \cn{pp}^{\pm 0})\)}
+                    [sibling distance=10em]
+                    child {node {\(\cn{np} \to (\x_1^1\;2)\;(\text{arg}(\cn{np}))\)}
+                        [level distance=7.5mm]
+                        child {node {\(\text{arg}(\cn{np}) \to (1)\)}}}
+                    child {node {\(\cn{pp}^{\pm 0} \to (6\,\x^1_1)\;(\cn{np}^{\pm 0})\)}
+                        [level distance=7.5mm]
+                        child {node {\(\cn{np}^{\pm 0} \to (7)\)}}}}
+                child {node {\(\cn{vp\binsym}_2^{-1} \to (8)\)}}};
+        \end{scope}
+    \end{tikzpicture}
+\end{document}
