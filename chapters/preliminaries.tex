@@ -52,7 +52,8 @@
     For example, we write \(\min [k]\) instead of \(\min_{i \in [k]} i\).
     The minima and maxima are determined according to the usual numerical order.
     In case we encounter different objects or we use any other total ordering \(\unlhd\), we denote it as a superscript, e.g. \(\min^{\unlhd}\).
-    \(\argmin\) yields all indices with minimal value, for instance \(\argmin_{i \in [k]} v_i\) is the subset \(M\) of \([k]\) such that there are no .
+    \(\argmin\) yields all indices with minimal value, for instance \(\argmin_{i \in [k]} v_i\) is the subset \(M \subseteq [k]\) such that, for each \(\hat{i} \in M\), there is no \(j \in [k]\) with \(v_j \unlhd v_{\hat{i}}\).
+    Vice versa, \(\argmax\) yields the indices with maximal value.
 
     An \(A\)-indexed \deflab<family>{partition} of \(B\) is a \(A\)-indexed family \(p\) over subsets in \(\power(B)\) such hat:
     \begin{inparaenum}
@@ -237,7 +238,10 @@
     A \emph{treebank} is a finite set of constituent trees.
     They are assembled by linguists for texts collected from news articles, written speeches, etc.\@ and annotated with their constituent structure.
     In the scope of this thesis, treebanks form data sets used for learning models that are able to predict constituent structures for input sentences.
-    The process of learning a model is called \emph{training}, predicting constituent structures is called \emph{parsing}, and the used models are called \emph{parser}.
+    The process of predicting a constituent structure for a given input sentence is called \emph{parsing}, and a used model is called \emph{parser}.
+    In \emph{\(k\) best parsing}, a sequence of (at most) \(k \in \DN_+\) constituent trees is predicted and each is complemented with a confidence value.
+    \emph{Reranking} is a process that uses such a collection of potential constituent trees for a sentence and produces new confidence values.
+    It is used to refine a set of candidate constituent trees often with more ambitious or orthogonal methods to the underlying \(k\) best parser.
 
     Besides constituent trees, there are \emph{dependency trees} that express a syntactic analysis of natural language.
     They present grammatical relations between phrases within a sentence, such as arguments, adjuncts and complements, sometimes even more fine-grained ones like distinctions between subjects and objects.
@@ -245,195 +249,15 @@
     There are similar phenomena as (dis-)continuity in dependency trees, they are referred to as \emph{(un-)projectivity}.
     We will not engage in dependency trees in this work, some references are discussed in \cref{sec:literature}.
 
-    \section{Empirical Predictions}
-    Under the broad term \deflab{prediction}[(empirical) prediction], we subsume each process that assigns an output of predetermined shape to an input based on previously seen data consisting and prior knowledge.
-    In our cases, such an assignment is determined by choosing an output that optimizes a \deflab<empirical prediction>{confidence} value (e.g. a score or probability) among a predefined set of possible outputs.
-    The following defines some important terms that are used in conjunction with empirical predictions.
-    Here, we will cover some basic terms that are used throughout this thesis.
-    For more detailed elaborations in this field, refer to \Citet{Moh12,Dau17}.
-
-%    \paragraph{Prediction discipline}
-%    There are certain tasks that do not only fall under the abstract label \emph{prediction}, but also share other similarities.
-%    Some models may have been proven advantageous in their setting, we can build upon these experiences.
-%    \begin{asparaitem}
-%        \item
-%            We call a prediction a \emph{classification}, if it assigns a single label in a predetermined set to the input.
-%        \item
-%            \emph{Sequence tagging} assigns a single label for each position in an input sequence, it can be seen as a classification for each element in the input.
-%        \item
-%
-%    \end{asparaitem}
-
-    \paragraph{Models.}
-    A \deflab<empirical prediction>{model}[(prediction) model] defines the domain of inputs, outputs, confidence values and variables as well as how confidence values are determined.
-    The variables (called \deflab<prediction!model>{parameters}) steer the computed confidence values.
-    Consider a model as a parametrized function \(\varphi_\theta\colon X \times Y \to \mathcal{C}\) where \(\theta\) are some parameters (or variables) in an associated domain \(\Theta\), \(X\) is the set of inputs, \(Y\) is the set of outputs and \(\mathcal{C}\) the domain of confidence values, and a total order on \(\mathcal{C}\) denoted by \(\rel\).\todo{prelim: parametrized function}
-    Usually, the domain of confidence values are real numbers and the order \(\rel\) is \(\leq\), such that the confidence is interpreted as a score.
-    In the following, we will silently assume this coincidence.
-
-    In general, we distinguish two types of models: \deflab<prediction!model>{generative models} and \deflab<prediction!model>{discriminative models}.
-    While generative models define a joint probability distribution of in- and outputs, discriminative models define a probability or score of their output conditioned on the input.
-    Generative models can be used to generate samples of pairs containing in- and outputs.
-    Discriminative models on the other hand, are not able to do this in general, as they do not model the structure of the input.
-
-    \begin{example}[Statistical parsing in the empirical prediction framework.]
-        Parsing is a process that predicts a constituent structure for a given sequence of tokens.
-        A statistical grammar formalism is a model that has proven successful in this setting in the past.\cite{}
-        It defines a probability distribution for constituent trees \(p\colon \mathcal{C} \to \DR\), usually by the sum over all derivations per constituent tree and by the product of all rules' weights per derivation.
-        This is formalized in the equation \[
-            p(\xi) = \sum_{d \in D(\xi)} \prod_{\rho \in \pos(d)} \hat{p}(d(\rho))
-        \]
-        where \(\xi \in \mathcal{C}\) is a constituent tree, \(D(\xi)\) is the set of all derivations in the grammar for the constituent tree \(\xi\), and \(\hat{p}\) is a weight function for the rules in the grammar.
-        The function \(\hat{p}\) is defined such that the term \(\prod_{\rho \in \pos(d)} \hat{p}(d(\rho))\) is a probability distribution over all derivation trees \(d \in D\) in the grammar.
-        As the sequence of tokens \(w\) is part of the constituent tree \(\xi\), this is trivially equivalent to a joint probability distribution \(p(\xi) = p(w, \xi)\), which is characteristic for a generative model.
-        The values assigned by the function \(\hat{p}\) form the model parameters, they are restricted to form probability distributions.
-        Probabilistic grammars can easily be used to generate constituent trees (again, trivially in tandem with a sequence of tokens) by probabilistically sampling rules.
-    \end{example}
-
-    \begin{example}[Sequence tagging in the empirical prediction framework.]
-        \todo[inline]{dazu müssten erst \abrv{ann} erklärt werden}
-    \end{example}
-
-    \paragraph{Parameters.}
-    We distinguish two essential sets of parameters: \deflab<prediction!model!parameters>{hyper parameters} and \deflab<prediction!model!parameters>{model parameters}.
-    Hyper parameters determine details about the model and training process itself. %, to some extend, the model and the training objective can also be seen as hyper parameters.
-    They are not trained upon, but are chosen for the training either by prior knowledge or by trying different combinations and manually evaluating their results.
-    Model parameters are variables defined by a model that are tuned during the training process to match a training objective.
-
-    \paragraph{Training.}
-    \deflab<prediction>{training}[Training] is the process of tuning the parameters of a model in terms of a \deflab<prediction!training>{training objective}.
-    A training objective assesses the assigned confidence values of a model in a sample of input and output pairs and defines a criterion for optimal parameters.
-    In some cases, it is possible to compute the model parameters that optimize the training objective in closed form.
-    In other cases, there are iterative processes that change the parameters to gradually improve upon the criterion.
-    \todo{supervised vs. semi-supervised (i.e. what are pretrained models and what is fine-tuning) vs. unsupervised training}
-
-    \paragraph{Data and splits.}
-    The \deflab<prediction>{data sets} contain pairs of input and output that we use to deduce a prediction model.
-    In this context the, the output (i.e. the to-be predicted) component of these instances is referred to as \deflab<prediction!data sets>{gold}.
-    The data instances are used in two roles: for training, and for assessing a prediction model.
-    The data sets are usually split into three parts to accommodate these roles:
-    \begin{inparaenum}
-        \item a \deflab<prediction!data sets>{training portion} that is solely used to train a model,
-        \item a \deflab<prediction!data sets>{development portion} that is used to monitor the model during the training process and assess the selection of hyper parameters, and
-        \item a \deflab<prediction!data sets>{test portion} that is used to assess a final model.
-    \end{inparaenum}
-    For common data sets that are used within a community, specific partitions are shared to enable fair comparisons between publications.
-    In such publications, the results of different models are compared using the same test portions of the same data sets.
-
-    There are two distinct examples for empirical predictions in (or at least near) the scope of this thesis.
-
-    \begin{example}[Statistical parsing in the empirical prediction framework.]
-        Parsing is a process that predicts a constituent structure for a given sequence of tokens.
-        Statistical grammar formalisms are models that have proven successful in this setting in the past.
-        They define a joint probability for each sentence and constituent tree, and therefore are generative models.
-        The specific grammar formalism, certain restrictions of the probability distributions, or details about the grammar induction (such as binarization) may form the set of hyper parameters.
-        The process of training tunes the probability assignment for each rule to maximize the likelihood in a given treebank.
-        In case of naive probabilistic grammars, this is computed in closed form by relative frequency estimation.
-    \end{example}
-
-    \begin{example}[Supertagging in the empirical prediction framework.]
-        In the case of parsing with supertagging, an integral part of the parsing process is an assembly of a small grammar by choosing some rules out of a predetermined set of rule blueprints (this specific process is called supertagging).
-        The process may also be described using a generative model.
-        But in practice, we use specific neural networks for this task, as they have proven very accurate in the past; they are textbook examples for discriminative models.
-        They define many hyper parameters that determine the \emph{architecture} (i.e. the shape of the neural network), e.g.\@ the used word embeddings, its depth or the number of parameters in a certain layer, and many details about the training process, e.g.\@ the learning rate or some condition that ends the iterative training process.
-        During the training process, a treebank is transformed into tuples of the token sequence and the optimal choice of blueprints for each constituent tree.
-        The training objective maximizes the likelihood of the blueprints conditioned on the input tokens.
-    \end{example}
-
-    \subsection{Neural Networks}
-    As mentioned in the last example, we use neural networks to implement certain prediction models.
-    They are a family of parametrized functions that emerged in the last decades and proved extremely useful in many tasks, including ones settled in natural language processing. \todo{ref examples}
-    As in the parent section, we will only give a brief overview for the concepts needed to understand further sections of this theses.
-    For further elaborations in the field of neural networks for natural language processing, consult \cref{Gol17}.
-
-    In general, we consider a neural network (short \abrv{ann} for \emph{artificial} neural network) a parametrized function  where the outputs are vectors of real numbers, i.e.\@ they are of the form \(f_\theta\colon X \to \DR^n\) where \(\theta\) denotes the parameters, \(X\) the set of inputs and \(n > 0\) is the output dimension.
-    There is a set of well studied \abrv{ann}s that are used as \emph{modules} to form new \abrv{ann}s by composition; such a composition is called an \emph{architecture}.
-    In the following, some of these modules are briefly explained.
-
-    \subsubsection{Embeddings}
-    Embeddings are used to assign vectors to any other type of objects.
-    These assigned values are the foundation for computations in other modules, which usually assume real vectors as input.
-    The most simple form of embeddings are \deflab<>{static embeddings}.
-    Let us consider a set of input objects \(X\), a bijection \(\mathit{idx}\colon X \to [|X|]\) and an output dimension \(n \in \DN_+\).
-    A static embedding for \(X\) of dimension \(n\) is a parametrized function \(f_W\colon X \to \DR^n\) which assumes a matrix of parameters \(W \in \DR^{(|X| \times n)}\) and assigns a row vector to each element in \(X\), i.e.\@ \(f_W(x) = W_{\mathit{idx}(x)}\) for each \(x \in X\).
-    In some applications, it is sensible to add a vector for unknown elements, e.g.\@ for unknown tokens that do not occur in the data used for training.
-    If the input is a sequence, static embeddings are often applied element-wise.
-    E.g.\@ a sequence of tokens \(\sigma_1 \cdots \sigma_n\) is usually embedded as a sequence of vectors \((f_W(\sigma_i) \mid i \in [n])\).
-    There are pretrained token embeddings that have proven convenient in many tasks and are shared in the community, such as fasttext \citep{} and word2vec \citep{}.
-
-    Some architectures complement element-wise token embeddings by \emph{character-wise embeddings}. \citep{}
-    These are recurrent modules (cf.\@ \cref{sec:preliminaries:nn:recurrent}) that process the sequence of characters and yield a vector of specified length for each token (which, in turn, requires a static embedding for the set of characters).
-    This type of modules is associated with the handling of unknown words with the following intuition:
-        If a token does not occur in the training data, there is no specific element-wise embedding for it.
-        But the character-wise embedding might have learned some sensible information based on similar tokens in the training data.
-
-    Recently, specialized methods for sequence embedding that do also consider positional and contextual information in the assignment were published, such as \abrv{bert} \citep{Devlin2019} and flair embeddings \citep{Akb19}.
-    However, they are (in some cases rather large) compositions of \abrv{ann} modules for sequence tagging themselves, using a transformers and \abrv{lstm} units, respectively.
-
-    \subsubsection{Linear Layers, Activation Functions and Multi-Layer Perceptrons}
-    After embeddings, linear layers are an essential part in \abrv{ann}s.
-    They are a linear transformation of vectors from an a specified input to an output dimension.
-    Formally, let \(m, n \in \DN_+\) by some input and output dimensions.
-    Then a linear layer is a function \(f_{(W,b)}\colon R^m \to R^n\) where the matrix \(W \in R^{(m\times n)}\) and the bias vector \(b\in R^n\) are parameters and \(f_{(W,b)}(x) = Wx+b\).
-
-    Activation functions is a general term for non-linear functions that are used in between compositions of linear layers such that the result of the composition is not linear.
-    There are some options that implement desirable properties or interpretations in some settings, such as the following:
-    \begin{enumerate}
-        \item
-            A \emph{Rectified Linear Unit (ReLU)} is very easy to compute and used in large architectures to save computational power.
-            It is defined for each vector \(x\in R^n\) for any dimension \(n \in \DN_+\) by cutting-off negative values: \(\mathrm{relu}(x) = (\max(0, x_i) \mid i \in [n])\).
-        \item
-            The \emph{sigmoid function} is applied point-wise to each component of a vector and assigns values in the interval between \(0\) and \(1\) as follows: \(\mathrm{sigmoid}(x) = (\frac{1}{1-e^{x_i}} \mid i \in [n])\) for each \(x \in \DR^n\) and \(n \in \DN_+\).
-            These values are often interpreted as one value of a binary probability distribution.
-        \item
-            The \emph{softmax function} also maps each value in a vector to the interval between \(0\) and \(1\).
-            They are normalized such that they sum to \(1\) and are therefore often interpreted as a probability distribution over the set of indices of the vector.
-            It is defined as follows: \(\mathrm{softmax}(x) = (\frac{e^{x_i}}{z} \mid i \in [n])\) for each \(x\in \DR^n\) and \(n \in \DN_+\) where \(z = \sum_{i \in [n]} e^{x_i}\).
-    \end{enumerate}
-    The latter two are also used as outer-most modules in many architecture, specifically because of their interpretation as probabilities.
-
-    A \emph{multi-layer perceptron} is a composition of multiple linear layers with activation functions.
-
-
-    \subsubsection{Recurrent Neural Networks}
-    Recurrent modules are a foundation for the processing of sequence inputs in neural networks.
-    They are defined, such that each input vector is complemented with the previous output, starting with an initialization vector for the first input.
-    Formally, this concept of recurrence uses some inherent module \(f_\theta\colon \DR^{n+m} \to \DR^m\) parametrized by some \(\theta\) and incrementally computes, for an input sequence \(x_1, \ldots, x_n \in \DR^n\), a sequence of outputs \(g_{(f, \theta, h_0)}(x_1, \ldots, x_n) = (h_i = f_\theta(x_i \cdot h_{i-1}) \in \DR^m \mid i \in [n])\) where \(h_0 \in \DR^m\) is an initial value and parameter of the recurrent module \(g\).
-
-    Linear short-term memory (short \abrv{lstm}) cells \citep{Hoc97} established as a quasi-standard for these inherent modules.
-    In addition to the previous output \(h_{i-1}\) that is used to compute \(h_i\), they also carry a cell state between the computations for each position, which is not part of the output.
-
-    Bidirectional recurrent modules combine the vectors obtained by two recurrent modules, one for the sequence from left to right and the other in the opposite direction, by concatenating the vectors for each position.
-
-
-    \subsubsection{Transformers}
-    The transformer architecture \citep{vaswani2017attention} became a standard tool in sequence processing with neural networks, and in some cases even superseded recurrent modules in the last few years. \citep{}
-    Specifically in the form of pretrained models that are shared in the community, they have shown impressive accuracy. \citep{}
-    Transformers do not employ the concept of recurrence, but are based around \emph{self-attention} and \emph{positional embeddings} to process sequences.
-
-
     \subsection{Assessing the Prediction of Constituent Structures}
-%    When dealing with the assessment of parsers, we compare predicted constituent structures to the ones found in treebanks.
-%    In this context, the structures found in these treebanks are called \emph{gold} or ground truth.
-%    In general, it is desired to avoid using the same gold constituent trees for learning the parser as well as for the assessment.
-%    Therefore, the treebanks are partitioned into distinct parts for training and assessment; usually there are three parts:
-%    \begin{inparaenum}
-%        \item a \emph{training portion}]that is solely used to learn a parsing model,
-%        \item a \emph{development portion} that is used to monitor the model \emph{during} the training process, and
-%        \item a \emph{test portion} that is used to assess the model \emph{after} the training process.
-%    \end{inparaenum}
-%    Such a partition is called a \emph{split}.
-%    For each treebank that is publicly available, there is also a split that is shared in the parsing community.
-%    So when different parsers are compared for the same treebank, they were trained and assessed using the same sets of trees.
-%
     When assessing the quality of a parser, we measure two dimensions:
     \begin{inparaenum}
         \item the time needed for the prediction process, and
         \item the accuracy of predicted structures.
     \end{inparaenum}
     The process for measuring the first dimension is rather intuitive:
-    The time is taken for the prediction of a constituent structure for each sentence in the test portion of a treebank.
-    This time is reported either as sum for the whole test portion or as quotient \(\frac{\text{number of sentences}}{\text{parsing time}}\) for the number of parsed sentences per second.
+    The time is taken for the prediction of a constituent structure for each sentence in a treebank reserved for the evaluation (called \emph{test set}).
+    This time is reported either as sum for the whole test set or as quotient \(\frac{\text{number of sentences}}{\text{parsing time}}\) for the number of parsed sentences per second.
 
     The evalb-style labeled \emph{f1-score} \citep{Black91,Col97} established as the standard for measuring the accuracy of predicted constituent structures.
     This score is computed as follows:
@@ -533,6 +357,195 @@
             The upper right corner shows the values for precision, recall and f1-score.
         }
     \end{figure}
+
+    \section{Empirical Predictions}
+    Under the broad term \deflab{prediction}[(empirical) prediction], we subsume each process that takes an input of predetermined shape and assigns it to an output (called \emph{label}) based on previously seen data and prior knowledge.
+    In the following, we clearify some basic terms terms that are used throughout the thesis in conjunction with empirical predictions.
+    For more detailed elaborations in this field, refer to \Citet{Moh12,Dau17}.
+
+    \paragraph{Tasks, Models and Learning.}
+    We start with the broadest concepts in the field of machine learning.
+    A \emph{task} defines a general setting what the prediction is about, including the sets of possible inputs and labels as well as an assessment function for the predictions.
+    Since the domains of inputs and labels strongly depend on available data, it is also a part of the task.
+
+    A \deflab<empirical prediction>{model}[(prediction) model] is a specification that defines how each intput is mapped to a label.
+    Each model chooses a label that optimizes a \deflab<empirical prediction>{confidence} value (e.g. a score or probability), so we view each model as a function that computes a confidence for each input and label.
+    The model specifies variables (called \deflab<prediction!model>{parameters}) steering the computation of confidence values.
+    Let us denote the set of inputs by \(X\), the labels by \(Y\) and the domain of confidence values by \(\mathcal{C}\) with a total order \(\rel \subseteq \mathcal{C} \times \mathcal{C}\).
+    We view each model as a parametrized function \(\varphi_\theta\colon X \times Y \to \mathcal{C}\) where \(\theta\) are some parameters (or variables) in an associated domain \(\Theta\).\todo{prelim: parametrized function}
+    In our case, the domain of confidence values are real numbers and the order \(\rel\) is \(\leq\), such that the confidence is interpreted as a score (i.e.\@ greater is better).
+    The prediction for an input \(x\) and a model \(f\) with parameters \(\theta\) is any value in \(\argmax^{\rel}_{y \in Y} \phi_\theta(x, y)\).
+
+    Generally, there are two types of models: \deflab<prediction!model>{generative models} and \deflab<prediction!model>{discriminative models}.
+    While generative models define a joint probability distribution of inputs and labels, discriminative models define probabilities or scores for labels conditioned on the input.
+    Generative models can be used to generate samples of pairs containing in- and outputs.
+    Discriminative models on the other hand, are not able to do this in general, as they do not model the structure of the input.
+
+    \emph{Learning} is a process finds an appropriate parametrization for a model in a task.
+    We differentiate between two mayor types of learning: \emph{supervised} and \emph{unsupervised}.
+    In the first case, the data contains the inputs as well as labels; in the latter case it consists only of input.
+    There are some intermediate types in between the two including self-supervised and semi-supervised where a large amount of unlabeled data is complemented with a small amount of labeled data.
+
+    \paragraph{Parameters and Training.}
+    We distinguish two essential sets of parameters: \deflab<prediction!model!parameters>{hyper parameters} and \deflab<prediction!model!parameters>{model parameters}.
+    Hyper parameters determine details about the model and a training process. %, to some extend, the model and the training objective can also be seen as hyper parameters.
+    They are not trained upon, but are chosen for the training either by prior knowledge or by trying different combinations and manually evaluating their results.
+    Model parameters are variables defined by a model that are tuned during the training process to match a training objective.
+
+    \deflab<prediction>{training}[Training] is the process of tuning the model parameters in terms of a \deflab<prediction!training>{training objective}.
+    A training objective assesses the assignment of confidence values by a model in a sample of input and output pairs and defines a criterion for optimal parameters.
+    In some cases, it is possible to compute the model parameters that optimize the training objective in closed form.
+    In other cases, there are iterative processes that change the parameters to gradually improve upon the criterion.
+    There are some fine nuances between the terms learning and training, that are sometimes used interchangeably.
+    While both describe a process that fits a model to available data, training is specifically about tuning model parameters using labeled examples.
+    Learning is a little broader, as it also includes each process that finds appropriate hyper parameters.
+
+
+    \paragraph{Data and splits.}
+    The \deflab<prediction>{data sets} contain pairs of input and output that we use to deduce a prediction model.
+    In this context the, the output (i.e. the to-be predicted) component of these instances is referred to as \deflab<prediction!data sets>{gold}.
+    The data instances are used in two roles: for training, and for assessing a prediction model.
+    The data sets are usually split into three parts to accommodate these roles:
+    \begin{inparaenum}
+        \item a \deflab<prediction!data sets>{training portion} that is solely used to train a model,
+        \item a \deflab<prediction!data sets>{development portion} that is used to monitor the model during the training process and assess the selection of hyper parameters, and
+        \item a \deflab<prediction!data sets>{test portion} that is used to assess a final model.
+    \end{inparaenum}
+    For common data sets that are used within a community, specific partitions are shared to enable fair comparisons between publications.
+    In such publications, the results of different models are compared using the same test portions of the same data sets.
+
+    There are two distinct examples for empirical predictions in (or at least near) the scope of this thesis.
+
+    \begin{example}[Statistical parsing in the empirical prediction framework.]
+        One task that we consider is discontinuous constituent parsing with the NeGra corpus.
+        The domain of inputs is the set of sequences over tokens (that preferably coincide with german words) and the domain of labels is the set of constituent trees where the constituent and \abrv{pos} symbols are defined by the NeGra corpus.
+        Each predicted label can be assessed to a correct tree via the f$_1$-score.
+        Learning this task is supervised, because the corpus contains the setences along with their constituent trees.
+
+        Parsing is a process that predicts a constituent structure for a given sequence of tokens.
+        A statistical grammar formalism is a model that has proven successful in this setting in the past.\cite{}
+        It defines a probability distribution for constituent trees \(p\colon \mathcal{C} \to \DR\), usually by the sum over all derivations per constituent tree and by the product of all rules' weights per derivation.
+        This is formalized in the equation \[
+        p(\xi) = \sum_{d \in D(\xi)} \prod_{\rho \in \pos(d)} \hat{p}(d(\rho))
+        \]
+        where \(\xi \in \mathcal{C}\) is a constituent tree, \(D(\xi)\) is the set of all derivations in the grammar for the constituent tree \(\xi\), and \(\hat{p}\) is a weight function for the rules in the grammar.
+        The function \(\hat{p}\) is defined such that the term \(\prod_{\rho \in \pos(d)} \hat{p}(d(\rho))\) is a probability distribution over all derivation trees \(d \in D\) in the grammar.
+        As the sequence of tokens \(w\) is part of the constituent tree \(\xi\), this is trivially equivalent to a joint probability distribution \(p(\xi) = p(w, \xi)\), which is characteristic for a generative model.
+        The values assigned by the function \(\hat{p}\) form the model parameters, they are restricted to form probability distributions.
+        Probabilistic grammars can easily be used to generate constituent trees (again, trivially in tandem with a sequence of tokens) by probabilistically sampling rules.
+    \end{example}
+
+    \begin{example}[Supertagging in the empirical prediction framework.]
+        In the case of parsing with supertagging, an integral part of the parsing process is an assembly of a small grammar by choosing some rules out of a predetermined set of rule blueprints (this specific process is called supertagging).
+        The process may also be described using a generative model.
+        But in practice, we use specific neural networks for this task, as they have proven very accurate in the past; they are textbook examples for discriminative models.
+        They define many hyper parameters that determine the \emph{architecture} (i.e. the shape of the neural network), e.g.\@ the used word embeddings, its depth or the number of parameters in a certain layer, and many details about the training process, e.g.\@ the learning rate or some condition that ends the iterative training process.
+        During the training process, a treebank is transformed into tuples of the token sequence and the optimal choice of blueprints for each constituent tree.
+        The training objective maximizes the likelihood of the blueprints conditioned on the input tokens.
+    \end{example}
+
+    \subsection{Neural Networks}
+    As mentioned in the last example, we use neural networks to implement certain prediction models.
+    They are a family of parametrized functions that emerged in the last decades and proved extremely useful in many tasks, including ones settled in natural language processing. \todo{ref examples}
+    As in the parent section, we will only give a brief overview for the concepts needed to understand further sections of this theses.
+    For further elaborations in the field of neural networks for natural language processing, consult \cref{Gol17}.
+
+    In general, we consider a neural network (short \abrv{ann} for \emph{artificial} neural network) a parametrized function  where the outputs are vectors of real numbers, i.e.\@ they are of the form \(f_\theta\colon X \to \DR^n\) where \(\theta\) denotes the parameters, \(X\) the set of inputs and \(n > 0\) is the output dimension.
+    There is a set of well studied \abrv{ann}s that are used as \emph{modules} and combined to form new \abrv{ann}s by composition, addition or concatenating their results.
+    Such a combined collection of modules  is called an \emph{architecture}.
+    In the following, some of these modules are briefly explained.
+
+    \subsubsection{Embeddings}
+    Embeddings are used to assign vectors to any other type of objects.
+    These assigned values are the foundation for computations in other modules, which usually assume real vectors as input.
+    The most simple form of embeddings are \deflab<>{static embeddings}.
+    Let us consider a set of input objects \(X\), a bijection \(\mathit{idx}\colon X \to [|X|]\) and an output dimension \(n \in \DN_+\).
+    A static embedding for \(X\) of dimension \(n\) is a parametrized function \(f_W\colon X \to \DR^n\) which assumes a matrix of parameters \(W \in \DR^{(|X| \times n)}\) and assigns a row vector to each element in \(X\), i.e.\@ \(f_W(x) = W_{\mathit{idx}(x)}\) for each \(x \in X\).
+    In some applications, it is sensible to add a vector for unknown elements, e.g.\@ for unknown tokens that do not occur in the data used for training.
+    If the input is a sequence, static embeddings are applied element-wise.
+    E.g.\@ a sequence of tokens \(\sigma_1 \cdots \sigma_n\) is embedded as a sequence of vectors \((f_W(\sigma_i) \mid i \in [n])\).
+
+    Some architectures complement element-wise token embeddings by \emph{character-wise embeddings}. \citep{}
+    These are recurrent modules (cf.\@ \cref{sec:preliminaries:nn:recurrent}) that process the sequence of characters and yield a vector of specified length for each token (which, in turn, requires a static embedding for the set of characters).
+    This type of module is associated with the handling of unknown words with the following intuition:
+        If a token does not occur in the training data, there is no specific element-wise embedding for it.
+        But the character-wise embedding might have learned some sensible information based on similar tokens in the training data.
+
+    For the task of sequence processing, \emph{positional embeddings} are another extension used to complement static embeddings.
+    They define a function that maps the position of each sequence element into the output dimension.
+    In contrast to both aforementioned methods, these are often \emph{not} trained, but chosen immutably.
+    E.g.\@ in the case of \abrv{bert}, a series of sine and cosine functions in different frequencies is used as positional embedding.
+
+%    Recently, specialized methods for sequence embedding that do also consider positional and contextual information in the assignment were published, such as \abrv{bert} \citep{Devlin2019} and flair embeddings \citep{Akb19}.
+%    However, they are (in some cases rather large) compositions of \abrv{ann} modules for sequence tagging themselves, using a transformers and \abrv{lstm} units, respectively.
+
+    \subsubsection{Linear Layers, Activation Functions and Multi-Layer Perceptrons}
+    After embeddings, linear layers are an essential part in \abrv{ann}s.
+    They are a linear transformation of vectors from an a specified input to an output dimension.
+    Formally, let \(m, n \in \DN_+\) by some input and output dimensions.
+    Then a linear layer is a function \(f_{(W,b)}\colon R^m \to R^n\) where the matrix \(W \in R^{(m\times n)}\) and the bias vector \(b\in R^n\) are parameters and \(f_{(W,b)}(x) = Wx+b\).
+
+    Activation functions is a general term for non-linear functions that are used in between compositions and on top of linear layers.
+    There are some options that implement desirable properties or interpretations in some settings, such as the following:
+    \begin{enumerate}
+        \item
+            A \emph{Rectified Linear Unit (ReLU)} is very easy to compute and used in large architectures to save computational power.
+            It is defined for each vector \(x\in R^n\) for any dimension \(n \in \DN_+\) by cutting-off negative values: \(\mathrm{relu}(x) = (\max(0, x_i) \mid i \in [n])\).
+        \item
+            The \emph{sigmoid function} is applied point-wise to each component of a vector and assigns values in the interval between \(0\) and \(1\) as follows: \(\mathrm{sigmoid}(x) = (\frac{1}{1-e^{x_i}} \mid i \in [n])\) for each \(x \in \DR^n\) and \(n \in \DN_+\).
+            These values are often interpreted as one value of a binary probability distribution.
+        \item
+            The \emph{softmax function} also maps each value in a vector to the interval between \(0\) and \(1\).
+            They are normalized such that they sum to \(1\) and are therefore often interpreted as a probability distribution over the set of indices of the vector.
+            It is defined as follows: \(\mathrm{softmax}(x) = (\frac{e^{x_i}}{z} \mid i \in [n])\) for each \(x\in \DR^n\) and \(n \in \DN_+\) where \(z = \sum_{i \in [n]} e^{x_i}\).
+    \end{enumerate}
+    The latter two are more dominantly used as top-most modules, specifically because of their interpretation as probabilities.
+    A \emph{multi-layer perceptron} is a composition of multiple linear layers with activation functions.
+
+
+    \subsubsection{Neural Networks for Sequence Processing}
+    Recurrent modules are a foundation for the processing of sequence inputs in neural networks.
+    They are defined, such that each input vector is complemented with the previous output, starting with an initialization vector for the first input.
+    Formally, this concept of recurrence uses some inherent module \(f_\theta\colon \DR^{n+m} \to \DR^m\) parametrized by some \(\theta\) and incrementally computes, for an input sequence \(x_1, \ldots, x_n \in \DR^n\), a sequence of outputs \(g_{(f, \theta, h_0)}(x_1, \ldots, x_n) = (h_i = f_\theta(x_i \cdot h_{i-1}) \in \DR^m \mid i \in [n])\) where \(h_0 \in \DR^m\) is an initial value and parameter of the recurrent module \(g\).
+    Linear short-term memory (short \abrv{lstm}) cells \citep{Hoc97} established as a quasi-standard for these inherent modules.
+    In addition to the previous output \(h_{i-1}\) that is used to compute \(h_i\), they also carry a cell state between the computations for each position, which is not part of the output.
+    Bidirectional recurrent modules combine the vectors obtained by two recurrent modules, one for the sequence from left to right and the other in the opposite direction, by concatenating the vectors for each position.
+
+    The transformer architecture \citep{vaswani2017attention} established as an alternative to recurrent neural networks for sequence processing.
+    It relies on the self-attention mechanism that is used to extract and combine sequence positions based on their embedding vectors, which are often composed of static sub-word and positional embeddings.
+    The architecture is especially well-known as the foundation of large language models.
+
+    \subsubsection{Pretrained Modules and Semi-Supervised Learning}
+    A mentioned before, there are some modules shared in the community, such as pretrained static embeddings.
+    Usually they are \emph{generic}, i.e.\@ they are designed to be used an many different tasks; in that context such a specific task is called \emph{downstream}.
+    In the field of natural language processing, using pretrained modules has become a quasi-standard.
+    The reason for that is twofold:
+    \begin{compactitem}
+        \item
+            Training costs time and power, using pretrained modules skips at least a part of the training and saves both.
+        \item
+            These generic modules are most often trained using very large copora, magnitudes larger than most copora for downstream tasks such as constituent parsing.
+            Thus, they contain information that is not possible to obtain from a downstream training set.
+    \end{compactitem}
+    Especially when \emph{large language models} are used as modules in an architecture, the term \emph{fine-tuning} is used for training downstream tasks.
+    Because of the additional information, fine-tuning such a model for a downstream task in an otherwise supervised manner is referred to as \emph{semi-supervised} training.
+
+    The two most prominent instances for pretrained models that we encountered during the work that lead up to this thesis are the following:
+    \begin{compactitem}
+        \item
+            Word vector embeddings are pretrained static word embeddings.
+            Syntactic word representations, such as word2vec \citep{word2vec} and fasttext \citep{fasttext} that are both based on the continuous bag of words model, aim to map words that are used in similar contexts to similar vectors.
+            There are also semantic frameworks, like WordNet \citep{wordnet} that aims to map words with similar meaning to similar vectors using training with large semantic word networks.
+        \item
+            Large language models (short \abrv{llm}) are, as the name suggests, not only single modules but large architectures for sequence processing.
+            They are usually pretrained using various tasks that involve missing word predictions and are associated with the field of language understanding.
+            The vector assigned to each token in a sequence by an \abrv{llm} is context-sensitive:
+                It does not only depend on the token itself, but on its position and all other tokens in the sequence as well.
+                This is achieved using positional embeddings and transformer architectures.
+            The break-through for \abrv{llm} as a component in \abrv{ann} was the release of \abrv{bert}. \citep{Devlin2019}
+            Since then, \abrv{bert} and its derivatives were adopted into models to solve various tasks on language understanding \citep[question answering, entailment recognition, sentiment analysis, i.a.]{Devlin2019, roberta}, language generation \citep[summarization, translation, i.a.]{bertgeneration}, information extraction \citep[named entity recognition, relation extraction]{biobert} and also also our field of research: constituent parsing \citep{Cor20, FerGom20a, FerGom22,Coa21, Sun22}.
+            It is still used in state-of-the-art models today.
+    \end{compactitem}
 
     \ifSubfilesClassLoaded{%
         \printindex
