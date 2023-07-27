@@ -515,7 +515,32 @@
     It relies on the self-attention mechanism that is used to extract and combine sequence positions based on their embedding vectors, which are often composed of static sub-word and positional embeddings.
     The architecture is especially well-known as the foundation of large language models.
 
-    \subsubsection{Pretrained Modules and Semi-Supervised Learning}
+    \subsubsection{Training}
+    The parameters in an \abrv{ann} are tuned to fit an objective for labeled examples in a training set using \emph{statistical gradient descent} (\abrv{sgd} for short).
+%    Such an objective is a function that rates the prediction for each example in comparison to the ground truth and accumulates the results in the whole set.
+%    A prominent example for such an objective is \emph{cross entropy loss} that is often used when the confidence values for the labels are interpreted as probability distribution.
+%    It is the sum of negative logarithms over all confidence values; the term \emph{loss} indicates that the value should be minimized during the training process.
+%    During the training process, the value is computed for small portion of the data (called \emph{batch}) and the parameters are updated using a partial derivative of the value with respect to the weight.
+%    These updates are scaled by a (typically small) real value, called \emph{learning rate}, and repeated a fixed number of times or until a certain criterion is met.
+%    There are several extensions to the baseline training process that aim to accelerate or stabilize the training process or improve the prediction quality; sthat we use the following:
+    Such an objective often takes the form of a \emph{loss} value that should be minimized during the training process, in our case it is \emph{cross entropy loss} (i.e.\@ the negative log likelihood of the confidence value for the ground truth label in all examples).
+    There are several extensions and hyper parameters to the training, among them we use the following:
+    \begin{itemize}
+        \item
+            \abrv{Sgd} is an iterative process and usually each iteration is performed using a small amount of data, called \emph{batch}.
+            The amount of iterations to process the whole training set is called an \emph{epoch}, usually the total number of iterations for training is given in epochs.
+            The computed gradient is scaled by a small real value, called \emph{learning rate}.
+        \item
+            The gradients used to update the parameters in each iteration are modified using the \emph{Adam} algorithm that implements momentum and adaptive gradients.
+            Both aim to accelerate and stabilize the training process.
+        \item
+            There are some measures that aim to improve the ability to generalize from training examples, among them are \emph{weight decay} and \emph{dropout}.
+            Both are quantified in terms of real values:
+                A term for the magnitude of all parameters is added to the loss and scaled by weight decay, this discourages high values for parameters which are associated with fitting to close to training data (called overfitting).
+                Dropout is the probability of omitting the value (and replace it by \(0\)) at an index in the vector computed after selected modules.
+    \end{itemize}
+
+    \subsubsection{Pretrained Modules}
     A mentioned before, there are some modules shared in the community, such as pretrained static embeddings.
     Usually they are \emph{generic}, i.e.\@ they are designed to be used an many different tasks; in that context such a specific task is called \emph{downstream}.
     In the field of natural language processing, using pretrained modules has become a quasi-standard.
