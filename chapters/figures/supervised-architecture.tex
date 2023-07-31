@@ -1,0 +1,142 @@
+\documentclass[../../document.tex]{subfiles}
+
+\begin{document}
+    \newcommand{\vectortwo}[2]{%
+        \pgfmathparse{70*rnd+30}%
+        \edef\rcone{\pgfmathresult}%
+        \pgfmathparse{70*rnd+30}%
+        \edef\rctwo{\pgfmathresult}%
+        \matrix[#1, inner sep=1pt, draw, rounded corners=3pt] (#2) [matrix of nodes,every node/.style={circle,draw,inner sep=1pt}] {
+            |[fill=white!\rcone!black]| ~ \\
+            |[fill=white!\rctwo!black]| ~ \\};%
+    }
+    \newcommand{\vectorthree}[2]{%
+        \pgfmathparse{70*rnd+30}%
+        \edef\rcone{\pgfmathresult}%
+        \pgfmathparse{70*rnd+30}%
+        \edef\rctwo{\pgfmathresult}%
+        \pgfmathparse{70*rnd+30}%
+        \edef\rcthr{\pgfmathresult}%
+        \matrix[#1, inner sep=1pt, draw, rounded corners=3pt] (#2) [matrix of nodes,every node/.style={circle,draw,inner sep=1pt}] {
+            |[fill=white!\rcone!black]| ~ \\
+            |[fill=white!\rctwo!black]| ~ \\
+            |[fill=white!\rcthr!black]| ~ \\};%
+    }
+    \newcommand{\vectorfive}[2]{%
+        \pgfmathparse{70*rnd+30}%
+        \edef\rcone{\pgfmathresult}%
+        \pgfmathparse{70*rnd+30}%
+        \edef\rctwo{\pgfmathresult}%
+        \pgfmathparse{70*rnd+30}%
+        \edef\rctre{\pgfmathresult}%
+        \pgfmathparse{70*rnd+30}%
+        \edef\rcfor{\pgfmathresult}%
+        \pgfmathparse{70*rnd+30}%
+        \edef\rcfiv{\pgfmathresult}%
+        \matrix[#1, inner sep=1pt, draw, rounded corners=3pt] (#2) [matrix of nodes,every node/.style={circle,draw,inner sep=1pt}] {
+            |[fill=white!\rcone!black]| ~ \\
+            |[fill=white!\rctwo!black]| ~ \\
+            |[fill=white!\rctre!black]| ~ \\
+            |[fill=white!\rcfor!black]| ~ \\
+            |[fill=white!\rcfiv!black]| ~ \\};%
+    }
+    \begin{tikzpicture}[>=stealth]
+        \matrix (input) [matrix of nodes, outer sep=0pt, inner sep=0pt, row sep=0pt, column sep=7pt, every node/.style={font=\small}] {
+            \tn{where}\strut  & \tn{the}\strut  & \tn{survey}\strut   & \tn{was}\strut  & \tn{carried}\strut  & \tn{out}\strut  \\};
+
+        \foreach \i in {1,2,...,6}{
+            \vectortwo{above=3ex of input-1-\i}{ceb-\i}
+            \vectortwo{above=0px of ceb-\i}{cef-\i}
+            \vectorthree{above=0px of cef-\i}{we-\i}
+
+            \vectortwo{above=3ex of we-\i}{llb-1-\i}
+            \vectortwo{above=0px of llb-1-\i}{llf-1-\i}
+
+            \vectortwo{above=3ex of llf-1-\i}{llb-2-\i}
+            \vectortwo{above=0px of llb-2-\i}{llf-2-\i}
+
+            \vectorfive{above=3ex of llf-2-\i}{fin-\i}
+
+            \draw
+                (input-1-\i) edge[->] (ceb-\i)
+                (we-\i) edge[->] (llb-1-\i)
+                (llf-1-\i) edge[->] (llb-2-\i)
+                (llf-2-\i) edge[->] (fin-\i);
+        }
+
+        \foreach \from/\to in {1/2, 2/3, 3/4, 4/5, 5/6}{
+            \draw
+                (llf-1-\from) edge[->] (llf-1-\to)
+                (llb-1-\to) edge[->] (llb-1-\from)
+                (llf-2-\from) edge[->] (llf-2-\to)
+                (llb-2-\to) edge[->] (llb-2-\from);
+        }
+%        \coordinate[left=3ex of llf-1-1] (llf-1-0);
+%        \coordinate[left=3ex of llf-2-1] (llf-2-0);
+%        \coordinate[right=3ex of llb-1-6] (llb-1-7);
+%        \coordinate[right=3ex of llb-2-6] (llb-2-7);
+%        \draw
+%            (llf-1-0) edge[->] (llf-1-1)
+%            (llf-2-0) edge[->] (llf-2-1)
+%            (llb-1-7) edge[->] (llb-1-6)
+%            (llb-2-7) edge[->] (llb-2-6);
+
+        \node[inner sep=0, outer sep=0, fit=(cef-1) (ceb-1)] (ce-1) {};
+        \node[left=2em of ce-1, align=right,font=\footnotesize, outer sep=0pt] (cbelabel) {character-based\\[-.5ex]word embedding};
+        \node[left=2em of we-1, align=right,font=\footnotesize] {static word\\[-.5ex]embedding};
+        \node[inner sep=0, outer sep=0, fit=(llf-1-1) (llb-1-1)] (ll-1-1) {};
+        \node[left=2em of ll-1-1,font=\footnotesize] {bi-\abrv{lstm} layer};
+        \node[inner sep=0, outer sep=0, fit=(llf-2-1) (llb-2-1)] (ll-2-1) {};
+        \node[left=2em of ll-2-1,font=\footnotesize] {bi-\abrv{lstm} layer};
+        \node[left=2em of fin-1,font=\footnotesize] {linear layer};
+
+
+        \matrix[right=4em of input] (cinput) [matrix of nodes, outer sep=0pt, inner sep=0pt, row sep=0pt, column sep=12pt] {
+            \tn{o}\strut  & \tn{u}\strut  & \tn{t}\strut \\};
+        \foreach \i in {1,2,3}{
+            \vectorthree{above=2ex of cinput-1-\i}{cwe-\i}
+
+            \vectortwo{above=2ex of cwe-\i}{cllb-\i}
+            \vectortwo{above=0px of cllb-\i}{cllf-\i}
+
+            \draw
+                (cinput-1-\i) edge[->] (cwe-\i)
+                (cwe-\i) edge[->] (cllb-\i);
+        }
+        \coordinate[right=2ex of cllb-3] (cllb-4);
+        \coordinate[left=2ex of cllf-1] (cllf-0);
+        \draw
+%            (cllf-0) edge[->] (cllf-1)
+            (cllf-1) edge[->] (cllf-2)
+            (cllf-2) edge[->] (cllf-3)
+%            (cllb-4) edge[->] (cllb-3)
+            (cllb-3) edge[->] (cllb-2)
+            (cllb-2) edge[->] (cllb-1);
+        \node[right=1.5em of cwe-3, font=\footnotesize, align=left] (cwelabel) {static character\\[-.5ex]embedding};
+        \node[inner sep=0, outer sep=0, fit=(cllf-3) (cllb-3)] (cll-3) {};
+        \coordinate[above right=2ex of cllf-3] (wendekreis);
+        \node[right=1.5em of cll-3, font=\footnotesize] (cllabel) {bi-\abrv{lstm} layer};
+
+        \draw (cllb-1.west) edge[->,out=180,in=0] (ceb-6.0);
+        \draw[rounded corners=4pt] (cllf-3.east) -| (wendekreis) -- (wendekreis-|cllf-0) edge[->,out=180,in=0] (cef-6);
+        \matrix[inner sep=1pt, draw, rounded corners=3pt] () at (cef-6) [matrix of nodes,every node/.style={circle,draw,inner sep=1pt}] {
+            |[fill=white!33!black]| ~ \\
+            |[fill=white!45!black]| ~ \\};%
+        \matrix[inner sep=1pt, draw, rounded corners=3pt] () at (ceb-6) [matrix of nodes,every node/.style={circle,draw,inner sep=1pt}] {
+            |[fill=white!100!black]| ~ \\
+            |[fill=white!20!black]| ~ \\};
+        \matrix[inner sep=1pt, draw, rounded corners=3pt] () at (cllb-1) [matrix of nodes,every node/.style={circle,draw,inner sep=1pt}] {
+            |[fill=white!100!black]| ~ \\
+            |[fill=white!20!black]| ~ \\};%
+        \matrix[inner sep=1pt, draw, rounded corners=3pt] () at (cllf-3) [matrix of nodes,every node/.style={circle,draw,inner sep=1pt}] {
+            |[fill=white!33!black]| ~ \\
+            |[fill=white!45!black]| ~ \\};%
+
+        \node [fit=(cinput) (cllf-1) (cllf-3) (cllf-0|-wendekreis)] (cann) {};
+        \node [fit=(cbelabel) (cef-6) (ceb-6), inner sep=0pt, outer sep=0pt] (cbebox) {};
+        \node [fit=(cann) (cllabel) (cwelabel), inner sep=2pt, outer sep=0pt] (cannbox) {};
+
+        \draw[gray, dashed]
+            (cbebox.south east) -| (cbebox.north west) -- (cbebox.north east) -- (cannbox.north west) -| (cannbox.south east) -- (cannbox.south west) -- (cbebox.south east);
+    \end{tikzpicture}
+\end{document}

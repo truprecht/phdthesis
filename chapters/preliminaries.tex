@@ -445,9 +445,9 @@
     \end{example}
 
     \subsection{Neural Networks}
-    As mentioned in the last example, we use neural networks to implement certain prediction models.
+    As mentioned in the last example, we use neural networks to implement the prediction of a sample of supertags for each position input sentences.
     They are a family of parametrized functions that emerged in the last decades and proved extremely useful in many tasks, including ones settled in natural language processing. \todo{ref examples}
-    As in the parent section, we will only give a brief overview for the concepts needed to understand further sections of this theses.
+    As in the parent section, we will only give a brief overview for the concepts needed to understand the implementations discussed in this thesis.
     For further elaborations in the field of neural networks for natural language processing, consult \cref{Gol17}.
 
     In general, we consider a neural network (short \abrv{ann} for \emph{artificial} neural network) a parametrized function  where the outputs are vectors of real numbers, i.e.\@ they are of the form \(f_\theta\colon X \to \DR^n\) where \(\theta\) denotes the parameters, \(X\) the set of inputs and \(n > 0\) is the output dimension.
@@ -531,10 +531,10 @@
             The amount of iterations to process the whole training set is called an \emph{epoch}, usually the total number of iterations for training is given in epochs.
             The computed gradient is scaled by a small real value, called \emph{learning rate}.
         \item
-            The gradients used to update the parameters in each iteration are modified using the \emph{Adam} algorithm that implements momentum and adaptive gradients.
+            The gradients used to update the parameters in each iteration are modified using the \emph{Adam} algorithm \citep{adam,adamw} that implements momentum and adaptive gradients.
             Both aim to accelerate and stabilize the training process.
         \item
-            There are some measures that aim to improve the ability to generalize from training examples, among them are \emph{weight decay} and \emph{dropout}.
+            There are some measures that aim to improve the ability to generalize from training examples, among them are \emph{weight decay} and \emph{dropout} \citep{dropout}.
             Both are quantified in terms of real values:
                 A term for the magnitude of all parameters is added to the loss and scaled by weight decay, this discourages high values for parameters which are associated with fitting to close to training data (called overfitting).
                 Dropout is the probability of omitting the value (and replace it by \(0\)) at an index in the vector computed after selected modules.
@@ -571,6 +571,31 @@
             Since then, \abrv{bert} and its derivatives were adopted into models to solve various tasks on language understanding \citep[question answering, entailment recognition, sentiment analysis, i.a.]{Devlin2019, roberta}, language generation \citep[summarization, translation, i.a.]{bertgeneration}, information extraction \citep[named entity recognition, relation extraction]{biobert} and also also our field of research: constituent parsing \citep{Cor20, FerGom20a, FerGom22,Coa21, Sun22}.
             It is still used in state-of-the-art models today.
     \end{compactitem}
+
+    \subsubsection{Architectures}
+    We implement the prediction of supertags using two architectures:
+    \begin{enumerate}
+        \item
+            The first one is pretty common in the \abrv{nlp} community for token-wise classification tasks and was used, e.g., by \citet{vaswani2016supertagging,StaSte20,Cor20}.
+            It contains two modules for embedding, a static word embedding and character embeddings, which are followed by some layers of bidirectional recurrent modules utilizing \abrv{lstm}, and finally an \abrv{mlp}; \cref{fig:architecture:supervised} shows an illustration.
+            It does not rely on any pretrained modules and therefore implements supervised learning for the prediction of supertags.
+        \item
+            The second architecture consists of a pretrained \abrv{llm} that is topped by one feed-forward layer (this design is pretty common and recommended for classification predictions using \abrv{llm} embeddings e.g. by \citet{Devlin2019}).
+            If we consider the \abrv{llm} as a black box, it is conceptually extremely simple yet effective, but its strength relies of course in the complex design and pretraining of the \abrv{llm}.
+            As noted before, using such a pretrained model is considered semi-supervised learning for the prediction of supertags.
+    \end{enumerate}
+
+    \begin{figure}
+        \centering
+        \subfile{figures/supervised-architecture.tex}
+        \caption{\label{fig:architecture:supervised}
+            Illustration of the supervised \abrv{ann} architecture for the supertag prediction.
+            Each box with circles in different shades of gray represents a vector; boxes directly put on top of each other are concatenated vectors; arrows indicate the dependencies for the computed vectors.
+            The input sentence (bottom) is embedded using static word embeddings and character-based embeddings; the latter are illustrated to the right and consist of static character embeddings which are fed into a bidirectional \abrv{lstm}.
+            The embeddings are topped by bidirectional \abrv{lstm} layers (in this illustration 2) and a linear layer such that the size of the input is the number of supertag blueprints.
+        }
+    \end{figure}
+
 
     \ifSubfilesClassLoaded{%
         \printindex
