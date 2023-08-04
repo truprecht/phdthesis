@@ -3,19 +3,32 @@
 \begin{document}
     \section{Guided Extraction} \label{sec:extraction:guided}
     In the evaluation of supertagging with lexical \abrv{lcfrs} according to the extraction in the previous section, it was already noted that the extracted sets of supertags were rather large and their prediction less accurate compared to other publications in the field. \cite{RupMoe21}
-    In this section, we focus on a generalization of the extraction of lexical grammar rules as introduced by \citet{Rup22} that were investigated with the aim to tackle these two issues.
+    In this section, we focus on a generalization of the extraction of lexical grammar rules as introduced by \citet{Rup22} that were investigated to tackle these two issues.
     The generalization deals with the following two limitations of the process described in the previous section:
-    \begin{compactenum}
+    \begin{compactitem}
         \item
-        Constructing lexical LCFRS rules picked a sentence position for each inner node of the constituent structure according to a fixed strategy.\todo{link to the subsection/paragraph}
-        Such a strategy is now formalized by a \emph{guide} that maps each inner node position of a constituent structure to sentence position in its yield.
-        The concept is generalized by introducing multiple strategies to define guides for a given constituent structure, which are called \emph{guide constructors}.
+            Constructing lexical LCFRS rules picked a sentence position for each inner node of the constituent structure according to a fixed strategy.\todo{link to the subsection/paragraph}
+            Such a strategy is now formalized by a \emph{guide} that maps each inner node position of a constituent structure to sentence position in its yield.
+            The concept is generalized by introducing multiple strategies to define guides for a given constituent structure, which are called \emph{guide constructors}.
         \item
-        LCFRS rules were constructed with constituent symbols as nonterminals, which were then supplemented with annotations during the lexicalization process.
-        This section decouples the nonterminals from the other extraction processes and introduce multiple strategies to define them, called \emph{nonterminal constructors}.
-    \end{compactenum}
-    To implement the two generalizations, the extraction described in this section will produce \abrv{dcp} and hybrid grammars.
-    \todo{describe the different formalisms: supertags as tuples with lcfrs rules <-> hybrid grammar rules}
+            LCFRS rules were constructed with constituent symbols as nonterminals, which were then supplemented with annotations during the lexicalization process.
+            This section decouples the nonterminals from the other extraction processes and introduces multiple strategies to define them, called \emph{nonterminal constructors}.
+    \end{compactitem}
+    To implement the two generalizations, the extraction described in this section will produce \abrv{lcfrs}/\abrv{dcp} hybrid grammar rules.
+    As in the previous section, this extraction process may be characterized by four consecutive steps:
+    \begin{enumerate}
+        \item\label{extraction:hg:ranktrans}
+            The tree is processed by a compatible rank transformation.
+            For some guide constructors, applying no rank transformation at all may be a choice as well.
+        \item\label{extraction:hg:guide}
+            A guide constructor selects a sentence position for each constituent node.
+        \item\label{extraction:hg:alg}
+            A derivation of lexical \abrv{hg} rules for the constituent tree is constructed using the constituent tree, the guide from the previous step, and a nonterminal constructor.
+        \item
+            In the final step, the rules are collected as a sequence in order of the positions according to the instantiation.
+    \end{enumerate}
+    The first two steps are explained in the following \cref{sec:extraction:guided:guide}, which defines the concept of guide constructors, gives examples, and explains which rank transformations are sensible options.
+    The concept of nonterminal constructors and some examples are discussed in \cref{sec:extraction:guided:nt}; the remainder of \cref{extraction:hg:alg} is explained in \cref{sec:extraction:guided:alg}.
 
     \subsection{Guides and Guide Constructors}
     The concept of guides for the extraction was introduced by \citet{Rup22}.
@@ -25,72 +38,118 @@
         \item \(\varphi\) is injective, i.e.\@ each sentence position is assigned to at most one inner node position.
     \end{inparaenum}
     As \(\xi\) is binary, there is exactly one sentence position that is not assigned to any inner node.
-    During the grammar extraction process, that constructs a rule for each inner node position in the constituent structure, the guide is used to determine the lexical symbol in the rule.
+    During the grammar extraction process, which constructs a rule for each inner node position in the constituent structure, the guide is used to determine the lexical symbol in the rule.
     Intuitively, it can be seen to assign a ``responsibility'' for each inner node by a sentence position.
     The remaining sentence position is handled by a special rule that produces no constituent node.
 
-    In this thesis, we will generalize the guide concept by relaxing the second condition: each sentence position may be mapped to multiple inner node positions in the constituent structure.
+    In this thesis, we will generalize the concept of guides by relaxing the second condition: each sentence position may be mapped to multiple inner node positions in the constituent structure.
     This allows us to define rules that produce multiple constituent nodes.
     \todo[inline]{
-        The concept can be generalized further: decouple the guides in to two, a lexical decomposition for the string grammar derivation and a guide that constructs the tree grammar.
+        The concept can be generalized further: decouple the guides into two, a lexical decomposition for the string grammar derivation and a guide that constructs the tree grammar.
         That would be able to derive hybrid grammars with, for example, strictly-inorder guided string derivations and head-driven \abrv{dcp} functions.
     }
     We will use this in \cref{sec:extraction:guided:head} to derive lexical grammars for constituent structures that are inspired by those extracted for dependency parsing.
-    They are extracted such that each rule contains a lexical symbol in tandem with each inner node position of the constituent structure that it is a head of.
+    They are extracted such that each rule contains a lexical symbol in tandem with each inner node of the constituent structure that the lexical symbol is the lexical head of.
 
     \begin{definition}[Guide]
         Let \(\xi\) be an indexed tree.
-        A \deflab{guide} for \(\xi\) is a function \(\varphi\colon \npos(\xi) \to \yield(\xi)\) if, for each \(\rho \in \npos\)
-        \begin{inparaenum}
-            \item \(\varphi(\rho) \in \yield(\xi|_\rho)\), and
-            \item if there is any child position \(\rho' \in \npos(\xi)\) of \(\rho\) with \(\varphi(\rho) = \varphi(\rho')\), then each position \(\omega\) between \(\rho\) and \(\rho'\) has the same value \(\varphi(\rho) = \varphi(\omega) = \varphi(\rho')\).
-        \end{inparaenum}
-        \(\guide(\xi)\) denotes the set of all guides for the indexed tree \(\xi\).
+        A \deflab{guide} for \(\xi\) is a function \(\varphi\colon \pos(\xi) \to \yield(\xi)\) if, for each position \(\rho \in \pos(\xi)\), the assigned leaf is in the yield at or below the position \(\varphi(\rho) \in \yield(\xi|_\rho)\).
+        \begin{itemize}
+            \item \(\phi\) is called \deflab<guide>{admissible} if for each position \(\rho \in \pos(\xi)\)
+            \begin{compactenum}
+                \item there is at most one other leaf \(i\) below \(\rho\) besides \(\phi(\rho)\) such that an ancestor of \(\rho\) is assigned to \(i\), i.e. \(|\{ i \in \yield(\xi|_\rho) \setminus \varphi(\rho) \mid \varphi^{-1}(i) \cap \ancestors(\rho) \neq \emptyset\}| \leq 1\), and
+                \item if there is any inner descendant position \(\rho'\) of \(\rho\) with \(\varphi(\rho) = \varphi(\rho')\), then each position \(\omega \in \descendants_\xi(\rho) \cap \ancestors(\rho')\) between \(\rho\) and \(\rho'\) has the same value \(\varphi(\rho) = \varphi(\omega) = \varphi(\rho')\).\todo{is there an easier restriction combining ii and iii?}
+            \end{compactenum}%
+            \item \(\phi\) is called \deflab<guide>{unitary} if, for each leaf \(i\), there is at most one inner node position that is assigned to \(i\), i.e. \(|\phi^{-1}(i) \cap \npos(\xi)| \leq 1\).
+        \end{itemize}
+%        \(\guide(\xi)\) denotes the set of all guides for the indexed tree \(\xi\).
     \end{definition}
 
-    The second constraint in the definition ensures that there are no intermediate nodes assigned to a different position between an ancestor and an antecedent position in the constituent structure.
-    So the guide may only assign the same leaf to connected node positions.
+    The admissible property ensures that the guide may only assign the same leaf to contiguous regions of inner node positions (plus the leaf position itself).
+    Each unitary guide for a binary tree is also admissible, because
+    \begin{inparaenum}
+        \item for each subtree with \(n\) leaves, there are \(n-1\) inner nodes; if each inner node is mapped to a different leaf, there is exactly one that is not assigned to one of those inner nodes and may be assigned to an ancestor position; and
+        \item there are no two different positions mapped to the same leaf.
+    \end{inparaenum}
 
     \bigskip\noindent
     \begin{minipage}[t]{.7\linewidth}
         \parexample*
         Consider the constituent structure \(\xi\) illustrated in the right figure.
-        The gray encircled integers shown next to each inner node give the value of a guide \(\varphi\) for the node's position.
+        The gray encircled integers shown next to each inner node give the value of a guide \(\varphi\) for the position.
         For example \(\varphi(\varepsilon) = \varphi(1) = \varphi(1\,1) = 4\).
-        The leaves 1, 2 and 6 are not assigned to any inner node position.
+        Each leaf position is assigned to its symbol.
+        The guide is not unitary, because three positions are mapped to the leaf $4$.
+        But it is admissible, because
+        \begin{inparaenum}
+            \item for each subtree, there is at most the leaf assigned to the root that is assigned to another ancestor; and
+            \item the three positions that are mapped to 4 form a chain of direct descendants.
+        \end{inparaenum}
     \end{minipage}
     \hfill
     \subfile{figures/guides/example-constituents.tex}
 
+    \bigskip
 
     \begin{definition}[Guide Constructor]
         Let \(\varSigma\) be an alphabet of constituent symbols.
         A \deflab<guide>[gconst]{guide constructor} is a function \(\varPhi\colon \itrees^\varSigma \parto (\DN^* \parto \DN)\) such that for each indexed tree \(\xi\) in the domain \(\dom(\varPhi)\), the partial function \(\varPhi(\xi)\) is a guide constructor for \(\xi\).
     \end{definition}
 
-    Guide constructors are defined as partial functions, because some of them can only be sensibly defined for binary constituent structures.
+    Guide constructors are defined as partial functions because some of our examples can only be reasonably defined for binary constituent structures.
     In the following, we will give the instances for guide constructors that were investigated by \citet{Rup22} plus one additional instance (\emph{headed guide constructor}).
     Each instance \(\varPhi\) will carry a name of the form \emph{\(x\) guide constructor}.
     For each \(\xi \in \dom(\varPhi)\), the guide \(\varPhi(\xi)\) will analogously be called \emph{\(x\) guide for \(\xi\)}.
 
     \paragraph{Vanilla Guide Constructor.}\deflab<guide>[vguide]{vanilla guide (constructor)}[]
     This guide constructor aims to formalize the assignment of lexical items to inner nodes that is achieved by the transportation in the extraction of lexical \abrv{lcfrs} rules described in the previous section.
-    Similar to the prerequisites in that section, the guide is defined for binary indexed trees.
-    A guide produced by this constructor maps each node position either to the leftmost leaf that is a direct successor, or (if not available) to the leftmost leaf in the yield of its right successor.
+    Similar to the prerequisites in that section, the guide is defined for binary constituent structures.
+    A guide produced by this constructor maps each node position either to the rightmost\footnote{
+        In the publication, this constructor mapped to the leftmost leaf that is a direct successor.
+        This is a slight change in the same manner as the split of rules with two terminal symbols in step \ref{enum:lcfrs:step4} in the extraction and lexicalization of \abrv{lcfrs} (cf.\@ \cref{footnote:lcfrs:split}).
+    } leaf that is a direct successor, or (if not available) to the leftmost leaf in the yield of its right successor.
     It is formally defined as follows:
     \[
     \mathrm{van}(\xi)(\rho) = \begin{cases}
-        \min L_\rho & \text{if $L_\rho \neq \emptyset$} \\
+        \xi(\rho)   & \text{if $\rho \in \lpos(\xi)$}\\
+        \max L_\rho & \text{if $L_\rho \neq \emptyset$} \\
 %        \mathrm{van}(\xi)(\rho \cdot 1) & \text{if $L_\rho = \emptyset$ and $|\children(\rho) \cap \pos(\xi)| = 1$} \\
         \min\;\yield(\xi_{\rho\cdot 2}) &\text{otherwise}
     \end{cases}
     \]
-    Where the set \(L_\rho\) denotes the set of leaves just below a node that were not assigned to an ancestor node:
+    Where the set \(L_\rho\) denotes the set of leaves just below a node that was not assigned to an ancestor node:
     \begin{align*}
         L_\rho &= \big\{\xi(\rho') \in \yield(\xi) \mid \rho' \in \lpos(\xi) \cap \children(\rho) \big\} \setminus \\
-        &\qquad  \big\{\mathrm{van}(\xi)(\rho') \in \yield(\xi) \mid \rho' \in \ancestors(\rho)\} \big\}
+        &\qquad\qquad\qquad  \big\{\mathrm{van}(\xi)(\rho') \in \yield(\xi) \mid \rho' \in \ancestors(\rho)\} \big\}
     \end{align*}
     As such, the set depends on the values of \(\mathrm{van}(\xi)\) for ancestor nodes and the assignment must be determined for each node from top to bottom.
+
+    \begin{theorem}
+        Let \(\xi\) be some binary indexed tree.
+        \begin{compactenum}
+            \item \(\mathrm{van}(\xi)(\rho)\) is well defined for each \(\rho \in \pos(\xi)\).
+            \item \(\mathrm{van}(\xi)\) is a guide for \(\xi\).
+            \item \(\mathrm{van}(\xi)\) is unitary and therefore admissible.
+        \end{compactenum}
+    \end{theorem}
+
+    \begin{proof}
+        \begin{enumerate}
+            \item
+                The first case in the definition of \(\mathrm{van}(\xi)(\rho)\) trivially holds the claim for each \(\rho \in \lpos(\xi)\).
+                For the remaining case \(\rho \in \npos(\xi)\), there is a connection to \cref{lem:firstviasecond} (i).
+                It is important to note that for each subtree in an indexed tree, the children are ordered via the least leaf in the yield, i.e.\@ the minimal leaf in a subtree is the leftmost leaf.
+                Moreover, the set \(L_\rho\) is unambiguously determined from top to bottom for each \(\rho \in \npos(\xi)\).
+                Then, either \(L_\rho \neq \emptyset\) and the value is defined; or we consider the third case in the distinction which is well defined by \cref{lem:firstviasecond} (i).
+            \item
+                By definition, each assigned value is trivially an element below the argument position and \(\mathrm{van}(\xi)\) is a guide.
+            \item
+                The second and third cases in the definition are of relevance for the unitary property.
+                The second case is only effective if \(L_\rho \neq \emptyset\).
+                Then we assign a leaf that was not yet assigned to an ancestor; it can also not be assigned to any non-leaf descendant, because it is a direct child.
+                The third case must also assign uniquely determined leaves by \cref{lem:firstviasecond} (ii) and they cannot interfere with values assigned by the second case.
+        \end{enumerate}
+    \end{proof}
 
     \begin{wrapfigure}[6]{r}{.3\linewidth}
         \centering
@@ -107,24 +166,38 @@
 
     \paragraph{Strict Guide Constructor.}\deflab<guide>[sguide]{strict guide (constructor)}[]
     This is a small adjustment of the vanilla guide constructor that removes the special case where an inner node is assigned to a leaf below it.
-    As the previous, this constructor is sensibly defined for binary indexed trees.
+    As the previous, this constructor is defined for binary constituent structures.
     A guide constructed by it maps each inner node to the least leaf of the second successor.
     Each inner node of rank 1 assumes the assignment of its child.
     Formally, it is defined as follows:
     \[
-%    \mathrm{strict}(\xi)(\rho) = \begin{cases}
-%        \mathrm{van}(\xi)(\rho \cdot 1) & \text{if $|\children(\rho) \cap \npos(\xi)| = 1$} \\
-%        \min_{i \in \yield(\rho\cdot 2)} i &\text{otherwise}
-%    \end{cases}
-        \mathrm{strict}(\xi)(\rho) = \min \; \yield(\xi|_{\rho\cdot 2})
+    \mathrm{strict}(\xi)(\rho) = \begin{cases}
+        \xi(\rho)   & \text{if $\rho \in \lpos(\xi)$}\\
+        \min\;\yield(\xi_{\rho\cdot 2}) &\text{otherwise}
+    \end{cases}
+%        \mathrm{strict}(\xi)(\rho) = \min \; \yield(\xi|_{\rho\cdot 2})
     \]
+
+    \begin{theorem}
+        Let \(\xi\) be some binary indexed tree.
+        \begin{compactenum}
+            \item \(\mathrm{strict}(\xi)(\rho)\) is well defined for each \(\rho \in \pos(\xi)\).
+            \item \(\mathrm{strict}(\xi)\) is a guide for \(\xi\).
+            \item \(\mathrm{strict}(\xi)\) is unitary and therefore admissible.
+        \end{compactenum}
+    \end{theorem}
+
+    \begin{proof}
+        Items (i) and (iii) easily follow from \cref{lem:firstviasecond} (i) and (ii).
+        Item (ii) is (again trivially) satisfied since each assigned value is a leaf below the argument.
+    \end{proof}
 
     \parexample[Strict Guide]
     The values assigned by the strict guide are independent of each other.
     E.g.\@ we may determine the values \(\mathrm{strict}(\xi)(2) = \min\;\yield(\xi|_{2\,2}) = \min\;\{3\} = 3\) or \(\mathrm{strict}(\xi)(1\,1) = \min\;\yield(\xi|_{1\,1\,2}) = \min\;\{5,6\}\) without computing any other values beforehand.
 
     \paragraph{Least and Near Guide Constructors.}\deflab<guide>[lguide]{least guide (constructor)}[]\deflab<guide>[nguide]{near guide (constructor)}[]
-    These two guides were developed for binary indexed trees with the intention to
+    These two guides were developed to
     \begin{inparaenum}
         \item assign as few nodes as possible to leaves that are not direct children (\emph{least guide constructor}), and
         \item assign many nodes to leaves that are as close as possible (\emph{near guide constructor}).
@@ -149,12 +222,13 @@
         \item \(g = \mathrm{near}\), it excludes all leaves assigned to nodes above \(\rho\):
         \(L_\rho = \{ g(\xi)(\rho') \in \yield(\xi) \mid \rho' \in \ancestors(\rho) \cap \npos(\xi) \}\).
     \end{inparaenum}
-    Similarly to the vanilla guide constructor, the dependencies for the set \(\L_\rho\) determine the order in which the values are computed:
+    Similarly to the vanilla guide constructor, the dependencies for \(L_\rho\) determine the order in which the values are computed:
     \begin{inparaenum}
-        \item in case of the least guide constructor, the values must be determined from bottom to top,
-        \item in case of the near guide constructor, the values must be determined from top to bottom.
+        \item For the least guide constructor, the values must be determined from bottom to top.
+        \item For the near guide constructor, the values must be determined from top to bottom.
     \end{inparaenum}
-
+    Since both of these guide constructors define surjective functions, the number of inner nodes must be less or equal to the number of leaves in each subtree of the constituent structure.
+    We solve this by binarizing the constituent tree before defining the guide, but merging unary nodes (as done during the binarization) should be sufficient in general.
 
     \begin{figure}
         \null\hfill
@@ -173,9 +247,18 @@
         \caption{\label{fig:guides:diff}
             Example for different solutions for guides by the least and near guide constructors for the same tree \(\xi\).
             Whereas the least guide assigns the distant leaf 7 to the root node, the near guide assigns 4.
-            The least guide assigns five of six nodes to direct children, the near guide only three.
+            The least guide assigns five of six nodes to direct children, and the near guide only three.
         }
     \end{figure}
+
+    \begin{claim}
+        Let \(\xi\) be some binary indexed tree and \(g \in \{\mathrm{least}, \mathrm{near}\}\).
+        \begin{compactenum}
+            \item \(g(\xi)(\rho)\) is well defined for each \(\rho \in \pos(\xi)\).
+            \item \(g(\xi)\) is a guide for \(\xi\).
+            \item \(g(\xi)\) is unitary and therefore admissible.
+        \end{compactenum}
+    \end{claim}
 
     \needspace{3cm}
     \begin{wrapfigure}[6]{r}{.3\linewidth}
@@ -184,32 +267,59 @@
     \end{wrapfigure}
     \parexample[Least Guide]
     The assignments for the least guide are computed from bottom to top.
-    In our running example that is again illustrated to the right, we may start with the node at position \(1\,1\,2\): The set \(L_{1\,1\,2}\) is empty, as there are no inner child nodes. The assigned value \(\mathrm{least}(\xi)(1\,1\,2)\) is the leftmost leaf with shortest distance to the node, i.e.\@ \(5\).
+    In our running example that is again illustrated to the right, we may start with the node at position \(1\,1\,2\): The set \(L_{1\,1\,2}\) is empty, as there are no inner child nodes. The assigned value \(\mathrm{least}(\xi)(1\,1\,2)\) is the leftmost leaf with the shortest distance to the node, i.e.\@ \(5\).
     Next, for the node at \(1\,1\), the set \(L_{1\,1}\) contains each leaf that was assigned to an inner child, i.e.\@ it is \(\{5\}\), and the assigned value is \(\mathrm{least}(\xi)(1\,1) = 1\).
 
     \parexample[Near Guide]
     The construction for the near guide starts from the topmost node.
-    The value \(\mathrm{near}(\xi)(\varepsilon)\) is \(2\), because it is the leftmost leaf with shortest distance.
+    The value \(\mathrm{near}(\xi)(\varepsilon)\) is \(2\), because it is the leftmost leaf with the shortest distance.
     For the child at position \(2\), the set \(L_{2} = \{2\}\) contains the leaves that were assigned to its ancestors.
-    When \(\mathrm{near}(\xi)(2)\) is determined, the leaf \(2\) is excluded as potential value, which leaves us the leaf \(3\).
+    When \(\mathrm{near}(\xi)(2)\) is determined, the leaf \(2\) is excluded as a potential value, which leaves us the leaf \(3\).
 
     \bigskip
 
     Whereas the previous constructors were defined solely according to the constituent structure, the remaining two take some additional linguistic information into account: heads and modifiers.
-    This also requires a special treatment with respect to binarization which is applied to the constituent structures for the two following guide constructors.
-    This is explained further within the following paragraphs.
+    This also requires special treatment with respect to binarization which is applied to the constituent structures for the two following guide constructors.
+    This is explained further in the following paragraphs.
 
     \paragraph{Head Guide Constructor.}\deflab<guide>[hguide]{head guide (constructor)}[]
     As the name suggests, these guides assign the head position to each inner node of the constituent structure.
     This implements an intuitive approach to deal with the relation between the inner nodes and their assigned head position: For each lexical symbol, there will be a lexical rule that contains the information to produce exactly the inner nodes it is head of.
     Naturally, this requires that the constituent structure is equipped with the necessary head assignment.
     And we have to keep in mind, that there is no sensible head assignment for binarized constituent trees in general.
-    Therefore, we limit the this guide constructor to the cases of plain (i.e.\@ unbinarized) or head-inward ternarized (cf.\@ \cref{sec:extraction:bin:hi}) constituent trees.
+    Therefore, we limit this guide constructor to the cases of plain (i.e.\@ without rank transformation) or head-inward transformed (cf.\@ \cref{sec:extraction:bin:hi}) constituent trees.\todo{Discuss head-outward binarization shortly}
+
+    \begin{theorem}
+        Let \(\xi\) be an indexed tree with a head assignment.
+        \begin{compactenum}
+            \item \(\mathrm{hguide}(\xi)(\rho)\) is well defined for each \(\rho \in \pos(\xi)\) and \(\mathrm{hguide}(\xi)\) is a guide for \(\xi\).
+            \item \(\mathrm{hguide}(\xi)\) is admissible.
+        \end{compactenum}
+    \end{theorem}
+
+    \begin{proof}
+        Item (i) follows trivially from the definition of head assignments, as they map each inner node to a leaf in its yield.
+        For item (ii), we consider the properties of head assignments:
+        Consider a position \(\rho \in \npos(\xi)\).
+        By the structure of head assignments, \(\mathrm{hguide}(\xi)(\rho) = \head(\xi|_\rho)\) is a leaf directly below \(\rho\) or the head of a child of \(\rho\).
+        Therefore any ancestor of \(\rho\) cannot be assigned to any leaf below \(\rho\) but \(\head(\xi|_\rho)\) and the function satisfies the property (i) for admissible guides.
+        For the property (ii) we consider a descendant position \(\rho' \in \descendants_\xi(\rho) \setminus \{\rho\}\).
+        If \(\head(\xi|_\rho) = \head(\xi|_{\rho'})\), we see again easily the aforementioned property that this leaf must also be the head at all positions between \(\rho\) and \(\rho'\).
+    \end{proof}
 
     \paragraph{Dependent Guide Constructor.}\deflab<guide>[vguide]{dependent guide (constructor)}[]
-    Dependent guides aim to offer leaf assignments that complement head-outward binarized constituent structures.
+    Dependent guides aim to offer assignments that complement head-outward binarized constituent structures.
     They assign the head of a dependent to each inner node in the constituent structure.
     We consider these guides only for head-outward binarized constituent structures, as there is exactly one dependent for each inner node.
+
+    \begin{claim}
+        Let \(\xi\) be a head-outward binarized indexed tree with a head assignment.
+        \begin{compactenum}
+            \item \(\mathrm{dguide}(\xi)(\rho)\) is well defined for each \(\rho \in \pos(\xi)\).
+            \item \(\mathrm{dguide}(\xi)\) is a guide for \(\xi\).
+            \item \(\mathrm{dguide}(\xi)\) is unitary and therefore admissible.
+        \end{compactenum}
+    \end{claim}
 
     \begin{figure}
         \begin{minipage}{.27\textwidth}
@@ -241,29 +351,26 @@
         \end{minipage}
 
         \caption{\label{fig:guides}
-            Overview over the guide constructors in an example constituent structure.
+            Overview of the guide constructors in an example constituent structure.
             Gray integers show the leaf assigned to each inner node for the binary constituent structure.
             Encircled leaves are not in the image of the guide.}
     \end{figure}
 
     \subsection{Nonterminal Constructors}
-    A \emph{nonterminal constructor} computes a \abrv{lhs} nonterminal for each grammar rule.
+    A \emph{nonterminal constructor} computes \abrv{lhs} and \abrv{rhs} nonterminals for each grammar rule.
     As each grammar rule is extracted at some inner node in the constituent structure, the constructor takes the position in the inner node into account.
-    All \abrv{rhs} nonterminals are abducted from the grammar rules that are extracted in the node's children.
     The concept of nonterminal constructors resembles the nonterminal labeling strategies introduced by \citet[Sec.~6.2]{Geb21}.
 
     \begin{definition}[Nonterminal Constructor]
-        Let \(\varGamma\) be some alphabet and \(N'\) a nonempty set.
-        A \deflab[nconst]{nonterminal constructor} is a partial function \(\phi\colon \itrees_\varGamma \times \DN^* \times \power(\DN_+) \to N'\) such that \(\phi(\xi, \rho, L)\) is defined for each pair of an indexed tree \(\xi \in \itrees_\varGamma\), a position \(\rho \in \pos(\xi)\), and subset of leaves \(L \subseteq \yield(\xi|_\rho)\) below \(\rho\).
+        Consider an alphabet \(\varGamma\) (of constituent symbols), a nonempty set \(N\) (of nonterminal symbols), and a \(\DN_+\)-indexed partition \(\mathit{fo}\) of \(N\) (that partitions the nonterminals by fanout).
+        A \deflab{nonterminal constructor} is a partial function \(\phi\colon \itrees_\varGamma \times \DN^* \times \power(\DN_+) \to N\) such that \(\phi(\xi, \rho, L) \in \mathit{fo}_{\fanout(L)}\) is well-defined for each pair of an indexed tree \(\xi \in \itrees_\varGamma\), a position \(\rho \in \pos(\xi)\), and subset of leaves \(L \subseteq \yield(\xi|_\rho)\) below \(\rho\).
     \end{definition}
 
     %    Each of the following constructors computes a nonterminal for the position \(\rho\) in \(\xi\) from the constituent symbol \(\xi(\rho)\), the set of leaves \(\yield(\xi|_\rho)\) below \(\rho\) and the set of leaves \(L\) assigned by \(\guide\) to the ancestors of \(\rho\).
     %    We omit the fanout subscripts if they are \(1\).
     %    We give examples using the \emph{shortest guide}, as shown in \cref{fig:constituent:bin}, for the root position \(\varepsilon\) where \(\xi(\varepsilon) = \text{SBAR+S}\), \(\yield(\xi|_\varepsilon) = \{0,\ldots,5\}\) and \(L = \emptyset\) and the position \(1.1\) of the bottom VP node where \(\xi(1.1) = \text{VP}\), \(\yield(\xi|_{1.1}) = \{0,4,5\}\), \(L = \{0,3\}\) and \(\fanout(\yield(\xi|_{1.1}) \setminus L) = 1\).
 
-    The image of such a constructor may assume an infinite set.
-    However, we only consider the extraction from (finite) treebanks.
-    Therefore the set of nonterminals occurring during the extraction is guarantied to be finite.
+    The partition \(\mathit{fo}\) of the nonterminal symbols and its connection to the definition of each nonterminal constructors assure that the constructed nonterminals are considered with consistent fanouts.
     During the extraction procedure, the third argument \(L\) for a constructor assumes the set of leaves that are either
     \begin{inparaenum}
         \item assigned by the guide to nodes at or below \(\rho\), or
@@ -271,13 +378,15 @@
     \end{inparaenum}
     It is the set of leaves that occurs in the (sub-)derivation of rules extracted at and below \(\rho\).\todo{general description of the extraction algorithm and example might be helpful}
     In the following, we will define some instances of nonterminal constructors.
-    Similar to the guide constructors, each instance \(\varphi\) will carry a name of the form \emph{\(x\) nonterminal constructor}.
+    Similar to the guide constructors, each instance will carry a name of the form \emph{\(x\) nonterminal constructor}.
     The nonterminal symbols constructed by \(\varphi\) are called \emph{\(x\) nonterminals}.
 
     \paragraph{Vanilla Nonterminal Constructor.}\deflab<nonterminal constructor>[vnont]{vanilla nonterminal (constructor)}[]
     This resembles the nonterminals occurring in the extraction in \cref{sec:extraction:lcfrs}.
-    The nonterminal \(\phi(\xi, \rho, L)\) consists of the node symbol \(\xi(\rho)\), the fanout \(\fanout(\yield(\xi|_\rho))\) as subscript, and if \(L \neq \yield(\xi|_\rho)\), then the difference in fanout \(\fanout(L) - \fanout(\yield(\xi|_\rho))\) as superscript.
-    This superscript indicates the difference in fanout at \(\rho\) in the original constituent tree compared to the leaves assigned to the nodes in the subtree at \(\rho\) by the guide.\todo{equip each nt constructor with a distinct symbol and image set}
+    Each nonterminal is of the form \(A_{n}^{d}\) where \(A \in \varGamma\) is a constituent symbol, \(n \in \DN_+\) is a fanout of a discontinuous span in the constituent tree \(\xi\), and \(d \in \{-1,0,+1\}\) is the difference between the fanout of the extracted rule and \(f\).
+    This set of \emph{vanilla nonterminals} \(N\) is partitioned such that \(\mathit{fo}_{\hat{n}} = \{ A^d_{\hat{n}-d} \in N \mid A \in \varGamma, d \in [-1,1], \hat{n}-d > 0 \}\).
+    The \deflab{vanilla nonterminal constructor} is a function \(\phi\) such that \(\phi(\xi, \rho, L) = \xi(\rho)_{n}^{d}\) where \(n = \fanout(\yield(\xi|_\rho))\) and \(d = \fanout(L) - n\) for each indexed tree \(\xi \in \itrees_\varGamma\), position \(\rho \in \pos(\xi)\) and \(L \subseteq \yield(\xi|_\rho)\).
+    As usual, we will abbreviate the nonterminal symbols by omitting the subscript if it is \(1\).
 
     \begin{wrapfigure}[6]{r}{0pt}
         \subfile{figures/running-example-1.tex}
@@ -291,9 +400,11 @@
 
     \paragraph{Classic Nonterminal Constructor.}\deflab<nonterminal constructor>[cnont]{classic nonterminal (constructor)}[]
     This constructor is intended to produce nonterminals that are akin to usual strategies in LCFRS extraction \cite{MaierSogaard08}.
-    Therefore, it omits some of the annotations from the previous instance.
-    The nonterminal consists of the symbol \(\xi(\rho)\) and the fanout \(\fanout(L)\) as subscript.
-    If the constituent symbol \(\xi(\rho)\) resulted from a merging unary nodes during a binarization (see \cref{sec:binarization}), i.e.\@ it is of the form \(\nt{A$_1$+A$_2$+...+A$_k$}\), then it is replaced by the topmost symbol \(\nt{A}_1\).
+    It combines the super- and subscript of the vanilla nonterminals and annotates constituent symbols with their sum.
+    Moreover, the each occurrence of a constituent symbol that is the product of a merge during a rank transformation (cf.\@ merging a chain of unary nodes in \cref{sec:extraction:binarization}) is replaced by the topmost constituent symbol of such chain.
+    We define a modified set of constituent symbols \(\varGamma' = \{ f(\gamma) \mid \gamma \in \varGamma \}\) where \(f(\gamma)\) is the symbol obtained by replacing each occurrence of the form \(\nt{A$_1$+A$_2$+...+A$_k$}\) in \(\gamma\) by \(\nt{A$_1$}\).
+    The set of \emph{classic nonterminals} is \(N = \{ A_n \mid A \in \varGamma', n \in \DN_+ \}\) and the partition \(\mathit{fo}_n = \{A_n \mid A \in \varGamma'\}\).
+    The \deflab{classic nonterminal constructor} is the function \(\phi\) with \(\phi(\xi, \rho, L) = f(\xi(\rho))_{\fanout(L)}\) for each indexed tree \(\xi\), position \(\rho \in \pos(\xi)\) and set of leaves \(L \subseteq \yield(\xi|_\rho)\).
 
     \parexample[Classic Nonterminals]
     For the classic nonterminal constructed for the root in the example indexed tree above, we determine the set \(L = \yield(\xi) = \{1,\ldots,6\}\).
@@ -305,23 +416,22 @@
         \item a symbol that subsumes multiple constituent symbols given in a separate table, or
         \item its first letter.
     \end{inparaenum}
-    The second case (ii) roughly approximates the first one when such a table is not available.
+    The latter case roughly approximates the first one when such a table is not available.
     The coarse nonterminal constructor implements the nonterminals in coarse-to-fine parsing \cite{Cha06,??}.
 %    For our examples, the nonterminals are \(\text{S}\) and \(\text{V}\).
 
     \parexample[Coarse Nonterminals]
-    \Cref{tab:coarse-nonterminals} shows an example for a clustering of constituent symbols in grammars extracted from the english Penn Treebank provided by \citet{Cha06}.
+    \Cref{tab:coarse-nonterminals} shows an example of a clustering of constituent symbols in grammars extracted from the English Penn Treebank provided by \citet{Cha06}.
     Creating such a table requires domain-specific knowledge about the corpus as well as the underlying language.
     \citet{DoHoSa70} give a coarse tagset used in the english \abrv{xtag} grammar.
-    \citet{SchiTeuSt99} give a standardized set of \abrv{pos} symbols in tandem with a coarse categorization used in german corpora.
+    \citet{SchiTeuSt99} give a standardized set of \abrv{pos} symbols in tandem with a coarse categorization used in German corpora.
     They can be used to substitute the \abrv{pos} symbols in the constituent symbols that were constructed during a binarization with a horizontal markovization window \(h>0\).
     \todo[inline]{mv example table out of example? add example symbol}
 
-
     \begin{table}
         \caption{\label{tab:coarse-nonterminals}
-            Clusters of constituent symbols used in a coarse-to-fine parsing approach. \citep{Cha06} The authors extract coarse grammar rules using the cluster names instead of constituent symbols as nonterminals.
-            These grammar rules are used to find candidate parses which aid in a parsing process with a fine grammar using the original constituent symbols.
+            Clusters of constituent symbols as used in a coarse-to-fine parsing approach. \citep{Cha06} The authors extract coarse grammar rules using the cluster names instead of constituent symbols as nonterminals.
+            These grammar rules are used to find candidate parses which aid in a parsing process with a finer grammar defined over the original constituent symbols.
         }
         \medskip
         \centering
@@ -338,60 +448,33 @@
     \end{table}
 
 
-    \subsection{Extraction Algorithm}
-    The process described in this section is used to extract a sequence of supertags, one for each word in a sentence, from a given constituent tree.
-    We distinguish four steps (i--iv) which are executed consecutively.
-    The parameters for steps (i--iii) are described in detail in the next section.
+    \subsection{Lexical Derivation Extraction}
+    This small subsection describes how we define a derivation of lexical \abrv{hg} rules using the discussed prerequisites.
+    Let's assume we have some constituent structure \(\xi\), a guide \(\varphi\) for \(\xi\) and a nonterminal constructor \(\psi\).
+    As the extracted rules are lexical, there is exactly one for each leaf in \(\xi\) and we define a sequence of rules \((r_i \in ??? \mid i \in \yield(\xi))\) that occur in the derivation such that \(r_i\) is a lexical rule containing the symbol \(i\).
+    Let us define an extension for the guide \(\phi\) that assigns to each position \(\rho\) the greatest set of leaves \(L\) such that the topmost position that each \(i \in L\) is assigned to is at or below \(\rho\):  \(\hat{\phi}(\rho) = \yield(\xi|_\rho) \setminus \{ \phi(\rho') \mid \rho' \in \ancestors(\rho) \}\).
+    Now let \(\rho\) be the topmost position that is assigned \(i\): \(\rho = \min^\unlhd \{\rho' \in \pos(\xi) \mid \phi(\rho') = i\}\) and \(s\in\DN\) and \(\rho_1, \ldots, \rho_s\) the sequence of topmost descendant positions assigned to another leaf and ordered by least assigned leaf, i.e.\@
+    \begin{compactitem}
+        \item for each \(j \in [s]\) and parent \(\hat{\rho_j}\) of \(\rho_j\), \(\phi(\hat{\rho_j}) = i\) and \(\phi(\rho_j) \neq i\), and there is no other \(\rho_{s+1}\) which fulfills these two properties, and
+        \item for each \(j,k \in [s]\) with \(j<k\) holds \(\min \hat{\phi}(\rho_j) < \min \hat{\phi}(\rho_k)\).
+    \end{compactitem}
+    Then the rule \(r_i\) is of the form \(A_0 \to c_1 \, c_2\; (A_1, \ldots, A_s)\) with
+    \begin{compactitem}
+        \item \(A_i = \psi(\xi, \rho_i, \hat{\phi}(\rho_i))\) for each \(i \in [s] \cup \{0\}\),
+        \item \(c_1 = \mathrm{comp}(\hat{\phi}(\rho_0), \hat{\phi}(\rho_1), \ldots, \hat{\phi}(\rho_s))\), and
+        \item \(c_2' = \mathrm{scomp}(\xi, \rho_0, \rho_1, \ldots, \rho_s)\).
+            If the position of the leaf \(i\) is a descendant of a \(\rho_i\), then \(c_2\) is obtained from \(c_2'\)  by replacing \(x_i\) by \(x_i(i)\), otherwise \(c_2 = c_2'\).
+    \end{compactitem}
+    The form of the derivation is determined by \(\xi\) and the guide \(\varphi\), such that
+    \begin{compactitem}
+        \item the root is the rule containing the position \(\varphi(\varepsilon)\),
+        \item for each inner node position \(\rho \in \npos(\xi)\) and child \(\rho'\) of \(\rho\) that is either an inner node with \(\varphi(\rho) \neq \varphi(\rho')\) (or a leaf with \(\rho' \notin \im(\varphi)\)), the rule extracted for \(\phi(\rho')\) (or \(\xi(\rho')\) respectively) is a child of the rule extracted for \(\phi(\rho)\).
+    \end{compactitem}
+    It is not needed for the extraction procedure anyways, we just care for the sequence of lexical rules.
 
-    \paragraph{(i) Binarization.}
-    We construct a binary constituent tree with the usual strategies in constituent parsing \cite{KalMai13}:
-    Each unary node is merged with its child (or pos symbol, if the child is a leaf), and nodes with arity \(n>2\) are split into \(n-1\) binary nodes according to the parameters described in \cref{sec:con:para}.
-    After this step, the constituent tree for a sentence \(w\) is equipped with \(|w|-1\) inner nodes.
-    \Cref{fig:constituent:bin} shows a binary tree resulting from binarization of the tree in \cref{fig:constituent}.
+    \begin{example}
 
-    \paragraph{(ii) Guide.}
-    In this step, we define a \emph{guide} for the binary constituent structure \(\xi\), i.e.\@ a mapping \(\guide\) between inner node positions and leaves in the constituent structure.
-    In the following step, a lexical LCFRS rule will be constructed for the constituent at each inner node and the assigned leaf.
-    Intuitively, the guide determines which sentence position is ``responsible'' for the constituent at each position.
-    Formally, a guide for \(\xi\) is an injective function \(\guide\colon \npos(\xi) \to \yield(\xi)\) such that, for each \(\rho \in \npos(\xi)\), the assigned leaf \(\guide(\rho)\) is in \(\yield(\xi|_\rho)\).
-    \Cref{fig:constituent:bin} shows a guide for our example constituent structure, assigning a leaf (illustrated in gray circles) to each inner node.
-    As \(\guide\) is injective and there is one less inner node than leaves in \(\xi\), there is exactly one leaf that is not in the image of \(\guide\).
-    We will investigate multiple strategies, called \emph{guide constructors}, to define guides for a given constituent tree as discussed in \cref{sec:con:para}.
-
-    \paragraph{(iii) Lexical rule induction.}
-    In this step, we will construct a lexical LCFRS rule \(r'\) and the components \(c\), \(t\) and \(p\) of the supertag for each leaf in the constituent structure.
-    The nonterminals in the rule are determined by a chosen hyperparameter \(\ntcon\), called the \emph{nonterminal constructor}, in terms of the constituent symbol and the guide \(\guide\) as described in \cref{sec:con:para}.
-    We give examples for (the root position in) the tree in \cref{fig:constituent:bin}, the guide values shown in pentagons (shortest guide constructor) and constituent symbols as nonterminals (classic nonterminal constructor).
-
-    We start with the leaf \(i'\) that is not in the image of \(\guide\) and define a new nonterminal \(\text{L-}A\) using the fixed string ``L-'' and the nonterminal \(A\) produced by \(\ntcon\) for the parent of \(i'\).
-    In that case \(c = t = \text{None}\), \(p = \mathit{pos}(i')\), and \(r' = \text{L-}A \to [i']\).
-    In \cref{fig:constituent:bin}, the leaf \(i'=2\) is not in the image of \(\guide\), it yields \(r' = \text{L-NP} \to [2]\), and \(p = \text{NN})\).
-
-    After that, we define the following for each position \(\rho \in \npos(\xi)\) (from bottom up) and its assigned leaf \(i = \guide(\rho)\):
-    \begin{asparaitem}
-        \item
-        The LCFRS rule \(r'\) is assembled in the usual manner from \(i\) as lexical symbol and variables for the spans formed by the leaves in each successor except those leaves that are assigned by \(\guide\) to \(\rho\)'s ancestors.
-        \(\ntcon\) produces the lhs nonterminal for \(\rho\), the rhs nonterminals are the lhs nonterminals constructed for \(\rho\)'s children.
-        In our example, \(r\) is assembled from the lexical symbol \(3\), the left successor's leaves are \(\{\underline{0\vphantom{,}}_{(x_1)}, \underline{4,5} _{(x_2)}\}\) and the right one's are \(\{\underline{1,2} _{(y_1)}\}\);
-        hence \(r = \text{S} \to [x_1 \, y_1 \, 3 \, x_2] (\text{VP}_2, \text{NP})\).
-
-        \item
-        \(t\) is \emph{None} if the leaf \(\guide(\rho)\) is a direct child of \(\rho\), otherwise it is the index among the children where \(\guide(\rho)\) is located.
-        In our example, 3 is not a child of the root, it is in its first successor; therefore \(t=1\).
-
-        \item
-        \(c\) is \(\xi(\rho)\) if it was not introduced during binarization (i.e.\@ the symbol \(\xi(\rho)\) does not contain some markers \texttt{|<..>}), otherwise it is None.
-        In our example, \(c = \text{SBAR+S}\).
-
-        \item
-        \(p\) is the pos symbol at \(\guide(\rho)\) in \(\mathit{pos}\).
-        In our example \(p = \text{VBD}\).
-    \end{asparaitem}
-
-    \paragraph{(iv) Supertag extraction.}
-    The tuples constructed in the previous step closely resemble supertags as described in the previous subsection.
-    We pull them from the constructed tree and order them according to the sentence position included in the lexical rule.
-    Lastly, the sentence position in each rule is replaced by a wildcard symbol ``\_''.
+    \end{example}
 
     \ifSubfilesClassLoaded{%
         \printindex

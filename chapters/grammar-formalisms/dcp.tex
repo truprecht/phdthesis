@@ -4,17 +4,17 @@
     \section{Definite Clause Programs (\abrv{dcp})}
     \abrv{Dcp} are, in contrast to \abrv{lcfrs}, a formalism where each rule produces trees instead of plain strings.
     The most striking difference to the previous formalism, however, lies in the composition expressions contained in each rule:
-    They do not only allow substitution with parameters produced by successors in a derivation (first order substitution), but each single parameter may also contain variables that are substituted in the same step (second order substitution).
-    This corresponds to the information flow from bottom to the top in a derivation as expressed by synthetic attributes (first order substitution), as well as the information flow from top to the bottom in a derivation by inherent attributes (second order substitution) in attribute grammars.
-    The implementation of these two systems of substitution, two pairwise distinct sets of variables are used: \(\X\) for the first (as in \abrv{lcfrs}), and \(\Y\) for the second order substitution.
+    They do not only allow substitution with parameters produced by successors in a derivation (first-order substitution), but each single parameter may also contain variables that are substituted in the same step (second-order substitution).
+    This corresponds to the information flow from the bottom to the top in a derivation as expressed by synthetic attributes (first-order substitution), as well as the information flow from the top to the bottom in a derivation by inherent attributes (second-order substitution) in attribute grammars.
+    In the implementation of these two systems of substitution, two pairwise distinct sets of variables are used: \(\X\) for the first (as in \abrv{lcfrs}), and \(\Y\) for the second-order substitution.
 
     In their most general form, the object produced by a derivation in such a \abrv{dcp} is not necessarily computable, as the two types of substitution may mutually recur.
     To solve this issue, there were some restrictive forms introduced which exclude circular dependencies in the expressed productions. \citep[Sec.~3.4 about non-circular attribute grammars]{Cou82}
-    It is easy to see that the definition shown in this section supersedes each of these restricted forms, as it exclusively allows fixed terminal objects or a single second order variable as parameter for second order substitution.
-    To avoid unnecessarily complicated definitions, the subset of \abrv{dcp} shown in this section is even further restricted such that
+    It is easy to see that the definition shown in this section supersedes each of these restricted forms, as it exclusively allows fixed terminal objects or a single second-order variable as a parameter for second-order substitution.
+    To avoid unnecessarily complicated definitions, the subset of \abrv{dcp} shown in this section is even further restricted:
     \begin{inparaenum}
-        \item each composition yields one sequence of consecutive trees (and not sequences of ranges) that is a subforest in the parse, and
-        \item each rule's composition expression allows exactly one second-order substitution (which may be the empty sequence).
+        \item Each composition yields one sequence of consecutive trees (and not sequences of ranges) that is a subforest in the parse.
+        \item Each rule's composition expression allows exactly one second-order substitution (which may be the empty sequence).
     \end{inparaenum}
 
     \begin{definition}[Composition]
@@ -33,7 +33,7 @@
     %    The occurrences of variables are abbreviated in the following two ways:
     %    \begin{compactenum}
         %        \item Variables in \(\X\) with successor \(\varepsilon\) are abbreviated by omitting the parentheses and the successor as a whole; e.g.\@ instead of \(\x_1(\varepsilon)\), we just write \(\x_1\).
-        %        \item We omit trailing occurrences of the variable \(\y\), if it does not occur as a successor of any node; e.g.\@ instead of \(\text{S}(\x_1)\,\y \), we just write \(\text{S}(\x_1)\).
+        %        \item We omit trailing occurrences of the variable \(\y\) if it does not occur as a successor of any node; e.g.\@ instead of \(\text{S}(\x_1)\,\y \), we just write \(\text{S}(\x_1)\).
         %    \end{compactenum}
 
     \begin{example}\label{ex:dcp:comp}
@@ -46,7 +46,7 @@
             c_5 &= \cn{sbar} (\cn{s} (\x_1(\y) \, \x_2(\tn{the}))),
             &c_6 &= \cn{vp}(\x_1(\y) \, \x_2(\tn{carried})) && && \in \C_2
         \end{align*}
-        The subscript indexing the family of compositions \(\C\) determines the number of arguments for the functions represented by the elements in \(\C\).
+        The subscript in the family of compositions \(\C\) determines the number of arguments for the functions represented by the elements in \(\C\).
         E.g.\@ \(\sem{c_1}\) takes no arguments, and \(\sem{c_6}\) takes two arguments.
         Evaluating any term of such compositions yields a sequence tree in \(\T_\varSigma(\varGamma \cup \Y)\) with exactly one occurrence of \(\y\), for example:
         \begin{align*}
@@ -59,10 +59,10 @@
         \end{align*}
     \end{example}
 
-    Aside from the form of the compositions (and therefore also the concept of fan-out), \abrv{dcp} grammars, derivations and most of the concepts of rule and grammar forms are defined analogously to \abrv{lcfrs} grammars and we will refrain from repeating them completely but focus on the differences to \abrv{lcfrs} grammars.
+    Aside from the form of the compositions (and therefore also the concept of fan-out), \abrv{dcp} grammars, derivations, and most of the concepts of rule and grammar forms are defined analogously to \abrv{lcfrs} grammars and we will refrain from repeating them completely but focus on the differences to \abrv{lcfrs} grammars.
     As we have seen \abrv{dcp} compositions contain elements from two alphabets, \(\varGamma\) for inner nodes (which we will assume to be constituent symbols) and  \(\varSigma\) for leaf nodes (tokens or sentence positions, respectively), only the symbols in \(\varSigma\) are considered lexical symbols.
     The tuple for a \abrv{dcp} grammar is hence extended by the additional alphabet and assumes the form \((N, \varGamma, \varSigma, S, R)\).
-    There is no fanout in \abrv{dcp} grammars, because the sequences of trees produced by compositions are not meant to be separated.
+    There is no fanout in \abrv{dcp} because the sequences of trees produced by compositions are not meant to be separated.
     To avoid that a complete derivation produces more than one tree, we require that the composition in each non-nullary rule whose \abrv{lhs} nonterminal is an initial nonterminal in \(S\) is of the form \(\gamma ( \omega )\) for some \(\gamma \in \varGamma\) and \(\omega \in \C^{\varGamma \varSigma}\), i.e.\@ there is at least one inner node that assembles the results of all successor rules.
     As in other grammar formalisms, the yield for a derivation recursively computes the composition functions.
     In contrast to string grammars, like \abrv{lcfrs}, the yield of a complete derivation is a tree in \(\T_\varGamma(\varGamma)\).
@@ -117,4 +117,10 @@
         \end{tikzpicture}
         \hfill\null
     \end{example}
+
+    \begin{definition}
+        Consider a tree \(\xi \in \T_{\varSigma}\) over any alphabet \(\varSigma\) and a collection of \(k \in \DN\) parallel positions \((\rho_i \in \pos(\xi) \mid i \in [k])\) and a common ancestor position \(\rho_0 \unlhd \rho_1, \ldots, \rho_0 \unlhd \rho_k\).
+        There is a distinct \abrv{dcp} composition \(c \in \C^\varSigma_k\) such that \(\xi|_{\rho_0} = \sem{c}( \xi|_{\rho_1}, \ldots, \xi|_{\rho_k} )\).
+        We denote this composition \(c\) by \(\mathrm{scomp}(\xi, \rho_0, \rho_1, \ldots, \rho_k)\).
+    \end{definition}
 \end{document}

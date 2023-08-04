@@ -12,13 +12,13 @@
     }
     The lexical symbol in \(r\) is a sentence position in the yield of the constituent tree.
     The boolean transportation marker \(s\) is used to undo the lexicalization procedure and obtain a constituent tree from a derivation of supertags.
-    We describe the extraction procedure independently for each constituent tree in a treebank in five steps:\footnote{
+    We describe the extraction procedure independently for each constituent tree in a treebank in five steps:\footnote{\label{footnote:lcfrs:split}
         The original formulation contained two additional steps that were called \emph{dechain} and \emph{fuseterm}.
         To first ought to remove unary non-lexical rules.
         Our formulation of binarization already merges unary nodes in the same way as this step
         The second dismissed nullary grammar rules for the \abrv{pos} symbols and merged their terminals into parent rules.
-        In contrast to the initial publication, our definition for grammar rules read from constituent structures do not involve the \abrv{pos} symbols in the first place.
-        We can just skip both steps it with equal results.
+        In contrast to the initial publication, our definition of grammar rules read from constituent structures does not involve the \abrv{pos} symbols in the first place.
+        We can just skip both steps with equal results.
     }
     \begin{enumerate}
         \item The constituent tree is binarized.
@@ -31,14 +31,14 @@
         \item\label{enum:lcfrs:step3}
             The derivation is transformed by \emph{transporting} the lexical symbols into unlexical rules according to a fixed strategy.
             During this step, the rules' nonterminals are annotated according to the transportation.
-            Moreover, each node with rule \(r\) is replaced by a tuple \((r, s)\) where \(s\) is true if and only if the node was equipped another lexical symbol before the step.
+            Moreover, each node with rule \(r\) is replaced by a tuple \((r, s)\) where \(s\) is true if and only if the node was equipped with another lexical symbol before the step.
         \item\label{enum:lcfrs:step4}
             At most one rule in the derivation is equipped with two lexical symbols.
             It is split by replacing one of the symbols with a variable and adding a new nullary rule.
         \item
             In the final step, the rules are collected as a sequence in order of the positions according to the instantiation.
     \end{enumerate}
-    After step \ref{enum:lcfrs:step2}, the topmost \abrv{lhs} nonterminal is collected for each tree, and set aside as initial nonterminal for later.
+    After step \ref{enum:lcfrs:step2}, the topmost \abrv{lhs} nonterminal is collected for each tree and set aside as an initial nonterminal for later.
     In the following, the steps \ref{enum:lcfrs:step2} to \ref{enum:lcfrs:step4} are described in more detail.
     The section concludes with a procedure to revert the process and transform an \abrv{lcfrs} supertag derivation into a constituent structure.
 
@@ -96,7 +96,7 @@
 
     \paragraph{Step \ref{enum:lcfrs:step2}.}
     Let \((\xi, \pi, w)\) be a binary constituent tree.
-    We use the usual techniques for \abrv{lcfrs} rule induction to read a derivation \(d\) off the constituent structure \(\xi\), but end at the leaves in \(\xi\).
+    We use the usual techniques for \abrv{lcfrs} rule induction to read a derivation \(d\) off the constituent structure \(\xi\) but end at the leaves in \(\xi\).
     I.e.\@ there are no rules for the \abrv{pos} symbols \(\pi\) in the derivation \(d\).
     The terminal symbols in \(d\) are the leaves in \(\xi\), we can think of it as an implicit instantiation in the string \(w\).
     Specifically, \(d\) is a tree over \abrv{lcfrs} rules such that \(\pos(d) = \npos(\xi)\) and at each position \(\rho \in \pos(d)\) the rule \(d(\rho) = r\) is as follows:
@@ -116,20 +116,20 @@
     \paragraph{Step \ref{enum:lcfrs:step3}.}
     Let us consider an \abrv{lcfrs} derivation \(d\) as obtained by the previous step.
     Consider an occurrence of a binary rule $A \to c(A_1, A_2)$ at position \(r\) in \(d\).
-    The aim of this step is to move the first terminal from the yield of the right subtree below \(\rho\) into the composition \(c\).
-    We descent into the subtree and transport terminal symbols accordingly while adjusting the compositions as well as adding annotations to the nonterminal symbols.
+    This step aims to move the first terminal from the yield of the right subtree below \(\rho\) into the composition \(c\).
+    We descend into the subtree and transport terminal symbols accordingly while adjusting the compositions as well as adding annotations to the nonterminal symbols.
     The reason for these annotations is twofold:
     \begin{itemize}
-        \item In the case that a transport changes the length of a composition, the annotation is necessary to acclimate the assigned fanout for the \abrv{lhs} nonterminal.
+        \item In the case that the transport changes the length of a composition, the annotation is necessary to acclimate the assigned fanout for the \abrv{lhs} nonterminal.
         \item
-            During the work on the extraction procedure we had the intuition that it could be useful to distinguish nonterminals at subtrees that were affected by the transportation and miss a terminal symbol and those that are left unchanged.
+            During the work on the extraction procedure, we had the intuition that it could be useful to distinguish nonterminals at subtrees that were affected by the transportation and miss a terminal symbol and those that are left unchanged.
     \end{itemize}
     Moreover, a marker is added that indicates if terminal symbols were swapped out in a unary rule during the transportation.
-    It is of relevance every time the first symbol in a subtree's yield coincides with a terminal in a unary rule, because it has to be replaced to keep it lexical.
+    It is of relevance every time the first symbol in a subtree's yield coincides with a terminal in a unary rule because it has to be replaced to keep it lexical.
     This information is used to undo the transportation when a constituent tree es constructed for a derivation of supertags.
 
 
-    This step was described as a transformation procedure which is applied at each occurrence \(r\) of a binary rule (in any order) in the tree \(d\).
+    This step was described as a transformation procedure that is applied at each occurrence \(r\) of a binary rule (in any order) in the tree \(d\).
     During the procedure, we keep track of a set of positions \(S\) for the aforementioned swap marker.
     Consider the occurrence of the leftmost nullary rule at position \(t\) (i.e.\@ \(s\) is a leaf) that is reachable via the second successor of \(r\).
 %    For example, in \cref{fig:propterm:pre}, the two binary rules (\(r\)) are end points of gray arrows; these arrows start at the mentioned leaves (\(t\)).
@@ -138,7 +138,7 @@
         \item If \(s\) is \(t\), we remove the leftmost terminal in the rule's composition at \(s\).
         \item
             If \(s\) is neither \(t\) nor \(r\), we insert the last removed terminal right before the variable \(\x^1_1\) and then remove the leftmost terminal in the rule's composition at \(s\).
-            In case that the inserted and removed terminal are not equal, then the position \(s\) is added to the set \(S\).
+            In case the inserted and removed terminals are not equal, then the position \(s\) is added to the set \(S\).
         \item If \(s\) is \(r\), we insert the last removed terminal right before the variable \(\x^1_2\) in the rule's composition at \(s\).
     \end{compactitem}
     If \(s \neq r\), let \(s'\) be the parent of $s$ and $s$ the \(i\)th child of $s'$.
@@ -153,8 +153,8 @@
     As we start with two terminals in the compositions of each leaf node, the rules at \(r\) and \(t\) become both lexical, and the number of terminals in each rule between them does not change.
     To conclude the step, we replace the rule \(r\) at each position \(\rho\) with the tuple \((r, \rho \in S?)\) where the second component is ``true'' if and only if \(\rho \in S\).
 
-    Instead of the procedure we can also describe the result of this step in terms of properties that characterize each node.
-    Let \(M = \pos(d) \cap {\DN_+}^* \cdot \{2\} \cdot {\DN_+}^*\) denote the set of positions that are in the right subtree below any binary node, and are thus affected by a transportation.
+    Instead of the procedure, we can also describe the result of this step in terms of properties that characterize each node.
+    Let \(M = \pos(d) \cap {\DN_+}^* \cdot \{2\} \cdot {\DN_+}^*\) denote the set of positions that are in the right subtree below any binary node, and are thus affected by transportation.
     The result for this step is a tree \(t\) over \abrv{lcfrs} supertags with \(\pos(t) = \pos(d)\).
 %    Let us denote the \abrv{lcfrs} derivation in \(t\), i.e. the projection into the first components for each node in \(t\), by \(t'\).
     Each position \(\rho\) in \(t\) is a tuple \((r, s)\) as follows:

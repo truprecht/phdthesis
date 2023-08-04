@@ -39,7 +39,7 @@
             c_8 &= (\x_1^1, \tn{scheduled} \, \x_1^2 \, \x_2^1) && && && \in \C^\Sigma_{(2\,1\,2)}
         \end{align*}
 
-        The subscript indexing the family of compositions \(\C^\Sigma\) determines the arity of the associated functions.
+        The subscript in the family of compositions \(\C^\Sigma\) determines the arity of the associated functions.
         E.g.\@ \(\sem{c_1} \in \C^\Sigma_{(1)}\) takes no arguments (it is constant) and yields a single string,
         \(\sem{c_8} \in \C^\Sigma_{(2\,1\,2)}\) takes two arguments, a sequence over strings of length 2 and 1, and gives a sequence of length 2 as a result.
         For example:
@@ -76,13 +76,13 @@
     \end{definition}
 
     \begin{definition}[\abrv{Lcfrs} Grammar Forms]
-        We distinguish rules and grammars of the following form:
+        We distinguish the rules and the grammars of the following form:
         \begin{compactitem}
-            \item Rules of rank zero, one and two are called \deflab<\lcfrs!rule>{nullary}, \deflab<\lcfrs!rule>{unary} and \deflab<\lcfrs!rule>{binary}, respectively.
-            \item Lcfrs containing only nullary, unary and binary rules are called \deflab<\lcfrs>[lcfrs:bin]{binary}.
-            \item Rules whose composition contains exactly one terminal in \(\varSigma\) are called \deflab<\lcfrs!rule>[lcfrs:lex]{lexical}.
-            \item Lcfrs containing only lexical rules are called \deflab<\lcfrs>{lexical}.
-            \item Rules whose composition contain no terminal at all are called \deflab<\lcfrs!rule>{non-lexical}.
+            \item A rule of rank zero, one and two are called \deflab<\lcfrs!rule>{nullary}, \deflab<\lcfrs!rule>{unary} and \deflab<\lcfrs!rule>{binary}, respectively.
+            \item An \abrv{lcfrs} containing only nullary, unary, and binary rules are called \deflab<\lcfrs>[lcfrs:bin]{binary}.
+            \item A rule whose composition contains exactly one terminal in \(\varSigma\) is called \deflab<\lcfrs!rule>[lcfrs:lex]{lexical}.
+            \item An \abrv{lcfrs} containing only lexical rules is called \deflab<\lcfrs>{lexical}.
+            \item A rule whose composition contains no terminal at all is called \deflab<\lcfrs!rule>{non-lexical}.
             \item
                 An \abrv{lcfrs} that contains only lexical nullary rules and non-lexical rules of rank \(\ge 1\) and whose initial nonterminals do not occur as \abrv{rhs} nonterminals in any rule is called \deflab<\lcfrs>[lcfrs:simple]{simple}.
         \end{compactitem}
@@ -109,7 +109,7 @@
         Let us consider an lcfrs \(G = (N, \varSigma, S, R)\).
         An \abrv{lcfrs} \deflab<\lcfrs>[lcfrs:deriv]{derivation} is a tree over rules in \(\T_R\) that suffices the following conditions:
         \begin{compactitem}
-            \item Each leaf is equipped with a nullary rule as symbol.
+            \item Each leaf is equipped with a nullary rule as a symbol.
             \item Each inner node is a rule with the same amount of \abrv{rhs} nonterminals as children in the tree such that the \(i\)-th \abrv{rhs} nonterminal is the \(i\)th child's \abrv{lhs} nonterminal.
         \end{compactitem}
         The set of all \abrv{lcfrs} derivations is denoted by \(\derivs^R\).
@@ -119,7 +119,7 @@
     \begin{definition}[Yield]
         Consider a derivation \(d\) in \(\derivs^R_A\) of the form \(d = r\,(d_1, \ldots, d_k)\) where the root \(r\) is of the form \(A \to c\,(B_1, \ldots, B_k)\).
         The \deflab<\lcfrs!derivation>[lcfrs:yd]{yield} of \(d\) is defined recursively: \(\yield(d) = \sem{c}(\yield(d_1), \ldots, \yield(d_k))\).
-        For each set of derivations \(D \subseteq \derivs_G\), we denote the set fo all derivations for a given string \(w \in \varSigma^*\) by \(D(w) = \{d\in D \mid \yield(d) = w\}\).
+        For each set of derivations \(D \subseteq \derivs_G\), we denote the set of all derivations for a given string \(w \in \varSigma^*\) by \(D(w) = \{d\in D \mid \yield(d) = w\}\).
     \end{definition}
 
     \vspace{.2cm}
@@ -172,7 +172,7 @@
 
     \begin{example}[Continues \cref{ex:lcfrs:comp,ex:lcfrs:rules}]\label{ex:lcfrs:deriv}
         Let's consider the two trees illustrated below:
-            The left figure illustrates is a derivation in the instantiated grammar \(\mathrm{G'} = (N, [8], \nt{v}, R)\) of \(\mathrm{G}\) in \(w = \text{A hearing is scheduled for the issue today}\).
+            The left figure illustrates a derivation in the instantiated grammar \(\mathrm{G'} = (N, [8], \nt{v}, R)\) of \(\mathrm{G}\) in \(w = \text{A hearing is scheduled for the issue today}\).
             The right figure illustrates the constituent structure for \(d\).
 
         \null\hfill

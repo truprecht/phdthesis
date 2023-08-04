@@ -9,9 +9,9 @@
 
 
     \section{Mathematical Notation}\label{sec:preliminaries:math}
-    Sets are considered with the usual notation \(\subseteq\), \(\subset\), \(\cup\), \(\cap\) and \(\setminus\) for the inclusive and exclusive subset relation, as well as the operations for union, intersection and difference.
+    Sets are considered with the usual notation \(\subseteq\), \(\subset\), \(\cup\), \(\cap\) and \(\setminus\) for the inclusive and exclusive subset relation, as well as the operations for union, intersection, and difference.
     \(\emptyset\) is the empty set and \(\power(A)\) is the power set, i.e.\@ the set containing all subsets, of some set \(A\).
-    The sets of integers, naturals (including zero), positives and rationals are denoted by $\DZ$, $\DN$, $\DN_+$ and $\DR$, respectively.
+    The sets of integers, naturals (including zero), positives, and rationals are denoted by $\DZ$, $\DN$, $\DN_+$, and $\DR$, respectively.
     The \deflab{range} of integers between the pair \(n, m \in \DZ\) with \(n \leq m\) is denoted by \([n,m] = \{i \in \DZ \mid n \leq i \leq m\}\).
     For any positive integer \(n\), the notion \([n]\) abbreviates \([1,n]\), and \([0]\) is the empty set \(\emptyset\).
 
@@ -29,21 +29,21 @@
 
     \paragraph{Functions.}
     A (total) function from \(A\) to \(B\) is a relation from \(A\) to \(B\) such that for each \(a \in A\), there is exactly one \(b\) with \((a,b) \in f\).
-    As usually, we denote the type of such a function by \(A \to B\), a quantification by \(f\colon A \to B\), and the argument-value relation by \(f(a) = b\).
+    As usual, we denote the type of such a function by \(A \to B\), a quantification by \(f\colon A \to B\), and the argument-value relation by \(f(a) = b\).
     A partial function from \(A\) to \(B\) is a subset \(f \subseteq A \times B\) such that for each \(a \in A\), there is at most one \(b\) with \((a,b) \in f\).
-    The type of a partial function is denoted with a upper half arrow e.g. \(f\colon A \parto B\).
-    The image of a (total or partial) function is the set of elements in \(B\) that are assigned to any value in \(A\), denoted my \(\im(f) = \{b\in B \mid (A \times \{B\}) \cap f \neq \emptyset\}\).
+    The type of a partial function is denoted with an upper half arrow e.g. \(f\colon A \parto B\).
+    The image of a (total or partial) function is the set of elements in \(B\) that are assigned to any value in \(A\), denoted by \(\im(f) = \{b\in B \mid (A \times \{B\}) \cap f \neq \emptyset\}\).
     The domain of definition of a partial function is the set of elements in \(A\) with an assigned value in \(B\), denoted by \(\dom(f) = \{a\in A \mid (\{a\} \times B) \cap f \neq \emptyset\}\).
     In some contexts, a partial function \(f\) is just handled in the same manner as a total function from \(\dom(f)\) to \(B\) without further notice.
 
     \paragraph{Families.}
     An \(A\)-indexed \deflab{family} over \(B\) is a function \(f\colon A \to B\), often  denoted in a builder notation of the form \(\big(\mathrm{term}(a) \mid a \in A\big)\).
     The left-hand side \(\mathrm{term}(a)\) may assume any term and/or equation that depends on the index variable \(a\) to express an element of \(B\), and the right-hand side expresses the domain of the index variable \(a\).
-    There may be multiple index variables, in that case \(A\) is a cross product of the index variables' domains.
+    There may be multiple index variables, in that case, \(A\) is a cross-product of the index variables' domains.
     E.g.\@ if there are two indices \(x\) and \(y\) in the domains \(X\) and \(Y\), then we may also denote them individually in the builder notation as follows: \(\big( f(x,y) \mid x \in X, y \in Y \big)\).
     As an alternative to the builder notation, we also denote the argument-value relation in a form similar to the usual function notation, e.g.\@ an \(A\)-indexed family \(f\) is defined such that \(f_a = \mathrm{term}(a)\) for each \(a \in A\), where \(\mathrm{term}(a)\) is some term that may use the variable \(a\).
     Usually, we identify a family by some variable name and access its elements using this identifier and the index variables in its subscript or in function notation.
-    If the index set is defined in the builder notation or clear from the context, it the term \(A\)-indexed may be dropped and leaves the term family.
+    If the index set is defined in the builder notation or clear from the context, the term \(A\)-indexed may be dropped and leaves the term family.
 
     Families are used implicitly in terms where an associative and commutative binary operation is lifted to a collection of elements.
     For example, the union of \(k\) sets \(\big(U_i \mid i \in [k]\big)\) may be written as \(\bigcup_{i \in [k]} U_i\).
@@ -91,7 +91,7 @@
     \section{Strings and Trees}\label{sec:preliminaries:trees}
     \paragraph{Alphabets and Strings.}
     An \deflab{alphabet} is a non-empty and finite set, its elements are called \deflab<alphabet>{symbol}[symbols].
-    Usually, uppercase Greek letters are used to denote alphabets, like \(\varSigma\), \(\varPi\) or \(\varGamma\).
+    Usually, uppercase Greek letters are used to denote alphabets, like \(\varSigma\), \(\varPi\), or \(\varGamma\).
     A \deflab<sequence>{string} is a (finite) sequence over an alphabet \(\varSigma\).
     The set of all strings over \(\varSigma\) is \(\varSigma^*\).
     The notation for sequences is also used for strings.
@@ -109,42 +109,70 @@
 
     A \deflab<tree>{node} in the tree \(t \in \T_\varSigma(\varGamma)\) is an occurrence of a symbol in \(\varSigma \cup \varGamma\).
     If a node a accompanied by a sequence of trees denoted in parentheses behind the symbol, these trees are called the \deflab<tree!node>{child}[children] of the node.
-    Vice versa, from viewpoint of a child node, the node before the wrapping parenthesis is called the \deflab<tree!node>{parent}.
+    Vice versa, from the viewpoint of a child node, the node before the wrapping parenthesis is called the \deflab<tree!node>{parent}.
     Each other node within the parenthesis is called a \deflab<tree!node>{sibling}.
     The leftmost node is called the \deflab<tree>{root} of the tree; each node without children is called a \deflab<tree>{leaf} of the tree; and each node with children is called an \deflab<tree>[inode]{inner node}.
     The \deflab<tree!node>{rank} of a node is its number of children, \(\rank(t)\) denotes the rank of the root in \(t\).
-    Each leaf is of rank zero; nodes of rank one are called \deflab<tree!node>{unary}, those of rank two are called \deflab<tree!node>{binary}.
-    A tree is called \deflab<tree>[bintree]{binary}, if each inner node has exactly two successors.
+    Each leaf is of rank zero; nodes of rank one are called \deflab<tree!node>{unary}, and those of rank two are called \deflab<tree!node>{binary}.
+    A tree is called \deflab<tree>[bintree]{binary} if each inner node has exactly two successors.
 
     Each illustration of a tree usually starts with the root node at the top, below that are its children connected by edges, this scheme recurs until the leaves at the bottom.
     \cref{fig:pre:ctree} shows an example.
 
     \paragraph{Positions.}
     A \deflab<tree>{position} in \(t\) is a sequence $w \in \DN^*$ that identifies a node in the tree.
-    Starting with the root, each integer in \(w\) indicates to the index of a child whose root is the reference for the remaining integers in \(w\).
+    Starting with the root, each integer in \(w\) indicates the index of a child whose root is the reference for the remaining integers in \(w\).
     Alas, the set of positions, denoted by \(\pos(t)\), is defined recursively over the structure of trees:
     \begin{inparaenum}
         \item if \(t \in \varSigma\), then it is \(\pos(t) = \{\varepsilon\}\), and
         \item if \(t = \sigma(t_1 \cdots t_k)\) for some \(\sigma\in \varSigma\) and \(t_1, \ldots, t_k \in \T_\varSigma\), then it is \(\pos(t) = \{\varepsilon\} \cup \bigcup_{i\in[k]} \{i\}\cdot \pos(t_i)\).
     \end{inparaenum}
-    The set of all inner node positions in \(t\) is denoted by \(\npos(t)\), the set of leaf positions is \(\lpos(t)\).
+    The set of all inner node positions in \(t\) is denoted by \(\npos(t)\), and the set of leaf positions is \(\lpos(t)\).
     Let \(\rho \in \pos(t)\) be some position.
     Each subsequence in \(t\) that is also a tree in \(T_\varSigma\) is called a \deflab<tree>{subtree} in \(t\).
     The subtree below a position \(\rho\) is denoted by \(t|_\rho\).
     The \deflab<tree>{ancestor}[ancestors] of \(\rho\) are all prefixes of the sequence \(\rho\), denoted by \(\ancestors(\rho) = \{ \rho_{:e} \mid e \in [|\rho|+1] \}\).
     The \deflab<tree>{descendant}[descendants] of \(\rho\) in \(t\) are all positions in the subtree below \(\rho\), denoted by \(\descendants_t(\rho) = \{ \rho \cdot \rho' \in \pos(t) \mid \rho' \in \DN^* \}\).
     The symbol at a position \(\rho\) in \(t\) is denoted  \(t(\rho)\).
+    We use the same terminology for position as for nodes, i.e.\@ child position, parent position, etc.
+    Two positions \(\rho, \rho' \in \pos(t)\) are called \emph{parallel}, if \(\rho\) is neither a descendant nor an ancestor of \(\rho'\).
 
     A \deflab<tree>{subforest} of \(t\) is a sequence of trees occurring consecutively (as siblings) within \(t\).
     A subforest may be located within \(t\) using a position \(\rho\) accompanied by a concluding child index that is greater or equal to the last child index in \(\rho\).
     Let \(i, e \in \DN_+\) and \(\rho' \in \pos(t)\) such that \(\rho = \rho' \cdot i\) and \(e \in [i,\rank(t|_{\rho'})+1]\).
     Analogously to the location of subsequences, the notation \(t|_{\rho:e}\) denotes the subforest in \(t\) at positions \(\rho' \cdot i, \rho' \cdot (i+1), \ldots, \rho \cdot (e-1)\).
 
+    \begin{lemma}\label{lem:firstviasecond}
+        Let \(\xi \in \T_{\varSigma}\) be binary tree over some alphabet \(\varSigma\).
+        And let \((f_\rho \in \lpos(\xi) \mid \rho \in \npos(\xi))\) be such that \(f_\rho\) is the leftmost leaf position in the right subtree below \(\rho\).
+        Then
+        \begin{inparaenum}
+            \item \(f_\rho\) is well defined for each \(\rho \in \npos(\xi)\) and
+            \item for each pair \(\rho, \rho' \in \npos(\xi)\), \(\rho \neq \rho' \iff f_\rho \neq f_{\rho'}\).
+        \end{inparaenum}
+    \end{lemma}
+
+%    \begin{proof}
+%        The element \(f_\rho\) is obtained from \(\rho\) by appending a distinct postfix \(\omega \in {2}\cdot{1}^*\).
+%        \begin{enumerate}
+%            \item
+%                As \(\rho\) is an inner node position in the binary (and finite) tree \(\xi\), there must be such a leaf position \(\rho \cdot w \in \lpos(\xi)\).
+%            \item
+%                The direction \(\rho \neq \rho' \Leftarrow f_\rho \neq f_{\rho'}\) follows from (i).
+%                By the form of the postfixes \(\omega\) in \(f_\rho\) and \(\omega'\) in \(f_{\rho'}\) as above, they are unambiguously distinguishable from their prefix \(\rho\) and \(\rho'\).
+%                Now, we have \(\rho \cdot \omega \neq \rho' \cdot \omega'\) and two cases:
+%                \begin{compactitem}
+%                    \item If \(\omega = \omega'\), then clearly follows \(\rho \cdot \omega \neq \rho' \cdot \omega' \Rightarrow \rho \neq \rho'\).
+%                    \item If \(\omega \neq \omega'\), then, since \(f\) is well defined, also \(\rho\) and \(\rho'\) must be unequal. \qedhere
+%                \end{compactitem}
+%        \end{enumerate}
+%    \end{proof}
+
     \paragraph{Indexed Trees.}
     In \deflab<tree>[itree]{indexed tree}[indexed trees], the symbols of an alphabet \(\varSigma\) occur only at inner nodes.
     All leaves are positive integers such that each occurs at most once in each tree.
-    For each inner node in an indexed tree, the children occur ordered by their least leaf.
-    The notation for positions, indexing, substitution are inherited from trees; the yield of an indexded tree is its set of leaves instead of a string.
+    For each inner node in an indexed tree, the children are ordered by the least value that occurs in a leaf.
+    The notation for positions, indexing, and substitution are inherited from trees; the yield of an indexed tree is its set of leaves instead of a string.
     The set of all indexed trees over \(\varSigma\) is denoted by \(\itrees^\varSigma\).
 
     \paragraph{Substitution.}
@@ -159,7 +187,7 @@
     A second-order substitution of \(X\) in \(c\) defined by an \(X\)-indexed family \((v_x \in (\varSigma \cup \{y\})^* \mid x \in X)\) yields the string in \(\varSigma^*\) obtained from \(c\) by replacing each occurrence of shallow trees \(x(w) \in X(\varSigma^*)\) by \(v_x[y=w]\).
     We specifically stress that the variable \(y\) may be an element in \(\varSigma\) and the result \(c[v]\) might also contain it.
 
-    Because trees are just specific strings, both definitions of substitution are easily lift to trees and sequences of trees, as long as the variables do not coincide with parentheses.
+    Because trees are just specific strings, both definitions of substitution are easily lifted to trees and sequences of trees, as long as the variables do not coincide with parentheses.
     Let \(\varGamma\) be an alphabet distinct from \(X\), and \(\{ (, ) \} \cap (X \cup \{y\}) = \emptyset\), and \(y \notin \varSigma\).
     Now, the variable occurrences are of the form \(X(\T_\varSigma(\varGamma)^*) = \{x(t_1, \ldots, t_k) \mid k \in \DN, t_1, \ldots, t_k \in \T_{\varSigma}(\varGamma)\}\) where each element has a root in \(X\), in the following the set is abbreviated by \(\hat{X}\).
     A second-order substitution of \(X\) in \(c \in \T_\varSigma(\varGamma \cup \hat{X})^*\)\todo{The set of leaves is not finite, either adapt def. of trees or allow only leaves as arguments. \(\T_{\varSigma \cup X}(\varGamma)\) is not an option.} defined by an \(X\)-indexed family \((v_x \in \T_\varSigma(\varGamma \cup \{y\})^* \mid x \in X)\) yields a sequence of trees in \(\T_\varSigma(\varGamma)*\) obtained from \(c\) by replacing each occurrence of \(x(v) \in \hat{X}\) by \(v_x[y=v]\).
@@ -202,7 +230,7 @@
 
         \caption{\label{fig:pre:ctree}
             Discontinuous constituent tree for the phrase \emph{where the survey was carried out}.
-            The tree is illustrated with crossing branches, so that the leaves appear ordered.
+            The tree is illustrated with crossing branches so that the leaves appear ordered.
             For each constituent, the path to its lexical head is double-struck.
         }
     \end{figure}
@@ -227,7 +255,7 @@
         \item \(t\) is an indexed tree over \(\varGamma\) such that each position in \([|w|]\) occurs exactly once as a leaf, and
         \item \(p\) is a string of \abrv{pos} tags in \(\varPi^{|w|}\).
     \end{compactitem}
-    In each constituent tree, we distinguish three parts: the sequence of tokens, the \abrv{pos} tag above each token, and the \deflab<constituent tree>[cstruct]{constituent structure} that contains the constituent symbols an defines the hierarchical structure.
+    In each constituent tree, we distinguish three parts: the sequence of tokens, the \abrv{pos} tag above each token, and the \deflab<constituent tree>[cstruct]{constituent structure} that contains the constituent symbols and defines the hierarchical structure.
     To accommodate discontinuous constituents, each constituent structure is defined as an indexed tree over \(\varGamma\) so that each leaf is the position of a token.
 
     \(\head(t)\) denotes the leaf that indexes the lexical head for the root in the constituent structure \(t\).
@@ -236,15 +264,15 @@
     %    We call each direct child that does not contain the lexical head a \emph{modifier}.
 
     A \emph{treebank} is a finite set of constituent trees.
-    They are assembled by linguists for texts collected from news articles, written speeches, etc.\@ and annotated with their constituent structure.
-    In the scope of this thesis, treebanks form data sets used for learning models that are able to predict constituent structures for input sentences.
+    They are assembled by linguists for texts collected from news articles, written speeches, etc., and annotated with their constituent structure.
+    In the scope of this thesis, treebanks form data sets used for learning models that can predict constituent structures for input sentences.
     The process of predicting a constituent structure for a given input sentence is called \emph{parsing}, and a used model is called \emph{parser}.
     In \emph{\(k\) best parsing}, a sequence of (at most) \(k \in \DN_+\) constituent trees is predicted and each is complemented with a confidence value.
     \emph{Reranking} is a process that uses such a collection of potential constituent trees for a sentence and produces new confidence values.
-    It is used to refine a set of candidate constituent trees often with more ambitious or orthogonal methods to the underlying \(k\) best parser.
+    It is used as a refinement for a set of candidate constituent trees and often involves more ambitious or orthogonal methods to the underlying \(k\) best parser.
 
     Besides constituent trees, there are \emph{dependency trees} that express a syntactic analysis of natural language.
-    They present grammatical relations between phrases within a sentence, such as arguments, adjuncts and complements, sometimes even more fine-grained ones like distinctions between subjects and objects.
+    They present grammatical relations between phrases within a sentence, such as arguments, adjuncts, complements, and sometimes even more fine-grained ones like distinctions between subjects and objects.
     These relations are illustrated in a tree where each phrase is represented by its head.
     There are similar phenomena as (dis-)continuity in dependency trees, they are referred to as \emph{(un-)projectivity}.
     We will not engage in dependency trees in this work, some references are discussed in \cref{sec:literature}.
@@ -255,17 +283,18 @@
         \item the time needed for the prediction process, and
         \item the accuracy of predicted structures.
     \end{inparaenum}
+    For both, there is a treebank that is reserved for the evaluation (called \emph{test set}).
     The process for measuring the first dimension is rather intuitive:
-    The time is taken for the prediction of a constituent structure for each sentence in a treebank reserved for the evaluation (called \emph{test set}).
-    This time is reported either as sum for the whole test set or as quotient \(\frac{\text{number of sentences}}{\text{parsing time}}\) for the number of parsed sentences per second.
+        The time is taken for the prediction of a constituent structure for each sentence in the test set. 
+    This time is reported either as the sum for the whole test set or as quotient \(\frac{\text{number of sentences}}{\text{parsing time}}\) for the number of parsed sentences per second.
 
-    The evalb-style labeled \emph{f1-score} \citep{Black91,Col97} established as the standard for measuring the accuracy of predicted constituent structures.
+    The \emph{evalb}-style labeled \emph{f1-score} \citep{Black91,Col97} was established as the standard for measuring the accuracy of predicted constituent structures.
     This score is computed as follows:
     The sets of predicted and the gold constituent structures are mapped each into a set that contains a tuple \((\xi, A, \mathit{yd})\) for each constituent structure \(\xi\) and each of its inner nodes with label \(A\) and yield \(\mathit{yd}\).
     According these two sets, \(P\) for all predictions and \(G\) for the gold constituent trees, the precision (\(p = \frac{|P \cap G|}{|P|}\)), recall (\(r = \frac{|P \cap G|}{|G|}\)) and f1-score (\(\frac{2\cdot p\cdot r}{p + r}\)) are computed in the usual fashion.
-    The \abrv{pos} tags are often part of the prediction but not assessed as part the f1-score.
+    The \abrv{pos} tags are often part of the prediction but not assessed as part of the f1-score.
     They are rather reported separately as the accuracy of the predicted \abrv{pos} tags compared to the gold ones.
-    The python tool \emph{discodop} supplies an implementation for both, the f1-score of constituent structures and the accuracy of \abrv{pos} tags. \citep{CraSchBod16}
+    The Python tool \emph{discodop} supplies an implementation for both, the f1-score of constituent structures and the accuracy of \abrv{pos} tags. \citep{CraSchBod16}
 
     \begin{figure}
         \null\hfill
@@ -354,24 +383,24 @@
         \caption{
             Example for the f1-score computation for a single pair of gold (\(\xi_\text{G}\)) and predicted (\(\xi_\text{P}\)) constituent structures.
             The sets of constituent tuples for both trees and the set of common constituents are illustrated below them.
-            The upper right corner shows the values for precision, recall and f1-score.
+            The upper right corner shows the values for precision, recall, and f1-score.
         }
     \end{figure}
 
     \section{Empirical Predictions}
     Under the broad term \deflab{prediction}[(empirical) prediction], we subsume each process that takes an input of predetermined shape and assigns it to an output (called \emph{label}) based on previously seen data and prior knowledge.
-    In the following, we clearify some basic terms terms that are used throughout the thesis in conjunction with empirical predictions.
+    In the following, we clarify some basic terms that are used throughout the thesis in conjunction with empirical predictions.
     For more detailed elaborations in this field, refer to \Citet{Moh12,Dau17}.
 
-    \paragraph{Tasks, Models and Learning.}
+    \paragraph{Tasks, Models, and Learning.}
     We start with the broadest concepts in the field of machine learning.
-    A \emph{task} defines a general setting what the prediction is about, including the sets of possible inputs and labels as well as an assessment function for the predictions.
+    A \emph{task} defines a general setting of what the prediction is about, including the sets of possible inputs and labels as well as an assessment function for the predictions.
     Since the domains of inputs and labels strongly depend on available data, it is also a part of the task.
 
-    A \deflab<empirical prediction>{model}[(prediction) model] is a specification that defines how each intput is mapped to a label.
-    Each model chooses a label that optimizes a \deflab<empirical prediction>{confidence} value (e.g. a score or probability), so we view each model as a function that computes a confidence for each input and label.
+    A \deflab<empirical prediction>{model}[(prediction) model] is a specification that defines how each input is mapped to a label.
+    Each model chooses a label that optimizes a \deflab<empirical prediction>{confidence} value (e.g. a score or probability), so we view each model as a function that computes this value for each input and label.
     The model specifies variables (called \deflab<prediction!model>{parameters}) steering the computation of confidence values.
-    Let us denote the set of inputs by \(X\), the labels by \(Y\) and the domain of confidence values by \(\mathcal{C}\) with a total order \(\rel \subseteq \mathcal{C} \times \mathcal{C}\).
+    Let us denote the set of inputs by \(X\), the labels by \(Y\), and the domain of confidence values by \(\mathcal{C}\) with a total order \(\rel \subseteq \mathcal{C} \times \mathcal{C}\).
     We view each model as a parametrized function \(\varphi_\theta\colon X \times Y \to \mathcal{C}\) where \(\theta\) are some parameters (or variables) in an associated domain \(\Theta\).\todo{prelim: parametrized function}
     In our case, the domain of confidence values are real numbers and the order \(\rel\) is \(\leq\), such that the confidence is interpreted as a score (i.e.\@ greater is better).
     The prediction for an input \(x\) and a model \(f\) with parameters \(\theta\) is any value in \(\argmax^{\rel}_{y \in Y} \phi_\theta(x, y)\).
@@ -381,15 +410,15 @@
     Generative models can be used to generate samples of pairs containing in- and outputs.
     Discriminative models on the other hand, are not able to do this in general, as they do not model the structure of the input.
 
-    \emph{Learning} is a process finds an appropriate parametrization for a model in a task.
-    We differentiate between two mayor types of learning: \emph{supervised} and \emph{unsupervised}.
-    In the first case, the data contains the inputs as well as labels; in the latter case it consists only of input.
+    \emph{Learning} is a process that finds an appropriate parametrization for a model in a task.
+    We differentiate between two major types of learning: \emph{supervised} and \emph{unsupervised}.
+    In the first case, the data contains the inputs as well as labels; in the latter case, it consists only of input.
     There are some intermediate types in between the two including self-supervised and semi-supervised where a large amount of unlabeled data is complemented with a small amount of labeled data.
 
     \paragraph{Parameters and Training.}
-    We distinguish two essential sets of parameters: \deflab<prediction!model!parameters>{hyper parameters} and \deflab<prediction!model!parameters>{model parameters}.
-    Hyper parameters determine details about the model and a training process. %, to some extend, the model and the training objective can also be seen as hyper parameters.
-    They are not trained upon, but are chosen for the training either by prior knowledge or by trying different combinations and manually evaluating their results.
+    We distinguish two essential sets of parameters: \deflab<prediction!model!parameters>{hyperparameters} and \deflab<prediction!model!parameters>{model parameters}.
+    Hyperparameters determine details about the model and the training process. %, to some extent, the model and the training objective can also be seen as hyperparameters.
+    They are not trained but are chosen for the training either by prior knowledge or by trying different combinations and manually evaluating their results.
     Model parameters are variables defined by a model that are tuned during the training process to match a training objective.
 
     \deflab<prediction>{training}[Training] is the process of tuning the model parameters in terms of a \deflab<prediction!training>{training objective}.
@@ -398,32 +427,32 @@
     In other cases, there are iterative processes that change the parameters to gradually improve upon the criterion.
     There are some fine nuances between the terms learning and training, that are sometimes used interchangeably.
     While both describe a process that fits a model to available data, training is specifically about tuning model parameters using labeled examples.
-    Learning is a little broader, as it also includes each process that finds appropriate hyper parameters.
+    Learning is a little broader, as it also includes each process that finds appropriate hyperparameters.
 
 
     \paragraph{Data and splits.}
     The \deflab<prediction>{data sets} contain pairs of input and output that we use to deduce a prediction model.
-    In this context the, the output (i.e. the to-be predicted) component of these instances is referred to as \deflab<prediction!data sets>{gold}.
+    In this context the output (i.e. the to-be predicted) component of these instances is referred to as \deflab<prediction!data sets>{gold}.
     The data instances are used in two roles: for training, and for assessing a prediction model.
     The data sets are usually split into three parts to accommodate these roles:
     \begin{inparaenum}
         \item a \deflab<prediction!data sets>{training portion} that is solely used to train a model,
-        \item a \deflab<prediction!data sets>{development portion} that is used to monitor the model during the training process and assess the selection of hyper parameters, and
+        \item a \deflab<prediction!data sets>{development portion} that is used to monitor the model during the training process and assess the selection of hyperparameters, and
         \item a \deflab<prediction!data sets>{test portion} that is used to assess a final model.
     \end{inparaenum}
     For common data sets that are used within a community, specific partitions are shared to enable fair comparisons between publications.
     In such publications, the results of different models are compared using the same test portions of the same data sets.
 
-    There are two distinct examples for empirical predictions in (or at least near) the scope of this thesis.
+    There are two distinct examples of empirical predictions in (or at least near) the scope of this thesis.
 
     \begin{example}[Statistical parsing in the empirical prediction framework.]
         One task that we consider is discontinuous constituent parsing with the NeGra corpus.
-        The domain of inputs is the set of sequences over tokens (that preferably coincide with german words) and the domain of labels is the set of constituent trees where the constituent and \abrv{pos} symbols are defined by the NeGra corpus.
+        The domain of inputs is the set of sequences over tokens (that preferably coincide with German words) and the domain of labels is the set of constituent trees where the constituent and \abrv{pos} symbols are defined by the NeGra corpus.
         Each predicted label can be assessed to a correct tree via the f$_1$-score.
-        Learning this task is supervised, because the corpus contains the setences along with their constituent trees.
+        Learning this task is supervised because the corpus contains the sentences along with their constituent trees.
 
         Parsing is a process that predicts a constituent structure for a given sequence of tokens.
-        A statistical grammar formalism is a model that has proven successful in this setting in the past.\cite{}
+        Statistical grammars have proven successful in this setting in the past.\cite{}
         It defines a probability distribution for constituent trees \(p\colon \mathcal{C} \to \DR\), usually by the sum over all derivations per constituent tree and by the product of all rules' weights per derivation.
         This is formalized in the equation \[
         p(\xi) = \sum_{d \in D(\xi)} \prod_{\rho \in \pos(d)} \hat{p}(d(\rho))
@@ -438,27 +467,27 @@
     \begin{example}[Supertagging in the empirical prediction framework.]
         In the case of parsing with supertagging, an integral part of the parsing process is an assembly of a small grammar by choosing some rules out of a predetermined set of rule blueprints (this specific process is called supertagging).
         The process may also be described using a generative model.
-        But in practice, we use specific neural networks for this task, as they have proven very accurate in the past; they are textbook examples for discriminative models.
-        They define many hyper parameters that determine the \emph{architecture} (i.e. the shape of the neural network), e.g.\@ the used word embeddings, its depth or the number of parameters in a certain layer, and many details about the training process, e.g.\@ the learning rate or some condition that ends the iterative training process.
+        But in practice, we use specific neural networks for this task, as they have proven very accurate in the past; they are textbook examples of discriminative models.
+        They define many hyperparameters that determine the \emph{architecture} (i.e. the shape of the neural network), e.g.\@ the used word embeddings, its depth or the number of parameters in a certain layer, and many details about the training process, e.g.\@ the learning rate or some condition that ends the iterative training process.
         During the training process, a treebank is transformed into tuples of the token sequence and the optimal choice of blueprints for each constituent tree.
         The training objective maximizes the likelihood of the blueprints conditioned on the input tokens.
     \end{example}
 
     \subsection{Neural Networks}
-    As mentioned in the last example, we use neural networks to implement the prediction of a sample of supertags for each position input sentences.
+    As mentioned in the last example, we use neural networks to implement the prediction of a sample of supertags for each position input sentence.
     They are a family of parametrized functions that emerged in the last decades and proved extremely useful in many tasks, including ones settled in natural language processing. \todo{ref examples}
-    As in the parent section, we will only give a brief overview for the concepts needed to understand the implementations discussed in this thesis.
+    As in the parent section, we will only give a brief overview of the concepts needed to understand the implementations discussed in this thesis.
     For further elaborations in the field of neural networks for natural language processing, consult \cref{Gol17}.
 
-    In general, we consider a neural network (short \abrv{ann} for \emph{artificial} neural network) a parametrized function  where the outputs are vectors of real numbers, i.e.\@ they are of the form \(f_\theta\colon X \to \DR^n\) where \(\theta\) denotes the parameters, \(X\) the set of inputs and \(n > 0\) is the output dimension.
-    There is a set of well studied \abrv{ann}s that are used as \emph{modules} and combined to form new \abrv{ann}s by composition, addition or concatenating their results.
-    Such a combined collection of modules  is called an \emph{architecture}.
+    In general, we consider a neural network (short \abrv{ann} for \emph{artificial} neural network) a parametrized function where the outputs are vectors of real numbers, i.e.\@ they are of the form \(f_\theta\colon X \to \DR^n\) where \(\theta\) denotes the parameters, \(X\) the set of inputs and \(n > 0\) is the output dimension.
+    There is a set of well-studied \abrv{ann}s that are used as \emph{modules} and combined to form new \abrv{ann}s by composition, addition, or concatenating their results.
+    Such a combined collection of modules is called an \emph{architecture}.
     In the following, some of these modules are briefly explained.
 
     \subsubsection{Embeddings}
-    Embeddings are used to assign vectors to any other type of objects.
+    Embeddings are used to assign vectors to any other type of object.
     These assigned values are the foundation for computations in other modules, which usually assume real vectors as input.
-    The most simple form of embeddings are \deflab<>{static embeddings}.
+    The most simple form of embeddings is \deflab<>{static embeddings}.
     Let us consider a set of input objects \(X\), a bijection \(\mathit{idx}\colon X \to [|X|]\) and an output dimension \(n \in \DN_+\).
     A static embedding for \(X\) of dimension \(n\) is a parametrized function \(f_W\colon X \to \DR^n\) which assumes a matrix of parameters \(W \in \DR^{(|X| \times n)}\) and assigns a row vector to each element in \(X\), i.e.\@ \(f_W(x) = W_{\mathit{idx}(x)}\) for each \(x \in X\).
     In some applications, it is sensible to add a vector for unknown elements, e.g.\@ for unknown tokens that do not occur in the data used for training.
@@ -471,21 +500,21 @@
         If a token does not occur in the training data, there is no specific element-wise embedding for it.
         But the character-wise embedding might have learned some sensible information based on similar tokens in the training data.
 
-    For the task of sequence processing, \emph{positional embeddings} are another extension used to complement static embeddings.
+    For the task of sequence processing, \emph{positional embeddings} is another extension used to complement static embeddings.
     They define a function that maps the position of each sequence element into the output dimension.
     In contrast to both aforementioned methods, these are often \emph{not} trained, but chosen immutably.
     E.g.\@ in the case of \abrv{bert}, a series of sine and cosine functions in different frequencies is used as positional embedding.
 
 %    Recently, specialized methods for sequence embedding that do also consider positional and contextual information in the assignment were published, such as \abrv{bert} \citep{Devlin2019} and flair embeddings \citep{Akb19}.
-%    However, they are (in some cases rather large) compositions of \abrv{ann} modules for sequence tagging themselves, using a transformers and \abrv{lstm} units, respectively.
+%    However, they are (in some cases rather large) compositions of \abrv{ann} modules for sequence tagging themselves, using a transformer and \abrv{lstm} units, respectively.
 
-    \subsubsection{Linear Layers, Activation Functions and Multi-Layer Perceptrons}
+    \subsubsection{Linear Layers, Activation Functions, and Multi-Layer Perceptrons}
     After embeddings, linear layers are an essential part in \abrv{ann}s.
-    They are a linear transformation of vectors from an a specified input to an output dimension.
+    They are a linear transformation of vectors from a specified input to an output dimension.
     Formally, let \(m, n \in \DN_+\) by some input and output dimensions.
     Then a linear layer is a function \(f_{(W,b)}\colon R^m \to R^n\) where the matrix \(W \in R^{(m\times n)}\) and the bias vector \(b\in R^n\) are parameters and \(f_{(W,b)}(x) = Wx+b\).
 
-    Activation functions is a general term for non-linear functions that are used in between compositions and on top of linear layers.
+    Activation functions are a general term for non-linear functions that are used in between compositions and on top of linear layers.
     There are some options that implement desirable properties or interpretations in some settings, such as the following:
     \begin{enumerate}
         \item
@@ -499,7 +528,7 @@
             They are normalized such that they sum to \(1\) and are therefore often interpreted as a probability distribution over the set of indices of the vector.
             It is defined as follows: \(\mathrm{softmax}(x) = (\frac{e^{x_i}}{z} \mid i \in [n])\) for each \(x\in \DR^n\) and \(n \in \DN_+\) where \(z = \sum_{i \in [n]} e^{x_i}\).
     \end{enumerate}
-    The latter two are more dominantly used as top-most modules, specifically because of their interpretation as probabilities.
+    The latter two are more dominantly used as the top-most modules, specifically because of their interpretation as probabilities.
     A \emph{multi-layer perceptron} is a composition of multiple linear layers with activation functions.
 
 
@@ -507,68 +536,68 @@
     Recurrent modules are a foundation for the processing of sequence inputs in neural networks.
     They are defined, such that each input vector is complemented with the previous output, starting with an initialization vector for the first input.
     Formally, this concept of recurrence uses some inherent module \(f_\theta\colon \DR^{n+m} \to \DR^m\) parametrized by some \(\theta\) and incrementally computes, for an input sequence \(x_1, \ldots, x_n \in \DR^n\), a sequence of outputs \(g_{(f, \theta, h_0)}(x_1, \ldots, x_n) = (h_i = f_\theta(x_i \cdot h_{i-1}) \in \DR^m \mid i \in [n])\) where \(h_0 \in \DR^m\) is an initial value and parameter of the recurrent module \(g\).
-    Linear short-term memory (short \abrv{lstm}) cells \citep{Hoc97} established as a quasi-standard for these inherent modules.
+    Linear short-term memory (short \abrv{lstm}) cells \citep{Hoc97} were established as a quasi-standard for these inherent modules.
     In addition to the previous output \(h_{i-1}\) that is used to compute \(h_i\), they also carry a cell state between the computations for each position, which is not part of the output.
     Bidirectional recurrent modules combine the vectors obtained by two recurrent modules, one for the sequence from left to right and the other in the opposite direction, by concatenating the vectors for each position.
 
-    The transformer architecture \citep{vaswani2017attention} established as an alternative to recurrent neural networks for sequence processing.
+    The transformer architecture \citep{vaswani2017attention} was established as an alternative to recurrent neural networks for sequence processing.
     It relies on the self-attention mechanism that is used to extract and combine sequence positions based on their embedding vectors, which are often composed of static sub-word and positional embeddings.
     The architecture is especially well-known as the foundation of large language models.
 
     \subsubsection{Training}
     The parameters in an \abrv{ann} are tuned to fit an objective for labeled examples in a training set using \emph{statistical gradient descent} (\abrv{sgd} for short).
 %    Such an objective is a function that rates the prediction for each example in comparison to the ground truth and accumulates the results in the whole set.
-%    A prominent example for such an objective is \emph{cross entropy loss} that is often used when the confidence values for the labels are interpreted as probability distribution.
+%    A prominent example of such an objective is \emph{cross entropy loss} which is often used when the confidence values for the labels are interpreted as a probability distribution.
 %    It is the sum of negative logarithms over all confidence values; the term \emph{loss} indicates that the value should be minimized during the training process.
-%    During the training process, the value is computed for small portion of the data (called \emph{batch}) and the parameters are updated using a partial derivative of the value with respect to the weight.
+%    During the training process, the value is computed for a small portion of the data (called \emph{batch}) and the parameters are updated using a partial derivative of the value with respect to the weight.
 %    These updates are scaled by a (typically small) real value, called \emph{learning rate}, and repeated a fixed number of times or until a certain criterion is met.
-%    There are several extensions to the baseline training process that aim to accelerate or stabilize the training process or improve the prediction quality; sthat we use the following:
-    Such an objective often takes the form of a \emph{loss} value that should be minimized during the training process, in our case it is \emph{cross entropy loss} (i.e.\@ the negative log likelihood of the confidence value for the ground truth label in all examples).
-    There are several extensions and hyper parameters to the training, among them we use the following:
+%    There are several extensions to the baseline training process that aim to accelerate or stabilize the training process or improve the prediction quality; we use the following:
+    Such an objective often takes the form of a \emph{loss} value that should be minimized during the training process, in our case it is \emph{cross entropy loss} (i.e.\@ the negative log-likelihood of the confidence value for the ground truth label in all examples).
+    There are several extensions and hyperparameters to the training, among them we use the following:
     \begin{itemize}
         \item
             \abrv{Sgd} is an iterative process and usually each iteration is performed using a small amount of data, called \emph{batch}.
-            The amount of iterations to process the whole training set is called an \emph{epoch}, usually the total number of iterations for training is given in epochs.
+            The amount of iterations to process the whole training set is called an \emph{epoch}, usually, the total number of iterations for training is given in epochs.
             The computed gradient is scaled by a small real value, called \emph{learning rate}.
         \item
             The gradients used to update the parameters in each iteration are modified using the \emph{Adam} algorithm \citep{adam,adamw} that implements momentum and adaptive gradients.
             Both aim to accelerate and stabilize the training process.
         \item
-            There are some measures that aim to improve the ability to generalize from training examples, among them are \emph{weight decay} and \emph{dropout} \citep{dropout}.
+            Some measures that aim to improve the ability to generalize from training examples, among them are \emph{weight decay} and \emph{dropout} \citep{dropout}.
             Both are quantified in terms of real values:
-                A term for the magnitude of all parameters is added to the loss and scaled by weight decay, this discourages high values for parameters which are associated with fitting to close to training data (called overfitting).
-                Dropout is the probability of omitting the value (and replace it by \(0\)) at an index in the vector computed after selected modules.
+                A term for the magnitude of all parameters is added to the loss and scaled by weight decay, this discourages high values for parameters that are associated with fitting too close to training data (called overfitting).
+                Dropout is the probability of omitting the value (and replacing it by \(0\)) at an index in the vector computed after selected modules.
     \end{itemize}
 
     \subsubsection{Pretrained Modules}
-    A mentioned before, there are some modules shared in the community, such as pretrained static embeddings.
-    Usually they are \emph{generic}, i.e.\@ they are designed to be used an many different tasks; in that context such a specific task is called \emph{downstream}.
-    In the field of natural language processing, using pretrained modules has become a quasi-standard.
+    As mentioned before, there are some modules shared in the community, such as pre-trained static embeddings.
+    Usually, they are \emph{generic}, i.e.\@ they are designed to be used in many different tasks; in that context, such a specific task is called \emph{downstream}.
+    In the field of natural language processing, using pre-trained modules has become quasi-standard.
     The reason for that is twofold:
     \begin{compactitem}
         \item
-            Training costs time and power, using pretrained modules skips at least a part of the training and saves both.
+            Training costs time and power, using pre-trained modules skips at least a part of the training and saves both.
         \item
-            These generic modules are most often trained using very large copora, magnitudes larger than most copora for downstream tasks such as constituent parsing.
+            These generic modules are most often trained using very large corpora, magnitudes larger than most corpora for downstream tasks such as constituent parsing.
             Thus, they contain information that is not possible to obtain from a downstream training set.
     \end{compactitem}
     Especially when \emph{large language models} are used as modules in an architecture, the term \emph{fine-tuning} is used for training downstream tasks.
     Because of the additional information, fine-tuning such a model for a downstream task in an otherwise supervised manner is referred to as \emph{semi-supervised} training.
 
-    The two most prominent instances for pretrained models that we encountered during the work that lead up to this thesis are the following:
+    The two most prominent instances of pre-trained models that we encountered during the work that led up to this thesis are the following:
     \begin{compactitem}
         \item
-            Word vector embeddings are pretrained static word embeddings.
-            Syntactic word representations, such as word2vec \citep{word2vec} and fasttext \citep{fasttext} that are both based on the continuous bag of words model, aim to map words that are used in similar contexts to similar vectors.
+            Word vector embeddings are pre-trained static word embeddings.
+            Syntactic word representations, such as \emph{word2vec} \citep{word2vec} and \emph{fasttext} \citep{fasttext}, are both based on the continuous bag of words model and aim to map words that are used in similar contexts to similar vectors.
             There are also semantic frameworks, like WordNet \citep{wordnet} that aims to map words with similar meaning to similar vectors using training with large semantic word networks.
         \item
             Large language models (short \abrv{llm}) are, as the name suggests, not only single modules but large architectures for sequence processing.
-            They are usually pretrained using various tasks that involve missing word predictions and are associated with the field of language understanding.
+            They are usually pre-trained using various tasks that involve missing word predictions and are associated with the field of language understanding.
             The vector assigned to each token in a sequence by an \abrv{llm} is context-sensitive:
                 It does not only depend on the token itself, but on its position and all other tokens in the sequence as well.
                 This is achieved using positional embeddings and transformer architectures.
-            The break-through for \abrv{llm} as a component in \abrv{ann} was the release of \abrv{bert}. \citep{Devlin2019}
-            Since then, \abrv{bert} and its derivatives were adopted into models to solve various tasks on language understanding \citep[question answering, entailment recognition, sentiment analysis, i.a.]{Devlin2019, roberta}, language generation \citep[summarization, translation, i.a.]{bertgeneration}, information extraction \citep[named entity recognition, relation extraction]{biobert} and also also our field of research: constituent parsing \citep{Cor20, FerGom20a, FerGom22,Coa21, Sun22}.
+            The breakthrough for \abrv{llm} as a component in \abrv{ann} was the release of \abrv{bert}. \citep{Devlin2019}
+            Since then, \abrv{bert} and its derivatives were adopted into models to solve various tasks on language understanding \citep[question answering, entailment recognition, sentiment analysis, i.a.]{Devlin2019, roberta}, language generation \citep[summarization, translation, i.a.]{bertgeneration}, information extraction \citep[named entity recognition, relation extraction]{biobert} and also our field of research: constituent parsing \citep{Cor20, FerGom20a, FerGom22,Coa21, Sun22}.
             It is still used in state-of-the-art models today.
     \end{compactitem}
 
@@ -577,13 +606,15 @@
     \begin{enumerate}
         \item
             The first one is pretty common in the \abrv{nlp} community for token-wise classification tasks and was used, e.g., by \citet{vaswani2016supertagging,StaSte20,Cor20}.
-            It contains two modules for embedding, a static word embedding and character embeddings, which are followed by some layers of bidirectional recurrent modules utilizing \abrv{lstm}, and finally an \abrv{mlp}; \cref{fig:architecture:supervised} shows an illustration.
-            It does not rely on any pretrained modules and therefore implements supervised learning for the prediction of supertags.
+            It contains two modules for embedding, a static word embedding and character embeddings, which are followed by some layers of bidirectional recurrent modules utilizing \abrv{lstm}, and finally an \abrv{mlp}\todo{or linear?}; \cref{fig:architecture:supervised} shows an illustration.
+            It does not rely on any pre-trained modules and therefore implements supervised learning for the prediction of supertags.
         \item
-            The second architecture consists of a pretrained \abrv{llm} that is topped by one feed-forward layer (this design is pretty common and recommended for classification predictions using \abrv{llm} embeddings e.g. by \citet{Devlin2019}).
-            If we consider the \abrv{llm} as a black box, it is conceptually extremely simple yet effective, but its strength relies of course in the complex design and pretraining of the \abrv{llm}.
-            As noted before, using such a pretrained model is considered semi-supervised learning for the prediction of supertags.
+            The second architecture consists of a pre-trained \abrv{llm} that is topped by one feed-forward layer (this design is pretty common and recommended for classification predictions using \abrv{llm} embeddings e.g. by \citet{Devlin2019}).
+            If we consider the \abrv{llm} as a black box, it is conceptually extremely simple yet effective, but its strength relies of course upon the complex design and pretraining of the \abrv{llm}.
+            As noted before, using such a pre-trained model is considered semi-supervised learning for the prediction of supertags.
     \end{enumerate}
+    In both cases, the vectors computed by the final layers are interpreted as probability distributions using the softmax function.
+    The objective of the training is to minimize cross-entropy loss with respect to the gold supertag blueprints.
 
     \begin{figure}
         \centering

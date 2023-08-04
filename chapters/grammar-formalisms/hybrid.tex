@@ -8,11 +8,11 @@
         As \cite{Ned14} and all following publications, we use a syntactically restricted form of \abrv{dcp} that prevents circular argument passing, they call it \abrv{sdcp}.
         The definition given in \cref{sec:grammar:dcp} is even more restricted and does not allow to produce multiple noncontiguous tree sequences.
     } hybrid grammars for constituent parsing, and just refer to them as hybrid grammars (or even shorter as \abrv{hg}).
-    Intuitively, the \abrv{lcfrs} compositions are in charge for processing string during parsing and define the sets of derivations for given sentences.
+    Intuitively, the \abrv{lcfrs} compositions are in charge of processing string during parsing and defining the sets of derivations for given sentences.
     The \abrv{dcp} compositions induce constituent structures for the found derivations.
 
     The structure of hybrid grammars closely resembles a combination of the two previous formalisms.
-    As in the previous section, we refrain from repeating the definitions with small adjustments and focus on the particularities of the formalism.
+    As in the previous section, we refrain from repeating the definitions with small adjustments and focus on the particularities of \abrv{hg} as a formalism.
     Let us consider a hybrid grammar \((N, \varGamma, \varSigma, S, R)\) with the usual components.
     The alphabet \(\varSigma\) contains the lexical symbols that are used in the \abrv{lcfrs} as well as the \abrv{dcp} compositions.
     The symbols in \(\varGamma\) are exclusively used at inner nodes in \abrv{dcp} compositions.
@@ -22,7 +22,7 @@
         \item For each initial rule, the \abrv{dcp} composition must contain at least one root node that wraps the remainder of the composition.
     \end{itemize}
     The alignment between lexical symbols in the two compositions is trivial in the case of lexical grammars, as each composition contains exactly one lexical symbol.
-    As this thesis focuses in lexical grammars, we will refrain from denoting these alignments explicitly.
+    As this thesis focuses on lexical grammars, we will refrain from denoting these alignments explicitly.
     For each derivation \(d\) in an \abrv{hg}, there are two projections: \(\pi_{\abrv{lcfrs}}(d)\) that is obtained by removing the \abrv{dcp} (and keeping the \abrv{lcfrs}) compositions, and vice versa, \(\pi_{\abrv{dcp}}(d)\) by removing the \abrv{dcp} compositions.
     With these projections, we consider two yields: \(\yield(\pi_{\abrv{lcfrs}}(d))\) that computes tuples of strings, and \(\yield(\pi_{\abrv{dcp}}(d))\) that computes sequences of trees.
     The alignment between lexical symbols in each rule is construed to transfer the order of lexical symbols in the strings formed by \(\yield(\pi_{\abrv{lcfrs}}(d))\) to the leaves of the trees formed by \(\yield(\pi_{\abrv{dcp}}(d))\).
@@ -86,7 +86,7 @@
         \begin{minipage}{.4\linewidth}
             \subcaption{\label{fig:hybrid:hybridtree}
                 Hybrid tree for the derivation \(d\).
-                The upper part is the yield for the \abrv{dcp} projection of \(d\), the bottom-most string is the yield for the \abrv{lcfrs} projection.
+                The upper part is the yield for the \abrv{dcp} projection of \(d\), and the bottom-most string is the yield for the \abrv{lcfrs} projection.
                 The alignment between the lexical symbols is illustrated as paths between the leaf positions in the upper part and the positions in the bottom string.
             }
         \end{minipage}
@@ -94,7 +94,7 @@
         \vspace{.5cm}
 
         \caption{\label{fig:hybrid:derivation}
-            The two projections for the \abrv{hg} derivation \(d\) shown in \cref{ex:hg:derivation} and an illustration of the resulting hybrid tree that combines the yield of both projections.
+            The two projections for the \abrv{hg} derivation \(d\) that is shown in \cref{ex:hg:derivation} and an illustration of the resulting hybrid tree that combines the yield of both projections.
         }
     \end{figure}
 
