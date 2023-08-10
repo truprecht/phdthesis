@@ -370,13 +370,13 @@
     %    We omit the fanout subscripts if they are \(1\).
     %    We give examples using the \emph{shortest guide}, as shown in \cref{fig:constituent:bin}, for the root position \(\varepsilon\) where \(\xi(\varepsilon) = \text{SBAR+S}\), \(\yield(\xi|_\varepsilon) = \{0,\ldots,5\}\) and \(L = \emptyset\) and the position \(1.1\) of the bottom VP node where \(\xi(1.1) = \text{VP}\), \(\yield(\xi|_{1.1}) = \{0,4,5\}\), \(L = \{0,3\}\) and \(\fanout(\yield(\xi|_{1.1}) \setminus L) = 1\).
 
-    The partition \(\mathit{fo}\) of the nonterminal symbols and its connection to the definition of each nonterminal constructors assure that the constructed nonterminals are considered with consistent fanouts.
     During the extraction procedure, the third argument \(L\) for a constructor assumes the set of leaves that are either
     \begin{inparaenum}
         \item assigned by the guide to nodes at or below \(\rho\), or
         \item below \(\rho\) and not in the image of the guide.
     \end{inparaenum}
     It is the set of leaves that occurs in the (sub-)derivation of rules extracted at and below \(\rho\).\todo{general description of the extraction algorithm and example might be helpful}
+    The partition \(\mathit{fo}\) and its connection to the definition of each nonterminal constructors assure that the constructed nonterminals are considered with consistent fanouts.
     In the following, we will define some instances of nonterminal constructors.
     Similar to the guide constructors, each instance will carry a name of the form \emph{\(x\) nonterminal constructor}.
     The nonterminal symbols constructed by \(\varphi\) are called \emph{\(x\) nonterminals}.
@@ -450,31 +450,80 @@
 
     \subsection{Lexical Derivation Extraction}
     This small subsection describes how we define a derivation of lexical \abrv{hg} rules using the discussed prerequisites.
-    Let's assume we have some constituent structure \(\xi\), a guide \(\varphi\) for \(\xi\) and a nonterminal constructor \(\psi\).
-    As the extracted rules are lexical, there is exactly one for each leaf in \(\xi\) and we define a sequence of rules \((r_i \in ??? \mid i \in \yield(\xi))\) that occur in the derivation such that \(r_i\) is a lexical rule containing the symbol \(i\).
-    Let us define an extension for the guide \(\phi\) that assigns to each position \(\rho\) the greatest set of leaves \(L\) such that the topmost position that each \(i \in L\) is assigned to is at or below \(\rho\):  \(\hat{\phi}(\rho) = \yield(\xi|_\rho) \setminus \{ \phi(\rho') \mid \rho' \in \ancestors(\rho) \}\).
-    Now let \(\rho\) be the topmost position that is assigned \(i\): \(\rho = \min^\unlhd \{\rho' \in \pos(\xi) \mid \phi(\rho') = i\}\) and \(s\in\DN\) and \(\rho_1, \ldots, \rho_s\) the sequence of topmost descendant positions assigned to another leaf and ordered by least assigned leaf, i.e.\@
+    Let's assume we have some constituent structure \(\xi\), an admissible guide \(\varphi\) for \(\xi\) and a nonterminal constructor \(\psi\).
+    Let us define two extensions for the guide \(\phi\):
     \begin{compactitem}
-        \item for each \(j \in [s]\) and parent \(\hat{\rho_j}\) of \(\rho_j\), \(\phi(\hat{\rho_j}) = i\) and \(\phi(\rho_j) \neq i\), and there is no other \(\rho_{s+1}\) which fulfills these two properties, and
-        \item for each \(j,k \in [s]\) with \(j<k\) holds \(\min \hat{\phi}(\rho_j) < \min \hat{\phi}(\rho_k)\).
+        \item
+            \(\phi^{\text{top}}\) is a partial function that restricts the assignments to the topmost positions:
+            For each \(\rho \in \pos(\xi)\), \(\phi^{\text{top}}(\rho) = \phi(\rho)\) if there is no \(\rho' \in \ancestors(\rho)\) with \(\phi(\rho') = \phi(\rho)\) and otherwise it is undefined.
+        \item
+            The function \(L\) maps each position \(\rho\) to the set of leaves that \(\phi^{\text{top}}\) assigns to positions at or below \(\rho\):
+                \vspace{-\baselineskip}
+                \begin{align*}
+                    L(\rho) &= \{ i \in \yield(\xi) \mid \exists \rho' \in \descendants_\xi(\rho)\colon \phi^{\text{top}}(\rho') = i \} \\
+                            &= \yield(\xi|_\rho) \setminus \{ \phi(\rho') \mid \rho' \in \ancestors(\rho) \}
+                \end{align*}
+%        \item \(\phi^{\text{top}}(\rho) = \{\phi(\rho)\} \setminus \{\phi(\rho') \mid \rho' \in \ancestors(\rho)\}\) assigns each position \(\rho \in \pos(\xi)\) to a unary set
     \end{compactitem}
-    Then the rule \(r_i\) is of the form \(A_0 \to c_1 \, c_2\; (A_1, \ldots, A_s)\) with
-    \begin{compactitem}
-        \item \(A_i = \psi(\xi, \rho_i, \hat{\phi}(\rho_i))\) for each \(i \in [s] \cup \{0\}\),
-        \item \(c_1 = \mathrm{comp}(\hat{\phi}(\rho_0), \hat{\phi}(\rho_1), \ldots, \hat{\phi}(\rho_s))\), and
-        \item \(c_2' = \mathrm{scomp}(\xi, \rho_0, \rho_1, \ldots, \rho_s)\).
-            If the position of the leaf \(i\) is a descendant of a \(\rho_i\), then \(c_2\) is obtained from \(c_2'\)  by replacing \(x_i\) by \(x_i(i)\), otherwise \(c_2 = c_2'\).
-    \end{compactitem}
-    The form of the derivation is determined by \(\xi\) and the guide \(\varphi\), such that
-    \begin{compactitem}
-        \item the root is the rule containing the position \(\varphi(\varepsilon)\),
-        \item for each inner node position \(\rho \in \npos(\xi)\) and child \(\rho'\) of \(\rho\) that is either an inner node with \(\varphi(\rho) \neq \varphi(\rho')\) (or a leaf with \(\rho' \notin \im(\varphi)\)), the rule extracted for \(\phi(\rho')\) (or \(\xi(\rho')\) respectively) is a child of the rule extracted for \(\phi(\rho)\).
-    \end{compactitem}
-    It is not needed for the extraction procedure anyways, we just care for the sequence of lexical rules.
+    The derivation for \(\xi\), \(\varphi\) and \(\psi\) is defined from top to bottom as follows:
+    \begin{itemize}
+        \item We start with the root position \(\rho_0 = \varepsilon\).
+        \item For the position \(\rho_0\), let \(\rho_1, \ldots, \rho_s\) be the sequence of topmost parallel positions that are descendants of \(\rho_0\) and assigned to another leaf than \(\phi(\rho_0)\) and ordered with respect to the least leaf assigned to the nodes in the subtree:
+            \begin{compactitem}
+                \item For each \(j \in [s]\), \(\phi(\parent(\rho_j)) = \phi(\rho_0) \neq \phi^{\text{top}}(\rho_j)\), and there is no other \(\rho_{s+1}\) which fulfills this property.
+                \item For each \(j,k \in [s]\) with \(j<k\) holds \(\min L(\rho_j) < \min L(\rho_k)\).
+            \end{compactitem}
+        \item The rule for \(\rho_0\) is of the form \(A_0 \to c_1 \, c_2\; (A_1, \ldots, A_s)\) with
+        \begin{compactitem}
+            \item \(A_i = \psi(\xi, \rho_i, L(\rho_i))\) for each \(i \in [0,s]\),
+            \item \(c_1 = \mathrm{comp}(L(\rho_0), L(\rho_1), \ldots, L(\rho_s))\), and
+            \item \(c_2 = \mathrm{scomp}(\xi, (\rho_0, L(\rho_0)), (\rho_1, L(\rho_1)), \ldots, (\rho_s, L(\rho_s)))\).
+        \end{compactitem}
+        \item The derivation for \(\rho\) is \(d_{\rho_0} = r_{\rho_0}\,(d_{\rho_1}, \ldots, d_{\rho_s})\) where \(r_{\rho_0}\) is the just constructed rule and the other \(d_{\rho_i}\) are the (recursively constructed) derivations for \(\rho_i\).
+    \end{itemize}
 
-    \begin{example}
+    The derivation as described above constructs exactly one rule per leaf \(i\) in \(\xi\) by identifying the topmost position that \(\phi\) assigns to \(i\).
+    All consecutive nodes that are assigned to \(i\) as well are condensed into the same rule.
+    Each subtree in the derivation \(d\) that was extracted starting at the top node \(\rho\), contains one rule for each leaf in \(L(\rho)\) such that
+    \begin{itemize}
+        \item the \abrv{lcfrs} projection \(\pi_{\abrv{lcfrs}}(d)\) is a derivation for the linearization of \(L(\rho)\), and
+        \item the \abrv{dcp} projection \(\pi_{\abrv{dcp}}(d)\) is a derivation for the tree \(\xi|_\rho\) (except if there is a leaf in \(\yield(\xi|_\rho) \setminus L(\rho)\), then it is replaced by \(\y\)).\todo{reformulate}
+    \end{itemize}
 
-    \end{example}
+
+    \begin{wrapfigure}[8]{r}{0pt}
+        \subfile{figures/guides/example-guide-head.tex}
+    \end{wrapfigure}
+    \parexample
+    The tree to the right shows a running example with the usual illustration of values assigned by a guide next to each inner node.
+    The partial function \(\phi^{\text{top}}\) only assigns the topmost node to each leaf; the assigned values are illustrated in circles if the position is in the preimage of the function.
+    Instead of the top three nodes, only the \nt{sbar} node at position \(\varepsilon\) is mapped to \(4\) in the example; the two following nodes (with symbols \nt{s} and \nt{vp}) are not defined in \(\phi^{\text{top}}\).
+    \(L\) maps each position to the encircled values that are illustrated at or next to descendant positions.
+    E.g.\@ the root position is mapped to the set of all leaves;
+      the set for position \(1\) does not contain the leaf $4$;
+      the set of the lower \nt{vp} node at position \(1\,1\,1\) is \(\{1,5,6\}\).
+    Using these two sets, we can construct the derivation for the constituent structure with its guide and, e.g.\@ classic nonterminals.
+    For the root position (\(\rho_0 = \varepsilon\)), the sequence of descendant positions assigned to other leaves is \(\rho_1 = 1\,1\,1\) (the bottom \nt{vp} node, which is assigned to 5) and \(\rho_2 = 1\,2\) (the \nt{np} node, which is assigned to 3).
+    The \abrv{lhs} and \abrv{rhs} nonterminals are determined from these three positions in the tree and the sets assigned to these positions by \(L\).
+    The \abrv{lcfrs} composition is determined from the linearizations of the sets of leaves that \(L\) assigns to the positions: \((\x_1^1\x_2^1\,4\,\x_1^2)\); and the \abrv{dcp} composition from the nodes between \(\rho_0\) and \(\rho_1\) and \(\rho_2\): \(\cn{sbar}(\cn{s}(\cn{vp}(\x_1, 4), \x_2))\).
+    The two successors in the derivation are determined in the same fashion starting with \(\rho_1\) and \(\rho_2\); finally, we obtain the following derivation for the whole tree.
+    \begin{center}
+        \subfile{figures/hybrid/headed.tex}
+    \end{center}
+
+    \begin{wrapfigure}[6]{r}{0pt}
+        \subfile{figures/hybrid/ho-head.tex}
+    \end{wrapfigure}
+    \parexample
+    The example to the right shows a head-outward binarized constituent structure with values assigned by a head guide.
+    The position for the node that was introduced during the binarization procedure (with symbol \(\cn{vp\,\binsym}\)) is mapped to the head of the original node which must also be a descendant with the head-outward strategy.
+    This example shows how the extraction procedure does not preserve the structure from the binarization in case of the head guide.
+    When all nodes that are formed during binarization are assigned to the same leaf, then they are part of the same rule.
+    The resulting derivation is equivalent to the extraction of the plain (unbinarized) constituent structure, as shown in the previous example.
+    \todo[inline]{anderes Beispiel suchen}
+    \begin{center}
+        \subfile{figures/hybrid/ho-headed-deriv.tex}
+    \end{center}
 
     \ifSubfilesClassLoaded{%
         \printindex

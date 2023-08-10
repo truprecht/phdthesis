@@ -131,10 +131,10 @@
     Let \(\rho \in \pos(t)\) be some position.
     Each subsequence in \(t\) that is also a tree in \(T_\varSigma\) is called a \deflab<tree>{subtree} in \(t\).
     The subtree below a position \(\rho\) is denoted by \(t|_\rho\).
-    The \deflab<tree>{ancestor}[ancestors] of \(\rho\) are all prefixes of the sequence \(\rho\), denoted by \(\ancestors(\rho) = \{ \rho_{:e} \mid e \in [|\rho|+1] \}\).
-    The \deflab<tree>{descendant}[descendants] of \(\rho\) in \(t\) are all positions in the subtree below \(\rho\), denoted by \(\descendants_t(\rho) = \{ \rho \cdot \rho' \in \pos(t) \mid \rho' \in \DN^* \}\).
+    The \deflab<tree>{ancestor}[ancestors] of \(\rho\) are all real prefixes of the sequence \(\rho\), denoted by \(\ancestors(\rho) = \{ \rho_{:e} \mid e \in [|\rho|] \}\).
+    The \deflab<tree>{descendant}[descendants] of \(\rho\) in \(t\) are all positions in the subtree below \(\rho\), denoted by \(\descendants_t(\rho) = \{ \rho \cdot \rho' \in \pos(t) \mid \rho' \in \pos(t|_\rho) \}\).
     The symbol at a position \(\rho\) in \(t\) is denoted  \(t(\rho)\).
-    We use the same terminology for position as for nodes, i.e.\@ child position, parent position, etc.
+    We use the same terminology for position as for nodes, i.e.\@ child position, parent position, etc.; \(\children_t(\rho) = \{\rho\} \cdot \DN_+ \cap \pos(t)\) denotes the set of child positions below each position \(\rho\) in \(t\), and \(\parent(\rho) = \rho_{:|\rho|}\) the parent position for each \(\rho \in {\DN_+}^+\).
     Two positions \(\rho, \rho' \in \pos(t)\) are called \emph{parallel}, if \(\rho\) is neither a descendant nor an ancestor of \(\rho'\).
 
     A \deflab<tree>{subforest} of \(t\) is a sequence of trees occurring consecutively (as siblings) within \(t\).
@@ -285,7 +285,7 @@
     \end{inparaenum}
     For both, there is a treebank that is reserved for the evaluation (called \emph{test set}).
     The process for measuring the first dimension is rather intuitive:
-        The time is taken for the prediction of a constituent structure for each sentence in the test set. 
+        The time is taken for the prediction of a constituent structure for each sentence in the test set.
     This time is reported either as the sum for the whole test set or as quotient \(\frac{\text{number of sentences}}{\text{parsing time}}\) for the number of parsed sentences per second.
 
     The \emph{evalb}-style labeled \emph{f1-score} \citep{Black91,Col97} was established as the standard for measuring the accuracy of predicted constituent structures.

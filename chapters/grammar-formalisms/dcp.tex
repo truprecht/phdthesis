@@ -118,9 +118,32 @@
         \hfill\null
     \end{example}
 
-    \begin{definition}
-        Consider a tree \(\xi \in \T_{\varSigma}\) over any alphabet \(\varSigma\) and a collection of \(k \in \DN\) parallel positions \((\rho_i \in \pos(\xi) \mid i \in [k])\) and a common ancestor position \(\rho_0 \unlhd \rho_1, \ldots, \rho_0 \unlhd \rho_k\).
-        There is a distinct \abrv{dcp} composition \(c \in \C^\varSigma_k\) such that \(\xi|_{\rho_0} = \sem{c}( \xi|_{\rho_1}, \ldots, \xi|_{\rho_k} )\).
-        We denote this composition \(c\) by \(\mathrm{scomp}(\xi, \rho_0, \rho_1, \ldots, \rho_k)\).
+    \begin{definition}\cref{def:dcp:comp}
+        Consider an indexed tree \(\xi \in \itrees_{\varSigma}\) over any alphabet \(\varSigma\) together with
+        \begin{itemize}
+            \item
+                a collection of \(k \in \DN\) parallel positions \((\rho_i \in \pos(\xi) \mid i \in [k])\) and
+                a common ancestor position \(\rho_0 \in \bigcap_{i \in [k]} \ancestors(\rho_i)\), as well as
+            \item
+                a set of leaves \((L_i \subseteq \yield(\xi|_{\rho_i}) \mid i \in [0, k])\) for each position such that
+                there is at most one leaf in each difference \( | \yield(\xi|_{\rho_i}) \setminus L_i | \leq 1 \) and \(\bigcup_{i \in [k]} \subseteq  L_0\).
+        \end{itemize}
+        The \abrv{dcp} composition \(c \in \C^\varSigma_k\) for \(\xi\) and \(((\rho_i, L_i) \mid i \in [0,k])\) is defined as follows:
+        \begin{itemize}
+            \item
+                the occurrences for second-order substitution are either of the form \(\omega_i = \ell_i\) if the set \(\yield(\xi|_{\rho_i}) \setminus L_i = \{\ell_i\}\) is a singleton and \(\omega_i = \varepsilon\) otherwise for each \(i \in [k]\),
+            \item
+                \(c'\) is obtained from \(\xi|_{\rho_0}\) be replacing the subtree at position
+                \(\rho_i\) with \(\x_i(\omega_i)\) for each \(i \in [k]\), and
+            \item
+                if \(\yield(\xi|_{\rho_0}) \setminus L_0 = \{\ell_0\}\) is a singleton set,
+                then \(c\) is obtained from \(c'\) by replacing \(\ell_0\) by the variable\(\y\), otherwise \(c = c'\).
+        \end{itemize}
+        We denote \(c\) by \(\mathrm{scomp}(\xi, (\rho_0, L_0), (\rho_1, L_1), \ldots, (\rho_k, L_k))\).
     \end{definition}
+
+    \begin{lemma}
+        Let \(\xi \in \itrees_{\varSigma}\), \(k \in \DN\) and \(((\rho_i, L_i) \in \pos(\xi) \times \power(N) \mid i \in [k])\) be an indexed tree, positions and sets of leaves as specified in \cref{def:dcp:comp}.
+        The composition \(c = \mathrm{scomp}(\xi, (\rho_0, L_0), (\rho_1, L_1), \ldots, (\rho_k, L_k))\) is defined such that \(\xi_0' = \sem{c}(\xi_1', \ldots, \xi_k')\) where each tree \(\xi_i'\) is \(\xi|_{\rho_i}\) but if \(\yield(\xi|_{\rho_i}) \neq L_i\) then the leaf in the difference \(\yield(\xi|_{\rho_i}) \setminus L_i\) is replaced by \(\y\).
+    \end{lemma}
 \end{document}
