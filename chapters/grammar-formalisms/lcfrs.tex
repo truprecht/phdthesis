@@ -2,25 +2,24 @@
 
 \begin{document}
     \section{Linear Context-Free Rewriting Systems}\label{sec:grammar:lcfrs}
-    In linear context-free rewriting systems (\abrv{lcfrs}), each rule composes a tuple of strings from arguments that are string tuples as well.
+    In linear context-free rewriting systems (\abrv{lcfrs} for short), each rule composes a tuple of strings from arguments that are string tuples as well.
     The first definition formalizes the notation for such functions using binary variables that determine an argument (subscript) and one of its components (superscript).
     The sets of compositions are restricted such that the variables occur ordered according to their sub- and superscripts, and no variables for consecutive components of the same argument occur next to each other.
     These restrictions enforce a normal form for \abrv{lcfrs} that matches the properties of grammars extracted from treebanks.
     The normal form itself, however, is not restrictive: For every \abrv{lcfrs}, there is an equivalent \abrv{lcfrs} in normal form. [\citealp[Lem.~2.2]{SekMatFujKas91}; \citealp[Def.~7.2]{Kal10}]
 
     \begin{definition}[Compositions]\label{def:lcfrs:comp}
-        We fix a set of variables \(\X = \big\{ \x_i^j \mid i, j \in \DN_+ \big\}\) and the \(\DN_+^*\)-indexed family of finite subsets \(\X_{s_1\cdots s_k} = \big\{ \x_i^j \mid i \in [k], j \in [s_i] \big\}\) for each \(k \in \DN\), and \(s_1, \ldots, s_k \in \DN_+\).
-        Let \(\varSigma\) be a finite set disjoint from \(\X\).
-        The family of \abrv{lcfrs} \deflab<\lcfrs>[lcfrs:comp]{composition}[compositions]\todo{define one composition and then the sets of compositions} over \(\varSigma\), denoted by \(\C^\varSigma\), is the \(\DN_+^+\)-indexed family over sets of non-empty sequences over strings in \((\varSigma \cup \X)^+\) such that for each \(k \in \DN\) and \(s_1, \ldots, s_k, s \in \DN_+\), the set \(\C^\varSigma_{s_1 \cdots s_k s}\) contains each sequence \(u_1, \ldots, u_s \in (\varSigma \cup \X_{s_1 \cdots s_k})^+\) of length \(s\) such that
+        We fix a set of variables \(\X = \big\{ \x_i^j \mid i, j \in \DN_+ \big\}\) and the \({\DN_+}^*\)-indexed family of finite subsets \(\X_{s_1\cdots s_k} = \big\{ \x_i^j \mid i \in [k], j \in [s_i] \big\}\) for each \(k \in \DN\), and \(s_1, \ldots, s_k \in \DN_+\).
+        Let \(\varSigma\) be a set that is disjoint from \(\X\) and \(s \in \DN_+\).
+        An \abrv{lcfrs} \deflab<\lcfrs>[lcfrs:comp]{composition} over \(\varSigma\) of length \(s\) is a sequence \((u_1, \ldots, u_s)\) where the elements \(u_1, \dots, u_s \in (\varSigma \cup \X)^+\) are non-empty sequences over variables in \(X\) and symbols in \(\varSigma\) such that
         \begin{compactenum}
-            \item each variable in \(\X_{s_1 \cdots s_k}\) occurs exactly once in the string \(u_1 \cdots u_s\),
-            \item for each \(i \in [k-1]\), the variable \(\x_i^1\) occurs to the left of \(\x_{i+1}^1\) in the string \(u_1 \cdots u_s\),
-            \item for each \(i \in [k]\) and \(j \in [s_i-1]\), the variable \(\x_i^j\) occurs to the left of \(\x_i^{j+1}\) in the string \(u_1 \cdots u_s\),
-            \item there are no \(i \in [k]\) and \(j \in [s_i-1]\) such that \(\x^j_i\x^{j+1}_i\) is a subsequence in any of \(u_1, \ldots, u_s\).
+            \item each variable in \(\X\) occurs at most once in \(u_1 \cdots u_s\),
+            \item for each \(i \in \DN_+\), if the variable \(\x_{i+1}^1\) occurs in the composition, then \(\x_i^1\) occurs to the left of it in \(u_1 \ldots u_s\),
+            \item for each pair \(i, j \in \DN_+\), if the variable \(\x_i^{j+1}\) occurs in the composition, then \(\x_i^j\) occurs to the left of it in \(u_1 \ldots u_s\),
+            \item there is no pair \(i, j \in \DN_+\) such that \(\x^j_i\x^{j+1}_i\) is a subsequence in any of \(u_1, \ldots, u_s\).
         \end{compactenum}
-        We associate the identifier \(\C^\varSigma\) with the set of all \abrv{lcfrs} compositions \[
-        \bigcup_{k \in \DN, s_1, \ldots, s_k, s \in \DN_+} \C^{\varSigma}_{s_1 \cdots s_k s} \text{.}
-        \]
+        For each \(k\in \DN\) and \(s, s_1, \ldots, s_k \in \DN_+\), the identifier \(\C^\varSigma_{(s_1\cdots s_k, s)}\) denotes the set of all \abrv{lcfrs} compositions over \(\varSigma\) of length \(s\) where each variable in \(\X_{s_1 \cdots s_k}\) but not other variable in \(\X \setminus \X_{s_1\cdots s_k}\) occurs.
+        \(\C^\varSigma\) denotes the set of all \abrv{lcfrs} compositions over \(\varSigma\) of any length.
 
         We associate a function, denoted by \(\sem{(u_1, \ldots, u_s)}\), from \(k\) string tuples, where the \(i\)-th tuple is of length \(s_i\), to a string tuple of length \(s\) with each composition in \((u_1, \ldots, u_s) \in \C^\varSigma_{(s_1\cdots s_k s)}\).
         Given the arguments \(\big(v_i = (v_i^j \mid j \in [s_i]) \mid i \in [k]\big)\), the result is the string tuple \(
@@ -32,16 +31,16 @@
     \begin{example}\label{ex:lcfrs:comp}
         Consider an alphabet \(\Sigma=\{\tn{A}, \tn{hearing}, \tn{is}, \tn{scheduled}, \tn{on}, \tn{the}, \tn{issue}, \tn{today}\}\) and the following compositions:
         \begin{align*}
-            c_1 &= (\tn{A}), & c_2 &= (\tn{today}), & c_3 &= (\tn{issue}) && \in \C^\Sigma_{(1)} \\
-            c_4 &= (\tn{the} \, \x_1^1), & c_5 &= (\x_1^1 \, \tn{hearing}) & & && \in \C^\Sigma_{(1\,1)} \\
-            c_6 &= (\x_1^1 \, \tn{is} \, \x_1^2) && && && \in \C^\Sigma_{(2\,1)} \\
-            c_7 &= (\x_1^1, \tn{on} \, \x_2^1) && && && \in \C^\Sigma_{(1\,1\,2)}   \\
-            c_8 &= (\x_1^1, \tn{scheduled} \, \x_1^2 \, \x_2^1) && && && \in \C^\Sigma_{(2\,1\,2)}
+            c_1 &= (\tn{A}), & c_2 &= (\tn{today}), & c_3 &= (\tn{issue}) && \in \C^\Sigma_{(\varepsilon, 1)} \\
+            c_4 &= (\tn{the} \, \x_1^1), & c_5 &= (\x_1^1 \, \tn{hearing}) & & && \in \C^\Sigma_{(1,1)} \\
+            c_6 &= (\x_1^1 \, \tn{is} \, \x_1^2) && && && \in \C^\Sigma_{(2,1)} \\
+            c_7 &= (\x_1^1, \tn{on} \, \x_2^1) && && && \in \C^\Sigma_{(1\,1,2)}   \\
+            c_8 &= (\x_1^1, \tn{scheduled} \, \x_1^2 \, \x_2^1) && && && \in \C^\Sigma_{(2\,1,2)}
         \end{align*}
 
         The subscript in the family of compositions \(\C^\Sigma\) determines the arity of the associated functions.
-        E.g.\@ \(\sem{c_1} \in \C^\Sigma_{(1)}\) takes no arguments (it is constant) and yields a single string,
-        \(\sem{c_8} \in \C^\Sigma_{(2\,1\,2)}\) takes two arguments, a sequence over strings of length 2 and 1, and gives a sequence of length 2 as a result.
+        E.g.\@ \(\sem{c_1} \in \C^\Sigma_{(\varepsilon, 1)}\) takes no arguments (it is constant) and yields a single string,
+        \(\sem{c_8} \in \C^\Sigma_{(2\,1, 2)}\) takes two arguments, a sequence over strings of length 2 and 1, and gives a sequence of length 2 as a result.
         For example:
         \begin{multline*}
             \sem{c_8}\Big( \; \big( \tn{A hearing}, \: \tn{on the issue} \big), \, \big( \tn{today} \big) \; \Big)
@@ -57,43 +56,45 @@
         \end{align*}
     \end{example}
 
-    \begin{definition}[\abrv{Lcfrs} Grammar]
+    \begin{definition}[\abrv{Lcfrs} Rules and Grammars]
+        Let \(\varSigma\) and \(N\) be a sets and \(\mathit{fo}\colon N \to \DN_+\) a function.
+        An \abrv{lcfrs} \deflab<\lcfrs>{rule} (with terminals in \(\varSigma\), nonterminals in \(N\), and fanout \(\mathit{fo}\)) is of the form \(A \to c\,(B_1, \ldots, B_k)\) where \(k \in \DN\), \(A, B_1, \ldots, B_k\) and \(c \in \C^\varSigma_{(\mathit{fo}(B_1) \cdots \mathit{fo}(B_k), \mathit{fo}(A))}\).
+        \(A\) is called the left-hand side (\abrv{lhs}) nonterminal and \(B_1, \ldots B_k\) are the right-hand side (\abrv{rhs}) nonterminals, \(c\) is the composition of the rule.
+        The natural \(k\) is the \deflab<\lcfrs!rule>[lcfrs:rk]{rank} of the rule.
+        The set of all such \abrv{lcfrs} rules is denoted by \(\Rules^{\varSigma, N, \mathit{fo}}\).
+
         A \deflab[lcfrs]{\lcfrs} (\abrv{lcfrs})%
         \defabrv{\lcfrs}{\abrv{lcfrs}}
         is a tuple \(G=(N, \varSigma, S, R)\) where
         \begin{compactenum}
-            \item \(N\) is a finite set (\emph{nonterminals}),
-            \item \(\varSigma\) is an alphabet (\emph{terminals}),
+            \item \(N\) is a set (\emph{nonterminals}),
+            \item \(\varSigma\) is a set (\emph{terminals}),
             \item \(S \subseteq N\) (initial non-terminals),
-            \item \(R\) is a finite subset of \(N \times \C^\varSigma \times N^*\) (\deflab<\lcfrs>{rule}[rules]),\todo{define set of rules over \(N, \varSigma\) and families} and
-            \item there is an implicit positive integer \(\fanout(A) \in \DN_+\), called the \deflab<\lcfrs>[lcfrs:fo]{fanout} for each nonterminal \(A \in N\), such that
-            for each \((A, c, B_1\cdots B_k) \in R\), the \abrv{lcfrs} composition \(c\) is an element of \(\C^\varSigma_{\fanout(B_1) \cdots \fanout(B_k) \fanout(A)}\).
+            \item \(R\) is a finite subset of \(\R^{\varSigma, N, \fanout_G}\) where \(\fanout_G\) is an implicit function that maps each nonterminal to a positive integer matching the above requirement. For each \(A \in N\), the value \(\fanout_G(A)\) is called \deflab<\lcfrs>{fanout} of \(A\).
         \end{compactenum}
-
-        Rules are denoted in the form \(A \to c\,(B_1, \ldots, B_k)\) instead of \((A, c, B_1 \cdots B_k)\); \(A\) is called the left-hand side (\abrv{lhs}) nonterminal and \(B_1, \ldots B_k\) are the right-hand side (\abrv{rhs}) nonterminals, \(c\) is the composition of the rule.
-        The natural \(k\) is the \deflab<\lcfrs!rule>[lcfrs:rk]{rank} of the rule; the \emph{rank} of the grammar \(G\) is the maximum rank occurring in the rules of \(G\).
-        The set of all rules over \(N\) and \(\varSigma\) that fit a given fanout function \(\mathit{fo}\colon N \to \DN_+\) is denoted by \(\Rules^\varSigma(N, \mathit{fo}))\).
     \end{definition}
 
-    \begin{definition}[\abrv{Lcfrs} Grammar Forms]
-        We distinguish the rules and the grammars of the following form:
+    The fanout function \(\fanout_G\) ensures that the variables occurring in the compositions are consistent with the tuples that can be computed with rules for the \abrv{rhs} nonterminals.
+    The length of the compositions occurring in the rules with the same \abrv{lhs} nonterminal are thus equal.
+
+    \begin{definition}[\abrv{Lcfrs} Grammar Forms]We distinguish the rules and the grammars of the following form:
         \begin{compactitem}
             \item A rule of rank zero, one and two are called \deflab<\lcfrs!rule>{nullary}, \deflab<\lcfrs!rule>{unary} and \deflab<\lcfrs!rule>{binary}, respectively.
             \item An \abrv{lcfrs} containing only nullary, unary, and binary rules are called \deflab<\lcfrs>[lcfrs:bin]{binary}.
             \item A rule whose composition contains exactly one terminal in \(\varSigma\) is called \deflab<\lcfrs!rule>[lcfrs:lex]{lexical}.
             \item An \abrv{lcfrs} containing only lexical rules is called \deflab<\lcfrs>{lexical}.
             \item A rule whose composition contains no terminal at all is called \deflab<\lcfrs!rule>{non-lexical}.
-            \item
-                An \abrv{lcfrs} that contains only lexical nullary rules and non-lexical rules of rank \(\ge 1\) and whose initial nonterminals do not occur as \abrv{rhs} nonterminals in any rule is called \deflab<\lcfrs>[lcfrs:simple]{simple}.
+%            \item
+%                An \abrv{lcfrs} that contains only lexical nullary rules and non-lexical rules of rank \(\ge 1\) and whose initial nonterminals do not occur in any rule's \abrv{rhs} is called \deflab<\lcfrs>[lcfrs:simple]{simple}.
         \end{compactitem}
     \end{definition}
 
-    \begin{example}[Continues \cref{ex:lcfrs:comp}]\label{ex:lcfrs:rules}
-        Consider the alphabet \(\mathrm{N} = \{\nt{vp}, \nt{vp}_2, \nt{np}, \nt{np}_2, \nt{pp}, \nt{np}^\nt{L}\}\) of nonterminal symbols and the \abrv{lcfrs} \(\mathrm{G} = (\mathrm{N}, \Sigma, \nt{vp}, \mathrm{R})\) with
+    \begin{example}[Lexical \abrv{Lcfrs}, Continues \cref{ex:lcfrs:comp}]\label{ex:lcfrs:rules}
+        Consider the alphabet of nonterminal symbols \(\mathrm{N} = \{\nt{v}, \nt{v}_2, \nt{n}, \nt{n}_2, \nt{p}, \arg(\nt{n})\}\) and the \abrv{lcfrs} \(\mathrm{G} = (\mathrm{N}, \Sigma, \{\nt{vp}\}, \mathrm{R})\) with
         \begin{align*}
             \mathrm{R} = \big\{\;
-            \nt{n}^\nt{l} &\to (\tn{A})\:(), &\nt{n} &\to (\tn{issue})\:(), &\nt{n} &\to (\tn{today})\:(), &\\
-            \nt{n} &\to (\x_1^1 \, \tn{hearing})\:(\nt{n}^\nt{l}), &\nt{p} &\to (\tn{the}\,\x_1^1)\:(\nt{n}), \\
+            \arg(\nt{n}) &\to (\tn{A})\:(), &\nt{n} &\to (\tn{issue})\:(), &\nt{n} &\to (\tn{today})\:(), &\\
+            \nt{n} &\to (\x_1^1 \, \tn{hearing})\:(\arg(\nt{n})), &\nt{p} &\to (\tn{the}\,\x_1^1)\:(\nt{n}), \\
             \nt{n}_2 &\to (\x_1^1, \tn{on} \, \x_2^1)\:(\nt{n}, \nt{p}), \\
             \nt{v}_2 &\to (\x_1^1, \tn{scheduled} \, \x_1^2 \, \x_2^1)\:(\nt{n}_2, \nt{n}), \\
             \nt{v} &\to (\x_1^1 \, \tn{is} \, \x_1^2)\:(\nt{v}_2)
@@ -101,8 +102,7 @@
         \end{align*}
         The fanout for each nonterminal \(A\) determines the length of the composition with \abrv{lhs} \(A\) and the number of variables if \(A\) occurs in the \abrv{rhs} nonterminals of a rule.
         In the above example, the nonterminal symbols with subscript \(_2\), i.e.\@ \(\nt{n}_2\) and \(\nt{v}_2\), are of fanout 2, and all others of fanout 1.
-        The composition of the rule \(\nt{v}_2 \to (\x_1^1, \tn{scheduled} \, \x_1^2 \, \x_2^1)\:(\nt{n}_2, \nt{n})\) is of length \(\fanout(\nt{v}_2) = 2\) and there are \(\fanout(\nt{n}_2) = 2\) variables for the first \abrv{rhs} nonterminal and \(\fanout(\nt{n}) = 1\) for the second.
-        \todo{G is lexical, example for simple lcfrs?}
+        The composition of the rule \(\nt{v}_2 \to (\x_1^1, \tn{scheduled} \, \x_1^2 \, \x_2^1)\:(\nt{n}_2, \nt{n})\) is of length \(\fanout_{\mathrm{G}}(\nt{v}_2) = 2\) and there are \(\fanout_{\mathrm{G}}(\nt{n}_2) = 2\) variables for the first \abrv{rhs} nonterminal and \(\fanout_{\mathrm{G}}(\nt{n}) = 1\) for the second.
     \end{example}
 
     \begin{definition}[Derivation]
@@ -122,29 +122,47 @@
         For each set of derivations \(D \subseteq \derivs_G\), we denote the set of all derivations for a given string \(w \in \varSigma^*\) by \(D(w) = \{d\in D \mid \yield(d) = w\}\).
     \end{definition}
 
-    \vspace{.2cm}
+%    \vspace{.2cm}
 
-    \noindent
-    \begin{minipage}[b]{.5\linewidth}
-        \begin{example}[Continues \cref{ex:lcfrs:comp,ex:lcfrs:rules}]\label{ex:lcfrs:deriv}
-            Let's consider the tree illustrated to the right:
-                It is a tree over rules in the \abrv{lcfrs} \(\mathrm{G} = (N, \Sigma, \nt{v}, R)\).
-            Its root has the \abrv{lhs} \(\nt{n}_2\), the tree is an element of \(\derivs^R_{\nt{n}_2}\).
-            The yield of \(d\) is term over compositions computed in \cref{ex:lcfrs:comp}: \(\yield(d) = (\tn{A hearing}, \: \tn{on the issue})\).
-        \end{example}
-    \end{minipage}
-    \hfill
-    \begin{tikzpicture}[level distance=6ex, font=\small, sibling distance=3.7cm, inner sep=2pt]
-        \node (root) {\(\nt{n}_2 \to (\x_1^1, \tn{on} \, \x_2^1)\:(\nt{n}, \nt{p})\)}
-        child {node {\(\nt{n} \to (\x_1^1 \, \tn{hearing})\:(\nt{n}^\nt{L})\)}
-            child {node {\(\nt{n}^\nt{L} \to (\tn{A})\:()\)}}}
-        child {node {\(\nt{p} \to (\tn{the}\,\x_1^1)\:(\nt{n})\)}
-            child {node {\(\nt{n} \to (\tn{issue})\:()\)}}};
-    \end{tikzpicture}
+%    \noindent
+%    \begin{minipage}[b]{.5\linewidth}
+%        \begin{example}[Continues \cref{ex:lcfrs:comp,ex:lcfrs:rules}]\label{ex:lcfrs:deriv}
+%            Let's consider the tree illustrated to the right:
+%                It is a tree over rules in the \abrv{lcfrs} \(\mathrm{G} = (N, \Sigma, \nt{v}, R)\).
+%            Its root has the \abrv{lhs} \(\nt{n}_2\), the tree is an element of \(\derivs^R_{\nt{n}_2}\).
+%            The yield of \(d\) is term over compositions computed in \cref{ex:lcfrs:comp}: \(\yield(d) = (\tn{A hearing}, \: \tn{on the issue})\).
+%        \end{example}
+%    \end{minipage}
+%    \hfill
+%    \begin{tikzpicture}[level distance=6ex, font=\small, sibling distance=3.7cm, inner sep=2pt]
+%        \node (root) {\(\nt{n}_2 \to (\x_1^1, \tn{on} \, \x_2^1)\:(\nt{n}, \nt{p})\)}
+%        child {node {\(\nt{n} \to (\x_1^1 \, \tn{hearing})\:(\nt{n}^\nt{L})\)}
+%            child {node {\(\nt{n}^\nt{L} \to (\tn{A})\:()\)}}}
+%        child {node {\(\nt{p} \to (\tn{the}\,\x_1^1)\:(\nt{n})\)}
+%            child {node {\(\nt{n} \to (\tn{issue})\:()\)}}};
+%    \end{tikzpicture}
+
+    \vspace{-\baselineskip}
+
+    \begin{wrapfigure}[6]{r}{0pt}
+        \begin{tikzpicture}[level distance=6ex, font=\small, sibling distance=3.7cm, inner sep=2pt]
+            \node (root) {\(\nt{n}_2 \to (\x_1^1, \tn{on} \, \x_2^1)\:(\nt{n}, \nt{p})\)}
+            child {node {\(\nt{n} \to (\x_1^1 \, \tn{hearing})\:(\nt{n}^\nt{L})\)}
+                child {node {\(\nt{n}^\nt{L} \to (\tn{A})\:()\)}}}
+            child {node {\(\nt{p} \to (\tn{the}\,\x_1^1)\:(\nt{n})\)}
+                child {node {\(\nt{n} \to (\tn{issue})\:()\)}}};
+        \end{tikzpicture}
+    \end{wrapfigure}
+    \parexample[Continues \cref{ex:lcfrs:comp,ex:lcfrs:rules}]\label{ex:lcfrs:deriv}
+    Let's consider the tree illustrated to the right:
+        It is a tree over rules in the \abrv{lcfrs} \(\mathrm{G} = (N, \Sigma, \nt{v}, R)\).
+    Its root has the \abrv{lhs} \(\nt{n}_2\), the tree is an element of \(\derivs^R_{\nt{n}_2}\).
+    The yield of \(d\) is term over compositions computed in \cref{ex:lcfrs:comp}: \(\yield(d) = (\tn{A hearing}, \: \tn{on the issue})\).
+    \exampleqed
 
     \vspace{\baselineskip}
 
-    During the extraction and parsing rules are instantiated with sentence positions. (Cf.\@ \cite[Def. 6.8]{Kal10})
+    During the extraction and parsing grammar rules are instantiated with sentence positions. (Cf.\@ \cite[Def. 6.8]{Kal10})
     I.e.\@ instead of terminals that resemble objects in the sentence, we will assume matching sentence positions as lexical symbols in the rules.
     All derivations are assembled such that the compositions only concatenate consecutive sequences of positions.
     Each derivation is considered equivalent to a constituent tree that assumes the \abrv{lhs} nonterminals as inner nodes and the sentence positions as leaves.
@@ -158,8 +176,8 @@
     \end{definition}
 
     \begin{definition}[Constituent Structure for Derivation]
-        Consider a grammar \((N, [|w|], S, R)\) that is a position instantiation of some grammar in a word \(w\), and an admissible derivation \(d \in \derivs^R\) of the form \(d = r\,(d_1, \ldots, d_k)\) where the root \(r\) is of the form \(A \to c\,(B_1, \ldots, B_k)\).
-        The composition \(c\) contains (possibly empty) sequences of positions \(w_1, \ldots, w_{k+1} \in []\) such that,
+        Consider a position instantiation \((N, [|w|], S, R)\) of some grammar in a word \(w\), and an admissible derivation \(d \in \derivs^R\) of the form \(d = r\,(d_1, \ldots, d_k)\) where the root \(r\) is of the form \(A \to c\,(B_1, \ldots, B_k)\).
+        The composition \(c\) contains (possibly empty) sequences of positions \(w_1, \ldots, w_{k+1} \in [|w|]^*\) such that,
         \begin{compactitem}
                 \item \(w_1\) is the sequence of terminal symbols occurring before the variable \(\x_1^1\) in \(c\),
                 \item for each \(i \in \{2, \ldots, k\}\), \(w_i\) is the sequence of terminal symbols occurring between the variables \(\x_{i-1}^1\) and \(\x_i^1\) in \(c\), and
@@ -170,10 +188,10 @@
         \]
     \end{definition}
 
-    \begin{example}[Continues \cref{ex:lcfrs:comp,ex:lcfrs:rules}]\label{ex:lcfrs:deriv}
-        Let's consider the two trees illustrated below:
-            The left figure illustrates a derivation in the instantiated grammar \(\mathrm{G'} = (N, [8], \nt{v}, R)\) of \(\mathrm{G}\) in \(w = \text{A hearing is scheduled for the issue today}\).
-            The right figure illustrates the constituent structure for \(d\).
+    \begin{example}[Continues \cref{ex:lcfrs:comp,ex:lcfrs:rules}]\label{ex:lcfrs:instance}
+        Let us consider the \abrv{lcfrs} \(\mathrm{G}\) from the previous examples and an instantiation \(\mathrm{G'} = (N, [8], \nt{v}, R)\) of \(\mathrm{G}\) in the string ``A hearing is scheduled for the issue today''.
+        The left figure illustrates a derivation in the instantiated grammar \(\mathrm{G'}\).
+        The right figure illustrates the constituent structure for \(d\).
 
         \null\hfill
         \begin{tikzpicture}[level distance=6ex, font=\small, sibling distance=3.7cm, inner sep=2pt]
@@ -201,22 +219,51 @@
         \hfill\null
     \end{example}
 
-    \begin{definition}
-        Consider a collection of \(k \in \DN\) mutual exclusive and finite sets of positions \((\pi_i \subset \DN_+ \mid i \in [k])\) and a superset \(\pi_0 \supseteq \bigcup_{i \in [k]} \pi_i\).
-        For each set \(\pi_i\), there are a distinct positive integer \(s_i\) (and \(s\)) and a sequence of strings \(w_i = (w_i^j \in \pi_i^+ \mid j \in [s_i])\) such that
-        \begin{itemize}
-            \item each \(w_i^j\) is a non-empty sequence of consecutive positions and each position in \(\pi_i\) occurs exactly once in \(w_i\),
-            \item for each \(j \in [s-1]\), the difference between the least (and left-most) position in \(w_i^{(j+1)}\) and the greatest (and right-most) position in \(w_i^j\) is at least 2, and
-            \item for each \(i \in [k-1]\), the positions in \(w_i^1\) are smaller than the positions in \(w_{i+1}^1\).
-        \end{itemize}
+    The following definitions deal with the extraction of \abrv{lcfrs} rules from constituent structures.
+    They are similar to the extraction of \emph{treebank grammars} by \citet{MaierSogaard08} but extend the procedure to accommodate lexical \abrv{lcfrs} and can be seen as a reversal of the previous definition for a constituent structure for a derivation.
+    We start with an elementary definition that quantifies and assembles continuous sequences among sets of positions.
 
-        The composition \(c \in \C^{\pi_0}\) such that \(\sem{c}(w_1, \ldots, w_k) = w_0\) is denoted by \(\mathrm{comp}(\pi_0, \pi_1, \ldots, \pi_k)\).
+    \begin{definition}
+        Let \(\pi \subset \DN_+\) be a finite and non-empty set.
+        The \deflab{linearization} of \(\pi\) is the sequence of greatest contiguous sequences within \(\pi\), i.e.\@ the sequence \((w_j \in \pi^+ \mid j \in [s])\) such that
+        \begin{compactitem}
+            \item \(s = |\{i \in \pi \mid i+1 \notin \pi\}|\) is the number of greatest contiguous sets in \(\pi\),
+            \item \(w_j\) is a sequence of increasing integers for each \(j \in [s]\),
+            \item for each \(j \in [s-1]\), the last (and therefore greatest) element in \(w_j\) is less then the first (ant therefore least) element in \(w_{j+1}\).
+        \end{compactitem}
+        The positive integer \(s\) is called \deflab{fanout of the set \(\pi\)}.
     \end{definition}
+
+    In the following definition, these sequences of continuous positions are used to define \abrv{lcfrs} compositions.
+    It assumes a collection of sets of positions (in the yield of some bottom nodes) and one superseding set (in the yield of a top node).
+    The composition is obtained from the linearization of the superseding set by substituting the sequences occurring in the collection with appropriate variables.
+
+    \begin{definition}
+        Let \(k \in \DN\) be some natural, \((\pi_i \subset \DN_+ \mid i \in [k])\) a collection of mutual exclusive, finite and non-empty sets, and \(\pi_0 \supseteq \bigcup_{i \in [k]} \pi_i\) a finite and non-empty superset of their elements.
+        The families \((s_i \mid i \in [0,k])\) and \((w_i^j \mid i \in [0,k])\) are the fanouts and linearizations of the sets \(\pi_0, \ldots, p_k\), respectively, such that \((w_i^j \mid j \in [s_i])\) idenitifies the linearization for \(\pi_i\).
+        We define the \emph{composition for \(\pi_0, \ldots, \pi_k\)}, denoted by \(\mathrm{comp}(\pi_0, \pi_1, \ldots, \pi_k)\), as the composition \((u_1, \ldots, u_{s_0}) \in \C^{\pi_0}_{(s_1\cdots s_k, s_0)}\) where each \(u_\ell\) is obtained from \(w_0^\ell\) by replacing each occurrence of a sequence \(w_i^j\) with the variable \(\x_i^j\).
+    \end{definition}
+
+    \begin{example}[Linearizations and Compositions, Continues \Cref{ex:lcfrs:instance}]
+        The top three inner nodes in the constituent structure that was shown in the previous example have the yields \(\pi_0 = \{1,2,5,6,7\}\) (at the root), \(\pi_1 = \{1,2\}\) (at position 1) and \(\pi_2 = \{6,7\}\) (at position 2).
+        The linearization of \(\pi_0\) consists of the two sequences \(w_0^1 = 1\,2\) and \(w_0^2 = 5\,6\,7\), its fanout is 2.
+        For the successor nodes it is \(w_1^1 = 1\,2\) and \(w_2^1 = 5\,6\), respectively, and their fanout is 1.
+        The composition for these tree sets consists (like \(w_0\)) of two components.
+        The first is obtained by replacing \(1\,2\) with the variable \(\x_1^1\) in \(w_0^1\) and the second analogously by replacing \(5\,6\) by \(\x_2^1\) in \(w_0^2\).
+        It is \(\mathrm{comp}(\pi_0, \pi_1, \pi_2) = (\x_1^1, 5\,\x_2^1)\).
+    \end{example}
+
+    When grammars are used for parsing, they are often extended by weight structures.
+    The following definition does not employ a general framework, e.g.\@ semirings, but assumes real values that are assigned to each rule and added within a derivation.
+    We interpret these values as scores or confidence values, and understand higher values as better.
+    This interpretation is equivalent to the usual probabilistic interpretation \citep[Viterbi semiring]{Goodman99} with logarithmic values.
 
     \begin{definition}
         Let \(G = (N, \varSigma, S, R)\) be an \abrv{lcfrs} and \(\weight \colon R \to \DR_{\ge 0}\) an assignment of a non-negative value to each rule in \(G\).
         We call \(\weight\) a \deflab{weight assignment} for \(G\) and the tuple \((G, \weight)\) a \deflab{weighted \abrv{lcfrs}}.
         The weight of a derivation \(d \in \derivs_G\) is the sum over all positions' weights: \[ \weight(d) = \sum_{\rho \in \pos(d)} \weight(d(\rho))\text{.} \]
-        The set of \emph{least parses for \(w \in \varSigma\)} is \(\derivs^{\mathrm{min}}_G(w) = \{ d \in \derivs_G(w) \mid \weight(d) \leq \weight(d') \text{for each} d' \in \derivs_G(w) \}\).
+        The set of \emph{best parses for \(w \in \varSigma^*\)} is \(\derivs^{\mathrm{max}}_G(w) = \{ d \in \derivs_G(w) \mid \forall d' \in \derivs_G(w)\colon \weight(d) \geq \weight(d') \}\).
+        For each \(n\in \DN_+\), we extended this concept to the sequences of \emph{\(n\)-best parses for \(w\)}.
+        Let \(\ell = \min(n, |\derivs_G(w)|)\), the set \(\derivs^{n,\max}_G(w)\) contains the sequence \(d_1 \ldots d_\ell \in \derivs_G(w)^\ell\) if and only if \(\weight(d_1) \geq \ldots \geq \weight(d_\ell)\) and there is no \(d' \in \derivs_G(w)\) with \(d_\ell < d'\).
     \end{definition}
 \end{document}

@@ -153,7 +153,7 @@
 
     \begin{wrapfigure}[6]{r}{.3\linewidth}
         \centering
-        \subfile{figures/running-example-1.tex}
+        \subfile{figures/survey-bin.tex}
     \end{wrapfigure}
     \parexample[Vanilla Guide]
     Consider the constituent structure \(\xi\) of the running example shown to the right.
@@ -263,7 +263,7 @@
     \needspace{3cm}
     \begin{wrapfigure}[6]{r}{.3\linewidth}
         \centering
-        \subfile{figures/running-example-1.tex}
+        \subfile{figures/survey-bin.tex}
     \end{wrapfigure}
     \parexample[Least Guide]
     The assignments for the least guide are computed from bottom to top.
@@ -307,7 +307,7 @@
         If \(\head(\xi|_\rho) = \head(\xi|_{\rho'})\), we see again easily the aforementioned property that this leaf must also be the head at all positions between \(\rho\) and \(\rho'\).
     \end{proof}
 
-    \paragraph{Dependent Guide Constructor.}\deflab<guide>[vguide]{dependent guide (constructor)}[]
+    \paragraph{Dependent Guide Constructor.}\label{sec:extraction:dependency}\deflab<guide>[vguide]{dependent guide (constructor)}[]
     Dependent guides aim to offer assignments that complement head-outward binarized constituent structures.
     They assign the head of a dependent to each inner node in the constituent structure.
     We consider these guides only for head-outward binarized constituent structures, as there is exactly one dependent for each inner node.
@@ -389,7 +389,7 @@
     As usual, we will abbreviate the nonterminal symbols by omitting the subscript if it is \(1\).
 
     \begin{wrapfigure}[6]{r}{0pt}
-        \subfile{figures/running-example-1.tex}
+        \subfile{figures/survey-bin.tex}
     \end{wrapfigure}
     \parexample[Vanilla Nonterminals]
     Let us consider the indexed tree in our running example and the constructed dependent guide illustrated to the right.
@@ -448,7 +448,7 @@
     \end{table}
 
 
-    \subsection{Lexical Derivation Extraction}
+    \subsection{Lexical Derivation Extraction}\label{sec:extraction:hg:alg}
     This small subsection describes how we define a derivation of lexical \abrv{hg} rules using the discussed prerequisites.
     Let's assume we have some constituent structure \(\xi\), an admissible guide \(\varphi\) for \(\xi\) and a nonterminal constructor \(\psi\).
     Let us define two extensions for the guide \(\phi\):
@@ -516,7 +516,7 @@
     \end{wrapfigure}
     \parexample
     The example to the right shows a head-outward binarized constituent structure with values assigned by a head guide.
-    The position for the node that was introduced during the binarization procedure (with symbol \(\cn{vp\,\binsym}\)) is mapped to the head of the original node which must also be a descendant with the head-outward strategy.
+    The position for the node that was introduced during the binarization procedure (with symbol \(\cn{vp\,\binsym{}}\)) is mapped to the head of the original node which must also be a descendant with the head-outward strategy.
     This example shows how the extraction procedure does not preserve the structure from the binarization in case of the head guide.
     When all nodes that are formed during binarization are assigned to the same leaf, then they are part of the same rule.
     The resulting derivation is equivalent to the extraction of the plain (unbinarized) constituent structure, as shown in the previous example.

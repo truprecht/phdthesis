@@ -35,7 +35,7 @@
         }
     \end{figure}
 
-    \section{Statistical Parsing with Predicted Supertags}
+    \section{Statistical Parsing with Predicted Supertags}\label{sec:parsing}
     Suppose that we have a collection of supertags with an associated weight for each tag and position in an input sentence.
     This section deals with the construction of weighted grammars from the supertags and the subsequent statistical grammar parsing process to find derivations.
     Here, \emph{grammars} is in plural because we use a strategy that incrementally constructs grammars in growing size, in a similar fashion as described by \citet[Section 5.1]{Clark04} and \cite[Section 2.2.2]{Auli12}.
@@ -47,15 +47,25 @@
 
     \paragraph{Parsing with \abrv{Lcfrs} and \abrv{Hg} Supertags}
     The parsing procedure for \abrv{lcfrs} was well described by \citet[Section 7.1]{Kal10} and can be used for parsing with grammars in the two formalisms \abrv{lcfrs} and \abrv{hg}.
+    The found derivations are enumerated using the techniques described by \citet{HuaChia05}.
     In the case of \abrv{hg}, the sets of derivations for an input sequence is defined using the projection into the \abrv{lcfrs} components only, so the \abrv{dcp} components have not influence at all on the sets of derivations; they are solely used to define the constituent structure for an already determined derivation.
     In previous versions, we used the \abrv{lcfrs} parser implemented by \citet{CraSchBod16} and extended it for our purposes.\footnote{
-        For using \emph{disco-dop} with our extracted supertags, we implemented some transformations to accommodate that it is only able to parse with binary and simple \abrv{lcfrs}.
+        For using \emph{disco-dop} with our predicted supertags, we implemented some transformations to accommodate that it is only able to parse with binary and simple \abrv{lcfrs}.
+        Each supertag is transformed into a collection of appropriate rules by splitting the terminal symbol into a separate rule where the supertag is its \abrv{lhs} nonterminal.
+        In the case of supertags with binary rules, this transformation yields a ternary rule that is then split into two using the usual binarization techniques and by introducing a unique intermediate nonterminal.
+        As these rules are connected using unique nonterminals, they must occur together in derivations.
+        This transformation is easily reverted in a derivation by identifying the supertag at the bottom rule of such a cluster of rules and replacing the whole construct with the supertag.
     }
-    However, we omitted this in favor of a unified implementation with supertags containing only \abrv{dcp}.
+    However, we omitted this in favor of a unified implementation that also implements parsing with \abrv{dcp} supertags.
 
-    \paragraph{Fanout-Restricted Parsing with \abrv{Dcp}}
+    \paragraph{Fanout-Restricted Parsing with \abrv{Dcp} Supertags}
+    \abrv{Dcp} supertags are tuples containing a lexical \abrv{dcp} rule (with an integer terminal) and a positive integer that restricts sets of leaves in derivations rooted by the supertag.
+
 
     \section{Reranking}
 
-    \printindex
+    \ifSubfilesClassLoaded{%
+        \printindex
+        \bibliography{../references}%
+    }{}
 \end{document}

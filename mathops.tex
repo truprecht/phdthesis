@@ -1,6 +1,8 @@
 \usepackage{amsmath}
 \usepackage{amsfonts}
-\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage[amsmath,thmmarks,hyperref]{ntheorem}
+\usepackage{bm}
 \usepackage{mathtools}
 \usepackage{stmaryrd}
 
@@ -8,7 +10,7 @@
 \newcommand{\cn}[1]{\textsc{#1}}
 \newcommand{\nt}[1]{\textsc{\textsl{#1}}}
 \DeclarePairedDelimiter{\sem}{\llbracket}{\rrbracket}
-\newcommand{\binsym}{$\diamond$}
+\newcommand{\binsym}[1]{\ensuremath{_{\scalebox{.4}[.8]{\textless{}}#1\scalebox{.4}[.8]{\textgreater{}}}}}
 
 \newcommand{\DN}{\ensuremath{\mathbb{N}}}
 \newcommand{\DZ}{\ensuremath{\mathbb{Z}}}
@@ -32,7 +34,7 @@
 
 % trees
 %\DeclareMathOperator{\sTrees}{T}
-\DeclareMathOperator{\itrees}{I}
+\DeclareMathOperator{\itrees}{iT}
 \DeclareMathOperator{\Rules}{R}
 \DeclareMathOperator{\T}{T}
 \DeclareMathOperator{\CT}{CT}

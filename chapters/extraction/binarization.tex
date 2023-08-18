@@ -93,9 +93,20 @@
     As in the two previous strategies, the symbols at the constructed nodes contain the parent constituent symbol and the constituent symbol of the processed successors.
 
     \begin{figure}
-        \todo[inline]{beispiel für binarisierung einfügen}
+        \resizebox{.3\linewidth}{!}{\subfile{figures/binarization/survey.tex}}\hfill
+        \resizebox{.3\linewidth}{!}{\subfile{figures/binarization/survey-binary.tex}}\hfill
+        \resizebox{.3\linewidth}{!}{\subfile{figures/binarization/survey-binary-lf.tex}}
+
+        \vspace{.5cm}
+
+        \resizebox{.3\linewidth}{!}{\subfile{figures/binarization/hearing.tex}}\hfill
+        \resizebox{.3\linewidth}{!}{\subfile{figures/binarization/hearing-binary.tex}}\hfill
+        \resizebox{.3\linewidth}{!}{\subfile{figures/binarization/hearing-binary-lf.tex}}
+
         \caption{\label{fig:ex:binarization}
-            Comparing different binarization strategies, in order from left to right: right-branching, left-branching factorization, head-outward binarization, minimal fanout, and minimal parsing complexity binarization.}
+            Comparing the two left- and right-branching binarization strategies in our two running examples.
+            In both cases, head-outward binarization coincides with right-branching factorization.
+        }
     \end{figure}
 
 
@@ -122,8 +133,8 @@
 
 
     \subsection{Head-Inward Transformation} \label{sec:extraction:bin:hi}
-    As shown in \cref{sec:extraction:dep,sec:experiments:dep}, we experimented with grammar extraction strategies that are common in the field of dependency parsing.
-    These grammars tend to be rather large and the aforementioned binarization strategies either fail to decrease their size and/or there is no intuitive strategy to assign head positions to the introduced artificial nodes, this issue is described in more detail in \ref{sec:extraction:dep}.
+    We experimented with grammar extraction strategies that are borrowed the field of dependency parsing, see \cref{sec:extraction:dependency,sec:experiments:hg} (this strategy is formalized as \emph{head guide}).
+    These grammars tend to be rather large and the aforementioned binarization strategies either fail to decrease their size and/or there is no intuitive strategy to assign head positions to the introduced artificial nodes, this issue is described in more detail in \cref{sec:extraction:hg:alg}.
     We came up with the following rank transformation, and a concomitant head assignment for its result, that tackles this problem but does not yield binary trees in general.
     It can be seen as the opposite of head-outward binarization because when a node is expanded with artificial children, it does keep the child carrying the head at the topmost position.
     All other children are distributed as or into (artificial) child nodes to the left or right of this head-carrying child.

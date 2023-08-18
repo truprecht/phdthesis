@@ -1,4 +1,4 @@
-\documentclass[../../../document.tex]{subfiles}
+\documentclass[../../../../document.tex]{subfiles}
 
 \begin{document}
     \begin{tikzpicture}[
@@ -29,9 +29,9 @@
                 child { node[xshift=3em] (vp1) {\cn{vp}}
                     child { node[xshift=2em] (vp2) {\cn{vp}}
                         child { node[above= of pos-1-1] {1} }
-                            child { node[above=of pos-1-5] (term4) {5}}
-                            child { node[above=of pos-1-6] (prt) {6}
-                                edge from parent[double]}} %}
+                            child { node[above=of pos-1-5] (term4) {5}
+                                edge from parent[double]}
+                            child { node[above=of pos-1-6] (prt) {6}}} %}
                     child {
                         node[above=of pos-1-4] (term3) {4}
                         edge from parent[double]}}
@@ -59,6 +59,8 @@
 
         % redraw corssing edges with white foundation
         \begin{scope}
+            \draw[double] (vp2.south) -- ++(0,-.7ex) -| (term4.north);
+
             \draw[white, line width=.9ex] (vp1.south) -- ++(0,-.7ex) -| (term3.north);
             \draw (vp1.south) -- ++(0,-.7ex) -| (vp2.north);
             \draw[double] (vp1.south) -- ++(0,-.7ex) -| (term3.north);

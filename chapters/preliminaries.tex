@@ -9,7 +9,7 @@
 
 
     \section{Mathematical Notation}\label{sec:preliminaries:math}
-    Sets are considered with the usual notation \(\subseteq\), \(\subset\), \(\cup\), \(\cap\) and \(\setminus\) for the inclusive and exclusive subset relation, as well as the operations for union, intersection, and difference.
+    Sets are considered with the usual notation \(\subseteq\), \(\subset\), \(\cup\), \(\cap\) and \(\setminus\) for the inclusive and exclusive subset relation, as well as the operations for union, intersection, and difference, respectively.
     \(\emptyset\) is the empty set and \(\power(A)\) is the power set, i.e.\@ the set containing all subsets, of some set \(A\).
     The sets of integers, naturals (including zero), positives, and rationals are denoted by $\DZ$, $\DN$, $\DN_+$, and $\DR$, respectively.
     The \deflab{range} of integers between the pair \(n, m \in \DZ\) with \(n \leq m\) is denoted by \([n,m] = \{i \in \DZ \mid n \leq i \leq m\}\).
@@ -32,7 +32,7 @@
     As usual, we denote the type of such a function by \(A \to B\), a quantification by \(f\colon A \to B\), and the argument-value relation by \(f(a) = b\).
     A partial function from \(A\) to \(B\) is a subset \(f \subseteq A \times B\) such that for each \(a \in A\), there is at most one \(b\) with \((a,b) \in f\).
     The type of a partial function is denoted with an upper half arrow e.g. \(f\colon A \parto B\).
-    The image of a (total or partial) function is the set of elements in \(B\) that are assigned to any value in \(A\), denoted by \(\im(f) = \{b\in B \mid (A \times \{B\}) \cap f \neq \emptyset\}\).
+    The image of a (total or partial) function is the set of elements in \(B\) that are assigned to any value in \(A\), denoted by \(\im(f) = \{b\in B \mid (A \times \{b\}) \cap f \neq \emptyset\}\).
     The domain of definition of a partial function is the set of elements in \(A\) with an assigned value in \(B\), denoted by \(\dom(f) = \{a\in A \mid (\{a\} \times B) \cap f \neq \emptyset\}\).
     In some contexts, a partial function \(f\) is just handled in the same manner as a total function from \(\dom(f)\) to \(B\) without further notice.
 
@@ -98,14 +98,14 @@
     Subsequences in a string are called \emph{substrings}.
 
     \paragraph{Trees.}
-    \deflab{tree}[Trees] are particular strings that contain opening and closing parentheses to denote nesting hierarchies.
-    For any alphabet \(\varSigma\) and finite set \(\varGamma\), the set of trees \(\T_\varSigma(\varGamma)\) is defined inductively: it is the smallest subset \(T\) of \((\varSigma \cup \varGamma \cup \{ (, )\})^*\) such that
+    \deflab{tree}[Trees] are particular (finite) sequences that contain opening and closing parentheses to denote nesting hierarchies.
+    For any alphabet \(\varSigma\) and set \(\varGamma\), the set of trees \(\T_\varSigma(\varGamma)\) is defined inductively: it is the smallest subset \(T\) of \((\varSigma \cup \varGamma \cup \{ (, )\})^*\) such that
     \begin{inparaenum}
         \item \(\varGamma \subseteq T\) and
-        \item for each symbol \(\sigma \in \varSigma\), natural number \(k\) and trees \(t_1, \ldots, t_k \in T\), the string \(\sigma(t_1 \cdots t_k)\) is in \(T\).
+        \item for each symbol \(\sigma \in \varSigma\), positive integer \(k \in \DN_+\) and trees \(t_1, \ldots, t_k \in T\), the sequence \(\sigma(t_1 \cdots t_k)\) is in \(T\).
     \end{inparaenum}
     As such, trees are finite structures, but unlike strings, we do not consider empty trees.
-    In case \(\varGamma = \emptyset\), trees exclusively contain symbols in \(\varSigma\); then the set \(\T_\varSigma(\varGamma)\) is abbreviated by \(\T_\varSigma\).
+    In case \(\varGamma \subseteq \varSigma\), the symbols at the leaves are not distinguished from inner nodes; then the set \(\T_\varSigma(\varGamma)\) is abbreviated by \(\T_\varSigma\).
 
     A \deflab<tree>{node} in the tree \(t \in \T_\varSigma(\varGamma)\) is an occurrence of a symbol in \(\varSigma \cup \varGamma\).
     If a node a accompanied by a sequence of trees denoted in parentheses behind the symbol, these trees are called the \deflab<tree!node>{child}[children] of the node.
@@ -119,7 +119,7 @@
     Each illustration of a tree usually starts with the root node at the top, below that are its children connected by edges, this scheme recurs until the leaves at the bottom.
     \cref{fig:pre:ctree} shows an example.
 
-    \paragraph{Positions.}
+    \paragraph{Tree Positions.}
     A \deflab<tree>{position} in \(t\) is a sequence $w \in \DN^*$ that identifies a node in the tree.
     Starting with the root, each integer in \(w\) indicates the index of a child whose root is the reference for the remaining integers in \(w\).
     Alas, the set of positions, denoted by \(\pos(t)\), is defined recursively over the structure of trees:
@@ -135,7 +135,7 @@
     The \deflab<tree>{descendant}[descendants] of \(\rho\) in \(t\) are all positions in the subtree below \(\rho\), denoted by \(\descendants_t(\rho) = \{ \rho \cdot \rho' \in \pos(t) \mid \rho' \in \pos(t|_\rho) \}\).
     The symbol at a position \(\rho\) in \(t\) is denoted  \(t(\rho)\).
     We use the same terminology for position as for nodes, i.e.\@ child position, parent position, etc.; \(\children_t(\rho) = \{\rho\} \cdot \DN_+ \cap \pos(t)\) denotes the set of child positions below each position \(\rho\) in \(t\), and \(\parent(\rho) = \rho_{:|\rho|}\) the parent position for each \(\rho \in {\DN_+}^+\).
-    Two positions \(\rho, \rho' \in \pos(t)\) are called \emph{parallel}, if \(\rho\) is neither a descendant nor an ancestor of \(\rho'\).
+    Two positions \(\rho, \rho' \in \pos(t)\) are called \emph{independent}, if \(\rho\) is neither a descendant nor an ancestor of \(\rho'\).
 
     A \deflab<tree>{subforest} of \(t\) is a sequence of trees occurring consecutively (as siblings) within \(t\).
     A subforest may be located within \(t\) using a position \(\rho\) accompanied by a concluding child index that is greater or equal to the last child index in \(\rho\).
@@ -169,11 +169,10 @@
 %    \end{proof}
 
     \paragraph{Indexed Trees.}
-    In \deflab<tree>[itree]{indexed tree}[indexed trees], the symbols of an alphabet \(\varSigma\) occur only at inner nodes.
-    All leaves are positive integers such that each occurs at most once in each tree.
+    An \deflab<tree>[itree]{indexed tree} over \(\varSigma\) is an element in \(\T_{\varSigma}(\DN_+)\), i.e.\@ inner nodes are symbols in \(\varSigma\) and leaves are positive integers, such that each leave occurs at most once.
     For each inner node in an indexed tree, the children are ordered by the least value that occurs in a leaf.
     The notation for positions, indexing, and substitution are inherited from trees; the yield of an indexed tree is its set of leaves instead of a string.
-    The set of all indexed trees over \(\varSigma\) is denoted by \(\itrees^\varSigma\).
+    The set of all indexed trees over \(\varSigma\) is denoted by \(\itrees_\varSigma\).
 
     \paragraph{Substitution.}
     Let \(X\) be a finite set, \(\varSigma\) some alphabet that is disjoint from \(X\), and \(c\) a string in \((X \cup \varSigma)^*\).
@@ -190,7 +189,7 @@
     Because trees are just specific strings, both definitions of substitution are easily lifted to trees and sequences of trees, as long as the variables do not coincide with parentheses.
     Let \(\varGamma\) be an alphabet distinct from \(X\), and \(\{ (, ) \} \cap (X \cup \{y\}) = \emptyset\), and \(y \notin \varSigma\).
     Now, the variable occurrences are of the form \(X(\T_\varSigma(\varGamma)^*) = \{x(t_1, \ldots, t_k) \mid k \in \DN, t_1, \ldots, t_k \in \T_{\varSigma}(\varGamma)\}\) where each element has a root in \(X\), in the following the set is abbreviated by \(\hat{X}\).
-    A second-order substitution of \(X\) in \(c \in \T_\varSigma(\varGamma \cup \hat{X})^*\)\todo{The set of leaves is not finite, either adapt def. of trees or allow only leaves as arguments. \(\T_{\varSigma \cup X}(\varGamma)\) is not an option.} defined by an \(X\)-indexed family \((v_x \in \T_\varSigma(\varGamma \cup \{y\})^* \mid x \in X)\) yields a sequence of trees in \(\T_\varSigma(\varGamma)*\) obtained from \(c\) by replacing each occurrence of \(x(v) \in \hat{X}\) by \(v_x[y=v]\).
+    A second-order substitution of \(X\) in \(c \in \T_\varSigma(\varGamma \cup \hat{X})^*\) defined by an \(X\)-indexed family \((v_x \in \T_\varSigma(\varGamma \cup \{y\})^* \mid x \in X)\) yields a sequence of trees in \(\T_\varSigma(\varGamma)*\) obtained from \(c\) by replacing each occurrence of \(x(v) \in \hat{X}\) by \(v_x[y=v]\).
     The variable \(\y\) may be an element of \(\varGamma\).
 
     \begin{example}[Substitution]
@@ -475,11 +474,11 @@
 
     \subsection{Neural Networks}
     As mentioned in the last example, we use neural networks to implement the prediction of a sample of supertags for each position input sentence.
-    They are a family of parametrized functions that emerged in the last decades and proved extremely useful in many tasks, including ones settled in natural language processing. \todo{ref examples}
+    They are a family of parametrized functions that emerged in the last decades and proved extremely useful in many tasks, including ones settled in natural language processing, e.g.\@ in the field of semantic analysis like sentiment analysis \citep{sentiment} or relation extraction \citep{relationextraction}, in the field of syntax analysis like dependency \citep{dependencyparsing} or constituency parsing \citep{FerGom20a}, or in high-level tasks like question answering \cite{Devlin2019}, summarization \cite{bertgeneration}, or dialogue systems \cite{dialoguesystems}.
     As in the parent section, we will only give a brief overview of the concepts needed to understand the implementations discussed in this thesis.
-    For further elaborations in the field of neural networks for natural language processing, consult \cref{Gol17}.
+    For further elaborations in the field of neural networks for natural language processing, consult \citet{Gol22}.
 
-    In general, we consider a neural network (short \abrv{ann} for \emph{artificial} neural network) a parametrized function where the outputs are vectors of real numbers, i.e.\@ they are of the form \(f_\theta\colon X \to \DR^n\) where \(\theta\) denotes the parameters, \(X\) the set of inputs and \(n > 0\) is the output dimension.
+    We consider a neural network (short \abrv{ann} for \emph{artificial} neural network) a parametrized function where the outputs are vectors of real numbers, i.e.\@ they are of the form \(f_\theta\colon X \to \DR^n\) where \(\theta\) denotes the parameters, \(X\) the set of inputs and \(n > 0\) is the output dimension.
     There is a set of well-studied \abrv{ann}s that are used as \emph{modules} and combined to form new \abrv{ann}s by composition, addition, or concatenating their results.
     Such a combined collection of modules is called an \emph{architecture}.
     In the following, some of these modules are briefly explained.
@@ -532,7 +531,7 @@
     A \emph{multi-layer perceptron} is a composition of multiple linear layers with activation functions.
 
 
-    \subsubsection{Neural Networks for Sequence Processing}
+    \subsubsection{Neural Networks for Sequence Processing}\label{sec:preliminaries:nn:recurrent}
     Recurrent modules are a foundation for the processing of sequence inputs in neural networks.
     They are defined, such that each input vector is complemented with the previous output, starting with an initialization vector for the first input.
     Formally, this concept of recurrence uses some inherent module \(f_\theta\colon \DR^{n+m} \to \DR^m\) parametrized by some \(\theta\) and incrementally computes, for an input sequence \(x_1, \ldots, x_n \in \DR^n\), a sequence of outputs \(g_{(f, \theta, h_0)}(x_1, \ldots, x_n) = (h_i = f_\theta(x_i \cdot h_{i-1}) \in \DR^m \mid i \in [n])\) where \(h_0 \in \DR^m\) is an initial value and parameter of the recurrent module \(g\).

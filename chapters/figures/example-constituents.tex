@@ -52,5 +52,21 @@
           \draw (s.south) -- ++(0,-1ex) -| (np.north);
           \draw (s.south) -- ++(0,-1ex) -| (vp1.north);
       \end{scope}
+
+        \coordinate[right=1em of pos] (highlights);
+        \begin{scope}[gray,every node/.style={align=left, text width=4cm}]
+          \draw (sbar.north-|highlights)
+                    edge[decorate,decoration=brace]
+                    node[right] {constituent symbols}
+                (prt.south-|highlights);
+          \draw (term1.north-|highlights)
+                  edge[decorate,decoration=brace]
+                  node[right] {\abrv{pos} symbols}
+                  (term1.south-|highlights);
+            \draw (pos.north-|highlights)
+                  edge[decorate,decoration=brace]
+                  node[right] {tokens}
+                  (pos.south-|highlights);
+        \end{scope}
    \end{tikzpicture}
 \end{document}

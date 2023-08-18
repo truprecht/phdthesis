@@ -12,7 +12,8 @@
 
 % tikz setup
 \usepackage{tikz}
-\usetikzlibrary{matrix, positioning, fit}
+\usetikzlibrary{matrix, positioning, fit, decorations.pathreplacing}
+
 
 \newcommand{\abrv}[1]{\textsc{#1}}
 \NewDocumentCommand{\deflab}{d<>omo}{%
@@ -26,13 +27,16 @@
 \newcommand{\lcfrs}{linear context-free rewriting system}
 \newcommand{\dcp}{definite clause program}
 \newcommand{\hg}{hybrid grammar}
-\newcounter{parexamplecnt}
+
+\newcounter{SectionEnvCounter}
+\numberwithin{SectionEnvCounter}{section}
 \NewDocumentCommand{\parexample}{so}{%
     \IfBooleanF{#1}{\bigskip}\noindent%
-    \textbf{Example \refstepcounter{parexamplecnt}\theparexamplecnt}%
-    \IfNoValueF{#2}{\space(#2)}%
+    \textbf{Example \refstepcounter{SectionEnvCounter}\theSectionEnvCounter}%
+    \IfNoValueF{#2}{\textbf{\space(#2)}}%
     \textbf{.}\space%
 }
+\NewDocumentCommand{\exampleqed}{}{\hfill\ensuremath{\square}}
 
 \setdefaultenum{(i)}{(a)}{}{}
 
@@ -44,12 +48,22 @@
 }
 \date{tba}
 
-\theoremstyle{definition}
-\newtheorem{definition}{Definition}
-\newtheorem{example}{Example}
-\newtheorem{lemma}{Lemma}
-\newtheorem{theorem}{Theorem}
-\newtheorem{claim}{Claim}
+\theoremstyle{plain}
+\theorembodyfont{\upshape}
+\theoremsymbol{\ensuremath{\square}}
+\theoremseparator{.}
+\newtheorem{definition}[SectionEnvCounter]{Definition}
+\newtheorem{example}[SectionEnvCounter]{Example}
+
+\theorembodyfont{\slshape}
+\newtheorem{lemma}[SectionEnvCounter]{Lemma}
+\newtheorem{theorem}[SectionEnvCounter]{Theorem}
+\newtheorem{claim}[SectionEnvCounter]{Claim}
+
+\theoremstyle{nonumberplain}
+\theorembodyfont{\upshape}
+\theoremsymbol{\ensuremath{\blacksquare}}
+\newtheorem{proof}{Proof}
 
 \begin{document}
     \subfileinclude{title.tex}
