@@ -3,11 +3,12 @@
 \begin{document}
     \section{Rank Transformations}
     In a treebank, we may encounter nodes in constituent trees with arbitrary amounts of successors.
-    \todo{add an example of successor distributions in a treebank, together with the effects on extracted grammar sizes and find citations for generalization capabilities}
+    E.g.\@ \cref{fig:extraction:ranks} shows the distribution of node ranks occurring in a treebank that we use in our experiments (left), the right plot shows that even nodes with the same label occur with widely varying ranks.
     Most grammar extraction procedures construct a rule for each inner node (or a connected set of inner nodes) in a constituent tree with the rank matching the number of successors of the node (or the sum over all successors in the set of nodes).
     Usually, it is desirable to obtain binary grammars, because the design of efficient parsing algorithms is more straightforward.
     And more importantly, these binary grammars can be constructed in such a way that rules contained in similar derivations are shared, this is called \deflab<binariation>{Markovization}.
-    This is used as a generalization mechanism because these rules extracted in this fashion typically admit larger sets of derivations.
+    This is used as a generalization mechanism because these rules extracted in this fashion admit larger sets of derivations.
+    \citet[figure 2]{KleMan03} show the influence of Markovization to grammars extracted from the Penn Treebank in terms of size and parsing accuracy.
 
     In the scope of this thesis, we view \deflab{binarization}[binarization] as a preprocessing step for constituent trees rather than grammars.
     It is an operation that transforms a given constituent tree into a \hyperlink{binctree}{binary} constituent tree such that it can be transformed back into the original constituent tree.
@@ -20,6 +21,14 @@
 
     Both, binarization and head-inward transformation will be referred to as \deflab{rank transformations}.
 
+    \begin{figure}
+        \includegraphics[width=\linewidth]{figures/dptb-ranks.pdf}
+        \caption{\label{fig:extraction:ranks}
+            Distribution of node ranks in the training portion of \abrv{dptb}.
+            The right plots shows the distribution of ranks only for nodes with the label \abrv{np}.
+            The last tick on the x-axis in each plot is a cummulative bucket for ranks greater or eaqual to \(20\).
+        }
+    \end{figure}
 
     \subsection{Binarization}
     The \deflab{binarization} of constituent structures removes and replaces nodes that have either one or more than two successors.
@@ -74,16 +83,59 @@
 
     \paragraph{Head-Outward Binarization.}
     This \deflab<binarization!binarization strategies>[binarization:r2l]{head-outward binarization}[strategy] mixes left- and right-branching factorization depending on the successor that contains the head symbol of the node.
-    If the node's head symbol is contained in its \(n\)-th successor, then
+    If the node is of rank \(k\) and its head symbol is at or below its \(n\)-th successor, then
     \begin{enumerate}
-        \item the first \(k-n\) (top-most) binary nodes are constructed according to the left-branching binarization strategy for the trailing \(k-n\) successors, and
-        \item the remaining \(n-1\) binary nodes are constructed according to the right-branching strategy for the first \(n\) successors.
+        \item the trailing \(k-n\) successors are split according to the left-branching binarization strategy forming \(k-n-1\) artificial nodes, and
+        \item the first \(n-1\) successors are split according to the right-branching binarization strategy forming another \(n-1\) artificial nodes.
     \end{enumerate}
     In the resulting constituent tree, the head symbol is in the yield of the bottom-most constructed node.
-    The motivation for choosing this strategy is that in bottom-up parsers the head symbol is processed first and determines the constituent symbol.
-    There are distinct notations for the introduced top left-branching nodes and the bottom right-branching nodes to avoid ambiguities during parsing with the extracted grammars (which is pretty common in combination with Markovization).
+    In bottom-up parsing processes, the bottom-most nodes are explored first and determine the constituent symbol.
+    This binarization strategy can be of advantage in such settings, as the first explored node contains the head.
+    Optionally, we may use distinct notations for the introduced top left-branching nodes and the bottom right-branching nodes to avoid ambiguities during parsing with the extracted grammars.
     In these notations, the left symbol \(\langle\) is doubled in left-branching nodes, and the right symbol \(\rangle\) is doubled in right-branching nodes.
-    We call these \emph{directive indicators} for artificial nodes.
+    We call these \emph{directive indicators} for artificial nodes; \cref{fig:ex:markovization} shows an example involving these indicators.
+
+    \begin{figure}
+        \null\hfill
+        \subfile{figures/binarization/pilot.tex}
+        \hspace{.5cm}
+        \begin{minipage}{.4\linewidth}
+            \subcaption{Plain constituent tree with illustrated head-assignment}
+        \end{minipage}
+
+        \vspace{.5cm}
+
+        \begin{minipage}{.4\linewidth}
+            \subcaption{Right-branching binarized constituent tree}
+        \end{minipage}
+        \hspace{.5cm}
+        \subfile{figures/binarization/pilot-binary.tex}
+        \hfill\null
+
+        \vspace{.5cm}
+
+        \null\hfill
+        \subfile{figures/binarization/pilot-binary-lf.tex}
+        \hspace{.5cm}
+        \begin{minipage}{.4\linewidth}
+            \subcaption{Left-branching binarized constituent tree}
+        \end{minipage}
+
+        \vspace{.5cm}
+
+        \begin{minipage}{.4\linewidth}
+            \subcaption{Head-outward binarized constituent tree with illustrated head-assignment}
+        \end{minipage}
+        \hspace{.5cm}
+        \subfile{figures/binarization/pilot-binary-ho.tex}
+        \hfill\null
+
+        \vspace{.5cm}
+
+        \caption{\label{fig:ex:binarization}
+            Comparing the left-branching, right-branching and head-outward binarization strategies for a constituent tree.
+        }
+    \end{figure}
 
     \paragraph{Minimizing Fanout or Parsing Complexity.}
     These two strategies replace non-binary nodes with a combination of new binary nodes such that an assessment function for the resulting tree is minimized.
@@ -115,40 +167,54 @@
     They are chosen such that there are represent an intermediate state in parsing the original non-binary rule.
 
     Markovization is an extension to the binarization strategies that change the constructed labels such that they contain only the symbols of the last \(h\) successors that were recently processed.
-    The value \(h\) is called the \emph{horizontal markovization window} and is considered a parameter for binarization.
+    The value \(h\) is called the \emph{horizontal Markovization window} and is considered a parameter for binarization.
     With very large values for \(h\), the symbols are unchanged in the formulation of the binarization strategy.
     If we choose a small value for \(h\), this generalizes the symbols such that they are common in binarized constituent trees where nodes with the same symbol and similar successors were binarized.
     In the edge case of \(h=0\), there is no information about the children and all symbols constructed during the binarization of a node with the same symbol are the same.
 
     Additional to the horizontal window \(h\), there is a \emph{vertical context} \(v\) that may add information from the parent symbols for each node in the constituent tree (and not just the nodes introduced during the binarization).
     With values greater than 1, the last \(v-1\) parents are added to each node in the constituent structure.
-    The additions are denoted without ambiguity, such that they can be easily removed and the original constituent tree is obtained.
-    Here, a sequence of additional parent symbols is denoted by concatenating them, interleaved by ``\cn{$\wedge$}'', to the right of the symbol.
+    Here, a sequence of additional parent symbols is denoted by concatenating them, interleaved by ``$^\wedge$'', as a superscript to the right of the symbol.
+    \Cref{fig:ex:markovization} shows an example where the node carrying the symbol \cn{np} is extended by its former parent symbol \cn{s}.
 
     \begin{figure}
-        \todo[inline]{beispiel oben im vgl. mit Markovisierung einfügen}
+        \centering
+        \subfile{figures/binarization/pilot-binary-ho-v2-h0.tex}
         \caption{\label{fig:ex:markovization}
-            Comparing two constituent trees and their binarized forms with Markovization parameters \(v=2\) and \(h=0\).}
+            A binary constituent structure obtained using the head-outward binarization strategy.
+            The artificial nodes do not include information about the successor symbols, the horizontal Markovization window is \(h = 0\).
+            The node labeled by \label{np} is extended by its parent in the original constituent structure, the vertical Markovization window is \(v = 2\).}
     \end{figure}
 
 
     \subsection{Head-Inward Transformation} \label{sec:extraction:bin:hi}
-    We experimented with grammar extraction strategies that are borrowed the field of dependency parsing, see \cref{sec:extraction:dependency,sec:experiments:hg} (this strategy is formalized as \emph{head guide}).
-    These grammars tend to be rather large and the aforementioned binarization strategies either fail to decrease their size and/or there is no intuitive strategy to assign head positions to the introduced artificial nodes, this issue is described in more detail in \cref{sec:extraction:hg:alg}.
-    We came up with the following rank transformation, and a concomitant head assignment for its result, that tackles this problem but does not yield binary trees in general.
+    A later section deals with a grammar extraction strategy that is borrowed from the field of dependency parsing, cf.\@ \emph{head guides} in \cref{sec:guides}.
+    In early experiments, the grammars obtained by this strategy tended to be rather large and the aforementioned binarization strategies either fail to decrease their size and/or there is no intuitive strategy to assign head positions to the introduced artificial nodes.
+    This issue is described in more detail at the end of \cref{sec:extraction:hg:alg}.
+    We came up with the following rank transformation, and a complementary head assignment for its result, that tackles this problem but does not yield binary trees in general.
     It can be seen as the opposite of head-outward binarization because when a node is expanded with artificial children, it does keep the child carrying the head at the topmost position.
     All other children are distributed as or into (artificial) child nodes to the left or right of this head-carrying child.
-    The process coincides with left-to-right binarization if the head assignment strictly maps each inner node to the leaf in its yield and artificial binary nodes are introduced from left to right; vice versa with right-to-left binarization.
+    The process coincides with the node splitting in right-branching binarization if the head assignment strictly maps each inner node to the leftmost leaf (and vice versa).
+    As we omit the removal of unary nodes in this transformation, the results may appear different even in said cases.
 
 %    This strategy uses the head assignment for each inner node in the constituent tree, much like the head-outward binarization strategy.
-    More formally: For each inner node \(\rho\) with \(n > 2\) successors whose head is located in the \(i\)th child (for \(i \in [n]\)), it introduces artificial binary nodes for the successors \(1, \ldots, i-1\) and \(i+1, \ldots, n\) as usual either from left to right or right to left.
+    More formally: For each inner node \(\rho\) with \(n > 2\) successors whose head is located in the \(i\)th child (for \(i \in [n]\)), it introduces artificial binary nodes for the successors \(1, \ldots, i-1\) and \(i+1, \ldots, n\) as usual with the left- and right-branching strategies, respectively.
     These artificial nodes and the \(i\)th child are attached to \(\rho\), composing a node with at most three non-leaf successors.
     For the resulting tree, there is a head assignment that preserves the head for each non-artificial node:
-        For each artificial node, it assigns the head of the left child, if the nodes were introduced from left to right and vice versa.
+        For each artificial node, it assigns the head of the left successor in case of nodes constructed using the right-branching strategy and vice versa.
     The resulting tree may be enhanced in the same manner as in the binarization processes: by Markovization, directive indicators for artificial nodes, or trailing unary nodes that conclude each sequence of introduced artificial nodes.
+    \Cref{fig:ex:head-inward} shows an example for a constituent structure obtained by this rank transformation.
 %    \begin{itemize}
 %        \item with Markovization anotations at each node,
 %        \item with indicators for the direction that was used to introduce artificial binary nodes,
 %        \item with trailing artificial unary nodes concluding each sequence of artificial binary nodes.
 %    \end{itemize}
+
+    \begin{figure}
+        \centering
+        \subfile{figures/binarization/pilot-head-inward.tex}
+        \caption{\label{fig:ex:head-inward}
+            A constituent tree obtained using the head-inward rank transformation.
+        }
+    \end{figure}
 \end{document}

@@ -14,6 +14,11 @@
     The sets of integers, naturals (including zero), positives, and rationals are denoted by $\DZ$, $\DN$, $\DN_+$, and $\DR$, respectively.
     The \deflab{range} of integers between the pair \(n, m \in \DZ\) with \(n \leq m\) is denoted by \([n,m] = \{i \in \DZ \mid n \leq i \leq m\}\).
     For any positive integer \(n\), the notion \([n]\) abbreviates \([1,n]\), and \([0]\) is the empty set \(\emptyset\).
+    A \emph{\(\DN_+\) prefix} is a set \(I \subseteq \DN_+\) such that
+    \begin{inparaitem}[]
+        \item \(1 \in I\), and
+        \item for each \(i > 1\), if \(i \in I\) then \(i-1 \in I\) as well.
+    \end{inparaitem}
 
     \paragraph{Relations.}
     Let \(A\) and \(B\) be some sets.
@@ -224,7 +229,7 @@
 
     \begin{figure}
         \null\hfill
-        \subfile{figures/example-constituents.tex}
+        \subfile{figures/example-constituents-with-annotated-components.tex}
         \hfill\null
 
         \caption{\label{fig:pre:ctree}

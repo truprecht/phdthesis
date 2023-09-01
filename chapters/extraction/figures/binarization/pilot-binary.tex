@@ -1,0 +1,46 @@
+\documentclass[../../../../document.tex]{subfiles}
+
+\begin{document}
+    \begin{tikzpicture}[
+        edge from parent path={(\tikzparentnode.south) -- ++(0,-.5ex) -| (\tikzchildnode.north)},
+        every path/.style={line width=.2ex},
+        level distance=4ex,
+        anchor=center,
+        every node/.style={font=\small},
+        baseline=(np.base)
+        ]
+        \matrix (pos) [matrix of nodes, every node/.style={anchor=center, inner sep=0pt}, column sep=4ex, row sep=1mm] {
+            \cn{cc} & \cn{advp+rb} & \cn{md} & \cn{prp} & \cn{nn} & \cn{.}\vphantom{\cn{prp}} \\
+            \tn{And}\strut & \tn{neither}\strut & \tn{can}\strut & \tn{your}\strut & \tn{pilot}\strut & \tn{.}\strut \\
+        };
+
+        \node[above=35mm of pos-1-3] {\cn{s}}
+        child{node[above=1mm of pos-1-1] {1}}
+        child {
+            node {\cn{s}\binsym{\cn{advp}, \cn{md}, \cn{np}, \cn{.}}}
+            child {node[above=1mm of pos-1-2] {2}}
+            child {
+                node {\cn{s}\binsym{\cn{md}, \cn{np}, \cn{.}}}
+                child {
+                    node[above=1mm of pos-1-3] {3}}
+                child {
+                    node {\cn{s}\binsym{\cn{np}, \cn{.}}}
+                    child {node  (np){\cn{np}}
+                        child {node[above=1mm of pos-1-4] {4}}
+                        child {
+                            node[above=1mm of pos-1-5] {5}}}
+                    child {node[above=1mm of pos-1-6] {6}}}}};
+
+        % redraw corssing edges with white foundation
+        %        \begin{scope}
+            %            \draw[white, line width=1ex] (vp2.south) ++(-.5ex,-.5ex) -| (term4.north);
+            %            \draw (vp2.south) -- ++(0,-.5ex) -| (npr.north);
+            %            \draw (vp2.south) -- ++(0,-.5ex) -| (np1.north);
+            %            \draw[double] (vp2.south) -- ++(0,-.5ex) -| (term4.north);
+            %
+            %            \draw[white, line width=1ex] (vp1.south) -- ++(0,-.5ex) -| (term3.north);
+            %            \draw (vp1.south) -- ++(0,-.5ex) -| (vp2.north);
+            %            \draw[double] (vp1.south) -- ++(0,-.5ex) -| (term3.north);
+            %        \end{scope}
+    \end{tikzpicture}
+\end{document}

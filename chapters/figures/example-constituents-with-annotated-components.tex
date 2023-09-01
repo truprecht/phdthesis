@@ -52,5 +52,48 @@
           \draw (s.south) -- ++(0,-1ex) -| (np.north);
           \draw (s.south) -- ++(0,-1ex) -| (vp1.north);
       \end{scope}
+
+        \coordinate[right=1em of pos] (highlights);
+        \begin{scope}[gray,every node/.style={align=center, text width=3.5cm}]
+          \draw (sbar.north-|highlights)
+                    edge[decorate,decoration=brace]
+                    node[right] (cnlabel) {constituent symbols}
+                (prt.south-|highlights);
+            \node at (cnlabel|-term1) {\abrv{pos} symbols};
+            \node at (cnlabel|-pos) {tokens};
+        \end{scope}
+
+
+    \matrix[right=4cm of pos.south east, anchor=south west] (rpos) [matrix of nodes, outer sep=0pt, inner sep=0pt, row sep=2ex, column sep=7pt] {
+      \cn{wrb}   & \cn{pt}  & \cn{nn}  & \cn{vbd} & \cn{vbn} & \cn{rp}  \\
+      where & the & survey  & was & carried & out \\};
+
+    \begin{scope}[every node/.style={inner sep=2pt, font=\small}, level distance=4ex]
+        \node[above=21.5ex of rpos-1-4, xshift=2ex] (sbar) {\cn{sbar}}
+        child { node {\cn{s}}
+            [sibling distance=6.5em]
+            child { node {\cn{vp}}
+                [sibling distance=5em]
+                child { node {\cn{vp}}
+                    [sibling distance=2em]
+                    child { node (wh) {\cn{wh}}
+                        child {node  {1} }}
+                    child { node[yshift=-4ex] {5} }
+                    child { node {\cn{prt}}
+                        child { node {6} }}}
+                child { node[yshift=-8ex] {4} }}
+            child { node[yshift=-8ex] {\cn{np}}
+                [sibling distance=2em]
+                child { node {2} }
+                child { node {3} }}};
+    \end{scope}
+    \coordinate[left=1ex of wh] (highlights);
+
+    \begin{scope}[gray,every node/.style={align=left, text width=3.5cm, draw}]
+      \draw (wh.south-|highlights)
+                edge[decorate,decoration={brace,aspect=0.45}]
+            (sbar.north-|highlights);
+    \end{scope}
+
    \end{tikzpicture}
 \end{document}

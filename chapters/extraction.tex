@@ -2,11 +2,10 @@
 
 \begin{document}
     \chapter{Lexical Grammar Extraction from Treebanks}
-    This chapter deals with the extraction of supertag grammars from treebanks.
-    Here, the term \emph{supertag grammar} is understood as a lexical instance of any grammar formalism where the only terminal symbol occurring in the rules is a wildcard, which will be denoted by \tn{*}.
-    Each rule in the instance of such a formalism is called a \emph{supertag}.
+    This chapter deals with the extraction of supertag blueprints from treebanks.
+    A supertag blueprint is understood as a lexical grammar rule where the terminal symbol is a wildcard, which will be denoted by \tn{*}.\todo{Begriffserklärung und Übersicht zu Parsing via Supertagging in Einleitung}
     In this chapter, we will consider the three previously discussed formalisms: \abrv{lcfrs}, \abrv{dcp}, and hybrid grammars.
-    Beyond the previous definitions, there are two small extensions to \abrv{lcfrs} and \abrv{dcp}:
+    Beyond the previous description of supertag blueprints, there are two small extensions in the case of \abrv{lcfrs} and \abrv{dcp} as underlying formalisms:
     \begin{compactenum}
         \item
             In the case of \abrv{lcfrs}, there is a boolean (i.e.\@ either it is present or not) label that accompanies each rule.
@@ -16,7 +15,7 @@
             It will indicate the maximum fanout that is admissible during parsing.
     \end{compactenum}
     These extensions are considered an integral part of each supertag for the parsing process.
-    Their purpose will be further discussed in \cref{sec:extraction:readoff,sec:extraction:guided}.
+%    Their purpose will be further discussed in \cref{sec:extraction:readoff,sec:extraction:guided}.
     These two additions will not be part in the case of instances of hybrid grammars, even though they are a combination of \abrv{lcfrs} and \abrv{dcp} grammars.
 
     There are two approaches for the extraction described in this chapter:
@@ -30,17 +29,14 @@
             In the following, it extracts a derivation of lexical grammar rules according to the positions assigned to the inner nodes in each subtree.
     \end{compactenum}
 
-    \todo{Can the guided extraction be implemented for lexical lcfrs? -- the already existing marker `swapped` can be abused to give the transportation direction}
-    \todo{describe some common topics: extracted grammar = set of all extracted rules, wildcard as terminal, sentence position as terminal during extraction}
-    \todo{describe why binarization is a common topic for both extraction algorithms}
-    \todo{discuss why we show both extractions if the first is an instance of the second: it is not that the guided extraction cannot be implemented for lcfrs rules + swapped annotation, but the different concept of transportation vs. guides}
-
+%    \todo{discuss why we show both extractions if the first is an instance of the second: it is not that the guided extraction cannot be implemented for lcfrs rules + swapped annotation, but the different concept of transportation vs. guides}
+    
     \subfile{extraction/binarization.tex}
     \subfile{extraction/lcfrs-lexicalization.tex}
     \subfile{extraction/guided-extraction.tex}
 
-    \ifSubfilesClassLoaded{%
-        \printindex
-        \bibliography{../references}%
-    }{}
+%    \ifSubfilesClassLoaded{%
+%        \printindex
+%        \bibliography{../references}%
+%    }{}
 \end{document}

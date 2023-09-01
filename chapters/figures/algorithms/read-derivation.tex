@@ -1,0 +1,26 @@
+\documentclass[../../../document.tex]{subfiles}
+
+\begin{document}
+    \begin{algorithmic}[1]
+        \Require{A sentence of length $n \in \DN_+$}
+        \Require{A chart $C$ as computed by \Call{fillChart}{$\ldots$}}
+        \Require{A weight assignment $W$ as computed by \Call{fillChart}{$\ldots$}}
+        \Require{A set of root nonterminals $S$}
+        \Function{readDerivation}{$C$, $W$, $S$}
+            \If{there is no $A \in S$ such that $C_{(A, [n])} \neq \emptyset$}
+                \State{\textbf{fail}}
+            \EndIf
+            \State{$A := \argmin_{B \in S} W_{(B, [n])}$}
+            \State{\Return \Call{descent}{$A$, $[n]$}}
+        \EndFunction
+        \Function{descent}{$A$, $L$}
+            \State{$(A \to c\,(B_1, \ldots, B_k), f), L_1 \ldots L_k := $ first element in $C_{(A, L)}$}
+            \For{$i$ in $[k]$}
+                \State{$d_i := \Call{descent}{B_1, L_1}$}
+            \EndFor
+            \State{\Return $A \to c\,(B_1, \ldots, B_k) \; (d_1, \ldots, d_k)$}
+        \EndFunction
+    \end{algorithmic}
+\end{document}
+
+
