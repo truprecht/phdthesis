@@ -13,7 +13,7 @@
         \item\label{parsing:item:2}
             The supertags are combined into a weighted grammar.
             A statistical parsing\todo{clearly distinguish statistical grammar parsing from the whole process} process for the grammar formalism is used to find derivations for the sequence of consecutive positions in the input sentence.
-            If reranking is used, then this step yields a collection of \(k\) best derivation trees, where \(k \in \DN_+\) is a hyperparameter and \emph{best} refers to an endorelation on the weights (e.g.\@ highest probability).
+            If reranking is used, then this step yields a collection of \(k\) best derivation trees, where \(k \in \DN_+\) is a hyperparameter and \emph{best} refers to an endorelation on the weights (e.g.\@ lowest cost or highest probability).
             Otherwise, it yields \emph{a best} derivation.
         \item\label{parsing:item:3}
             The derivations are converted into constituent structures by evaluating the \abrv{dcp} compositions or (in case of \abrv{lcfrs} supertags) assuming the nonterminals as inner nodes.
@@ -176,21 +176,174 @@
     From right to left, we check the order using the least positions included in intermidiate results as in line 17 and line 25.
     If we would investigate the successors in the other direction, then we could not distinguish the least positions starting with the second successor as we only store the union.
     
-    \paragraph{Step \ref{step:parsing:derivation}}
-    The listing of \cref{alg:alg:parsing:deriv} shows how these two structures are used to determine the least parse for the input sentence.
-    
     \begin{algorithm}
         \caption{\label{alg:parsing:deriv}
-            Reading the best derivation after computing the chart as shown in \cref{alg:parsing:dcp}.
+            Illustration for the enumeration of $k$ best derivations from a parse chart that was obtained as illustrated in \cref{alg:parsing:chart}.
+            This is a direct adaption of the algorithm presented by \citet{HuangChiang05}.
+            This illistration is split and continues on the following page.
         }
         \subfile{figures/algorithms/read-derivation.tex}
     \end{algorithm}
-
-
+    
+    \begin{algorithm}\ContinuedFloat
+        \caption{
+            (Coninued from the previous page)
+        }
+        \subfile{figures/algorithms/kbest-read.tex}
+    \end{algorithm}
+    
+    \paragraph{Step \ref{step:parsing:derivation}}
+    The listing of \cref{alg:alg:parsing:deriv} shows how the parse chart \(C\) and the weight assignment \(W\) obtained in the previous step are used to enumerate derivation trees with increasing weight.
+    The algorithm is derived from \citet[Algorithm 2, 3 and 4]{HuangChiang05} with some adjustments to accomodate our grammar format (i.e.\@ multiple initial nonterminals, non-binary grammars, and the form of \abrv{dcp} supertags).
+    In the following we will refer to this publication as \abrv{hc} when we compare the two algorithms.
+    Aside from the two structures \(C\) and \(W\), our illustration of the algorithm expects the following inputs: the length \(n\) of the sentence to parse, the prediction confidence assignment \(\mu\colon S \to \DR\) for each supertag, and a set of initial nonterminals.
+    In it, we observe tuples of the following two forms:
+    \begin{itemize}
+        \item
+            \((A, L, k')\) where \(A\) is a nonterminal, \(L\) is a set of sentence positions, and \(k'\) is an integer less or equal \(k\); e.g. in the subscript of \(D\) and \(W\) or as parameters of the function \textsc{chkNode}.
+            Intuitively these tuples extend the concept of passive parse items by the index \(k'\).
+            Each occurence of such a tuple is a reference to the \(k'\)th derivation starting with the nonterminal \(A\) with the yield \(L\) among a sequence of at most \(k\) best derivations.
+            Let us call these tuples \emph{indexed passive items}.
+        \item
+            \((r, \vec{L}, \vec{k})\) where \(r\) is a supertag, \(\vec{L}\) is a sequence of sets of sentence positions and \(\vec{k}\) is a sequence of integers less or equal \(k\) such that the length of \(\vec{L}\) and \(\vec{k}\) is the arity of the grammar rule in \(r\); e.g.\@ as parameters of the function \textsc{chkEdge} and in line 24.
+            This notation further extends the previous tuple form by specifying the root and direct children of the referenced derivation:
+                Its root is \(r\) and the children are recursively specified by the \abrv{rhs} nonterminals in the grammar rule in \(r\), lets denote them by \(\vec{B}\), and the two sequences \(\vec{L}\) and \(\vec{k}\).
+                The \(i\)th child is the \(\vec{k}_i\)th derivation starting with nonterminal \(\vec{B}_i\) with the yield \(\vec{L}_i\).
+                Or in terms of the previous tuple form it is referenced as \((\vec{B}_i, \vec{L}_i, \vec{k}_i)\).
+            Let us call these tuples \emph{indexed derivation nodes}.
+    \end{itemize}
+    As the second form suggests, the algorithm determines a \(k'\)th derivation by its root node and then recurses by referencing its direct children.
+    In the following we will describe this principle in more detail by focussing on the collections that are used to store intermediate results and each individual procedure and function in the illustration.
+    There are four collections that are used throughout the algorithm:
+    \begin{itemize}
+        \item A family of priority queues \(H\) indexed by combinations of nonterminal symbols and sets of sentence positions is used to store candidate indexeded derivation nodes.
+            Each queue's elements is considered with the sum of the weights assigned by the prediction confidence and the weight computed for its children as expressed in the function \textsc{weight} in lines 5--6.
+        \item A family of sets of index sequences \(E\) that is used to avoid constructing the indexed derivation nodes twice.
+        \item A family of indexed derivation nodes \(D\) indexed by indexed passive items stores the intermediate results of the process.
+            Per indexed passive item it stores the root node and references to children as explained above to recursively express a derivation tree.
+        \item An assignment \(W'\) of a weight to each indexed passive item stores the weight of the according derivation in the sequence of $k$ best derivations.
+            It extends the weight assignment \(W\) computed by \textsc{fillchart}.
+    \end{itemize}
+    The functions and procedures are as follows:
+    \begin{itemize}
+        \item \textsc{weight} as mentioned before, computes the weight of a derivation represented by an indexed derivation node.
+            It is the sum of the prediction confidence for the included supertag plus the weight of its child indexed passive item that is computed in the function \textsc{chkNode} and stored in line 31.
+        \item \textsc{successors} constructs a set of index sequences for successor items that are considered an increment of its argument.
+            It contains the sequences that are increased in exactly one position by one and the rest remains equal.
+            This procedure corresponds to the strategy in \abrv{HL} (explained in their section 4.2) where the next best derivation with a fixed root must differ from current one by at most one child.
+        \item \textsc{chkEdge} lifts the function \textsc{chkNode} to the successors of its argument indexed derivation node.
+            If any indexed passive item among the successors does not exists it returns "False" to represent that the indexed derivation node does not exist as well, otherwise it returns "True".
+        \item \textsc{chkNode} determines if a derivation for an indexed passive item exists and computes the necessary intermidiate results to determine the derivation.
+            Starting with the lines 20--21, it initializes a queue \(H_{(A, L)}\) of indexed derivation nodes for each link in the parse chart.
+            Each successor index sequence only consists of the index 1 during the initialization as we start with the best derivations.
+            Next follows a loop in lines 22--32 where each iteration determines one indexed derivation node until the \(k\)th is found.
+            The loop starts with a re-population of the queue \(H_{(A, L)}\) in lines 23--26:
+                If there is an indexed derivation node in the intermediate results \(D_{(A, L)}\), then it adds the indexed derivation nodes with incremented successor index sequence as obtained by the function \textsc{successors}.
+            If the heap stays empty after this step of re-population, then there are no further candidates and we abort in lines 27--28.
+            In the remaining three lines, we obtain the indexed derivation node for the next best derivation (line 29) and store it and its weight in the collections $D$ (line 30) and $W'$ (line 31) respectively.
+        \item \textsc{readDerivation} constructs the derivation for an indexed passive item.
+            It determines the indexed derivation node from the collection \(D\), assumes its grammar rule as root and obtains the children by recursive calls withe the successor indexed passive items.
+        \item \textsc{kBestDerivations} is the entry point of the algorithm as it wraps the other functions and procedures enumerate the sequence of at most \(k\) best derivations.
+            It uses a similar strategy as in function \textsc{chkNode} to populate a queue of initial nonterminals with index to determine the indexed passive items in order of their weight.
+            Note that before such an initial indexed passive item is passed to the function \textsc{readDerivation} in line 45, the function \textsc{chkNode} must be called with it as an argument in either condition of line 9 or 15.
+            It is necessary as the function \textsc{chkNode} prepares the collection \(D\) used to determine the derivations.
+    \end{itemize}
+    \todo[inline]{Referenzen in Beschreibung an \abrv{hc}, Tupelformen entsprechen Knoten/Kanten im Hypergraph nach der Beschreibung von \abrv{hc}}
+    
+    \paragraph{Some Notes on the Implementation of the Algorithms}
+    In our implementation, the algorithms above are augmented with some well-established techniques either generally in programming or in the field of parsing.
+    The most notable are as follows:
+    \begin{itemize}
+        \item The sets of sentence positions that occurr throughout both \cref{alg:parsing:chart,alg:parsing:kbest} (e.g.\@ in the index of the collections \(C\), \(W\) and \(D\) as well as in the parse items) are expressed as sequences of \emph{spans} of the form \(((l_1, r_1), \ldots, (l_s, r_s))\) where \(s \in \DN_+\) and \(l_1,\ldots,l_s,r_1,\ldots,r_s \in [0,n]\) and \(n \DN_+\) is the sentence length.
+            Such a sequence must contain non-overlapping and non-bordering spans in increasing order from left to right, therefore each pair of neighbouring indices are strictly increasing \(r_i < l_{i+1}\) for \(i \in [s-1]\).
+            Sequences of spans are a technique in the field of discontinuous parsing \citep[e.g.][cf.\@ range vector in def.\@ 6.6]{Kal10}.
+            These span sequences are more efficient in storing the sets of positions and computing the union, when \(s\) is much smaller than the set of positions in the spans (which is usually the case).
+            Moreover, the minimum \(l_1\) and the fanout \(s\) are easily accessible.
+        \item The queues \(Q\) in \cref{alg:parsing:chart} and \(H_{(A,L)}\) in \cref{alg:parsing:kbest} are implemented using the \emph{heap} data structure.
+            It allows us to efficiently access the minimal element.
+        \item Objects that occur repeatedly without any structural investigation are mapped to (and replaced by) integers for efficient storage and comparisons; this process is called \emph{integerizing}.
+            A trivial example are nonterminal symbols, wich are only used in comparisons to find matching rules during the parsing process.
+            But also tuples of the form \((A, L)\) for a nonterminal \(A\) and set of sentence position \(L\) are integerized during the implementation of both \cref{alg:parsing:chart,alg:parsing:kbest} because they are used so frequently as indices.
+        \item The collections expressed as families in both \cref{alg:parsing:chart,alg:parsing:kbest} are implemented either as \emph{hash maps} or as \emph{lists} when the index is integerized.
+            Even though they are denoted with an initial value for each index in both \cref{alg:parsing:chart,alg:parsing:kbest}, they are empty at start and assume these values implicitly if there is no entry for the index.
+            Otherwise collections with indices containing a subset of sentence positions like \(C\) and \(W\) would be highly infeasible.
+    \end{itemize}
+    
     \section{Reranking}
-
+    This section focusses on a refinement procedure that we use to pick one final constituent tree among a sequence of \(k\) parses.
+    A \deflab{reranking} process is itself an empirical prediction that assesses a previous empirical prediction by assigning confidence values to each label in conjunction with its prior confidence value.
+    In the case of reranking in the field of parsing, it takes the predicted sequece of \(k\) best parses, each complemented with the score of the parse, and computes a new score for each parse tree; we use the best among these new scores to pick the final parse tree.
+    The concept of reranking has its tradition in recommender systems, a discipline in the field of machine learning that focusses on recommending products to individuals by assigning a match score to each pair.
+    Reranking is used in this context to further assess matches that were obtained in a query by a prior prediction model. \citep{???}
+    
+    Formally, we define a \emph{reranking} process as follows:
+        Let \(Y\) be a set of labels, \(\mathcal{C}\) a set of confidence values.
+        A reranker is a function \(\psi \colon Y \times \mathcal{C} \to \mathcal{C}\) that assigns a confidence value to each pair of a label and \emph{prior} confidence value.
+    Often, only only a tiny fraction \(\hat{Y} \subseteq Y\) of the set of labels, called \emph{search space}, is considered for the reranking process.
+    In the case of reranking in parsing, the search space is the collection of constituent trees in a \(k\) best sequence and the reranking process is used to find the highest scoring among those.
+    Let \((t_1, \ldots, t_k) \in Y^k\) be such a sequence of \(k\) labels and \(\phi \colon Y \to C\) an assignment of prior confidence values.
+    We call the \(\psi\)-\deflab{pick} among \(t_1 \ldots t_k\) the tree that maximizes the reranker \(\psi\)'s confidence value, i.e. \(
+        \hat{t} = \argmax_{t \in \hat{Y}} \psi(t, \phi(t))
+    \) where \(\hat{Y} = \{t_i \mid i \in [i]\}\) is the search space.
+    
+    Reranking has quite a history in parsing.
+    One track of research driven by \citet{collins2001convolution,shen2003svm,collins05,huang2008forest} i.a.\@ defined discriminative classifiers that predict assessment scores for constituent trees in the form described above.
+    Their reranking models consist of two parts:
+        a \emph{feature extraction} procedure that maps each constituent tree into a vector, and a function that maps each vector to a score.
+    The latter part was often realized as a support vector machine or perceptron, as they are computanionally efficient in both learning and prediction, and they are interpretable.
+    These reranking models are used to score the constituent trees obtained from a parser based on context-free grammars, which are known to be highly ambiguous on their own when it comes to parsing natural languages.
+    \citet{collins2001convolution, shen2003svm} define features from the training set of constituent trees by counting the occurring tree fragments.\footnote{
+        A tree fragment is a coherent part that occurs a constituent tree.
+        Each subtree is a tree fragment, and beyond that a fragment may also end at an inner node.
+        E.g.\@ \(\cn{s} (\cn{vp} (\cn{vp} \tn{was}), \cn{np})\) is a fragment in our running example "where the survey was carried out".
+        As there is a vast amount of such fragments in a whole treebank, \citet{collins2001convolution} define a kernel function that counts the tree fragments occurring commonly in two constituent trees.
+        The use of tree fragments strongly relates this strategy to the approach of \emph{data oriented parsing}. \citep{Bod02}
+    }
+    \citet{collins05,charniak2005coarse} define a hand-craftet set of feature patterns that are instantiated using the constituent trees in a training set.
+    Both of these methods used their rerankers for a pick among an sequence of \(n\) best constituent trees.
+    \citet{huang2008forest} introduced an approach that applies the reranking mechanism to a parse chart, practically eliminating the restriction to a limited number of constituent trees.
+    However, this is only an approximative solution.
+    The general training procedure for the reranker is common among the approaches:
+        Parse charts or \(n\) best sequences of constituent trees are obtained from sentences in the training set with an off-the-shelf parser and context-free grammars that are obtained from the training set as well.
+        To simulate disjoint data used for obtaining the grammars and parsing the sentences (but both coming from the training set), they define hold-out data by principle of cross validation.
+        This obtained data is used to extract the features and train a discriminative classifier for deciding among the candidate parse trees.
+        
+    Another track that fits into the concept of reranking are coarse-to-fine approaches among grammar formalisms.
+    These approaches define pipelines that concists of multiple parsing stages, and a coarser/finer relation on the used grammar formalism or instances, respectively.
+    Comparing two stages, the earlier uses a coarser and the later a finer formalism/instance; the later stage uses the results of its predecessors to filter unviable items during its own parsing process; we consider each stage after the first a reranking process that refines the result of the previous one.
+    \citet{Charniak06} use probabilistic context-free grammars for parsing and define the carser/finer relation over the nonterminal symbols.
+    They start with defining a usual (binarized and Markovized) treebank grammar at the finest level, and construct a coarser grammar by replacing nonterminal symbols with equivalence classes.
+    This is repeated 3 times in total (so there are 4 stages), the coarsest stage uses merely one nonterminal (next to an artificial root nonterminal).
+    \citet{Cranenbourgh16} uses three different probabilistic grammar formalisms for parsing: context-free grammars, \abrv{lcfrs} and data-oriented parsing; which are considered in that order from coarse to fine.
+    Both approaches describe a filtering mechanism by relating nonterminals (and thus parse items) between stages and testing in the finer stage if the related parse item existed or is better than some threshold weight, respectively.
+    \citet{Denkinger18} used a similar technique but with automata formalisms instead of grammar formalisms.
+    Togehter, we implemented a coarse-to-fine parser that uses two stages with, one with a context-free grammar and the other with an \abrv{lcfrs}. \citep{RupDen19} 
+    
+    In this work, we rerank constituent trees using the \defabrv{discontinuous data-oriented parsing}{disco-dop} formalism, which was characterized as an instance of \abrv{lcfrs} with latent annotations \citep[cf.\@ section~4]{Cranenbourgh11} and hence hybrid grammars. \citep[cf.\@ section~8.5.1]{Geb20}
+    The formalism was introduced by \citet{Cranenbourgh11} as a generalization of data-oriented parsing \citep{Bod02} to the case of discontinuou constituent structures, as its name suggests.
+    The grammars consist of constituent tree fragments with subsitution sites at leaves that carry nonterminal symbols.
+    To accomodate the discontinuities, each tree fragments is complemented by an \abrv{lcfrs} composition that restricts the substitution in consideration of the terminal symbols occurring in the tree fragments.
+    \Cref{ex:dop} shows an example of a disco-dop grammar.
+    Following \citet{Cranenbourgh16}, we use the \emph{double dop} extraction approach for discontinuous constituent trees.
+    It extracts rules for each constituent tree fragment in the training set that occurs at least twice.
+    We estimate probabilistic weights for each rule by conditioning the \abrv{lhs} nonterminal/root constituent symbol.
+    However, in contrast to the coarse-to-fine approach described by the authots, we do not define a filtering mechanism based on the parse chart from the previous part of the parsing pipeline, but view the disco-dop reranking as a completely separate process for weighting each single constituent tree in a \(k\) best parsing sequence.
+    Therefore, we augment the usual parsing procedure for \abrv{lcfrs} (which can be used for disco-dop) such that it can only produce derivations for the input constituent tree by matching its nodes.
+    Moreover, we slightly diverge from the weight structure used in the remainder of this work:
+        In this case we do not use the Viterbi-equivalent sum and maximum operations with logarithms of proabilistic values, but the pababilistic product and sum operations.
+    These augmentations are straight-forward and we refrain from a further elaboration of the parsing process.
+    
+    %\begin{example}
+        
+    %\end{example}
+    
+    %\begin{figure}
+    %    \subfile{figures/example-constituents.tex}
+        
+    %\end{figure}
+    
     \ifSubfilesClassLoaded{%
         \printindex
-        \bibliography{../references}%
+        \bibliography{../refeferences.bib}%
     }{}
 \end{document}

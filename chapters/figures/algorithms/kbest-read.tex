@@ -1,0 +1,31 @@
+\documentclass[../../../document.tex]{subfiles}
+
+\begin{document}
+    \begin{algorithmic}[1]
+        \ifSubfilesClassLoaded{\State{}\Comment{The line numbers will be fixed when the whole document is compiled.}}{\algrestore{alg:kbest}}
+        \Function{readDerivation}{$A$, $L$, $k$}
+            \State{let $((A \to c\,(B,\ldots,B_\ell), f), L_1 \ldots L_\ell, k_1 \ldots k_\ell)$ be the \(k\)th element in \(D_{(A, L)}\)}
+            \For{$i$ in $1, \ldots, \ell$}
+                \State{$d_i := \Call{readDerivation}{B_i, L_i, k_i}$}
+            \EndFor
+            \State{\Return $A \to c\,(B_1, \ldots, B_k) \; (d_1, \ldots, d_k)$}
+        \EndFunction
+        
+        \Procedure{kBestDerivations}{$k$}
+            \State{$H' := \emptyset$}
+            \For{each initial nonterminal $A$ such that $\Call{chkNode}{A, [n], 1}$}
+                \State{add $(A, 1)$ to $H'$}
+            \EndFor
+            \For{$i$ in $1, \ldots, k$}
+                \State{$(A, k') := \argmin_{(\hat{A}, \hat{k}) \in H'} W_{(\hat{A}, [n], \hat{k})}'$}
+                \State{remove $(A, k')$ from $H'$}
+                \State{enumerate $\Call{readDerivation}{A, [n], k'}$}
+                \If{$i<k$ and $\Call{chkNode}{A, [n], k'+1}$}
+                    \State{add $(A, k'+1)$ to $H'$}
+                \EndIf
+            \EndFor
+        \EndProcedure
+    \end{algorithmic}
+\end{document}
+
+

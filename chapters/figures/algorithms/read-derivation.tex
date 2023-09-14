@@ -3,23 +3,60 @@
 \begin{document}
     \begin{algorithmic}[1]
         \Require{A sentence of length $n \in \DN_+$}
+        \Require{A weight assignment for supertags $\mu\colon S \to \DR$}
         \Require{A chart $C$ as computed by \Call{fillChart}{$\ldots$}}
         \Require{A weight assignment $W$ as computed by \Call{fillChart}{$\ldots$}}
         \Require{A set of root nonterminals $S$}
-        \Function{readDerivation}{$C$, $W$, $S$}
-            \If{there is no $A \in S$ such that $C_{(A, [n])} \neq \emptyset$}
-                \State{\textbf{fail}}
-            \EndIf
-            \State{$A := \argmin_{B \in S} W_{(B, [n])}$}
-            \State{\Return \Call{descent}{$A$, $[n]$}}
+        
+        \State{$H := (H_{(A, L)} := \mathbf{undefined} \mid A \in N, L \subseteq [n])$}
+        \State{$E := (E_{(A, L)} := \emptyset \mid A \in N, L \subseteq [n])$}
+        \State{$D := (D_{(A, L, i)} := \mathbf{undefined} \mid A \in N, L \subseteq [n], i \in [k])$}
+        \State{$W' := (W'_{(A, L, i)} := \text{$W_{(A, L)}$ if $i>1$ else $\infty$} \mid A \in N, L \subseteq [n], i \in [k])$}
+        
+        \Function{weight}{$(A \to c\,(B_1, \ldots, B_\ell), f)$, $L_1 \ldots L_\ell$, $k_1 \ldots k_\ell$}
+            \State{\Return $\mu(r) + \sum_{i = 1}^{\ell} W'_{(B_i, L_i, k_i)}$}
         \EndFunction
-        \Function{descent}{$A$, $L$}
-            \State{$(A \to c\,(B_1, \ldots, B_k), f), L_1 \ldots L_k := $ first element in $C_{(A, L)}$}
-            \For{$i$ in $[k]$}
-                \State{$d_i := \Call{descent}{B_1, L_1}$}
+        
+        \Function{successors}{$k_1 \ldots k_\ell$}
+            \State{\(K := \emptyset\)}
+            \For{$i \in 1, \ldots, \ell$}
+                \State{$k'_j := k_j$ for each $j$ in $1, \ldots, \ell$}
+                \State{$k'_i := k_i+1$}
+                \State{add $(k_1', \ldots, k_\ell')$ to $K$}
             \EndFor
-            \State{\Return $A \to c\,(B_1, \ldots, B_k) \; (d_1, \ldots, d_k)$}
+            \State{\Return $K$}
         \EndFunction
+    
+        \Function{chkEdge}{$(A \to c\,(B_1, \ldots, B_\ell), f), L_1 \ldots L_\ell, k_1 \ldots k_\ell$}
+            \For{$i$ in $1, \ldots, \ell$}
+                \If{$\Call{exploreKthBestNode}{B_i, L_i, k_i}$ is False}
+                    \State{\Return False}
+                \EndIf
+            \EndFor
+            \State{\Return True}
+        \EndFunction
+    
+        \Procedure{chkNode}{$A, L, k$}
+            \If{$H_{(A, L)}$ is \textbf{undefined}}
+                \State{$H_{(A, L)} := \{(r, \vec{L}, 1^{|\vec{L}|}) \mid (r, \vec{L}) \in C_{(A,L)}\}$}
+            \EndIf
+            \While{$|D_{(A, L)}| < k$}
+                \If{$|D_{(A, L)}| > 0$}
+                    \State{$(r, \vec{L}, \vec{k}) :=$ the last element in the sequence $D_{(A, L)}$}
+                    \For{$\vec{k}'$ in $\Call{successors}{\vec{k}}$ such that \((r, \vec{L}, \vec{k}') \notin E_{(A, L)}\) and $\Call{chkEdge}{r, \vec{L}, \vec{k}'}$}
+                    \State{add $(r, \vec{L}, \vec{k}')$ to $E_{(A, L)}$ and to \(H_{(A, L)}\)}
+                \EndFor
+                \EndIf
+                \If{$H_{(A, L)} = \emptyset$}
+                    \State{\Return False}
+                \EndIf
+                \State{$(r, \vec{L}, \vec{k}) = \argmin_{(\hat{r}, \hat{\vec{L}}, \hat{\vec{k}}) \in H_{(A, L)}} \Call{weight}{\hat{r}, \hat{\vec{L}}, \hat{\vec{k}}}$}
+                \State{add $(r, \vec{L}, \vec{k})$ to \(D_{(A, L)}\)}
+                \State{update $W_{(A, L, k)}' := \Call{weight}{r, \vec{L}, \vec{k}}$}
+            \EndWhile
+            \State{\Return True}
+        \EndProcedure
+        \ifSubfilesClassLoaded{}{\algstore{alg:kbest}}
     \end{algorithmic}
 \end{document}
 
