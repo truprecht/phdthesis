@@ -1,0 +1,37 @@
+\documentclass[../../document.tex]{subfiles}
+
+\begin{document}
+    \begin{tikzpicture}[node distance=1.8cm, sibling distance=2.2em, snode/.style={rectangle split, rectangle split parts=2, inner ysep=1pt}, every second node part/.style={font=\tiny}]
+        \node[snode] (root1) {\cn{sbar}\nodepart{second}\((\x_1^1 \x_2^1 \x_1^2)\)}
+            [level distance=1.8em]
+            child {node {\cn{s}}
+                child {node[snode] {$\cn{vp}_2$\nodepart{second}\((\x_1^1, \x_1^2)\)}}
+                child {node[snode] {\cn{np}\nodepart{second}\((\x_2^1)\)}}};
+        
+        \node[snode, right=of root1] (np) {\cn{np}\nodepart{second}\((0\,1)\)}
+            [level distance=2em]
+            child {node[snode] {\cn{pt}\nodepart{second}\((0)\)}}
+            child {node[snode] {\cn{nn}\nodepart{second}\((1)\)}};
+        
+        \node[snode, below=of root1] (vp) {$\cn{vp}_2$\nodepart{second}\((0, 1\,2)\)}
+            [level distance=2.2em]
+            child {node {\cn{wh}}
+                [level distance=1.8em]
+                child {node[snode] {\cn{wrb}\nodepart{second}\((0)\)}}}
+            child {node[snode] {\cn{vbn}\nodepart{second}\((1)\)}}
+            child {node {\cn{prt}}
+                [level distance=1.8em]
+                child {node[snode] {\cn{rp}\nodepart{second}\((2)\)}}};
+        
+        \node[snode, below=1.2cm of np] (root2) {\cn{sbar}\nodepart{second}\((\x_1^1\,0\,1\,\x_1^2)\)}
+            [level distance=1.8em]
+            child {node {\cn{s}}
+                child {node[snode,xshift=-1ex] {$\cn{vp}_2$\nodepart{second}\((\x_1^1, \x_1^2)\)}}
+                child {node {\cn{np}}
+                    [level distance=2em]
+                    child {node[snode] {\cn{pt}\nodepart{second}\((0)\)}}
+                    child {node[snode] {\cn{nn}\nodepart{second}\((1)\)}}}};
+    \end{tikzpicture}
+\end{document}
+
+

@@ -324,23 +324,41 @@
     The grammars consist of constituent tree fragments with subsitution sites at leaves that carry nonterminal symbols.
     To accomodate the discontinuities, each tree fragments is complemented by an \abrv{lcfrs} composition that restricts the substitution in consideration of the terminal symbols occurring in the tree fragments.
     \Cref{ex:dop} shows an example of a disco-dop grammar.
-    Following \citet{Cranenbourgh16}, we use the \emph{double dop} extraction approach for discontinuous constituent trees.
+    Following \citet{San11, Cranenbourgh16}, we use the \emph{double dop} extraction approach for discontinuous constituent trees.
     It extracts rules for each constituent tree fragment in the training set that occurs at least twice.
-    We estimate probabilistic weights for each rule by conditioning the \abrv{lhs} nonterminal/root constituent symbol.
-    However, in contrast to the coarse-to-fine approach described by the authots, we do not define a filtering mechanism based on the parse chart from the previous part of the parsing pipeline, but view the disco-dop reranking as a completely separate process for weighting each single constituent tree in a \(k\) best parsing sequence.
+    We restrict the fragments such that they do not include tokens from the constituent trees but end at the \abrv{pos} symbols.
+    We estimate probabilistic weights for each rule by conditioned on the \abrv{lhs} nonterminal/root constituent symbol.
+    However, in contrast to the coarse-to-fine approach described by \citet{Cra11}, we do not define a filtering mechanism based on the parse chart from the previous part of the parsing pipeline, but view the disco-dop reranking as a completely separate process for weighting each single constituent tree in a \(k\) best parsing sequence.
     Therefore, we augment the usual parsing procedure for \abrv{lcfrs} (which can be used for disco-dop) such that it can only produce derivations for the input constituent tree by matching its nodes.
-    Moreover, we slightly diverge from the weight structure used in the remainder of this work:
+    Moreover, we slightly diverge from the weight structure that we use for parsing with the supertags:
         In this case we do not use the Viterbi-equivalent sum and maximum operations with logarithms of proabilistic values, but the pababilistic product and sum operations.
     These augmentations are straight-forward and we refrain from a further elaboration of the parsing process.
     
-    %\begin{example}
-        
-    %\end{example}
+    \begin{example}\label{ex:dop}
+        \Cref{fig:ex:dop} shows four rules of a disco-dop grammar that consist of fragments in the tree to the left.
+        The rules are in the notation used by \citet{Cra15}.
+        They denote them in a similar fashion to \abrv{lcfrs}:
+            Each leaf that is a substitution site is complemented with a sequence of variables and each leaf that is a terminal with an index, such that each of these objects uniquely occurs within each rule.
+            A composition below the root node indicates how terminals may be concatenated by the rules, using the variables and indices from the leaves.
+            The compositions are tuples allowing discontinuities just in the same sense as in \abrv{lcfrs}.
+        The illustrated rules are able to produce the constituent structure with two different derivations, one starting with the upper left rule and one with the bottom right one.
+        The following hybrid grammar rules are equivalend to the above notation: \begin{align*}
+            \cn{sbar} &\to (\x_1^1 \, \x_2^1 \, \x_1^2)\;(\cn{sbar} (\cn{s} (x_1, x_2)))\;(\cn{vp}_2, \cn{np}) \\
+            \cn{np} &\to (\cn{pt} \, \cn{nn})\;(\cn{np} (\cn{pt}, \cn{nn})) \\
+            \cn{vp}_2 &\to (\cn{wrb}, \cn{vbn} \, \cn{rp})\;(\cn{vp} (\cn{wh}(\cn{wrb}),\cn{vbn},\cn{np}(\cn{rp}))) \\
+            \cn{sbar} &\to (\x_1^1 \, \cn{pt} \, \cn{nn} \, \x_1^2)\;(\cn{sbar} (\cn{s} (\cn{vp}_2(x_1),\cn{np}(\cn{pt}, \cn{nn}))))\;(\cn{vp}_2)
+        \end{align*}
+    \end{example}
     
-    %\begin{figure}
-    %    \subfile{figures/example-constituents.tex}
-        
-    %\end{figure}
+    \begin{figure}
+        \null\hfill
+        \subfile{figures/example-constituents.tex}
+        \hspace{1cm}
+        \subfile{figures/example-dop.tex}
+        \hfill\null
+        \caption{\label{fig:ex:dop}
+            The running example constituent tree and four rules of a disco-dop grammar with derivations for the constituent structure and its sequence of \abrv{pos} tags.}
+    \end{figure}
     
     \ifSubfilesClassLoaded{%
         \printindex
