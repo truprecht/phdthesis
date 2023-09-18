@@ -1,7 +1,7 @@
 \documentclass[../../document.tex]{subfiles}
 
 \begin{document}
-    \section{Rank Transformations}
+    \section{Rank Transformations}\label{sec:ranktransformations}
     In a treebank, we may encounter nodes in constituent trees with arbitrary amounts of successors.
     E.g.\@ \cref{fig:extraction:ranks} shows the distribution of node ranks occurring in a treebank that we use in our experiments (left), the right plot shows that even nodes with the same label occur with widely varying ranks.
     Most grammar extraction procedures construct a rule for each inner node (or a connected set of inner nodes) in a constituent tree with the rank matching the number of successors of the node (or the sum over all successors in the set of nodes).
@@ -30,7 +30,7 @@
         }
     \end{figure}
 
-    \subsection{Binarization}
+    \subsection{Binarization}\label{sec:binarization}
     The \deflab{binarization} of constituent structures removes and replaces nodes that have either one or more than two successors.
     These two cases are handled separately.
 
@@ -132,7 +132,7 @@
 
         \vspace{.5cm}
 
-        \caption{\label{fig:ex:binarization}
+        \caption{%\label{fig:ex:binarization}
             Comparing the left-branching, right-branching and head-outward binarization strategies for a constituent tree.
         }
     \end{figure}
@@ -190,7 +190,7 @@
     \subsection{Head-Inward Transformation} \label{sec:extraction:bin:hi}
     A later section deals with a grammar extraction strategy that is borrowed from the field of dependency parsing, cf.\@ \emph{head guides} in \cref{sec:guides}.
     In early experiments, the grammars obtained by this strategy tended to be rather large and the aforementioned binarization strategies either fail to decrease their size and/or there is no intuitive strategy to assign head positions to the introduced artificial nodes.
-    This issue is described in more detail at the end of \cref{sec:extraction:hg:alg}.
+    This issue is described in more detail at the end of \cref{sec:extractionalg}.
     We came up with the following rank transformation, and a complementary head assignment for its result, that tackles this problem but does not yield binary trees in general.
     It can be seen as the opposite of head-outward binarization because when a node is expanded with artificial children, it does keep the child carrying the head at the topmost position.
     All other children are distributed as or into (artificial) child nodes to the left or right of this head-carrying child.

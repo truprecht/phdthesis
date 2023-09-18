@@ -1,0 +1,237 @@
+\documentclass[../../document.tex]{subfiles}
+
+\begin{document}
+    \section{Statistical Parsing with Predicted Supertags}\label{sec:parsing}
+    In this section, we will describe two approaches to combine predicted supertags into derivations, one for \abrv{lcfrs} and \abrv{hg} supertags and one for \abrv{dcp} supertags.
+    For the remainder of the section, consider we have a set \(B\) of supertag blueprints, an input sentence of length \(n\), an assignment of prediction confidence values \(\mu\colon B \times [n] \to \DR\) obtained from the prediction of blueprints (step \ref{parsing:item:1} of the parsing process outlined in the beginning of the chapter), and assume that we aim to find a collection of up to \(k \in \DN_+\) best derivations.
+    The three objects are used to construct a series of grammars in growing size, in the same fashion as described by \citet[Section 5.1]{Clark04} and \citet[Section 2.2.2]{Auli12}.
+    This strategy defines a sequence of decreasing thresholds \((\beta_i \in \DR \mid i \in I)\) where the set of indices \(I\) is a \(\DN_+\) prefix.
+    These values are used to define growing intervals of confidence values that are admitted in the constructed grammars; each starting from the best confidence value for each position and up to \(\beta_i^j = \max_{b \in B} \mu(b, j) + \beta_i\) for each \(i \in I\) and \(j \in [n]\).
+    For each index \(i \in I\) and position \(j \in [n]\), we define the set \(S_i^j = \{ b \in B \mid \mu(b, j) \ge \beta^j_i \}\) of supertag blueprints that were predicted with confidence that differs at most by \(\beta_i\) from the highest confident prediction at the same position \(j\).
+    Then the iterative process to find derivations is as follows:\todo{die Liste lieber als Alg.\@ darstellen?}
+    \begin{compactenum}
+        \item We start with \(i = 1\).
+        \item \label{item:parsing:2:2}
+            The weighted grammar \(G_i\) is constructed from the set of supertags \(S_i = \{b[j] \mid j \in [n], b \in S_i^j \}\) and the weight assignment \(\weight_{i}\colon S_i \to \DR\) with \(\weight_i(b[j]) = \mu(b, j)\) for each \(j \in [n]\) and \(b \in S_i^j\).
+        \item We search for admissible derivations in the constructed grammar as described in \cref{sec:parsing:lcfrs,sec:parsing:dcp}.
+        \item
+            If there is at least one admissible derivation in \(G_i\), the sequence of \(k\) best admissible derivations in \(G_i\) is reported as result of this step.
+            If that is not the case and \(i+1 \in I\), then we let \(i := i+1\) and go back to step \ref{item:parsing:2:2}.
+            Otherwise, we report failure as we did not find any derivation.
+    \end{compactenum}
+    Finally, only the first grammar in the series \((G_i \mid i \in I)\) that contains an admissible derivation is used to compute a collection of \(k\) best derivations.
+    For each increment \(i > 1\), the parsing results with the previous grammar are re-used, as the set of rules in increment \(i-1\) is a subset of that in increment \(i\).
+    This approach is different to the one that we used in previous versions of the parser, wehere we used a fixed amount of predicted blueprints per sentence position. \citep{RupMoe21, Rup22}
+    We used the values by \citet{Clark04} as orientation and chose a series fixed values \((\beta_i = 0.1^i \mid i \in \DN_+)\) in our experiments.
+
+    \subsection{Parsing with \abrv{Lcfrs} and \abrv{Hg} Supertags}\label{sec:parsing:lcfrs}
+    In the case of \abrv{lcfrs} and \abrv{hg} supertags, the sets of admissible derivations for an input sequence is defined using the nonterminals and the \abrv{lcfrs} compositions in the grammar rules.
+    The \abrv{dcp} compositions in \abrv{hg} supertags as well as the transportation marker in \abrv{lcfrs} supertags have no influence at all on the sets of derivations.
+    They are solely used to define the constituent structure for an already determined derivation.
+    With both formalisms, we exploit statistical parsing procedures for \abrv{lcfrs} as \citet{Geb20} did in the case of parsing with hybrid grammars.
+    Parsing procedures for \abrv{lcfrs} are well docuemented, e.g.\@ as described by \citet[Section 7.1]{Kal10}.
+    For the case of \(k\) best parsing, the approach can be extended using the techniques described by \citet{HuaChia05} to enumerate found derivations with increasing weight.
+    In previous versions, we used the \abrv{lcfrs} parser implemented by \citet{CraSchBod16} and extended it for our purposes.\footnote{
+        For using \emph{disco-dop} with our predicted supertags, we implemented some transformations to accommodate that it is only able to parse with binary and simple \abrv{lcfrs}.
+        Each supertag is transformed into a collection of appropriate rules by splitting the terminal symbol into a separate rule where the supertag is its \abrv{lhs} nonterminal.
+        In the case of supertags with binary rules, this transformation yields a ternary rule that is then split into two using the usual binarization techniques and by introducing a unique intermediate nonterminal.
+        As these rules are connected using unique nonterminals, they must occur together in derivations.
+        This transformation is easily reverted in a derivation by identifying the supertag at the bottom rule of such a cluster of rules and replacing the whole construct with the supertag.
+    }
+    However, we omitted this in favor of a unified implementation that also implements parsing with \abrv{dcp} supertags.
+
+    \subsection{Fanout-Restricted Parsing with \abrv{Dcp} Supertags}\label{sec:parsing:dcp}
+    Using grammars that solely consist of \abrv{dcp} rules was, to our knowledge, not considered before for in the field of discontinuous constituent parsing.
+    By itself, the \abrv{dcp} compositions do not impose any restrictions to the lexical symbols in the defined sets of derivations, compared to \abrv{lcfrs} which precisely specify which parts of the spans may occur next to each other.
+    We chose to extend the rules by a fanout restriction to limit the sets of derivations.
+    For each \abrv{dcp} supertag \((r, f)\), the fanout restriction is a positive integer \(f \in \DN_+\) such that the set of lexical symbols in each derivation rooted with the supertag must have a fanout of \(f\).
+    And additionally to the fanout restriction, we demand that 
+    We adapt a parsing algorithm for \abrv{lcfrs} grammars for parsing with \abrv{dcp} supertags.
+    As usual, the algorithm is split into two steps:
+    \begin{enumerate}
+        \item \label{step:parsing:chart}
+            First, we compute a compact representation (called \emph{parse chart}) for the set of derivations for an input sentence in a given grammar and their weights.
+            To summarize, the parse chart combines derivations rooted by a common rule and with the same set of lexical symbols occurring within the rules.
+        \item \label{step:parsing:derivation}
+            Secondly, the parse chart is used to determine the least parse in the set of derivations.
+            This aproach recursively descents into the parse chart and, in each recursion, determines the rule at the root of each (sub-)derivation with the least weight.
+            It can be extended using the techniches described by \citet{HuaChia05} to enumerate the derivations with increasing weight to implement a \(k\) best parsing algorithm.
+    \end{enumerate}
+    These two are described in more detail in the following paragraphs with complementary algorithms in pseudo-code.
+    
+    \begin{algorithm}
+        \caption{\label{alg:parsing:chart}
+            Weighted parsing algorithm for \abrv{dcp} supertags.
+            This coarsely resembles an algorithm for parsing \abrv{lcfrs} as shown by \citet[the ``na\"ive algorithm'' in section~3]{Burden05}.
+        }
+        \subfile{algorithms/parsing.tex}
+    \end{algorithm}
+    
+    \paragraph{Step \ref{step:parsing:chart}}
+    \Cref{alg:parsing:chart} illustrates a process that implements this step.
+    It is derived from an \abrv{lcfrs} parsing algorithm as presented by \citet[the na\"ive algorithm in sec.~3]{Burden05}.
+    In the following we will refer to this original presentation of the parsing algorithm by \abrv{bl}.
+    Unlike \abrv{bl}, we opted to describe the process not in the form of a deduction system but in pseudocode.
+    This process demands the aforementioned inputs: a set of supertags for each position in the sentence to be parsed as well as weights according to the prediction confidence.
+    Additionally, we utilize a distinct symbol \(X_i\) for each position \(i \in [n]\) that does not occur as a nonterminal.
+    The procedure constructs tuples of the form \((a, b, w)\) with the following components
+    \begin{itemize}
+        \item The first component \(a\) is a tuple of the form \((A, f, B_1 \ldots B_k, L)\) where
+            \begin{compactitem}
+                \item \(A\) is a nonterminal occurring at the \abrv{lhs}, and each symbol in \(B_1, \ldots, B_k\) is either a nonterminal occurring at the \abrv{rhs} of a rule or of the form \(X_i\),
+                \item \(f \in \DN_+\) is a fanout restriction, and
+                \item \(L \subset [n]\) is a set of set of sentence positions.
+            \end{compactitem}
+            If \(k>0\) the tuple \(a\) corresponds to an \emph{active item} in \abrv{bl} and denotes a partially revealed derivation starting with the \abrv{lhs} \(A\).
+            This intermediate result already considers subderivations with rules carrying the terminal symbols in \(L\).
+            The symbols in \(B_1, \ldots, B_k\) denote nonterminals for the subderivations that are still left to investigate and, if \(X_i\) occurs among them, it denotes the terminal in the root of the derivation.
+            If \(k=0\) the investigation is complete and found a derivation, this corresponds to a \emph{passive item} in \abrv{bl}.
+        \item The second component \(b\) is a tuple of the form \((s, L_1 \ldots L_k)\) where
+            \begin{compactitem}
+                \item \(s\) is a supertag (such that the whole object considers a derivation rooted by \(s\)), and
+                \item \(L_1, \ldots, L_k \subseteq [n]\) are the sets of sentence positions in the subderivations that were already investigated for this parse item.
+            \end{compactitem}
+            The tuple \(b\) is a \emph{backtrace} used to reproduce the derivations that the parse item represents.
+            This corresponds to the ``list of daughters'' that are stored with the parse items in \abrv{bl}.
+        \item
+            The third component \(w\) is the weight for the parse item.
+            As the description in \abrv{bl} was unweighted, this part does not occur in it.
+    \end{itemize}
+    
+    The algorithm uses four collections to store (intermediate) results:
+    \begin{compactitem}
+        \item A queue \(Q\) that contains tuples in the above form and stores them until they are investigated.
+            The third component \(w\) of the elements in \(Q\) decides which tuple is (drawn and removed).
+        \item A \emph{parse chart} \(C\) that keeps track of possible derivations for each nonterminal and yield.
+            In the figure, it is a \(\mathcal{P}([n]) \times N\)-indexed family of subsets of \(S \times \mathcal{P}([n])^*\).
+            For each \(L \subseteq [n]\) and \(A \in N\), the set \(C_{(A, L)}\) contains tuples of the form \((A \to c\,(B_1, \ldots, B_k), L_1 \ldots L_k)\) where \(A \to c\,(B_1, \ldots, B_k)\) is the root of a derivation for the yield \(L\) and the combinations \((B_1, L_1), \ldots, (B_k, L_k)\) recursively link to child derivations stored in \(C\).
+            Whenever we draw a passive item from the queue, it assimilates into \(C\).
+        \item A \(\mathcal{P}([n]) \times N\)-indexed family \(W\) of elements in \(\DR\) stores the weight of derivations.
+            For each \(L \subseteq [n]\) and \(A \in N\), the value \(W_{(A, L)}\) is the best weight of a derivation of rules in \(S\) starting with \(A\) for the yield \(L\).
+            As well as \(C\), this collection is updated each time we investigate a passive item.
+        \item A collection of tuples containing active items \(I\) that is accessed by the next \abrv{rhs} nonterminal symbol reserved for the next investigation.
+    \end{compactitem}
+    
+    Roughly, we can distinguish two parts of \cref{alg:parsing:chart}:
+    \begin{itemize}
+        \item First, there is a setup in lines 2--9 where the four collections are initialized (lines 2--4) and the queue \(Q\) is equipped with tuples containing an active item for each supertag (lines 6--9).
+            The active items are constructed from the supertags by adopting the \abrv{lhs} nonterminal and fanout restriction from the supertag.
+            The sequence \(B_1' \ldots B_{k+1}'\) is obtained from the \abrv{rhs} nonterminals and one symbol \(X_i\) for the lexical symbol \(i\) occurring in the supertag.
+            They are ordered such that they occur in order of their corresponding variables and the lexical symbol in \(c\).
+            The last component of each active item starts with an empty set of sentence positions.
+            This initialization of active items corresponds to the ``Predict'' inference rule in \abrv{bl}.
+        \item
+            The remaineder in lines 10--23 contains a loop that investigates each tuple added to the queue \(Q\).
+            It distinguished three cases for tuple popped from \(Q\):
+            \begin{compactitem}
+                \item In the first case (lines 12--16), the tuple contains a complete item for derivations whose occurring lexical symbols adhere to the fanout restriction.
+                    It is added into the collections \(C\) and \(W\).
+                    After that, the loop in lines 15--16 consults the collection \(I\) to re-iterate all tuples with active items that need to be investigated using a passive item with matching \abrv{lhs} nonterminal \(A\).
+                    The function \textsc{addSucessor} concludes the investigation and constructs a follow-up parse item.
+                \item The second case (lines 17--19) adds the lexical symbol to the set of leaves and constructs a follow-up parse item.
+                \item The final case (lines 20--23) considers an active item that represents an incomplete derivation and shall be supplemented with a subderivation for the right-most nonterminal \(B_k\).
+                    The tuple is stored in \(I\) indexed by the nonterminal \(B_k\).
+                    Finally, in lines 22--23, the function \textsc{addSuccessor} is used again to construct follow-up items with the information about the investigated passive items stored in \(C\) and the weights in \(W\).
+            \end{compactitem}
+            The first and third case correspond to the ``combine'' inference rule in \abrv{bl}.
+            It triggers every time that a new active or passive item is seen and is therefore distributed to these two places.
+    \end{itemize}
+    
+    The most obvious difference to \abrv{bl} still remaining to be mentioned is that we investigate active items in direction from right to left of the \abrv{rhs} nonterminals instead of left to right.
+    This is because makes the restriction, that the sequence of children at each node in a \abrv{dcp} derivation must be ordered by the least lexical symbol, easier to check when we do not use a composition function for the lexical symbols.
+    From right to left, we check the order using the least positions included in intermidiate results as in line 17 and line 25.
+    If we would investigate the successors in the other direction, then we could not distinguish the least positions starting with the second successor as we only store the union.
+    
+    \begin{algorithm}
+        \caption{\label{alg:parsing:deriv}
+            Illustration for the enumeration of $k$ best derivations from a parse chart that was obtained as illustrated in \cref{alg:parsing:chart}.
+            This is a direct adaption of the algorithm presented by \citet{HuaChia05}.
+            This illistration is split and continues on the following page.
+        }
+        \subfile{algorithms/read-derivation.tex}
+    \end{algorithm}
+    
+    \begin{algorithm}\ContinuedFloat
+        \caption{
+            (Coninued from the previous page)
+        }
+        \subfile{algorithms/kbest-read.tex}
+    \end{algorithm}
+    
+    \paragraph{Step \ref{step:parsing:derivation}}
+    The listing of \cref{alg:parsing:deriv} shows how the parse chart \(C\) and the weight assignment \(W\) obtained in the previous step are used to enumerate derivation trees with increasing weight.
+    The algorithm is derived from \citet[Algorithm 2, 3 and 4]{HuaChia05} with some adjustments to accomodate our grammar format (i.e.\@ multiple initial nonterminals, non-binary grammars, and the form of \abrv{dcp} supertags).
+    In the following we will refer to this publication as \abrv{hc} when we compare the two algorithms.
+    Aside from the two structures \(C\) and \(W\), our illustration of the algorithm expects the following inputs: the length \(n\) of the sentence to parse, the prediction confidence assignment \(\mu\colon S \to \DR\) for each supertag, and a set of initial nonterminals.
+    In it, we observe tuples of the following two forms:
+    \begin{itemize}
+        \item
+            \((A, L, k')\) where \(A\) is a nonterminal, \(L\) is a set of sentence positions, and \(k'\) is an integer less or equal \(k\); e.g. in the subscript of \(D\) and \(W\) or as parameters of the function \textsc{chkNode}.
+            Intuitively these tuples extend the concept of passive parse items by the index \(k'\).
+            Each occurence of such a tuple is a reference to the \(k'\)th derivation starting with the nonterminal \(A\) with the yield \(L\) among a sequence of at most \(k\) best derivations.
+            Let us call these tuples \emph{indexed passive items}.
+        \item
+            \((r, \vec{L}, \vec{k})\) where \(r\) is a supertag, \(\vec{L}\) is a sequence of sets of sentence positions and \(\vec{k}\) is a sequence of integers less or equal \(k\) such that the length of \(\vec{L}\) and \(\vec{k}\) is the arity of the grammar rule in \(r\); e.g.\@ as parameters of the function \textsc{chkEdge} and in line 24.
+            This notation further extends the previous tuple form by specifying the root and direct children of the referenced derivation:
+                Its root is \(r\) and the children are recursively specified by the \abrv{rhs} nonterminals in the grammar rule in \(r\), lets denote them by \(\vec{B}\), and the two sequences \(\vec{L}\) and \(\vec{k}\).
+                The \(i\)th child is the \(\vec{k}_i\)th derivation starting with nonterminal \(\vec{B}_i\) with the yield \(\vec{L}_i\).
+                Or in terms of the previous tuple form it is referenced as \((\vec{B}_i, \vec{L}_i, \vec{k}_i)\).
+            Let us call these tuples \emph{indexed derivation nodes}.
+    \end{itemize}
+    As the second form suggests, the algorithm determines a \(k'\)th derivation by its root node and then recurses by referencing its direct children.
+    In the following we will describe this principle in more detail by focussing on the collections that are used to store intermediate results and each individual procedure and function in the illustration.
+    There are four collections that are used throughout the algorithm:
+    \begin{itemize}
+        \item A family of priority queues \(H\) indexed by combinations of nonterminal symbols and sets of sentence positions is used to store candidate indexeded derivation nodes.
+            Each queue's elements is considered with the sum of the weights assigned by the prediction confidence and the weight computed for its children as expressed in the function \textsc{weight} in lines 5--6.
+        \item A family of sets of index sequences \(E\) that is used to avoid constructing the indexed derivation nodes twice.
+        \item A family of indexed derivation nodes \(D\) indexed by indexed passive items stores the intermediate results of the process.
+            Per indexed passive item it stores the root node and references to children as explained above to recursively express a derivation tree.
+        \item An assignment \(W'\) of a weight to each indexed passive item stores the weight of the according derivation in the sequence of $k$ best derivations.
+            It extends the weight assignment \(W\) computed by \textsc{fillchart}.
+    \end{itemize}
+    The functions and procedures are as follows:
+    \begin{itemize}
+        \item \textsc{weight} as mentioned before, computes the weight of a derivation represented by an indexed derivation node.
+            It is the sum of the prediction confidence for the included supertag plus the weight of its child indexed passive item that is computed in the function \textsc{chkNode} and stored in line 31.
+        \item \textsc{successors} constructs a set of index sequences for successor items that are considered an increment of its argument.
+            It contains the sequences that are increased in exactly one position by one and the rest remains equal.
+            This procedure corresponds to the strategy in \abrv{HL} (explained in their section 4.2) where the next best derivation with a fixed root must differ from current one by at most one child.
+        \item \textsc{chkEdge} lifts the function \textsc{chkNode} to the successors of its argument indexed derivation node.
+            If any indexed passive item among the successors does not exists it returns "False" to represent that the indexed derivation node does not exist as well, otherwise it returns "True".
+        \item \textsc{chkNode} determines if a derivation for an indexed passive item exists and computes the necessary intermidiate results to determine the derivation.
+            Starting with the lines 20--21, it initializes a queue \(H_{(A, L)}\) of indexed derivation nodes for each link in the parse chart.
+            Each successor index sequence only consists of the index 1 during the initialization as we start with the best derivations.
+            Next follows a loop in lines 22--32 where each iteration determines one indexed derivation node until the \(k\)th is found.
+            The loop starts with a re-population of the queue \(H_{(A, L)}\) in lines 23--26:
+                If there is an indexed derivation node in the intermediate results \(D_{(A, L)}\), then it adds the indexed derivation nodes with incremented successor index sequence as obtained by the function \textsc{successors}.
+            If the heap stays empty after this step of re-population, then there are no further candidates and we abort in lines 27--28.
+            In the remaining three lines, we obtain the indexed derivation node for the next best derivation (line 29) and store it and its weight in the collections $D$ (line 30) and $W'$ (line 31) respectively.
+        \item \textsc{readDerivation} constructs the derivation for an indexed passive item.
+            It determines the indexed derivation node from the collection \(D\), assumes its grammar rule as root and obtains the children by recursive calls withe the successor indexed passive items.
+        \item \textsc{kBestDerivations} is the entry point of the algorithm as it wraps the other functions and procedures enumerate the sequence of at most \(k\) best derivations.
+            It uses a similar strategy as in function \textsc{chkNode} to populate a queue of initial nonterminals with index to determine the indexed passive items in order of their weight.
+            Note that before such an initial indexed passive item is passed to the function \textsc{readDerivation} in line 45, the function \textsc{chkNode} must be called with it as an argument in either condition of line 9 or 15.
+            It is necessary as the function \textsc{chkNode} prepares the collection \(D\) used to determine the derivations.
+    \end{itemize}
+    \todo[inline]{Referenzen in Beschreibung an \abrv{hc}, Tupelformen entsprechen Knoten/Kanten im Hypergraph nach der Beschreibung von \abrv{hc}}
+    
+    \paragraph{Some Notes on the Implementation of the Algorithms}
+    In our implementation, the algorithms above are augmented with some well-established techniques either generally in programming or in the field of parsing.
+    The most notable are as follows:
+    \begin{itemize}
+        \item The sets of sentence positions that occurr throughout both \cref{alg:parsing:chart,alg:parsing:deriv} (e.g.\@ in the index of the collections \(C\), \(W\) and \(D\) as well as in the parse items) are expressed as sequences of \emph{spans} of the form \(((l_1, r_1), \ldots, (l_s, r_s))\) where \(s \in \DN_+\) and \(l_1,\ldots,l_s,r_1,\ldots,r_s \in [0,n]\) and \(n \DN_+\) is the sentence length.
+            Such a sequence must contain non-overlapping and non-bordering spans in increasing order from left to right, therefore each pair of neighbouring indices are strictly increasing \(r_i < l_{i+1}\) for \(i \in [s-1]\).
+            Sequences of spans are a technique in the field of discontinuous parsing \citep[e.g.][cf.\@ range vector in def.\@ 6.6]{Kal10}.
+            These span sequences are more efficient in storing the sets of positions and computing the union, when \(s\) is much smaller than the set of positions in the spans (which is usually the case).
+            Moreover, the minimum \(l_1\) and the fanout \(s\) are easily accessible.
+        \item The queues \(Q\) in \cref{alg:parsing:chart} and \(H_{(A,L)}\) in \cref{alg:parsing:deriv} are implemented using the \emph{heap} data structure.
+            It allows us to efficiently access the minimal element.
+        \item Objects that occur repeatedly without any structural investigation are mapped to (and replaced by) integers for efficient storage and comparisons; this process is called \emph{integerizing}.
+            A trivial example are nonterminal symbols, wich are only used in comparisons to find matching rules during the parsing process.
+            But also tuples of the form \((A, L)\) for a nonterminal \(A\) and set of sentence position \(L\) are integerized during the implementation of both \cref{alg:parsing:chart,alg:parsing:deriv} because they are used so frequently as indices.
+        \item The collections expressed as families in both \cref{alg:parsing:chart,alg:parsing:deriv} are implemented either as \emph{hash maps} or as \emph{lists} when the index is integerized.
+            Even though they are denoted with an initial value for each index in both \cref{alg:parsing:chart,alg:parsing:deriv}, they are empty at start and assume these values implicitly if there is no entry for the index.
+            Otherwise collections with indices containing a subset of sentence positions like \(C\) and \(W\) would be highly infeasible.
+    \end{itemize}
+\end{document}
