@@ -1,0 +1,45 @@
+\documentclass[../../document.tex]{subfiles}
+
+\begin{document}
+   \begin{tikzpicture}[
+       edge from parent path={(\tikzparentnode.south) -- ++(0,-1ex) -| (\tikzchildnode.north)},
+       every path/.style={line width=.2ex},
+       level distance=4.5ex,
+ %      node distance=3ex,
+       anchor=center,
+       every node/.style={font=\small},
+       draw=none,
+       rounded corners=0
+     ]
+     \matrix (pos) [matrix of nodes, outer sep=0pt, inner sep=0pt, row sep=0pt, column sep=7pt] {
+       \tn{the}\strut  & \tn{survey}\strut   & \tn{was}\strut  & \tn{carried}\strut  & \tn{out}\strut & \tn{at}\strut  & \tn{the}\strut  & \tn{institute}\strut \\};
+
+     \begin{scope}[every node/.style={inner sep=2pt, font=\small}]
+         \node[above=24ex of pos-1-3, xshift=-1em] {\cn{s}}
+             child { node[above=5.5ex of pos-1-1, xshift=1.5em] {\cn{np}}
+                 child { node[above=1ex of pos-1-1] (t1) {\cn{pt}} }
+                 child { node[above=1ex of pos-1-2] (t2) {\cn{nn}}}}
+             child { node {\cn{vp}}
+                 child { node[above=1ex of pos-1-3] (t3) {\cn{vbd}}}
+                 child { node[xshift=1em] {\cn{vp}}
+                     child { node[above=1ex of pos-1-4] (t4) {\cn{vbn}}}
+                     child { node[above=5.5ex of pos-1-5]  {\cn{prt}}
+                        child { node[above=1ex of pos-1-5] (t5) {\cn{rp}}}}
+                     child { node {\cn{pp}}
+                        child {node[above=1ex of pos-1-6] (t6) {\cn{in}}}
+                        child { node {\cn{np}}
+                            child {node[above=1ex of pos-1-7] (t7) {\cn{pt}}}
+                            child {node[above=1ex of pos-1-8] (t8) {\cn{nn}}}}}}};
+     \end{scope}
+     
+     \draw
+         (t1) -- (pos-1-1)
+         (t2) -- (pos-1-2)
+         (t3) -- (pos-1-3)
+         (t4) -- (pos-1-4)
+         (t5) -- (pos-1-5)
+         (t6) -- (pos-1-6)
+         (t7) -- (pos-1-7)
+         (t8) -- (pos-1-8);
+   \end{tikzpicture}
+\end{document}

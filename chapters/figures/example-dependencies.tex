@@ -1,0 +1,28 @@
+\documentclass[../../document.tex]{subfiles}
+
+\begin{document}
+   \begin{tikzpicture}[
+       edge from parent path={(\tikzparentnode.south) -- ++(0,-1ex) -| (\tikzchildnode.north)},
+       every path/.style={line width=.2ex},
+       level distance=4.5ex,
+ %      node distance=3ex,
+       anchor=center,
+       every node/.style={font=\small},
+       draw=none,
+       rounded corners=0
+     ]
+     \matrix (pos) [matrix of nodes, outer sep=0pt, inner sep=0pt, row sep=0pt, column sep=7pt] {
+       \tn{the}\strut  & \tn{survey}\strut   & \tn{was}\strut  & \tn{carried}\strut  & \tn{out}\strut & \tn{at}\strut  & \tn{the}\strut  & \tn{institute}\strut \\};
+    \coordinate[above=of pos-1-3] (root);
+
+     \draw[->,>=stealth]
+        (root) -- (pos-1-3)
+        (pos-1-3) edge[out=110,in=70] (pos-1-2)
+        (pos-1-2) edge[out=110,in=70] (pos-1-1)
+        (pos-1-3) edge[out=70,in=110] (pos-1-4)
+        (pos-1-4) edge[out=65,in=110] (pos-1-5)
+        (pos-1-4) edge[out=75,in=110] (pos-1-6)
+        (pos-1-6) edge[out=70,in=90] (pos-1-8)
+        (pos-1-8) edge[out=110,in=70] (pos-1-7);
+   \end{tikzpicture}
+\end{document}

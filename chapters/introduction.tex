@@ -2,4 +2,162 @@
 
 \begin{document}
     \chapter{Introduction}
+    The fascination for natural languages shared by many in the field of computer science is probably due to that language is seen as carrier of human knowledge and information.
+    \citet{Turing50} drew a conclusion that can be seen as a primer on the assessment of artificial intelligence:
+    \begin{quote}
+        \emph{``A computer would deserve to be called intelligent if it could deceive a human into believing that it was human.''} \hfill ---Alan Mathison Turing
+    \end{quote}
+    This quote can easily be drawn in connection to the \emph{imitation game} that was later renamed \emph{Turing Test} in his honour.
+    That is, a computer's answers on natural language questions cannot be distinguished from those of a human.
+    It was a first attempt to measure the quality of a system that generates pieces of natural language.
+    But the priciple can also be applied to other tasks that are based on natural language data:
+        If the results of the tasks for unseen data instances created by a computer cannot be distinguished from those of a human, then we can speak of artificial intelligence.
+    One of those tasks is to determine the information carried by a natural language sentence, called a \deflab{semantic analysis}.
+    Another one is the \deflab{syntax analysis}, which breaks a sentence down into its components.
+    The latter constitutes the application of the methods presented and/or discussed in this thesis.
+    Naturally, a syntactic analysis itself can hardly be seen as valuable information to gather from a piece of langauge, besides its beauty as a task in academia.
+    It has been part of more sophisticated tasks in the field of natural language processing, such as translation (of sentence between natural languages) \citep{Zhang19,Yang22}, relation extraction \citep{Ngu19} and summarization \citep{Bal21}.
+    Moreover, it has been shown that syntactic analyses can be used to improve the performance of neural models in a wide range of tasks settled in the field of natural language understanding, such as semantic role labeling and natural language inferrence. \citep{Liu19, Wang19, Fei20}
+    Of course, this requires high-quality syntactic analyses.
+    
+    \begin{figure}
+        \null\hfill
+        \subfile{figures/example-dependencies.tex}
+        \hfill
+        \subfile{figures/example-dependencies-discontinuous.tex}
+        \hfill\null
+        \caption{\label{fig:dependency}
+            Two dependency graphs for the English phrases ``the survey was carried out at the institute'' and ``where the survey was carried out''.
+        }
+    \end{figure}
+    
+    \begin{figure}
+        \null\hfill
+        \subfile{figures/example-continuous-constituents.tex}
+        \hfill
+        \subfile{figures/example-constituents.tex}
+        \hfill\null
+        \caption{\label{fig:constituent}
+            Two constituent trees for English phrases ``the survey was carried out at the institute'' and ``where the survey was carried out''.
+        }
+    \end{figure}
+    
+    \section*{Analyzing the Syntax of Natural Language Sentences}
+    There are two mayor forms to express the syntax of natural language: \deflab{dependency graphs} and \deflab{constituent trees}.
+    The analyzation and illustration of a natural language phrase in such an expression is called \deflab{parsing}.
+    Dependency graphs describe reltaions between the words of a sentence, such as the \emph{head-dependent relation} that identifies the central word of each (sub-)phrase as \emph{head} and connects its subphrases as \emph{dependents}. \citep[Section 18.1]{Jur23}
+    \Cref{fig:dependency} shows examples for dependency graphs.
+    They constist of the analyzed sentence and an arrow for each word in the sentence.
+    The arrow from above indicates the root of th dependency graph.
+    Each arrow between to words depicts a head-dependent relation; the base of the arrow is at the head and the tip is at the dependent.
+    E.g.\@ ``was'' is the root and ``survey'' is a dependent of ``was'' in both graphs. 
+            
+    A constiutent tree illustrates a hierarchy of (sub-)phrases in a sentence; each such phrase is labeled with a common category that denotes its function within the sentence or in a superseded phrase.
+    \Cref{fig:constituent} shows some examples of constituent trees.
+    In each constituent tree, the analized sentence is illustrated at the bottom.
+    At the next higher level there are part-of-speech tags, which constitute the most simple syntactic structures in natural language and classify the role of each single word.
+    Each symbol beyond that denotes a constituent with connections drawn to all words or subphrases that are part of the constituent.
+    E.g.\@ in the first tree, ``survey'' is a word in the sentence, ``\cn{nn}'' is its assigned part-of-speech tag \emph{noun}, and the symbol ``\cn{np}'' above it denotes a \emph{noun phrase} that consists of ``the survey''.
+    These two expressions for the syntax are not mutually exclusive, and we will later consider head-dependent relations as an extension for constituent trees.
+    But for now, we focus on constituent trees.
+%    We will sometimes consider constituent trees where each constituent is extended by a head assignment, that also includes a head-dependet relation.
+%    In that case the constituent trees are illustrated using double struck edges that indicate the word in the sentence that acts as the head of the phrase.
+%    For each word in the sentence and for each constituent where the word is the head, the head of each child constituent is then a dependent if it is inequal.
+    
+    If we look closely, there is a slight difference between the two constituent trees in \cref{fig:constituent}:
+        The second one does contain \emph{crossing branches} between the constituent symbols and thus some constituents contain non-contiguous parts of the sentence.
+    We call such a consituent tree \deflab{discontinuous}.
+    In the first one, all consituents are contiguous and we call it \deflab{continuous}.\footnote{
+        A similar phenomenon does also exist in dependency graphs, but its terminology is slightly different.
+        The left graph in \cref{fig:dependency} does not contain any crossing edges, it is \emph{projective}; the right one is \emph{unprojective}.
+    }
+    The example shows a well known phenomenon in the syntax of English language, called \cn{wh}-movement that occurs in phrases with interrogative words.
+    European languages such as Dutch, German and Swiss-German are infamous for their discontinuous syntax phenomena. \citep{Shieber85,Becker91}
+    There are \deflab{treebanks}, large collections of constituent trees that were created manually or semi-automatic, that give an impression in what frequency such phenomena occur in these languages. \citep{Marcus94,EvaKal11,Skut98,Brants04,Noo13}
+    
+    The theory of natural language syntax analysis was due to \citet{Cho56}.
+    They formalized a rule-based framework for the syntax-based definition of languages, called \deflab{grammars}, and their famous hierarchy of grammar formalisms.
+    Their aim was to explain the syntax of natural languages using \deflab{context-free grammars}, the second out of four levels of grammars in the hierarchy.
+    These grammars were defined with rules that directly model the parent-child relationship within constituent trees, such as \(\nt{S} \to \nt{NP}\,\nt{VP}\).
+    However, context-free grammars do not offer the capabilities to model the discontinuities that appear in natural language. \citep{Shieber85}
+    The grammar formalism for the next higher level in the hirarchy, called \deflab{context-sensitive grammars}, was dismissed for the modelling and analysis of natural languages due to its complexity.
+    As a consequence, there were multiple proposals for formalisms that aim to add just power to context-free grammars to be able to handle discontinuous constituents and still allow efficient analyses:
+        tree-adjoining grammars \citep{JosLevTak75}, multiple context-free grammars \citep{SekMatFujKas91}, linear context-free rewriting systems \citep{VijWeiJos87} and combinatory categorial grammars \citep{Ste11} to name a few.
+    They were later brought under the umbrella term \deflab{mildly context-sensive grammars}, a class that supersedes context-free and is well included in context-sensitive grammars.
+    
+    \section*{Autonomous Parsing of Natural Languages Sentences}
+    Grammar formalisms have been used to for parsing of natural language sentences:
+        Probabilistic context-free grammars are defined to model the direct parent-children-relationships in constituent structures.
+        The grammaras are used to derive the constituent structure for a given sentence. \citep{Sup72}
+    Since the publication of treebanks, it has been possible to automatically extract grammars from the constituent trees.
+    The independence assumptions in the earlier formulations of context-free grammars were identified as a limitation for the accuracy when parsing with grammars extracted from treebanks. \citep[e.g.\@][Section~1.1]{collins2001convolution}
+    There was research in extending the grammars to overcome this limitation, such as history-based grammars by \citet{Black94}, and data-oriented parsing by \citet{Bod92}; most of these extensions were subsumed under the formalism of context-free grammars with latent annotation by \citet{Mat05,Petrov06}.
+    Others approached the ambiguity of grammars by cherry-picking a convincing constituent tree among many that were derived from a grammar. \citep{Col00}
+    
+    These developements only considered continuous constituent structures however.
+    The research on parsing with grammars that are able to model discontinuities was not only delayed by a few years, it also has been distributed across several concurrent formalisms.
+    Starting with \citet{MaierSogaard08,Kal10} parsing procedures for natural languages with mutliple context free grammars have been studied.
+    There were similar refinements introduced to the formalism, such as latent annotations by \citet{Geb20} and discontinuous data-oriented parsing by \citet{Cra11}.
+    But some of these extensions are criticized for undermining the interpretabily of grammars. \cite[Chapter 9]{Geb20}
+    
+    At the same time, there was research on parsers that do not rely on grammars at all, such as ones modeled as transition systems by \citet{Verseley14,CoaCoh19}, or conditional random fields by \citet{Petrov08}.
+    Most notably since the advent of deep learning, such parsing models that are based on discriminative classifiers became the state-of-the-art in terms of accuracy, and also in terms of parse time; parses solely based on grammars could not keep up with them.
+    Although, there is one big disadvantage to the parsing approaches that still convinces some people to put effort into parsing with grammars:
+        Grammars are easily interpretable, as they explicitly describe the constituent structures, deep neural networks do not allow any easy interpretion of their computation at all.
+    There has been some approches to unite grammar-based parsers with discriminative classifiers, aiming to rule out the disadvantages, i.e.\@ keep parsing procedures interpretable but also accurate and fast.
+    One of them is the topic of this thesis: \deflab{supertagging}.
+    
+    \begin{figure}
+        \resizebox{\linewidth}{!}{\subfile{figures/parsing-overview-simplified.tex}}
+        \caption{\label{fig:supertagging}
+            A simplified overview of a parsing process with supertagging.
+            A discriminative classifier predicts a small set of lexical grammar rules (supertags) per word in a sentence.
+            The union of all predictions is assumed as a grammar for an off-the-shelf parser for the underlying grammar formalism to obtain a rule derivation for the sentence which is interpreted as a constituent tree.
+        }
+    \end{figure}
+    
+    \section*{Parsing via Supertagging}
+    Supertagging was introduced by \citet{bangalore1999supertagging} for tree-adjoining grammars.
+    It assumes an underlying \deflab{lexical} grammar, i.e.\@ one that does contain exactly one lexical symbol in each of its rules.
+    The term supertagging refers to the prediction of a small sample of grammar rules for each lexical symbol in the input.
+    The union of all samples for an input sentence can then be used to parse the sentence.
+    \cref{fig:supertagging} shows an illustration for a parsing process that utilizes supertagging.
+    It is supposed to tackle the disadvantages of grammar-based parsers as follows:
+    \begin{compactitem}
+        \item The automatic extraction from treebanks is notorious for generating large sets of rules, and a great factor for the time needed by grammar-based parsers was identified as the number of rules in the grammar. \cite{dunlop2010reducing}
+            When only a small sample of grammar rules is used, then the parsing process should be a lot faster.
+        \item The small predicted grammars are more concise and less ambiguous as the ones extracted from treebanks.
+            Predicting rules with accurate classifiers could beat complex grammar extensions such as latent annotations, and the results of the parsing process should be more accurate while the underlying grammars are more simplistic.
+    \end{compactitem}
+    Over the years, the approach was transferred to other grammar formalisms, most notably combinatory categorial grammars \citep{Clark04}, refined to improve the rule prediction quality \citep{vaswani2016supertagging,Kad18,tian20}, and evaluated in different languages and corpora \citep{Bla18}.
+    The published results for parsing with supertagging are promosing.
+    Alas, they were mostly evaluated in the task of dependency parsing (or just the prediction of the grammar rules), or in some cases the underlying grammar formalisms are restricted in allowing only discontinuity up to a certain degree.
+    Plus, extracting the grammars for this approach in the needed format often requires language-specific knowledge \citep{Kas17,Bla18} or they used hand-crafted grammars. \citep{Hoc07}
+    In the research that lead to this thesis, we aimed to tackle these limitations.
+    We published an extraction procedure for lexical linear context-free rewriting systems that is agnostic of the used constituent tree corpus, i.e.\@ it does not require any knowledge about the language and it allows unbounded degrees of discontinuity. \citep{MoeRup20}
+    We used this extraction scheme to implement a parsing procedure for constituent trees with supertagging and achieved state-of-the-art scores in the field of discontinuous parsing, not only compared to grammar-based parsers but all approaches that were published at the time. \citep{RupMoe21,Rup22}
+    
+    \section*{Outline}
+    This thesis includes just mentioned the procedures for the extraction of and parsing with supertags based on linear context-free rewriting systems.
+    These are also extended to the formalisms of hybrid grammars that subsumes linear context-free rewriting systems, and definite clause programs.
+    We start in \cref{chp:preliminaries} with basic notation and definitions that are used throughout the document.
+    \Cref{chp:extraction} defines two formalisms for supertags and extraction procedures:
+    \begin{compactitem}
+        \item The first defines supertags in terms of linear context-free rewriting systems.
+            The extraction procedure is based on the transport of lexical symbols within derivations that are read from constituent trees in a treebank with well-established strategies.
+            This strategy was introduced by \citet{RupMoe21}.
+        \item The second part describes a generalization of the previous.
+            It introduces supertags based on hybrid grammars and a modular extraction procedure that parametrizes the lexicalization and extraction of the grammar rules.
+            The framework was introduced by \citet{Rup22}, but the chapter enhances on the underlying grammar formalism (which was informally described as tuples in the publication).
+            Moreover, the chapter adds some more options for the extraction parameters.
+    \end{compactitem}
+    The following \cref{chp:parsing} explains the parsing procedure for the introduced supertag formalisms.
+    It includes a detailed description of parsing with the supertags based on definite clause programs.
+    \Cref{chp:experiments} unrolls the experiments that we conducted to assess the presented extraction and parsing procedures.
+    It sets the obtained results in context of the published state-of-the-art parsers.
+    
+    \ifSubfilesClassLoaded{%
+        \printindex
+        \bibliography{../references}%
+    }{}
 \end{document}
