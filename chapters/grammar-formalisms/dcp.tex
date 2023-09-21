@@ -2,14 +2,15 @@
 
 \begin{document}
     \section{Definite Clause Programs (\abrv{dcp})}\label{sec:grammar:dcp}
-    \abrv{Dcp} are, in contrast to \abrv{lcfrs}, a formalism where each rule produces trees instead of plain strings.
+    \abrv{Dcp} were introduced as a formalism to characterize the derivation trees in attribute grammars. \citep{Der85}
+    In contrast to \abrv{lcfrs}, it is a formalism where each rule produces trees instead of plain strings.
     The most striking difference to the previous formalism, however, lies in the composition expressions contained in each rule:
     They do not only allow substitution with parameters produced by successors in a derivation (first-order substitution), but each single parameter may also contain variables that are substituted in the same step (second-order substitution).
-    This corresponds to the information flow from the bottom to the top in a derivation as expressed by synthetic attributes (first-order substitution), as well as the information flow from the top to the bottom in a derivation by inherent attributes (second-order substitution) in attribute grammars.
+    This corresponds to the information flow from the bottom to the top in a derivation as expressed by synthetic attributes (first-order substitution), as well as the information flow from the top to the bottom in a derivation by inherent attributes (second-order substitution) in attribute grammars. \citep[cf.\@ Section 1: Notations]{Der88}
     In the implementation of these two systems of substitution, two pairwise distinct sets of variables are used: \(\X\) for the first (as in \abrv{lcfrs}), and \(\Y\) for the second-order substitution.
 
     In their most general form, the object produced by a derivation in such a \abrv{dcp} is not necessarily computable, as the two types of substitution may mutually recur.
-    To solve this issue, there were some restrictive forms introduced which exclude circular dependencies in the expressed productions. \citep[Sec.~3.4 about non-circular attribute grammars]{Cou82}
+    To solve this issue, there were some restrictive forms introduced which exclude circular dependencies in the expressed productions. \citep[Section~3.4 about non-circular attribute grammars]{Cou82}
     It is easy to see that the definition shown in this section supersedes each of these restricted forms, as it exclusively allows fixed terminal objects or a single second-order variable as a parameter for second-order substitution.
     To avoid unnecessarily complicated definitions, the subset of \abrv{dcp} shown in this section is even further restricted:
     \begin{inparaenum}
@@ -21,7 +22,7 @@
         We fix the \(\DN\)-family of finite sets of variables \((\X_k = \{\x_i \mid i \in [k]\} \mid k \in \DN)\), and the singleton set \(\Y = \{\y\}\).
         The identifier \(\X\) denotes the union \(\bigcup_{k \in \DN} \X_k = \{\x_i \mid i \in \DN\}\).
         Let \(\varSigma\) and \(\varGamma\) be alphabets disjoint from \(\X \cup \Y\).
-        The \(\DN\)-family \((S_k = \{x(y) \mid x \in \X_k, y \in \T_\varGamma(\varSigma \cup Y)^*\} \mid k \in \DN)\) denotes expressions for occurrences of first-order substitutions using \(k\) variables.
+        The \(\DN\)-family \((S_k = \{x(v) \mid x \in \X_k, v \in \T_\varGamma(\varSigma \cup Y)^*\} \mid k \in \DN)\) denotes expressions for occurrences of first-order substitutions using \(k\) variables.
         The \(\DN\)-family of \abrv{dcp} \deflab<\dcp>[dcp:comp]{composition}[compositions] over \(\varSigma\) and \(\varGamma\) is \((\C^{\varGamma\varSigma}_k \mid k \in \DN)\) such that \(\C^{\varGamma\varSigma}_k\) contains each nonempty sequence \(c\) in \((\T_\varGamma(\varSigma \cup \Y \cup S_k))^+\) such that each variable in \(\X_k \cup \Y\) occurs exactly once in \(c\).
         We associate the identifier \(\C^{\varGamma\varSigma}\) with the set of all such \abrv{dcp} compositions \(\bigcup_{k \in \DN} \C^{\varGamma\varSigma}_{k}\).
 
@@ -37,7 +38,7 @@
         %    \end{compactenum}
 
     \begin{example}\label{ex:dcp:comp}
-        Consider the following compositions over the alphabets \(\varSigma = \{ \cn{sbar}, \cn{s}, \cn{vp}, \cn{np} \}\) and \(\varGamma = \{\tn{where}, \tn{the}, \tn{survey}, \tn{was}, \tn{carried}, \tn{out}\}\):
+        Consider the following \abrv{dcp} compositions over the alphabets \(\varSigma = \{ \cn{sbar}, \cn{s}, \cn{vp}, \cn{np} \}\) and \(\varGamma = \{\tn{where}, \tn{the}, \tn{survey}, \tn{was}, \tn{carried}, \tn{out}\}\):
         \begin{align*}
             c_1 &= \tn{where} \, \y,
             &c_2 &= \y \, \tn{out},
@@ -46,9 +47,9 @@
             c_5 &= \cn{sbar} (\cn{s} (\x_1(\y) \, \x_2(\tn{the}))),
             &c_6 &= \cn{vp}(\x_1(\y) \, \x_2(\tn{carried})) && && \in \C_2
         \end{align*}
-        The subscript in the family of compositions \(\C\) determines the number of arguments for the functions represented by the elements in \(\C\).
+        The subscript in the family of \abrv{dcp} compositions \(\C^{\varGamma\varSigma}\) determines the number of arguments for the functions represented by the elements in \(\C\).
         E.g.\@ \(\sem{c_1}\) takes no arguments, and \(\sem{c_6}\) takes two arguments.
-        Evaluating any term of such compositions yields a sequence tree in \(\T_\varSigma(\varGamma \cup \Y)\) with exactly one occurrence of \(\y\), for example:
+        Evaluating any term of these compositions yields a sequence tree in \(\T_\varSigma(\varGamma \cup \Y)\) with exactly one occurrence of \(\y\), for example:
         \begin{align*}
             \sem{c_6} \big( \sem{c_1}(), \sem{c_2}() \big)
             &= \sem{c_6} \big( \: (\tn{where} \, \y), \: (\y \, \tn{out}) \: \big) \\

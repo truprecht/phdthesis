@@ -6,7 +6,7 @@
     The first definition formalizes the notation for such functions using binary variables that determine an argument (subscript) and one of its components (superscript).
     The sets of compositions are restricted such that the variables occur ordered according to their sub- and superscripts, and no variables for consecutive components of the same argument occur next to each other.
     These restrictions enforce a normal form for \abrv{lcfrs} that matches the properties of grammars extracted from treebanks.
-    The normal form itself, however, is not restrictive: For every \abrv{lcfrs}, there is an equivalent \abrv{lcfrs} in normal form. [\citealp[Lem.~2.2]{SekMatFujKas91}; \citealp[Def.~7.2]{Kal10}]
+    The normal form itself, however, is not restrictive: For every \abrv{lcfrs}, there is an equivalent \abrv{lcfrs} in normal form. [\citealp[Lemma~2.2]{SekMatFujKas91}; \citealp[Definition~7.2]{Kal10}]
 
     \begin{definition}[Compositions]\label{def:lcfrs:comp}
         We fix a set of variables \(\X = \big\{ \x_i^j \mid i, j \in \DN_+ \big\}\) and the \({\DN_+}^*\)-indexed family of finite subsets \(\X_{s_1\cdots s_k} = \big\{ \x_i^j \mid i \in [k], j \in [s_i] \big\}\) for each \(k \in \DN\), and \(s_1, \ldots, s_k \in \DN_+\).
@@ -40,7 +40,7 @@
 
         The subscript in the family of compositions \(\C^\Sigma\) determines the arity of the associated functions.
         E.g.\@ \(\sem{c_1} \in \C^\Sigma_{(\varepsilon, 1)}\) takes no arguments (it is constant) and yields a single string,
-        \(\sem{c_8} \in \C^\Sigma_{(2\,1, 2)}\) takes two arguments, a sequence over strings of length 2 and 1, and gives a sequence of length 2 as a result.
+        \(\sem{c_8} \in \C^\Sigma_{(2\,1, 2)}\) takes two arguments: s sequence of strings of length 2 and a singleton sequence of strings, and gives a sequence of length 2 as a result.
         For example:
         \begin{multline*}
             \sem{c_8}\Big( \; \big( \tn{A hearing}, \: \tn{on the issue} \big), \, \big( \tn{today} \big) \; \Big)
@@ -154,30 +154,29 @@
         \end{tikzpicture}
     \end{wrapfigure}
     \parexample[Continues \cref{ex:lcfrs:comp,ex:lcfrs:rules}]\label{ex:lcfrs:deriv}
-    Let's consider the tree illustrated to the right:
-        It is a tree over rules in the \abrv{lcfrs} \(\mathrm{G} = (N, \Sigma, \nt{v}, R)\).
+    Let us consider the tree illustrated to the right: a derivation in the \abrv{lcfrs} \(\mathrm{G} = (N, \Sigma, \{\nt{v}\}, R)\).
     Its root has the \abrv{lhs} \(\nt{n}_2\), the tree is an element of \(\derivs^R_{\nt{n}_2}\).
     The yield of \(d\) is term over compositions computed in \cref{ex:lcfrs:comp}: \(\yield(d) = (\tn{A hearing}, \: \tn{on the issue})\).
     \exampleqed
 
     \vspace{\baselineskip}
 
-    During the extraction and parsing grammar rules are instantiated with sentence positions. (Cf.\@ \cite[Def. 6.8]{Kal10})
-    I.e.\@ instead of terminals that resemble objects in the sentence, we will assume matching sentence positions as lexical symbols in the rules.
+    During the extraction and parsing grammar rules are instantiated with sentence positions. \citep[Definition 6.8]{Kal10}
+    That is, instead of terminals that resemble objects in the sentence, we will assume matching sentence positions as lexical symbols in the rules.
     All derivations are assembled such that the compositions only concatenate consecutive sequences of positions.
     Each derivation is considered equivalent to a constituent tree that assumes the \abrv{lhs} nonterminals as inner nodes and the sentence positions as leaves.
 
     \begin{definition}[Position Instantiation]
-        Let \(G = (N, \varSigma, S, R)\) be a grammar, \(w \in \varSigma^*\) a word over the same alphabet.
-        A grammar \(G' = (N, [|w|], S, R')\) is called a \deflab[\lcfrs]{position instantiation} of \(G\) in \(w\) if each \(r' = A \to c' (B_1, \ldots, B_k) \in R'\) is obtained from a rule \(r = A \to c (B_1, \ldots, B_k) \in R\) by replacing each lexical symbol \(\varsigma\) in \(c\) by a position \(i \in [|w|]\) such that \(w(i) = \varsigma\).
-        For such a pair of rules \(r\) and \(r'\), \(r'\) is called a position instance of \(r\) in \(w\).
-
-        A derivation \(d \in \derivs^{R'}\) is called \deflab[\lcfrs]{admissible}, if the yield \(\yield(d)\) of the form \((s_1, \ldots, s_k)\) contains contiguous sequences of positions \((s_i\mid i \in [k])\) in \(w\) and the last position in \(s_i\) is at least by 2 smaller than the first position in \(s_{i+1}\) for each \(i \in [k-1]\).
+        Let \(G = (N, \varSigma, S, R)\) be a grammar, and \(w = \sigma_1 \ldots \sigma_n\) a word of length \(n \in \DN_+\) over the same alphabet with \((\sigma_i \in \varSigma \mid i \in [n])\).
+        Consider a rule \(r\in R\) of the form \(A \to c (B_1, \ldots, B_k)\); a rule \(r' \in \Rules^{[n],N,\fanout_G}\) that is equipped with positions in \(w\) as lexical symbols is called a \deflab{position instantiation} of \(r\) in \(w\) if it is obtained from \(r\) by replacing each lexical symbol \(\sigma\) in \(c\) with a position \(i \in [n]\) such that \(\sigma_i = \sigma\).
+        The grammar \(G' = (N, [n], S, R')\) is called the \deflab[\lcfrs]{position instantiation} of \(G\) in \(w\) if, for each \(r \in R\), the set of rules \(R'\) contains each position instantiation of \(r\) in \(w\).
+        
+        A derivation \(d \in \derivs^{R'}\) is called \deflab[\lcfrs]{admissible}, if the yield \(\yield(d)\) of the form \((s_1, \ldots, s_k)\) contains contiguous sequences of positions in \(w\) and the last position in \(s_i\) is at least by 2 smaller than the first position in \(s_{i+1}\) for each \(i \in [k-1]\).
     \end{definition}
 
     \begin{definition}[Constituent Structure for Derivation]
-        Consider a position instantiation \((N, [|w|], S, R)\) of some grammar in a word \(w\), and an admissible derivation \(d \in \derivs^R\) of the form \(d = r\,(d_1, \ldots, d_k)\) where the root \(r\) is of the form \(A \to c\,(B_1, \ldots, B_k)\).
-        The composition \(c\) contains (possibly empty) sequences of positions \(w_1, \ldots, w_{k+1} \in [|w|]^*\) such that,
+        Consider a position instantiation \((N, [n], S, R)\) of some grammar in a word \(w = \sigma_1 \ldots \sigma_n\) that is of length \(n\), and an admissible derivation \(d \in \derivs^R\) of the form \(d = r\,(d_1, \ldots, d_k)\) where the root \(r\) is of the form \(A \to c\,(B_1, \ldots, B_k)\).
+        The composition \(c\) contains (possibly empty) sequences of positions \(w_1, \ldots, w_{k+1} \in [n]^*\) such that,
         \begin{compactitem}
                 \item \(w_1\) is the sequence of terminal symbols occurring before the variable \(\x_1^1\) in \(c\),
                 \item for each \(i \in \{2, \ldots, k\}\), \(w_i\) is the sequence of terminal symbols occurring between the variables \(\x_{i-1}^1\) and \(\x_i^1\) in \(c\), and
@@ -188,42 +187,45 @@
         \]
     \end{definition}
 
-    \begin{example}[Continues \cref{ex:lcfrs:comp,ex:lcfrs:rules}]\label{ex:lcfrs:instance}
-        Let us consider the \abrv{lcfrs} \(\mathrm{G}\) from the previous examples and an instantiation \(\mathrm{G'} = (N, [8], \nt{v}, R)\) of \(\mathrm{G}\) in the string ``A hearing is scheduled for the issue today''.
-        The left figure illustrates a derivation in the instantiated grammar \(\mathrm{G'}\).
-        The right figure illustrates the constituent structure for \(d\).
+    \parexample[Continues \cref{ex:lcfrs:comp,ex:lcfrs:rules}]\label{ex:lcfrs:instance}
+    Let us consider the \abrv{lcfrs} \(\mathrm{G}\) from the previous examples and an instantiation \(\mathrm{G'} = (N, [8], \nt{v}, R)\) of \(\mathrm{G}\) in the string following string (where the positions are illustrated as subscript to the right of each token): \[
+        \tn{A}_1 \quad \tn{hearing}_2 \quad \tn{is}_3 \quad \tn{scheduled}_4 \quad \tn{on}_5 \quad \tn{the}_6 \quad \tn{issue}_7 \quad \tn{today}_8
+    \]
+    The left figure illustrates a derivation in the instantiated grammar \(\mathrm{G'}\).
+    The right figure illustrates the constituent structure for \(d\).
 
-        \null\hfill
-        \begin{tikzpicture}[level distance=6ex, font=\small, sibling distance=3.7cm, inner sep=2pt]
-            \node {\(\nt{n}_2 \to (\x_1^1, \tn{5} \, \x_2^1)\:(\nt{n}, \nt{p})\)}
-            child {node {\(\nt{n} \to (\x_1^1 \, \tn{2})\:(\nt{n}^\nt{L})\)}
-                child {node {\(\nt{n}^\nt{L} \to (\tn{1})\:()\)}}}
-            child {node {\(\nt{p} \to (\tn{6}\,\x_1^1)\:(\nt{n})\)}
-                child {node {\(\nt{n} \to (\tn{7})\:()\)}}};
-        \end{tikzpicture}
-        \hfill
-        \begin{tikzpicture}[level distance=4.5ex, font=\small, inner sep=2pt]
-            \node {\(\nt{n}_2\)}
+    \null\hfill
+    \begin{tikzpicture}[level distance=6ex, font=\small, sibling distance=3.7cm, inner sep=2pt]
+        \node {\(\nt{n}_2 \to (\x_1^1, \tn{5} \, \x_2^1)\:(\nt{n}, \nt{p})\)}
+        child {node {\(\nt{n} \to (\x_1^1 \, \tn{2})\:(\nt{n}^\nt{L})\)}
+            child {node {\(\nt{n}^\nt{L} \to (\tn{1})\:()\)}}}
+        child {node {\(\nt{p} \to (\tn{6}\,\x_1^1)\:(\nt{n})\)}
+            child {node {\(\nt{n} \to (\tn{7})\:()\)}}};
+    \end{tikzpicture}
+    \hfill
+    \begin{tikzpicture}[level distance=4.5ex, font=\small, inner sep=2pt]
+        \node {\(\nt{n}_2\)}
+        child {node {\(\nt{n}\)}
+            [sibling distance=3em]
+            child {node {\(\nt{n}^\nt{L}\)}
+                child { node {\(\tn{1}\)}}}
+            child {node {\(\tn{2}\)}}}
+        child {node {\(\tn{5}\)}}
+        child {node {\(\nt{p}\)}
+            [sibling distance=2em]
+            child {node {\(\tn{6}\)}}
             child {node {\(\nt{n}\)}
-                [sibling distance=3em]
-                child {node {\(\nt{n}^\nt{L}\)}
-                    child { node {\(\tn{1}\)}}}
-                child {node {\(\tn{2}\)}}}
-            child {node {\(\tn{5}\)}}
-            child {node {\(\nt{p}\)}
-                [sibling distance=2em]
-                child {node {\(\tn{6}\)}}
-                child {node {\(\nt{n}\)}
-                    child { node {\(\tn{7}\)}}}};
-        \end{tikzpicture}
-        \hfill\null
-    \end{example}
+                child { node {\(\tn{7}\)}}}};
+    \end{tikzpicture}
+    \hfill\exampleqed
+
+    \vspace{\baselineskip}
 
     The following definitions deal with the extraction of \abrv{lcfrs} rules from constituent structures.
     They are similar to the extraction of \emph{treebank grammars} by \citet{MaierSogaard08} but extend the procedure to accommodate lexical \abrv{lcfrs} and can be seen as a reversal of the previous definition for a constituent structure for a derivation.
     We start with an elementary definition that quantifies and assembles continuous sequences among sets of positions.
 
-    \begin{definition}
+    \begin{definition}[Linearization]
         Let \(\pi \subset \DN_+\) be a finite and non-empty set.
         The \deflab{linearization} of \(\pi\) is the sequence of greatest contiguous sequences within \(\pi\), i.e.\@ the sequence \((w_j \in \pi^+ \mid j \in [s])\) such that
         \begin{compactitem}
@@ -232,38 +234,38 @@
             \item for each \(j \in [s-1]\), the last (and therefore greatest) element in \(w_j\) is less then the first (ant therefore least) element in \(w_{j+1}\).
         \end{compactitem}
         The positive integer \(s\) is called \deflab{fanout of the set \(\pi\)}.
-    \end{definition}
+    \end{definition}\todo{vlt.\@ Umbenennen in Discontinuous Span oder zumindest die Verbindung dazu herstellen}
 
     In the following definition, these sequences of continuous positions are used to define \abrv{lcfrs} compositions.
     It assumes a collection of sets of positions (in the yield of some bottom nodes) and one superseding set (in the yield of a top node).
     The composition is obtained from the linearization of the superseding set by substituting the sequences occurring in the collection with appropriate variables.
 
-    \begin{definition}
+    \begin{definition}[Composition for Positions]
         Let \(k \in \DN\) be some natural, \((\pi_i \subset \DN_+ \mid i \in [k])\) a collection of mutual exclusive, finite and non-empty sets, and \(\pi_0 \supseteq \bigcup_{i \in [k]} \pi_i\) a finite and non-empty superset of their elements.
-        The families \((s_i \mid i \in [0,k])\) and \((w_i^j \mid i \in [0,k])\) are the fanouts and linearizations of the sets \(\pi_0, \ldots, p_k\), respectively, such that \((w_i^j \mid j \in [s_i])\) idenitifies the linearization for \(\pi_i\).
+        The families \((s_i \mid i \in [0,k])\) and \((w_i^j \mid i \in [0,k])\) are the fanouts and linearizations of the sets \(\pi_0, \ldots, p_k\), respectively, such that \((w_i^j \mid j \in [s_i])\) identifies the linearization for \(\pi_i\).
         We define the \emph{composition for \(\pi_0, \ldots, \pi_k\)}, denoted by \(\mathrm{comp}(\pi_0, \pi_1, \ldots, \pi_k)\), as the composition \((u_1, \ldots, u_{s_0}) \in \C^{\pi_0}_{(s_1\cdots s_k, s_0)}\) where each \(u_\ell\) is obtained from \(w_0^\ell\) by replacing each occurrence of a sequence \(w_i^j\) with the variable \(\x_i^j\).
     \end{definition}
 
     \begin{example}[Linearizations and Compositions, Continues \Cref{ex:lcfrs:instance}]
         The top three inner nodes in the constituent structure that was shown in the previous example have the yields \(\pi_0 = \{1,2,5,6,7\}\) (at the root), \(\pi_1 = \{1,2\}\) (at position 1) and \(\pi_2 = \{6,7\}\) (at position 2).
         The linearization of \(\pi_0\) consists of the two sequences \(w_0^1 = 1\,2\) and \(w_0^2 = 5\,6\,7\), its fanout is 2.
-        For the successor nodes it is \(w_1^1 = 1\,2\) and \(w_2^1 = 5\,6\), respectively, and their fanout is 1.
-        The composition for these tree sets consists (like \(w_0\)) of two components.
-        The first is obtained by replacing \(1\,2\) with the variable \(\x_1^1\) in \(w_0^1\) and the second analogously by replacing \(5\,6\) by \(\x_2^1\) in \(w_0^2\).
+        For the successor nodes the linearizations are \(w_1^1 = 1\,2\) and \(w_2^1 = 5\,6\), respectively, and their fanout is 1.
+        We obtain the composition for the three sets \(\pi_0\), \(\pi_1\) and \(\pi_2\) as follows:
+            The first component is obtained by replacing \(1\,2\) with the variable \(\x_1^1\) in \(w_0^1\) and the second analogously by replacing \(5\,6\) by \(\x_2^1\) in \(w_0^2\).
         It is \(\mathrm{comp}(\pi_0, \pi_1, \pi_2) = (\x_1^1, 5\,\x_2^1)\).
     \end{example}
 
     When grammars are used for parsing, they are often extended by weight structures.
     The following definition does not employ a general framework, e.g.\@ semirings, but assumes real values that are assigned to each rule and added within a derivation.
     We interpret these values as scores or confidence values, and understand higher values as better.
-    This interpretation is equivalent to the usual probabilistic interpretation \citep[Viterbi semiring]{Goodman} with logarithmic values.
+    This interpretation is equivalent to the usual probabilistic interpretation \citep[Viterbi semiring]{Goodman} with negative logarithmic values.
 
-    \begin{definition}
+    \begin{definition}[Weighted Grammar]
         Let \(G = (N, \varSigma, S, R)\) be an \abrv{lcfrs} and \(\weight \colon R \to \DR_{\ge 0}\) an assignment of a non-negative value to each rule in \(G\).
         We call \(\weight\) a \deflab{weight assignment} for \(G\) and the tuple \((G, \weight)\) a \deflab{weighted \abrv{lcfrs}}.
         The weight of a derivation \(d \in \derivs_G\) is the sum over all positions' weights: \[ \weight(d) = \sum_{\rho \in \pos(d)} \weight(d(\rho))\text{.} \]
         The set of \emph{best parses for \(w \in \varSigma^*\)} is \(\derivs^{\mathrm{max}}_G(w) = \{ d \in \derivs_G(w) \mid \forall d' \in \derivs_G(w)\colon \weight(d) \geq \weight(d') \}\).
-        For each \(n\in \DN_+\), we extended this concept to the sequences of \emph{\(n\)-best parses for \(w\)}.
+        For each \(n\in \DN_+\), we extend this concept to the sequences of \emph{\(n\)-best parses for \(w\)}.
         Let \(\ell = \min(n, |\derivs_G(w)|)\), the set \(\derivs^{n,\max}_G(w)\) contains the sequence \(d_1 \ldots d_\ell \in \derivs_G(w)^\ell\) if and only if \(\weight(d_1) \geq \ldots \geq \weight(d_\ell)\) and there is no \(d' \in \derivs_G(w)\) with \(d_\ell < d'\).
     \end{definition}
 \end{document}
