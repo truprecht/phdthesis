@@ -1,7 +1,7 @@
 \documentclass[../../document.tex]{subfiles}
 
 \begin{document}
-    \newcommand{\staglist}[2][4cm]{\tikz[every node/.style={text width=#1, draw, rounded corners, line width=.3mm, font=\tiny}]{%
+    \newcommand{\staglist}[2][4cm]{\tikz[every node/.style={text width=#1, draw, rounded corners, line width=.3mm}]{%
             \node[fill=black!40] (stag1) {\vphantom{\strut $V^L\xrightarrow{0.2}$}};
             \node[fill=black!20, below right=.1cm of stag1.north west, anchor=north west] (stag2) {\vphantom{\strut $V^L\xrightarrow{0.2}$}};
             \node[fill=black!5, below right=.1cm of stag2.north west, anchor=north west, align=center] {\strut #2};}}
@@ -30,18 +30,27 @@
         \coordinate (taggerboxs) at (sentencebox.south -| tagger);
         \node[process, fit=(tagger) (taggerboxn) (taggerboxs)] (taggerbox) {};
 
-        \begin{scope}[every node/.style={anchor=west, inner sep=0pt, outer sep=0pt}]
+        \begin{scope}[every node/.style={anchor=west, inner sep=0pt, outer sep=0pt, font=\tiny}]
+            \matrix[above=1cm of sentence.north west, anchor=south west, fill=black!5, draw, rounded corners, line width=.3mm, inner sep=2pt] (blueprints) [matrix of nodes,nodes in empty cells,row sep=3pt] {
+                $\mathit{S} \to [x_1\,\wildcard{}\,y_1\,x_2][\ldots] (V_2, N)$\\
+                $N \to [\wildcard{}] [\ldots]$\\
+                $V_2 \to [x_1, \wildcard{}\, x_2] [\ldots] (V_2)$\\
+                $V_2 \to [x_1, \wildcard{}\, y_1] [\ldots](\mathrm{arg}(V), V\binsym{})$\\
+                $\mathrm{arg}(V) \to [\wildcard{}][\ldots]$ \\
+                $V\binsym{} \to [\wildcard{}][\ldots]$\\
+            };
             \matrix[right=2.5cm of term] (stag) [matrix of nodes,nodes in empty cells,row sep=3pt] {
                 \staglist[2.5cm]{$\mathrm{arg}(V) \xrightarrow{0.6}[\text{1}][\ldots]$} \\
                 \staglist[3.9cm]{$\mathit{S} \xrightarrow{0.57} [x_1\,\text{2}\,y_1\,x_2][\ldots] (V_2, N)$}\\
                 \staglist[1.9cm]{$N \xrightarrow{0.8} [\text{3}] [\ldots]$}\\
                 \staglist[3.4cm]{$V_2 \xrightarrow{0.55} [x_1, \text{4}\, x_2] [\ldots] (V_2)$}\\
-                \staglist[4.3cm]{$V_2 \xrightarrow{0.6} [x_1, \text{5}\, y_1] [\ldots](\mathrm{arg}(V), V\text{-}B)$}\\
-                \staglist[2.2cm]{$V\text{-}B \xrightarrow{0.7} [\text{6}][\ldots]$}\\
+                \staglist[4.3cm]{$V_2 \xrightarrow{0.6} [x_1, \text{5}\, y_1] [\ldots](\mathrm{arg}(V), V\binsym{})$}\\
+                \staglist[2.2cm]{$V\binsym{} \xrightarrow{0.7} [\text{6}][\ldots]$}\\
             };
         \end{scope}
         \node[gray, anchor=west, inner sep=0pt] (staglab) at (stag.west|-sentence) {supertags + confidence};
         \node[boundingbox, fit=(stag) (staglab)] (stagbox) {};
+        \node[gray, above=.4cm of blueprints.north west, anchor=west, inner sep=0pt] {supertag blueprints};
 
         \node[right=.7cm of stagbox] (parser) {\rotatebox{90}{grammar parsing}};
         \coordinate (parserboxn) at (sentencebox.north -| parser);
@@ -71,6 +80,7 @@
                 \draw (stag-\i-1 -| taggerbox.east)-- (stag-\i-1);
                 \draw (stag-\i-1)-- (stag-\i-1-|parserbox.west);
             }
+            \draw (blueprints.south -| taggerbox) -- (taggerbox);
             \draw (parserbox.east) -- (derivation.west |- parserbox);
             \draw (derivation.east|-parserbox) -- (transbox.west);
             \draw (transbox.east) -- (parse.west|-transbox);

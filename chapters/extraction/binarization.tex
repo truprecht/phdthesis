@@ -5,7 +5,7 @@
     In a treebank, we may encounter nodes in constituent trees with arbitrary amounts of successors.
     E.g.\@ \cref{fig:extraction:ranks} shows the distribution of node ranks occurring in a treebank that we use in our experiments (left), the right plot shows that even nodes with the same label occur with widely varying ranks.
     Most grammar extraction procedures construct a rule for each inner node (or a connected set of inner nodes) in a constituent tree with the rank matching the number of successors of the node (or the sum over all successors in the set of nodes).
-    Usually, it is desirable to obtain binary grammars, because the design of efficient parsing algorithms is more straightforward.
+    Usually, it is desirable to obtain binary grammars, because the design of efficient parsing algorithms is more straightforward in the binary case.
     And more importantly, these binary grammars can be constructed in such a way that rules contained in similar derivations are shared, this is called \deflab<binariation>{Markovization}.
     This is used as a generalization mechanism because these rules extracted in this fashion admit larger sets of derivations.
     \citet[figure 2]{KleMan03} show the influence of Markovization to grammars extracted from the Penn Treebank in terms of size and parsing accuracy.

@@ -3,33 +3,36 @@
 \begin{document}
     \chapter{Lexical Grammar Extraction from Treebanks}
     This chapter deals with the extraction of supertag blueprints from treebanks.
-    A supertag blueprint is understood as a lexical grammar rule where the terminal symbol is a wildcard, which will be denoted by \tn{*}.\todo{Begriffserklärung und Übersicht zu Parsing via Supertagging in Einleitung}
-    In this chapter, we will consider the three previously discussed formalisms: \abrv{lcfrs}, \abrv{dcp}, and hybrid grammars.
-    Beyond the previous description of supertag blueprints, there are two small extensions in the case of \abrv{lcfrs} and \abrv{dcp} as underlying formalisms:
+    We will consider the following forms of supertag blueprints depending on the underlying grammar formalism:
     \begin{compactenum}
         \item
-            In the case of \abrv{lcfrs}, there is a boolean (i.e.\@ either it is present or not) label that accompanies each rule.
-            It stores information from the lexicalization process and is needed to reverse the process in order to transform a derivation in the supertag grammar into a constituent tree.
+            Each \abrv{lcfrs} supertag blueprint is a tuple \((r, b)\) where \(r\) is a lexical \abrv{lcfrs} rule containing the terminal \wildcard{} and \(b \in \{\text{True}, \text{False}\}\) is a boolean marker.
+            The marker \(b\) stores information from the lexicalization process and is needed to reverse the process in order to transform a derivation into a constituent tree.
         \item
-            In the case of \abrv{dcp}, there is an integer value added to each rule.
-            It will indicate the maximum fanout that is admissible during parsing.
+            Each \abrv{dcp} supertag blueprint is a tuple \((r, f)\) where \(r\) is a lexical \abrv{dcp} rule containing the terminal \wildcard{} and \(f \in \DN_+\) is an integer.
+            During the parsing process, \(f\) acts as a restriction for the fanout of all derivations rooted by a supertag instantiated for \((r,f)\).
+        \item Each \abrv{hg} supertag blueprint is a lexical hybrid grammar rule containing the terminal \wildcard{}.
     \end{compactenum}
-    These extensions are considered an integral part of each supertag for the parsing process.
-%    Their purpose will be further discussed in \cref{sec:extraction:readoff,sec:extraction:guided}.
-    These two additions will not be part in the case of instances of hybrid grammars, even though they are a combination of \abrv{lcfrs} and \abrv{dcp} grammars.
+    For each of the three underlying grammar formalisms \(F\), an \deflab{supertag}[\(F\) supertag] is of the same form as an \(F\) supertag blueprint except the terminal \wildcard{} in the grammar rule is replaced by a positive integer.
+    We call supertag that is obtained by replacing \wildcard{} in a supertag blueprint \(r\) with the integer \(i\) an \deflab{instance}[instance of \(r\)] and denote it by \(r[i]\).
 
-    There are two approaches for the extraction described in this chapter:
+    This chapter describes two approaches for the extraction of supertag blueprints from a constituent treebank:
     \begin{compactenum}
         \item
-            The process described in \cref{sec:extraction:readoff} first extracts a derivation in a simple \abrv{lcfrs} for each tree in a treebank.
-            After that, the rules within each derivation are lexicalized by transporting the terminal symbols occurring in the leaves of the derivation into inner nodes.
+            The process described in \cref{sec:extraction:readoff} first extracts a derivation \abrv{lcfrs} rules for each tree in a treebank.
+            After that, the rules within each of the derivations are lexicalized by transporting the terminal symbols occurring in the leaves into inner nodes.
             With the help of annotations that are added to the rules and nonterminals within the rules, this transportation is reversible.
+            This approach was the fruit of a collaboration with Richard Mörbitz. \citep{MoeRup20,RupMoe21}
         \item
             The extraction procedure described in \cref{sec:extraction:guided} first assigns a sentence position to each inner node of the constituent structure.
             In the following, it extracts a derivation of lexical grammar rules according to the positions assigned to the inner nodes in each subtree.
+            This approach extends the previous by parametrizing the lexical rule extraction, but requires a more complex grammar formalism: hybrid grammars instead of \abrv{lcfrs}.
+            The section builds upon my latest publication \citep{Rup22}, and extends it by further formalizing the supertags and adding some more options for the extraction parameters.
     \end{compactenum}
+    Both of these procesdures make use of the rank transformations described in \cref{section:ranktransformations}.
+    One of the trasformations described in the section is binarization, a standard-tool in parsing constituent trees.
+    The other \emph{head-inward transformation} was not published before.
 
-%    \todo{discuss why we show both extractions if the first is an instance of the second: it is not that the guided extraction cannot be implemented for lcfrs rules + swapped annotation, but the different concept of transportation vs. guides}
     
     \subfile{extraction/binarization.tex}
     \subfile{extraction/lcfrs-lexicalization.tex}

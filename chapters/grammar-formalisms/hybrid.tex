@@ -24,7 +24,7 @@
     The alignment between lexical symbols in the two compositions is trivial in the case of lexical grammars, as each composition contains exactly one lexical symbol.
     As this thesis focuses on lexical grammars, we will refrain from denoting these alignments explicitly.
     For each derivation \(d\) in an \abrv{hg}, there are two projections: \(\pi_{\abrv{lcfrs}}(d)\) that is obtained by removing the \abrv{dcp} (and keeping the \abrv{lcfrs}) compositions, and vice versa, \(\pi_{\abrv{dcp}}(d)\) by removing the \abrv{dcp} compositions.
-    With these projections, we consider two yields: \(\yield(\pi_{\abrv{lcfrs}}(d))\) that computes tuples of strings, and \(\yield(\pi_{\abrv{dcp}}(d))\) that computes sequences of trees.
+    With these projections, we consider two yields: \(\yield(\pi_{\abrv{lcfrs}}(d))\) that computes sequences of strings, and \(\yield(\pi_{\abrv{dcp}}(d))\) that computes sequences of trees.
     The alignment between lexical symbols in each rule is construed to transfer the order of lexical symbols in the strings formed by \(\yield(\pi_{\abrv{lcfrs}}(d))\) to the leaves of the trees formed by \(\yield(\pi_{\abrv{dcp}}(d))\).
     This mechanism is used to model discontinuities in derived constituent structures.
     \Citet{Ned14} described such a tree in combination with a total order on the leaf positions (induced by an aligned string) as \emph{hybrid tree}.
@@ -99,14 +99,14 @@
     \end{figure}
 
     \begin{example}\label{ex:hg:derivation}
-        Consider the following tuples of \abrv{lcfrs} and \abrv{dcp} compositions
+        Consider the following pairs of \abrv{lcfrs} and \abrv{dcp} compositions
         \begin{align*}
             c_1 &= (\tn{where})\;(\tn{where}),
             &c_2 &= (\tn{the})\;(\tn{the}),
             &c_3 &= (\tn{out})\;(\tn{out}), \\
 %
             c_4 &= (\x_1^1\, \tn{survey})\;(\cn{np} (\x_1 \, \tn{survey})), \\
-            c_5 &= (\x_1^1, \tn{carried}\,\x_2^1)\;(\cn{vp}(\x_1 \, \tn{carried} \x_2)), \\
+            c_5 &= (\x_1^1, \tn{carried}\,\x_2^1)\;(\cn{vp}(\x_1 \, \tn{carried}\,\x_2)), \\
             c_6 &= (\x_1^1\,\x_2^1\,\tn{was}\,\x_2^2)\;(\cn{sbar} (\cn{s} (\cn{vp} (\x_1\, \tn{was})\,\x_2)))
         \end{align*}
         and the \abrv{hg} \(G= (\{\nt{root}, \nt{v}_2, \nt{n}, \nt{a}\}, \Gamma, \Sigma, \nt{root}, R)\) over the alphabets \(\Gamma = \{\cn{sbar}, \cn{s}, \cn{vp}, \cn{np}\}\) and \(\Sigma = \{\tn{where}, \tn{the}, \tn{survey}, \tn{was}, \tn{carried}, \tn{out}\}\), and with the following rules:

@@ -109,18 +109,21 @@
     
     \begin{figure}
         \resizebox{\linewidth}{!}{\subfile{figures/parsing-overview-simplified.tex}}
+        \todo[inline]{figure layout überarbeiten}
         \caption{\label{fig:supertagging}
             A simplified overview of a parsing process with supertagging.
             A discriminative classifier predicts a small set of lexical grammar rules (supertags) per word in a sentence.
-            The union of all predictions is assumed as a grammar for an off-the-shelf parser for the underlying grammar formalism to obtain a rule derivation for the sentence which is interpreted as a constituent tree.
+            The union of all predictions is assumed as a grammar for a parser of the underlying grammar formalism to obtain a rule derivation for the sentence which is interpreted as a constituent tree.
         }
     \end{figure}
     
     \section*{Parsing via Supertagging}
     Supertagging was introduced by \citet{bangalore1999supertagging} for tree-adjoining grammars.
-    It assumes an underlying \deflab{lexical} grammar, i.e.\@ one that does contain exactly one lexical symbol in each of its rules.
-    The term supertagging refers to the prediction of a small sample of grammar rules for each lexical symbol in the input.
-    The union of all samples for an input sentence can then be used to parse the sentence.
+    It assumes an underlying \deflab{lexical} grammar formalism, i.e.\@ one that does contain exactly one lexical symbol in each of its rules.
+    The grammar rules used for supertagging contain a singular lexical symbol that acts as a wildcard, we call them \deflab{supertag blueprints}.
+    The term supertagging refers to the prediction of a small sample of supertag blueprints for each lexical symbol in the input.
+    Right after prediction, each blueprint's wildcard symbol is replaced with the sentence position it was predicted for; the obtained object is called a \deflab{supertag}.
+    The union of all supertags for an input sentence can then be used to parse the sentence.
     \cref{fig:supertagging} shows an illustration for a parsing process that utilizes supertagging.
     It is supposed to tackle the disadvantages of grammar-based parsers as follows:
     \begin{compactitem}
