@@ -1,0 +1,19 @@
+\documentclass[../../document.tex]{subfiles}
+
+\begin{document}
+    \section{Hyperparameter Search in DPTB and TiGer}
+    To tone the hyperparamerts for the experiments with \abrv{dptb} and TiGer, we use a radically reduced set of values compared to the previous section.
+    We omit hyperparamter values if that we think are unrealistic to preduce relevant results.
+    Specifically, we set the following limitations:
+    \begin{itemize}
+        \item we omit the vanilla, near and least guide constructors (leaving 3 options),
+        \item we omit the vanilla nonterminal constructor and the coarse nonterminal constructor with auxiliary table (leaving 2 options), 
+        \item we only use right branching binarization in case of the strict guide constructor, and the head guide constructor in tandem with head-inward transformation,
+        \item we use the Markovization paramters \(h = 0\) and \(v \in \{1,2\}\) (leaving 2 options),
+        \item in case of \abrv{dcp} supertags, we only investigate the strict guide constructor with \emph{-nof} and \emph{-disc} extensions for each coarse and classic nonterminals (which leads to $2 \cdot 2 = 4$ additional options).
+    \end{itemize}
+
+    We explore the remaining grid of configurations completely with hybrid grammar and \abrv{dcp} supertags, which yields a total of $3 \cdot 2 \cdot 2 + 2 \cdot 2 = 16$ experiments per treebank and prediction model.
+    \Crefrange{tbl:experiments:dptb:bert}{tbl:experiments:tiger:supervised} show the results for the supertag prediction and parsing accuracies for each experiment in the grid search for \abrv{dptb} and TiGer each using the supervised and the pretrained prediction model.
+
+\end{document}

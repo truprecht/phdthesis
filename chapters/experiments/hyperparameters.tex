@@ -1,0 +1,100 @@
+\documentclass[../../document.tex]{subfiles}
+
+\begin{document}
+    \section{Hyperparameters}
+    This section describes the set of parameters that steer the procedures for the extraction of supertag blueprints as well as the training procedure for the classifier involved in the supertag prediction.
+    We will enumerate the considered hyperparameters and ranges of appropriate sets of values for them, and describe how they are tuned in general.
+    The following two subsections are dedicated to two disjoint subsets of hyperparameters that we consider:
+    \begin{itemize}
+        \item Supertag extraction parameters are all constitute the options for rank transformations and supertag blueprint extracion as described in \cref{sec:extraction}.
+        \item Training parameters are all options concerned with learning a classifier for the supertag prediction for a fixed set of supertag blueprints.
+    \end{itemize}
+
+    \subsection{Supertag Extraction Parameters}
+    The following are parameters that must be specified for the extraction of supertag blueprints.
+    Some of them can be associated to the structure of the grammar rules contained in the extracted blueprints, such as the grammar formalism, rank transformation strategy and guide constructor, and others with the granularity (cf.\@ \cref{sec:reranking}) of the extracted supertag blueprints, such as the Markovization parameters as well as the nonterminal constructors.
+    The following list of hyperparmeters gives a short description and valiable values to each of the option involved in the extraction of supertag blueprints.
+    Generally, we will investigate configurations for all of these parameters by condicting an experiment with each combination of parameter values, this is called grid search and further explained in \cref{sec:gridsearch}.
+    
+    \paragraph*{Grammar Formalism}
+    Our experiments are concerned with hybrid grammar as well as \abrv{dcp} supertags using the extraction procedure in \cref{sec:extraction:guided}.
+    We omit \abrv{lcfrs} supertags as they are a speacial case of the hybrid grammar supertags that can be achieved with specific extraction parameters as described in \cref{sec:extraction:lcfrs}, namely the vanilla nonterminal constructor aand the vanilla guide constructor.
+
+    \paragraph*{Rank Transformation}
+    We consider rank transformations, as e.g.\@ binarization, an integral part of the extraction process for supertag blueprints from constituent treebanks.
+    As they were described in \cref{sec:binarization}, they are specified by the following parameters:
+    \begin{itemize}
+        \item A transformation strategy determines the target ranks occurring in the trees after applying the rank transformation, and the order/direction in which artificial nodes are  introduced. We distinguish four strategies: left-branching binarization, right-branching binarization, head-outward binarization and head-inward transformation.
+        \item Markovization contexts determine the information that is used to construct artificial nodes during the rank tranformation process. This information is distinguished in two dimensions: a horizontal and a vertical Markovization context, denoted by \(h\) and \(v\) respectively. Both options are assigned to natural values \(h \ge 0\) and \(v \ge 1\). Usually in grammar-based parsing one would investigate combinations of values in the intervals \(0 \le h \le 3\) and \(1 \le v \le 2\). We saw in preliminary investigations that the number of extracted supertag blueprints rapidly rise with values beyond the minimal \(h = 0\) and \(v = 1\) which does negatively impact the supertag prediction accuracy. \citep{Rup22} We will restrict our experiments to the three least combinations \((h, v) \in \{(0,1), (1,1), (0,2)\}\).
+        \item Direction markers are an extension for the artificial nodes constructed during a rank transformation to illustrate the direction/order in that they were introduced. This extenstion has no effect when using a left- or right-branching binarization strategy as markers would be fixed in those cases. That is not the case for the other two strategies, where such markers denote if a sub-derivation was extracted from a constituent to the left or to the right of a lexical head. In case of the head-outward binarization strategy this can be seen as a state that switches at a certain point during the derivation, where the bottom part is marked to be right-branching and the top part to be left-branching. The value for this paramter is binary: either the markers are present or not. We will investigate both values in tandem with the dependent and head guides.
+        \item A second extension for the rank transformations are trailing artificial nodes that adds an artificial unary node above the child that is processed last during the transformation at a node. E.g.\@ in right-brancing binarization this adds a trailing right-most binarization node. With all but the head guide constructor this would just be counter-productive as we expect constituent trees without unary nodes during the extraction of supertag blueprints. As the previous, this is a binary parameter, either the trailing nodes are present or not. We will investigate both values in the experiments with the head guide constructor.
+    \end{itemize}
+
+    \paragraph*{Guide Constructors}
+    We investigate the six guide constructors that were introduced in \cref{sec:guides}: the vanilla, strict, near, least, dependent and head guide constructor.
+    While the first four among them are define guides only using the given constituent structures, the latter two require a head assignment for each constiutent tree in the treebank used for the extraction.
+    We conduct experiments with all six options, but separate them in \cref{sec:experiments:nts-guides,sec:experiments:head} to stress that the latter case requires additional information for the treebanks.
+
+    \paragraph*{Nonterminal Constructors}
+    We conduct experiments using each of the three nonterminal constructors defined in \cref{sec:ntconstructors}: namely the vanilla, classic and coarse nonterminal constructor.
+    There is an extenstion for the latter one that uses a table to partition a set of constituent symbols for the construction of coarse nonterminals.
+    As in the previous case, we will separate the experiments with that extension into their own section to underline that such a table must be supplied as additional informtaion to the constituent treebank.
+
+    \subsection{Classifiers and Training Parameters}
+    For the prediction of supertags, we use two architectures of artificial neural networks:
+    \begin{compactitem}
+        \item The \emph{supervised} architecture consists of word and character-level embeddings that are first fed into a bidirectional \abrv{lstm} and then a feed-forward layer to obtain a score for each supertag blueprint at each sentence position.
+        \item The \emph{pretrained} architecture exploits a pretrained transformer encoder (e.g.\@ \abrv{bert}) to obtain embeddings that are fed into a single feed-forward layer to compute a score for each supertag at each sentence position.
+    \end{compactitem}
+    The concepts around and the origin of both architecutres are explained in \cref{sec:preliminaries:nn}.
+    We will generally conduct each experiment with both architectures as they come with different prerequisites:
+        While the supervised architecture is trained exclusively with information from the training portion of an input constituent treebank, the pretrained architecture relies on models that are shared within the \abrv{nlp} community which were already trained using large copora of natural language sentences.
+        Therefore the latter requires that there is data in the language of the used constituent tree corpus as well as people (or architecture, more realistically) willing to train models and share them.
+        One might also consider that the performance of such obtained classifiers critically depends on the data that is collected, investigated and preprocessed by some corporations, as well as the availability and licensing agreements for the shared models.
+    
+    Generally when training classifiers with \abrv{ann}, there are numberous hyperparameters for several aspects in the architectures themselves, as well as some parameters and extensions for the gradient descent algorithm.
+    For the most part of our experiements we will used fixed values for them to ensure we can donduct and evaluate them in reasonable time.
+    Integrating these hyperparameters into the grid search described for the values in the extraction procedure would result in a huge search space.
+    We rather use the following sources to fix the values for the training parameters:
+    \begin{compactitem}
+        \item There are recommended values for the training in some cases, such as the learning rate, batch size and optimizer in fine-tuning pretrained transformer encoders. \citep{Devlin2019}
+        \item There are mechanisms integrated into the training procedure that tune some hyperparamters on-the-fly, such as \texttt{AnnealOnPlateau} that adapts the learning rate while observing the prediction accuracy on the developement set during the training. In most cases the parameters should initialized with good-enough values but we do not need to find a perfect fit to reach a satisfactory outcome.
+        \item Some hyperparameters, such as th supervised architecture, are just fixed to values that coincide (or are close to) with those used in related work.
+        \item The remainder of hyperparameters was tuned using a sample of a data set with supertag blueprints that was extracted using an arbitrary configuration of extraction parameters.
+    \end{compactitem}
+    The following list gives the considered hyperparameters and how we determine a reasonable value for training.
+
+    \paragraph*{Architecture.}
+    The architecture for the pretrained model was proposed by \citet{Devlin2019}.
+    The greater part of the model is a pretrained module that we can only use as is, and the size of the topmost feed-forward layer is determined by the number of supertag blueprints.
+    Hence, there are no undetermined hyperparameters for the architecture left in this case.
+    The architecture for the supervised model is based on a \abrv{bilstm} encoding architecture and was introduced in its actual form by \citet{kiperwasser2016simple}.
+    It has been seen pretty common use in models for parsing, in particular also for parsing discontinuous constituents. \citep{kiperwasser2016simple,CoaCoh19,StaSte20,Cor20}
+    We consider the following hyperparameters to the modules and their assigned values as fixed in our experiments:
+    \begin{itemize}
+        \item the size of the word and character-level embeddings are 256 and 128 respectively,
+        \item the minimal required number of token occurrences to constitute an own word embedding (otherwise it is replaced by a collective unknown word embedding) is 3,
+        \item there are 2 \abrv{bilstm} layers on top of each other,
+        \item dropout probability between the modules is 0.3.
+    \end{itemize}
+    All values were chosen close to those used by \citet{Cor20} and those used by our prior experiments \citep{Rup22}.
+
+    \paragraph*{Training.}
+    We consider training parameters as all options and condfigurations for the gradient-descent algorithm  used to tune the model parameters of the \abrv{ann} models.
+    \Cref{sec:preliminaries:nn} expands on them with short elaborations on their effect for the training.
+    We encounter the following list of parameters in our experiments, each is given with its value:
+    \begin{itemize}
+        \item we use \texttt{AdamW} as optimizer with default configuration ($\beta_1 = 0.99$ and $\beta_2 = 0.999$),
+        \item we use \texttt{AnnealOnPlateau} as learning rate scheduler with patience 1,
+        \item the base learning rate is $5\cdot 10^{-5}$ for the pretrained model and $10^{-3}$ for the supervised model,
+        \item the maximum number of epochs is 10 during hyperparameter search and also for the final pretrained model, in case of the final supervised model it is 32,
+        \item the weight decay is 0.01 for the pretrained model and 0.1 for the supervised model, and
+        \item we use cross entropy loss.
+    \end{itemize}
+    All values are chosen as follows:
+    There are advised sets of values for the parameters used in fine-tuning the pretrained model by \citet{Devlin2019}.
+    We adopt them in our grid search and training of the final model, and the same specific values used in prior experiments. \citep[cf.\@][]{Rup22}
+    For the supervised model, we use the same values as in these experiments as well.
+    They originate from those reported by \citet{Cor20,StaSte20} who used the same model in their experiments.
+
+\end{document}
