@@ -1,7 +1,7 @@
 \documentclass[../../document.tex]{subfiles}
 
 \begin{document}
-    \section{Hyperparameter Search in DPTB and TiGer}
+    \section{Hyperparameter Search in DPTB and TiGer}\label{sec:gridsearch:other}
     To tune the hyperparamerts for the experiments with \abrv{dptb} and TiGer, we use a radically reduced set of values compared to the previous section.
     We omit hyperparamter values if that we think are unrealistic to preduce relevant results.
     Specifically, we set the following limitations:
@@ -75,7 +75,7 @@ sup. & coarse  & \(2\)  & 89.97 & 0.82 & 15.01 & 5 & 88.87 & 0.80 & 15.95 & 38 &
         \item the head guide and coarse guide constructor with $v=1$.
     \end{compactitem}
     These two achieve best parsing qualities with the pretrained model, with the supervised model the first case reports the best parsing quality as well.
-    While the number of parse fails is rather high in the first case, the second gives a good compromise among parsing and prediction quality as well as a low amount of parse fails with both prediction models.
+    While the number of parse fails is rather high in the first case using the supervised model, the second gives a good compromise among parsing and prediction quality as well as a low amount of parse fails with both prediction models.
 
     \begin{table}
         \caption{\label{tbl:experiments:dptb:dcp}
@@ -88,18 +88,42 @@ sup. & coarse  & \(2\)  & 89.97 & 0.82 & 15.01 & 5 & 88.87 & 0.80 & 15.95 & 38 &
             \toprule
 Mod. &  guide &   nont.   &\(v\)   & f1 & acc. & $t$ & $\lightning$ \\ \hline \rowcolor{black!10}
 pret. & strict (hg) &  coarse & \(2\)  & 94.30 & 0.89 & 10.51 & 13  \\\hline
-pret. & strict-disc    &  coarse & \(2\)  & 94.30 & 0.89 & 11.09 & 8  \\
-pret. & strict-nof     &  coarse & \(2\)  & 94.40 & 0.89 & 10.38 & 8  \\ \hline\rowcolor{black!10}
+pret. & strict      &  coarse-disc  & \(2\)  & 94.30 & 0.89 & 11.09 & 8  \\
+pret. & strict      &  coarse-nof & \(2\)  & 94.40 & 0.89 & 10.38 & 8  \\ \hline\rowcolor{black!10}
 pret. & head  (hg)  &  coarse & \(1\)  & 94.57 & 0.92 & 10.93 & 4  \\\hline
-pret. & head-disc      &  coarse & \(1\)  & 93.95 & 0.91 & 16.86 & 6  \\
-pret. & head-nof       &  coarse & \(1\)  & 94.04 & 0.92 & 19.45 & 9  \\
+pret. & head        &  coarse-disc & \(1\)  & 93.95 & 0.91 & 16.86 & 6  \\
+pret. & head        &  coarse-nof & \(1\)  & 94.04 & 0.92 & 19.45 & 9  \\
 \midrule \rowcolor{black!10}
 sup. & strict (hg) &  coarse & \(2\)  & 89.97 & 0.82 & 15.01 & 5  \\\hline
-sup. & strict-disc    &  coarse & \(2\)  & 89.74 & 0.82 & 14.35 & 6  \\
-sup. & strict-nof     &  coarse & \(2\)  & 89.86 & 0.82 & 18.83 & 4  \\\hline\rowcolor{black!10}
+sup. & strict    &  coarse-disc & \(2\)  & 89.74 & 0.82 & 14.35 & 6  \\
+sup. & strict     &  coarse-nof & \(2\)  & 89.86 & 0.82 & 18.83 & 4  \\\hline\rowcolor{black!10}
 sup. & head (hg)  &  coarse & \(1\)  & 89.48 & 0.86 & 16.50 & 0  \\\hline
-sup. & head-disc      &  coarse & \(1\)  & 89.25 & 0.86 & 30.92 & 9  \\
-sup. & head-nof       &  coarse & \(1\)  & 88.95 & 0.86 & 34.98 & 15  \\
+sup. & head      &  coarse-disc & \(1\)  & 89.25 & 0.86 & 30.92 & 9  \\
+sup. & head       &  coarse-nof & \(1\)  & 88.95 & 0.86 & 34.98 & 15  \\
+    \bottomrule
+        \end{tabular}
+    \end{table}
+
+    \begin{table}
+        \caption{\label{tbl:experiments:dptb:k}
+        Parsing f1 score, accuracy of predicted \abrv{dcp} supertag blueprints and number of parse fails in TiGer's developement set for both prediction models (Mod.) combinations of guide and nonterminal constructors as well as vertical Markovization context for the used rank transformation.
+        }
+        \centering
+        \setlength{\tabcolsep}{4pt}
+        \vspace{.2cm}
+        \begin{tabular}{cr|rrr|rrr|rrr}
+            \toprule
+&     &       \multicolumn{3}{c|}{$k = 10$} & \multicolumn{3}{c|}{$k = 20$} & \multicolumn{3}{c|}{$k = 50$} \\
+Mod. &  $\beta$  & f1 & $t$ & $\lightning$ & f1 & $t$ & $\lightning$ \\ \hline
+pret. & 0.1  & 94.82 & 4.4 & 1 & 94.81 & 2.0 & 1 & 94.81 & 1.6 & 0 \\
+pret. & 0.5  & 94.86 & 1.5 & 1 & 94.85 & 1.7 & 1 & 94.83 & 1.8 & 2 \\
+pret. &   2  & 94.87 & 1.5 & 1 & 94.84 & 1.6 & 2 & 94.76 & 2.8 & 4 \\
+pret. &   5  & 94.85 & 1.7 & 2 & 94.78 & 1.8 & 4 & 94.70 & 1.7 & 7 \\
+\midrule 
+sup. & 0.1  & 90.90 & 2.6 & 1 & 90.91 & 2.2 &  0 & 90.87 & 1.9 &  0 \\
+sup. & 0.5  & 90.90 & 2.2 & 1 & 90.88 & 2.6 &  1 & 90.84 & 5.1 &  1 \\
+sup. &   2  & 90.96 & 2.2 & 3 & 90.74 & 4.8 &  8 & 90.80 & 6.9 &  8 \\
+sup. &   5  & 90.71 & 2.6 & 9 & 90.55 & 5.4 & 13 & 90.56 & 7.0 & 14 \\
     \bottomrule
         \end{tabular}
     \end{table}
@@ -107,7 +131,13 @@ sup. & head-nof       &  coarse & \(1\)  & 88.95 & 0.86 & 34.98 & 15  \\
     We repeat the experiments with \abrv{dcp} supertags with each \emph{-nof} and \emph{-disc} extensions for the nonterminals; the results are shown in \cref{tbl:experiments:dptb:dcp}.
     The table shows the previous results with hybrid grammar supertags for comparison in rows with gray background.
     These set of experiments shows only small differences in parsing quality.
-    We suppose they are neglicible and simply decide for the single most promising combination with the pretrained model via highest f1 score and least amount of parse fails and end up with the second option (head guide, coarse nonterminals, $v=1$, hybrid grammar supertags).
+    We suppose they are neglicible and simply decide for the single most promising combination for each model via highest f1 score and least amount of parse fails and end up with
+    \begin{compactitem}
+        \item the head guide and coarse nonterminal constructors, no added vertival Markovization context ($v=1$) and hybrid grammar supertags for the pretrained model, and
+        \item the strict guide and coarse nonterminal constructors, vertical Markovization context \(v=2\) and hybrid grammar supertags for the supervised model.
+    \end{compactitem}
+    Finally, we train models using these hyperparameters and conduct a small grid search for the two parsing parameters \(k\) and \(\beta\), the results are shown in \cref{tbl:experiments:dptb:k}.
+    We pick the values according to the greatest f-score and settle with \(k=10\) and \(\beta=2\) for both models.
 
     \subsection{TiGer}
     
@@ -155,13 +185,16 @@ sup. & head-nof       &  coarse & \(1\)  & 88.95 & 0.86 & 34.98 & 15  \\
     \end{table}
 
     The results reported in \cref{tbl:experiments:tiger} for the TiGer treebank are very similar to those in NeGra.
-    With the pretrained model, we see a clear trend that the values for the strict guide constructor consistently outperform those of the other two in terms of higher parasing quality and less parse fails.
-    Except for one instance (cf.\@ f1 score using dependent guide, classic nonterminal constructor, $v=1$; but with more parse fails), the supervised model also reproduces this trend with smaller margins.
-    With the pretrained model and within the results for the strict guide, the combination of coarse nonterminals and $v=1$ dominates the others, again in terms of higher parsing accuracy and less parse fails.
-    We suppose this combination is also reasonable for the supervised model; the f1 score is only slightly below the best in the column and the number of parse fails is optimal.
+    With the pretrained model, we see a clear trend that the values for the strict guide constructor consistently outperform those of the other two in terms of higher parasing quality and/or less parse fails.
+    The supervised model also reproduces this trend, except for one instance (cf.\@ f1 score using dependent guide, classic nonterminal constructor, $v=1$; but with significantly more parse fails).
+    We pick the following combination for each model:
+    \begin{compactitem}
+        \item strict guide and coarse nonterminal constructors, no added vertival Markovization context ($v=1$) and hybrid grammar supertags for the pretrained model, and
+        \item strict guide and classic nonterminal constructors, no added vertival Markovization context ($v=1$) and hybrid grammar supertags for the supervised model.
+    \end{compactitem}
 
     \begin{table}
-        \caption{\label{tbl:experiments:dptb:dcp}
+        \caption{\label{tbl:experiments:tiger:dcp}
         Parsing f1 score, accuracy of predicted \abrv{dcp} supertag blueprints and number of parse fails in TiGer's developement set for both prediction models (Mod.) combinations of guide and nonterminal constructors as well as vertical Markovization context for the used rank transformation.
         }
         \centering
@@ -171,16 +204,44 @@ sup. & head-nof       &  coarse & \(1\)  & 88.95 & 0.86 & 34.98 & 15  \\
             \toprule
 Mod. &  guide &   nont.   &\(v\)   & f1 & acc. & $t$ & $\lightning$ \\ \hline \rowcolor{black!10}
 pret. & strict (hg) &  coarse & \(1\)  & 92.75 & 0.92 & 50.58 & 1  \\\hline
-pret. & strict-disc    &  coarse & \(1\)  & 92.70 & 0.92 & 53.09 & 1  \\
-pret. & strict-nof     &  coarse & \(1\)  & 92.73 & 0.92 & 54.37 & 2  \\
+pret. & strict    &  coarse-disc & \(1\)  & 92.70 & 0.92 & 53.09 & 1  \\
+pret. & strict     &  coarse-nof & \(1\)  & 92.73 & 0.92 & 54.37 & 2  \\
 \midrule \rowcolor{black!10}
 sup. & strict (hg) &  coarse & \(1\)  & 85.76 & 0.84 & 32.82 & 0  \\\hline
-sup. & strict-disc    &  coarse & \(1\)  & 85.61 & 0.84 & 33.70 & 0  \\
-sup. & strict-nof     &  coarse & \(1\)  & 85.59 & 0.84 & 39.86 & 0  \\
+sup. & strict    &  coarse-disc & \(1\)  & 85.61 & 0.84 & 33.70 & 0  \\
+sup. & strict     &  coarse-nof & \(1\)  & 85.59 & 0.84 & 39.86 & 0  \\
+    \bottomrule
+        \end{tabular}
+    \end{table}
+
+    \begin{table}
+        \caption{\label{tbl:experiments:tiger:k}
+        Parsing f1 score, accuracy of predicted \abrv{dcp} supertag blueprints and number of parse fails in TiGer's developement set for both prediction models (Mod.) combinations of guide and nonterminal constructors as well as vertical Markovization context for the used rank transformation.
+        }
+        \centering
+        \setlength{\tabcolsep}{4pt}
+        \vspace{.2cm}
+        \begin{tabular}{cr|rrr|rrr|rrr}
+            \toprule
+&      &      \multicolumn{3}{c|}{$k = 10$} & \multicolumn{3}{c|}{$k = 20$} & \multicolumn{3}{c|}{$k = 50$} \\
+Mod. &  $\beta$  & f1 & $t$ & $\lightning$ & f1 & $t$ & $\lightning$ \\ \hline
+pret. & 0.1  & 92.78 & 3.6 & 1 & 92.80 & 4.8 & 0 & 92.80 & 4.8 & 0 \\
+pret. & 0.5  & 92.76 & 3.1 & 1 & 92.79 & 3.1 & 0 & 92.78 & 6.7 & 0 \\
+pret. &   2  & 92.77 & 3.4 & 1 & 92.81 & 3.4 & 0 & 92.80 & 3.9 & 0 \\
+pret. &   5  & 92.77 & 4.9 & 1 & 92.82 & 3.5 & 1 & 92.78 & 2.8 & 3 \\
+\midrule 
+sup. & 0.1  & 87.46 & 4.2 & 1 & 87.50 & 3.2 & 0 & 87.48 & 5.6 & 0 \\
+sup. & 0.5  & 87.54 & 6.0 & 1 & 87.57 & 2.6 & 0 & 87.54 & 3.6 & 1 \\
+sup. &   2  & 87.54 & 5.5 & 2 & 87.57 & 8.3 & 1 & 87.52 & 3.5 & 2 \\
+sup. &   5  & 87.49 & 5.5 & 4 & 87.46 & 3.3 & 6 & 87.42 & 5.0 & 7 \\
     \bottomrule
         \end{tabular}
     \end{table}
 
     Similar to the same set of experiments in \abrv{dptb}, the values show almost no difference using \abrv{dcp} supertags with the to nonterminal extensions, except for a small detoriation in terms of lower parsing accuracy and higher parsing time.
-    Again, we suppose it is niglicible and settle with the hybrid grammar supertags, strict guide and coarse nonterminal constructors as well as $v=1$ for TiGer.
+    Again, we suppose it is niglicible and settle with the hybrid grammar configuration for the supervised and pretrained model.
+    Lastly, we train supertag prediction models using these sets of parameters and conduct a small grid search over the parameters for the parsing procedure, $k$ and $\beta$.
+    \cref{tbl:experiments:tiger:k} lists the results for each tested combination and both models.
+    For each of the two models, the values are distributed in quite small ranges.
+    We decide to pick simply via the greatest f1-scores and least values for \(k\) and \(\beta\) and end up with \(k=20\) and \(\beta=0.1\) for the pretrained model, and \(k=20\) and \(\beta=0.5\) for the supervised model.
 \end{document}

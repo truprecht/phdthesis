@@ -1,5 +1,224 @@
 \documentclass[../../document.tex]{subfiles}
 
 \begin{document}
-    \section{Results and Comparison to Other Parsers}
+    \section{Results and Comparison to Other Parsers}\label{sec:results}
+    This section presents the results in the assessment with the test portion of the three investigated treebanks.
+    For each treebank, we extract supertag blueprints and parse using the hyperparameters that were found in the previous two sections; \cref{tbl:hyperparameters} gives an overview of the final configurations.
+    We repeat the training process for each model and each treebank multiple times, because the training process of the supertag classifiers depends on pseudo-random initializations and the outcomes vary slightly.
+    \Cref{tbl:averages} shows the result of five runs for the supervised model and pretrained models that utilize language-specific \emph{bert-base} embeddings.
+    We also report three runs for pretrained models with large transformer embeddings.
+    Specifically we use \emph{gbert-large} \citep{Cha20} in conjunction with Negra and Tiger, and \emph{roberta-large} \citep{roberta} for DPTB.
+
+    \begin{table}
+        \caption{\label{tbl:hybperparamters}
+            Overview of the configurations for the parameters used during extraction and parsing for each of the three used treebanks.
+        }
+        \centering
+        \vspace{.2cm}
+        \begin{tabular}{c|c|ccc}
+        \toprule
+        &                   & \multicolumn{3}{c}{treebank} \\
+        model   &   parameter           & Negra     & Tiger     & \abrv{dptb} \\\midrule
+        \multirow{7}{*}{supervised}
+            & rank transformation           & \abrv{rb} bin. & \abrv{rb} bin.& \abrv{rb} bin. \\
+            & Markovization                 & $v=1, h=0$ & $v=1, h=0$ & $v=1, h=0$ \\
+            & guide constructor             & strict        & strict   & strict \\
+            & nonterminal constructor       & classic-nof   & classic  & coarse \\
+            & grammar formalism             & \abrv{dcp}    & \abrv{hg} & \abrv{hg} \\
+            & max.\@ tags per pos.\@ ($k$)  & 20 & 20 & 10 \\
+            & parsing step range ($\beta$)  & 0.1 & 0.5 & 2 \\\midrule
+        \multirow{7}{*}{pretrained}
+            & rank transformation           & \abrv{rb} bin.& \abrv{rb} bin. & head-inward \\
+            & Markovization                 & $v=1, h=0$ & $v=1, h=0$ & $v=1, h=0$ \\
+            & guide constructor             & strict        & strict   & head \\
+            & nonterminal constructor       & coarse        & coarse  & coarse \\
+            & grammar formalism             & \abrv{hg}    & \abrv{hg} & \abrv{hg} \\
+            & max.\@ tags per pos.\@ ($k$)  & 20 & 20 & 10 \\
+            & parsing step range ($\beta$)  & 0.1 & 0.1 & 2 \\\bottomrule
+        \end{tabular}
+    \end{table}
+
+    \begin{table}
+        \caption{\label{tbl:averages}
+            Our results on the test portions of the three discontinuous treebanks Negra, Tiger and \abrv{dptb}.
+            Each model was trained on each treebank multiple times with different random seeds: the supervised and small pretrained models five times, the large pretrained model three times.
+            The row below the list of individual results shows their mean \(\mu\) and sample standard deviation \(\sigma\) denoted in the form \(\mu^{\pm \sigma}\).
+        }
+        \small\centering
+        \setlength\tabcolsep{4pt} % default value: 6pt
+        \vspace{.2cm}
+        \begin{tabular}{c*{3}{|ccc}}
+            \toprule
+             \multirow{2}{*}{Model}  & \multicolumn{3}{c|}{NeGra}  & \multicolumn{3}{c|}{Tiger}  & \multicolumn{3}{c}{DPTB} \\
+            &  F1   & F1-d   & sent/s & F1 & F1-d  & sent/s & F1 & F1-d & sent/s  \\\midrule
+            \multirow{6}{*}{supervised}
+                & 83.2 & 52.3 & 142 & 82.2 & 57.2 & 142 & 90.8 & 73.1 & 159 \\
+                & 82.6 & 48.8 & 138 & 82.0 & 56.0 & 127 & 90.7 & 73.7 & 181 \\
+                & 82.9 & 52.0 & 189 & 82.3 & 56.3 & 122 & 90.8 & 75.6 & 104 \\
+                & 82.5 & 50.1 & 147 & 82.3 & 57.1 & 122 & 90.6 & 74.1 & 107 \\
+                & 82.9 & 50.9 & 137 & 82.3 & 57.9 & 128 & 90.7 & 74.0 & 108 \\
+                \cmidrule{2-10}
+                & 82.8$^{\pm0.3}$ & 50.8$^{\pm1.4}$ & 150$^{\pm22}$
+                                 & 82.2$^{\pm0.2}$ & 56.9$^{\pm0.7}$ & 127$^{\pm8}$
+                                & 90.7$^{\pm0.1}$ & 74.1$^{\pm0.9}$ & 131$^{\pm36}$\\
+            \midrule
+            \multirow{6}{*}{\parbox{2cm}{\centering{}pretrained\\bert-base}}
+                & 91.7 & 73.4 & 183 & 89.5 & 72.1 & 173 & 94.5 & 82.1 & 165 \\
+                & 91.6 & 74.9 & 190 & 89.4 & 71.8 & 177 & 94.4 & 82.3 & 172 \\
+                & 91.7 & 74.0 & 188 & 89.6 & 71.8 & 187 & 94.6 & 83.6 & 190 \\
+                & 91.4 & 73.5 & 186 & 89.3 & 71.2 & 157 & 94.6 & 83.0 & 176 \\
+                & 91.7 & 75.0 & 179 & 89.6 & 72.3 & 175 & 94.6 & 83.1 & 173 \\
+                \cmidrule{2-10}
+                & 91.6$^{\pm0.1}$ & 74.1$^{\pm0.8}$ & 185$^{\pm4}$
+                & 89.5$^{\pm0.1}$ & 71.8$^{\pm0.4}$ & 174$^{\pm11}$
+                & 94.5$^{\pm0.1}$ & 82.8$^{\pm0.6}$ & 175$^{\pm9}$\\
+            \midrule
+            \multirow{4}{*}{\parbox{2cm}{\centering{}pretrained\\roberta/gbert-large}}
+                & 93.9 & 80.3 & 144 & 91.7 & 77.1 & 135 & 95.7 & 85.3 & 135 \\
+                & 93.5 & 79.4 & 143 & 91.6 & 76.6 & 141 & 95.7 & 84.9 & 136 \\
+                & 94.1 & 80.6 & 144 & 91.7 & 76.1 & 140 & 95.6 & 84.4 & 136 \\
+                \cmidrule{2-10}
+                & 93.8$^{\pm0.3}$ & 80.1$^{\pm0.6}$ & 144$^{\pm0}$
+                & 91.6$^{\pm0.0}$ & 76.6$^{\pm0.5}$ & 138$^{\pm3}$
+                & 95.6$^{\pm0.1}$ & 84.9$^{\pm0.4}$ & 135$^{\pm1}$\\
+            \bottomrule
+        \end{tabular}
+    \end{table}
+
+    \crefrange{tbl:supervised}{tbl:pretrained:large} show the results for the three models respectively, and put them into context of other publications in the field of discontinuous constituent parsing.
+    Each table does only contain results of publications with comparable training paradigms and information, i.e.\@ the first table does only include published supervised models, and the two latter tables include semi-supervised models that utilize \emph{bert-base}/\emph{bert-large}-equivalent pretrained embeddings.
+    The tables distinguish between five types of parsing approaches as discussed in \cref{sec:literature}:
+    \begin{compactitem}
+        \item grammar-based parsers (G),
+        \item grammar-based parsers with supertagging (GS),
+        \item chart-driven but grammar-less parsers (C),
+        \item transition systems (T), and
+        \item parsers that do not fit into any of the above categories (N).
+    \end{compactitem}
+    The comparisons in the table should all be taken with at least two grains of salt:
+    \begin{inparaenum}
+        \item The parsing speed strongly depends on the used hardware, for approaches using artificial neural networks this does especially include GPUs. We use a (semi-dated) consumer graphics card for our results, other authors used professional graphic units that are specifically designed for applications with neural networks. (E.g.\@ \citet{Cor20} used Tesla K100 GPUs that are significantly faster and have more memory than the RTX 2080.)
+        \item As remarked earlier for our parser, many results listed in the following tables depend on pseudo-random initializations and are thus variable up to a certain degree. Unfortunatly, most of the referenced publications do not report results using multiple experiment runs, but only one, and in at least one case the reported results are hardly reproducible. In an attempt to reproduce the results reported by \citet{Cor20} with their provided implementation, Richard Mörbitz obtained notably lower scores. Unfortunately, the author could not explain the gap between the two results, when Richard Mörbitz reached out. We decided to compare all results to the averages we obtained as shown in \cref{tbl:averages}.
+    \end{inparaenum}
+
+    \begin{table*}
+        \defcitealias{FerGom22}{Fern{\'a}ndez-G., G{\'o}mez-R., 2022}
+        \defcitealias{VilGom20}{Vilares, Gómez-R., 2020}
+        \defcitealias{FerGon21a}{Fern{\'a}ndez-G., G{\'o}mez-R., 2021a}
+        \defcitealias{FerGon21b}{Fern{\'a}ndez-G., G{\'o}mez-R., 2021b}
+        \caption{
+            Our results on test sets compared to other published parsers for discontinuous constituents using exclusively supervised methods.
+            The column ``Type'' gives a rough classification of the parsing approach in the following concepts: G -- statistical grammar-based, GS -- grammar-based with supertagging, C -- grammarless chart-based, T -- transition-based, N -- untraditional neural approaches.
+            \label{tbl:supervised}
+        }
+        \small\centering
+        \setlength\tabcolsep{4pt} % default value: 6pt
+        \vspace{.2cm}
+        \begin{tabular}{c|c*{3}{|ccc}}
+            \toprule
+            \multirow{2}{*}{Type} & \multirow{2}{*}{Model}  & \multicolumn{3}{c|}{NeGra}  & \multicolumn{3}{c|}{Tiger}  & \multicolumn{3}{c}{DPTB} \\
+            &                         &  F1   & F1-d   & sent/s & F1 & F1-d  & sent/s & F1 & F1-d & sent/s  \\\midrule
+            \multirow{3}{*}{G}
+            & \citealp{CraSchBod16}   & 76.8  &   --   &   2 & 78.2 &   --   &  1 & 87.0 & --   & $<1$ \\
+            & \citealp{Geb20}         & 81.7  &  43.5  &  -- & 77.7 &  40.7  & -- &  --  & --   & --   \\
+            & \citealp{Ver16}         & --    &  --    &  -- & 79.5 & --     & -- &  --  &  --  & --   \\
+            \midrule
+            \multirow{3}{*}{GS}
+            & \citealp{RupMoe21}  & 82.7  &  49.0  &  136 & 82.5 &  55.9  & 101 & 90.1 & 72.9 & 95   \\   
+            & \citealp{Rup22}     & 83.7  &  52.9  &  132 & 83.7 & 59.5   & 104 & 91.7 & 74.2 & 82        \\
+            & this work (avg)     & 82.8 & 50.8 & 150
+                                  & 82.2 & 56.9 & 127
+                                  & 90.7 & 74.1 & 131\\ \midrule
+            \multirow{2}{*}{C}
+            & \citealp{Cor20}     & 86.3  & 56.1  & 478 & 85.2 &  51.2  & 474& 92.9 & 64.9 & 355               \\
+            & \citealp{StaSte20}  & 83.3  &  50.7  &  15 & 83.4 &  53.5  &  9 & 90.5 & 67.7 & --   \\
+            \midrule
+            \multirow{1}{*}{T}
+            & \citealp{Coa21}          & 82.3  &  55.6  &  -- & 82.9 &  57.4  & -- & 91.4 & 74.4 & --   \\\midrule
+            \multirow{1}{*}{N}
+            & \citetalias{VilGom20}    & 77.1  &  36.5  & 715 &  79.2&  40.1  & 568& 89.1 & 41.8 &    611               \\
+            \bottomrule
+        \end{tabular}
+    \end{table*}
+
+    Among the supervised models in \cref{tbl:supervised}, the results reported by \citet{Cor20} stand out with a rather large margin to all other publications.
+    Comparing our supervised results to other discontinuous parsers that rely on grammars (G/GS), we suggest that supertagging is able to implement more accurate and much faster parsers than traditional statistical grammars.
+    Comparing our results to all values in the table, we are close to or among the state-of-the-art published in the field of discontinuous parsing.
+    The results obtained during this work shall be interpreted as an update to the ones in \citet{Rup22}.
+    However, we reach lower scores with the supervised model, but are notably faster.
+
+    \begin{table*}
+        \defcitealias{FerGom22}{Fern{\'a}ndez-G., G{\'o}mez-R., 2022}
+        \defcitealias{VilGom20}{Vilares, Gómez-R., 2020}
+        \defcitealias{FerGon21a}{Fern{\'a}ndez-G., G{\'o}mez-R., 2021a}
+        \defcitealias{FerGon21b}{Fern{\'a}ndez-G., G{\'o}mez-R., 2021b}
+        \caption{
+            Our results on test sets compared to other published parsers for discontinuous constituents, all use medium-sized transformer embeddings, like \emph{bert-base} or similar.
+            The column ``Type'' gives a rough classification of the parsing approach in the following concepts: GS -- grammar-based with supertagging, C -- grammarless chart-based, T -- transition-based, N -- untraditional neural approaches.
+            \label{tbl:pretrained:small}
+        }
+        \small\centering
+        \setlength\tabcolsep{4pt} % default value: 6pt
+        \vspace{.2cm}
+        \begin{tabular}{c|c*{3}{|ccc}}
+            \toprule
+            \multirow{2}{*}{Type} & \multirow{2}{*}{Model} & \multicolumn{3}{c|}{NeGra}  & \multicolumn{3}{c|}{Tiger}  & \multicolumn{3}{c}{DPTB} \\
+            &                         &  F1   & F1-d   & sent/s & F1 & F1-d  & sent/s & F1 & F1-d & sent/s  \\\midrule
+            \multirow{3}{*}{GS}
+            & \citealp{RupMoe21}       & 90.9  &  72.6  &  68 & 88.3 &  69.0  & 60 & 93.3 & 80.5 & 57   \\
+            & \citealp{Rup22}          & 91.8  &  74.6  & 120 & 89.7 &  72.6  &105 & 94.4 & 82.0 & 81   \\
+            & this work           & 91.6 & 74.1 & 185
+                                  & 89.5 & 71.8 & 174
+                                  & 94.5 & 82.8 & 175\\  \midrule
+            \multirow{1}{*}{C}
+            & \citealp{Cor20}          & 91.6  &  66.1  &  -- & 90.0 &  62.1  & -- & 94.8 & 68.9 & --   \\
+            \midrule
+            \multirow{1}{*}{T}
+            & \citealp{Coa21}          & 91.7  &  73.3  &  -- & 90.2 &  72.9  & -- & 95.0 & 82.5 & --   \\\midrule
+            \multirow{3}{*}{N}
+            & \citetalias{VilGom20}    & 84.2  &  46.9  &  80 & 84.7 &  51.6  & 80 & 91.7 & 49.1 &  80  \\
+            & \citetalias{FerGon21a}   & 90.0  & 65.9   & 275 & 88.5 & 63.0   &238 & 94.0 & 72.9 & 231  \\
+            & \citetalias{FerGom22}    & 91.0  & 76.6   & --  & 90.0 & 62.6   &--  & --   & --   & --   \\
+            \bottomrule
+        \end{tabular}
+    \end{table*}
+
+    \begin{table*}
+        \defcitealias{FerGom22}{Fern{\'a}ndez-G., G{\'o}mez-R., 2022}
+        \defcitealias{VilGom20}{Vilares, Gómez-R., 2020}
+        \defcitealias{FerGon21a}{Fern{\'a}ndez-G., G{\'o}mez-R., 2021a}
+        \defcitealias{FerGon21b}{Fern{\'a}ndez-G., G{\'o}mez-R., 2021b}
+        \caption{
+            Our results on test sets compared to other published parsers for discontinuous constituents, all use large transformer embeddings, i.e.\@ \emph{bert-large}, \emph{roberta-large}, \emph{gbert-large} or similar.
+            The column ``Type'' gives a rough classification of the parsing approach in the following concepts: GS -- grammar-based with supertagging, N -- untraditional neural approaches.
+            \label{tbl:pretrained:large}
+        }
+        \small\centering
+        \setlength\tabcolsep{4pt} % default value: 6pt
+        \vspace{.2cm}
+        \begin{tabular}{c|c*{3}{|ccc}}
+            \toprule
+            \multirow{2}{*}{Type} & \multirow{2}{*}{Model}  & \multicolumn{3}{c|}{NeGra}  & \multicolumn{3}{c|}{Tiger}  & \multicolumn{3}{c}{DPTB} \\
+            &                         &  F1   & F1-d   & sent/s & F1 & F1-d  & sent/s & F1 & F1-d & sent/s  \\\midrule
+            \multirow{2}{*}{GS}
+            & \citealp{Rup22}        & 93.9  & 79.1  &  88 & 91.6 &  75.4  & 77 & 94.9 & 82.4 & 64          \\
+            & this work           & 93.8 & 80.1 & 143
+                                  & 91.6 & 76.6 & 138
+                                  & 95.6 & 84.9 & 135\\  \midrule
+            \multirow{3}{*}{N}
+            & \citetalias{VilGom20}     & --    &  --    & --  & --   &  --    & -- & 92.8 & 53.9 &  --  \\
+            & \citetalias{FerGon21a}    & 92.0  & 67.9   & 216 & 90.5 & 68.1   &207 & 95.1 & 74.1 & 193  \\
+            & \citetalias{FerGon21b}    & 89.1  & 67.1   & --  & 88.5 & 67.8   & -- & 95.5 & 82.9 & --   \\
+            \bottomrule
+        \end{tabular}
+    \end{table*}
+
+    \Cref{tbl:pretrained:small,tbl:pretrained:large} show the results of the pretrained models with transformer embeddings.
+    Comparing the scores with the previous two tables gives an impression why these models have established as a standard-tool for many areas of natural language processing in recent years: they produce significantly more accurate results without any effort during modeling and training for the downstream task.
+    In these two tables, it is even more obvious that the scores among the state-of-the-art parsers are extremely close to each other, with ours right among them.
+
+    \ifSubfilesClassLoaded{%
+        \printindex
+        \bibliography{../../references}%
+    }{}
 \end{document}

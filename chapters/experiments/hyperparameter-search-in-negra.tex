@@ -89,9 +89,9 @@
             \toprule
                         & \multicolumn{3}{c|}{vanilla} & \multicolumn{3}{c|}{strict} & \multicolumn{3}{c|}{near} & \multicolumn{3}{c}{least}  \\
                         & f1 & acc. & $\lightning$ & f1 & acc. & $\lightning$ & f1 & acc. & $\lightning$ & f1 & acc. & $\lightning$  \\ \hline
-            vanilla     & 80.79 & 0.77 & 7 & 80.87 & 0.80 & 0 & 78.19 & 0.70 & 19 & 79.32 & 0.69 & 20 \\
-            strict      & 80.94 & 0.78 & 0 & 81.01 & 0.80 & 0 & 77.51 & 0.70 & 4 & 79.95 & 0.74 & 0 \\
-            coarse      & 80.43 & 0.78 & 0 & 81.17 & 0.81 & 0 & 77.75 & 0.70 & 0 & 80.20 & 0.74 & 1 \\
+            vanilla     & 80.74 & 0.75 & 5 & 80.88 & 0.78 & 0 & 77.06 & 0.66 & 16 & 77.10 & 0.66 & 16 \\
+            strict      & 79.99 & 0.75 & 1 & 80.82 & 0.78 & 2 & 76.52 & 0.66 &  2 & 78.76 & 0.71 &  6 \\
+            coarse      & 79.63 & 0.75 & 0 & 80.72 & 0.78 & 0 & 76.81 & 0.67 &  0 & 78.41 & 0.71 &  3 \\
             \bottomrule
         \end{tabular}
     \end{table}
@@ -107,9 +107,9 @@
             \toprule
                         & \multicolumn{3}{c|}{vanilla} & \multicolumn{3}{c|}{strict} & \multicolumn{3}{c|}{near} & \multicolumn{3}{c}{least}  \\
                         & f1 & acc. & $\lightning$ & f1 & acc. & $\lightning$ & f1 & acc. & $\lightning$ & f1 & acc. & $\lightning$  \\ \hline
-            vanilla     & 89.82 & 0.88 & 20 & 90.67 & 0.90 & 8 & 88.00 & 0.83 & 36 & 86.62 & 0.81 & 53 \\
-            strict      & 90.21 & 0.88 & 4 & 90.60 & 0.90 & 10 & 88.81 & 0.83 & 12 & 88.81 & 0.85 & 25 \\
-            coarse      & 90.52 & 0.89 & 2 & 91.02 & 0.90 & 0 & 89.39 & 0.83 & 5 & 88.78 & 0.85 & 19 \\
+            vanilla     & 89.66 & 0.86 & 11 & 89.92 & 0.88 & 7 & 86.30 & 0.79 & 39 & 86.66 & 0.79 & 42 \\
+            strict      & 90.12 & 0.87 &  5 & 90.51 & 0.89 & 2 & 87.65 & 0.80 &  9 & 88.30 & 0.83 & 24 \\
+            coarse      & 90.27 & 0.87 &  2 & 90.81 & 0.89 & 2 & 87.80 & 0.80 &  3 & 88.47 & 0.83 & 18 \\
             \bottomrule
         \end{tabular}
     \end{table}
@@ -183,12 +183,12 @@ coarse  & \(1\) & \(1\)    & 3234 & 48 & 255.45 & 3939 & 65 & 307.16 & 4085 & 71
             \toprule
 & \multicolumn{2}{c|}{Markov.}         & \multicolumn{3}{c|}{right fac.} & \multicolumn{3}{c|}{left fac.} & \multicolumn{3}{c}{head-outward} \\
 nont.  & \(h\) &\(v\) & f1 & acc. & $\lightning$ & f1 & acc. & $\lightning$ & f1 & acc. & $\lightning$   \\ \hline
-classic & \(0\) & \(1\) & 81.01 & 0.80 & 0 & 81.03 & 0.79 & 1 & 80.77 & 0.79 & 1 \\  
-classic & \(0\) & \(2\) & 78.89 & 0.71 & 45 & 79.43 & 0.70 & 48 & 78.44 & 0.70 & 53 \\  
-classic & \(1\) & \(1\) & 80.34 & 0.77 & 15 & 79.24 & 0.77 & 18 & 79.36 & 0.77 & 25 \\ \hline
-coarse  & \(0\) & \(1\) & 81.17 & 0.81 & 0 & 80.91 & 0.79 & 0 & 80.53 & 0.81 & 0 \\  
-coarse  & \(0\) & \(2\) & 80.16 & 0.71 & 27 & 78.21 & 0.71 & 46 & 78.34 & 0.71 & 55 \\ 
-coarse  & \(1\) & \(1\) & 81.49 & 0.79 & 0 & 80.11 & 0.78 & 3 & 81.24 & 0.78 & 1 \\  
+classic & \(0\) & \(1\) & 80.82 & 0.78 &  2 & 80.67 & 0.77 &  1 & 80.64 & 0.78 &  4 \\
+classic & \(0\) & \(2\) & 77.62 & 0.68 & 45 & 77.13 & 0.68 & 54 & 76.70 & 0.68 & 63 \\
+classic & \(1\) & \(1\) & 79.44 & 0.75 & 12 & 77.47 & 0.73 & 33 & 77.92 & 0.74 & 30 \\\hline
+coarse  & \(0\) & \(1\) & 80.72 & 0.78 &  0 & 80.50 & 0.77 &  0 & 80.79 & 0.79 &  0 \\
+coarse  & \(0\) & \(2\) & 78.68 & 0.69 & 27 & 78.30 & 0.67 & 33 & 77.31 & 0.67 & 44 \\
+coarse  & \(1\) & \(1\) & 80.86 & 0.77 &  2 & 79.86 & 0.75 &  4 & 80.36 & 0.76 &  4 \\
 \bottomrule
         \end{tabular}
     \end{table}
@@ -203,12 +203,12 @@ coarse  & \(1\) & \(1\) & 81.49 & 0.79 & 0 & 80.11 & 0.78 & 3 & 81.24 & 0.78 & 1
             \toprule
 & \multicolumn{2}{c|}{Markov.}         & \multicolumn{3}{c|}{right fac.} & \multicolumn{3}{c|}{left fac.} & \multicolumn{3}{c}{head-outward} \\
 nont.  & \(h\) &\(v\) & f1 & acc. & $\lightning$ & f1 & acc. & $\lightning$ & f1 & acc. & $\lightning$  \\ \hline
-classic & \(0\) & \(1\) & 90.60 & 0.90 & 10 & 90.75 & 0.90 & 9 & 90.99 & 0.90 & 3 \\
-classic & \(0\) & \(2\) & 87.84 & 0.85 & 51 & 86.90 & 0.85 & 64 & 86.76 & 0.85 & 68 \\
-classic & \(1\) & \(1\) & 88.31 & 0.88 & 38 & 88.03 & 0.88 & 50 & 88.37 & 0.87 & 36 \\\hline
-coarse  & \(0\) & \(1\) & 91.02 & 0.90 & 0 & 90.98 & 0.90 & 2 & 90.54 & 0.90 & 2 \\
-coarse  & \(0\) & \(2\) & 89.63 & 0.85 & 25 & 89.35 & 0.86 & 34 & 88.19 & 0.85 & 42 \\
-coarse  & \(1\) & \(1\) & 90.50 & 0.89 & 9 & 89.93 & 0.89 & 15 & 89.92 & 0.88 & 11 \\
+classic & \(0\) & \(1\) & 90.51 & 0.89 &  2 & 89.89 & 0.88 &  3 & 90.36 & 0.88 &  4 \\
+classic & \(0\) & \(2\) & 87.19 & 0.84 & 49 & 86.66 & 0.83 & 52 & 85.98 & 0.83 & 67 \\
+classic & \(1\) & \(1\) & 87.96 & 0.87 & 31 & 87.19 & 0.86 & 50 & 86.29 & 0.86 & 49 \\\hline
+coarse  & \(0\) & \(1\) & 90.81 & 0.89 &  2 & 90.66 & 0.89 &  4 & 89.83 & 0.89 &  1 \\
+coarse  & \(0\) & \(2\) & 88.28 & 0.84 & 30 & 87.69 & 0.84 & 43 & 87.58 & 0.83 & 40 \\
+coarse  & \(1\) & \(1\) & 89.82 & 0.88 &  8 & 88.98 & 0.87 & 23 & 89.29 & 0.87 & 10 \\
 \bottomrule
         \end{tabular}
     \end{table}
@@ -254,7 +254,7 @@ coarse  & \(1\) & \(1\) & 90.50 & 0.89 & 9 & 89.93 & 0.89 & 15 & 89.92 & 0.88 & 
             \toprule
             & \multicolumn{2}{c|}{Markov.} & \multicolumn{3}{c|}{classic nont.} &  \multicolumn{3}{c}{coarse nont.} \\
 guide      & \(h\) & \(v\) & $N$ & $\overline{N}$ & $\mathit{UP}$ & $N$ & $\overline{N}$ & $\mathit{UP}$  \\ \hline \rowcolor{black!10}
-strict     & \(0\) & \(1\) & 2214 & 23 & 110.22 & 1682 & 15 & 102.89 \\\hline
+strict     & 0 & 1 & 2214 & 23 & 110.22 & 1682 & 15 & 102.89 \\\hline
 head & 0 & 1 & 3840 & 68 & 96.13 & 3686 & 65 & 87.10 \\
 head & 0 & 2 & 7611 & 146 & 308.98 & 7024 & 138 & 283.43 \\
 head & 1 & 1 & 19825 & 587 & 609.80 & 11806 & 321 & 305.79 \\
@@ -280,14 +280,14 @@ dependent & 1 & 1 & 11364 & 231 & 544.94 & 5874 & 99 & 311.89 \\
             \toprule
             & \multicolumn{2}{c|}{Markov.} & \multicolumn{4}{c|}{classic nont.} &  \multicolumn{4}{c}{coarse nont.} \\
 guide           & \(h\) & \(v\) & f1 & acc. & $t$ & $\lightning$ & f1 & acc. & $t$ & $\lightning$  \\ \hline \rowcolor{black!10}
-strict         & \(0\) & \(1\) & 81.01 & 0.80 & 6.85 &0 & 81.17 & 0.81 & 6.91 & 0 \\\hline
-head & 0 & 1 & 81.33 & 0.80 & 21.10 & 4 & 81.82 & 0.80 & 32.64 & 0 \\
-head & 0 & 2 & 76.81 & 0.70 & 6.79 & 72 & 77.08 & 0.71 & 6.34 & 70 \\
-head & 1 & 1 & 63.88 & 0.70 & 6.16 & 242 & 72.17 & 0.74 & 6.50 & 116 \\
-head & \multicolumn{2}{c|}{no transf.} & 67.31 & 0.81 & 10.19 & 89 & 69.23 & 0.81 & 8.44 & 45  \\\hline
-dependent & 0 & 1 & 80.87 & 0.78 & 10.12 & 9 & 80.89 & 0.79 & 8.09 & 1 \\
-dependent & 0 & 2 & 74.03 & 0.68 & 6.39 & 119 & 73.99 & 0.68 & 7.27 & 115 \\
-dependent & 1 & 1 & 74.43 & 0.74 & 6.70 & 102 & 78.85 & 0.76 & 6.94 & 37 \\
+strict & 0 & 1                         & 80.82 & 0.78 &  6.89 &   2 & 80.82 & 0.78 &  6.89 &   2 \\  \hline
+head & 0 & 1                           & 80.53 & 0.78 &  9.41 &   4 & 79.53 & 0.78 & 11.66 &   3 \\
+head & 0 & 2                           & 75.05 & 0.68 &  6.91 &  82 & 75.22 & 0.68 &  7.47 &  58 \\
+head & 1 & 1                           & 58.51 & 0.68 &  6.97 & 284 & 68.58 & 0.71 &  7.43 & 144 \\
+head & \multicolumn{2}{c|}{no transf.} & 62.96 & 0.78 & 10.13 & 128 & 64.41 & 0.79 &  9.87 &  80 \\\hline
+dependent & 0 & 1                      & 80.06 & 0.76 & 10.51 &  12 & 80.19 & 0.76 & 23.60 &   3 \\
+dependent & 0 & 2                      & 71.00 & 0.65 &  7.59 & 134 & 72.30 & 0.65 & 10.83 & 120 \\
+dependent & 1 & 1                      & 71.01 & 0.71 &  7.60 & 136 & 76.70 & 0.73 &  9.11 &  43 \\
 \bottomrule
         \end{tabular}
     \end{table}
@@ -302,14 +302,15 @@ dependent & 1 & 1 & 74.43 & 0.74 & 6.70 & 102 & 78.85 & 0.76 & 6.94 & 37 \\
             \toprule
                     & \multicolumn{2}{c|}{Markov.} & \multicolumn{4}{c|}{classic nont.} &  \multicolumn{4}{c}{coarse nont.} \\
                     guide           & \(h\) & \(v\) & f1 & acc. & $t$ & $\lightning$ & f1 & acc. & $t$ & $\lightning$  \\ \hline \rowcolor{black!10}
-strict         & 0 & 1 & 90.60 & 0.90 & 3.81 & 10 & 91.02 & 0.90 & 3.84 & 0 \\\hline
-head & 0 & 1 & 90.49 & 0.90 & 8.15 & 16 & 90.44 & 0.90 & 6.92 & 4 \\
-head & 0 & 2 & 84.72 & 0.85 & 5.16 & 88 & 85.74 & 0.85 & 4.55 & 70 \\
-head & 1 & 1 & 67.20 & 0.83 & 4.32 & 290 & 79.47 & 0.86 & 5.02 & 137 \\
-head & \multicolumn{2}{c|}{no transf.}  & 77.65 & 0.89 & 5.73 & 122 & 79.07 & 0.89 & 6.05 & 104 \\\hline
-dependent & 0 & 1 & 88.97 & 0.89 & 6.99 & 37 & 90.05 & 0.89 & 17.74 & 12 \\
-dependent & 0 & 2 & 82.36 & 0.84 & 4.70 & 123 & 84.16 & 0.84 & 12.17 & 100 \\
-dependent & 1 & 1 & 82.04 & 0.86 & 4.30 & 131 & 87.89 & 0.88 & 4.70 & 53 \\
+strict & 0 & 1                         & 90.51 & 0.89 & 4.73 &   2 & 90.51 & 0.89 &  4.73 &   2 \\\hline
+head & 0 & 1                           & 89.84 & 0.89 & 5.67 &   8 & 89.85 & 0.89 &  5.69 &   7 \\
+head & 0 & 2                           & 83.20 & 0.84 & 5.26 &  91 & 84.66 & 0.84 &  5.81 &  72 \\
+head & 1 & 1                           & 62.86 & 0.82 & 5.36 & 319 & 76.26 & 0.84 &  5.27 & 173 \\
+head & \multicolumn{2}{c|}{no transf.} & 73.04 & 0.88 & 6.79 & 153 & 74.05 & 0.88 &  7.34 & 139 \\\hline
+dependent & 0 & 1                      & 89.34 & 0.87 & 5.75 &  31 & 89.52 & 0.88 & 10.31 &  18 \\
+dependent & 0 & 2                      & 80.30 & 0.82 & 5.31 & 138 & 83.40 & 0.83 & 12.62 &  94 \\
+dependent & 1 & 1                      & 79.40 & 0.84 & 4.57 & 154 & 86.67 & 0.85 &  5.18 &  52 \\
+\hline
 \bottomrule
         \end{tabular}
     \end{table}
@@ -358,15 +359,15 @@ dependent & 1 & 1 & 82.04 & 0.86 & 4.30 & 131 & 87.89 & 0.88 & 4.70 & 53 \\
         }
         \centering
         \vspace{.2cm}
-        \begin{tabular}{lcc|rrr|rrr}
+        \begin{tabular}{lcc|rrr|rrr|rrr}
             \toprule
-& \multicolumn{2}{c|}{Markov.}         & \multicolumn{3}{c|}{strict guide} &  \multicolumn{3}{c}{dependent guide} \\
+& \multicolumn{2}{c|}{Markov.}         & \multicolumn{3}{c|}{strict guide} &  \multicolumn{3}{c|}{dependent guide} &  \multicolumn{3}{c|}{head guide} \\
 nont.           & \(h\) & \(v\) & $N$ & $\overline{N}$ & $\mathit{UP}$ & $N$ & $\overline{N}$ & $\mathit{UP}$  \\ \hline \rowcolor{black!10}
-classic         & \(0\) & \(1\) & 2214 & 23 & 110.22 & 3923 & 56 & 174.64\\ \rowcolor{black!10}
-coarse (naive)  & \(0\) & \(1\) & 1682 & 15 & 102.89 & 2975 & 42 & 143.58\\\hline
-coarse (table)  & \(0\) & \(1\) & 1181 & 10 & 75.13 & 2355 & 36 & 132.47 \\
-coarse (table)  & \(0\) & \(2\) & 2373 & 22 & 177.00 & 4612 & 71 & 296.03 \\
-coarse (table)  & \(1\) & \(1\) & 4463 & 77 & 333.43 & 7947 & 159 & 434.02 \\
+classic        & 0 & 1 & 2214 & 23 & 110.22 & 3923 & 56 & 174.64 & 3840 & 68 & 96.13 \\\rowcolor{black!10}
+coarse (naive) & 0 & 1 & 1682 & 15 & 102.89 & 2975 & 42 & 143.58 & 3686 & 65 & 87.10 \\\hline
+coarse (table) & 0 & 1 & 1181 & 10 & 75.13 & 2355 & 36 & 132.47 & 3686 & 65 & 87.10 \\
+coarse (table) & 0 & 2 & 2373 & 22 & 177.00 & 4612 & 71 & 296.03 & 7024 & 138 & 283.43 \\
+coarse (table) & 1 & 1 & 4463 & 77 & 333.43 & 7947 & 159 & 434.02 & 11806 & 321 & 305.79 \\
 \bottomrule
         \end{tabular}
     \end{table}
@@ -380,15 +381,16 @@ coarse (table)  & \(1\) & \(1\) & 4463 & 77 & 333.43 & 7947 & 159 & 434.02 \\
         }
         \centering
         \vspace{.2cm}
-        \begin{tabular}{lcc|rrrr|rrrr}
+        \setlength{\tabcolsep}{3.4pt}
+        \begin{tabular}{lcc|rrrr|rrrr|rrrr}
             \toprule
-& \multicolumn{2}{c|}{Markov.}         & \multicolumn{4}{c|}{strict guide} &  \multicolumn{4}{c}{dependent guide} \\
-nont.           & \(h\) & \(v\) & f1 & acc. & $t$ & $\lightning$ & f1 & acc. & $t$ & $\lightning$  \\ \hline\rowcolor{black!10}
-classic         & \(0\) & \(1\) & 81.01 & 0.80 & 6.85 & 0 & 80.87 & 0.78 & 10.12 & 9 \\ \rowcolor{black!10}
-coarse (naive)  & \(0\) & \(1\) & 81.17 & 0.81 & 6.91 & 0 & 80.89 & 0.79 & 8.09 & 1  \\\hline
-coarse (table)  & \(0\) & \(1\) & 79.16 & 0.82 & 6.50 & 0 & 80.24 & 0.78 & 30.06 & 1 \\
-coarse (table)  & \(0\) & \(2\) & 80.26 & 0.74 & 6.91 & 1 & 78.81 & 0.71 & 11.14 & 34 \\
-coarse (table)  & \(1\) & \(1\) & 78.49 & 0.79 & 8.24 & 1 & 77.73 & 0.75 & 8.36 & 39 \\
+& \multicolumn{2}{c|}{Markov.}         & \multicolumn{4}{c|}{strict guide} &  \multicolumn{4}{c|}{dependent guide} &  \multicolumn{4}{c}{head guide} \\
+nont.           & \(h\) & \(v\) & f1 & acc. & $t$ & $\lightning$ & f1 & acc. & $t$ & $\lightning$  & f1 & acc. & $t$ & $\lightning$  \\ \hline\rowcolor{black!10}
+classic        & 0 & 1 & 80.82 & 0.78 & 6.89 & 2 & 80.06 & 0.76 &  10.51 & 12 & 80.53 & 0.78 &  9.41 & 4 \\\rowcolor{black!10}
+coarse (naive) & 0 & 1 & 80.72 & 0.78 & 6.31 & 0 & 80.19 & 0.76 &  23.60 &  3 & 79.53 & 0.78 & 11.66 & 3 \\\hline
+coarse (table) & 0 & 1 & 78.14 & 0.80 & 8.69 & 0 & 79.12 & 0.76 & 176.60 &  0 & 79.53 & 0.78 & 11.79 & 3 \\
+coarse (table) & 0 & 2 & 79.74 & 0.72 & 7.69 & 4 & 77.65 & 0.69 &  84.09 & 24 & 75.22 & 0.68 &  7.30 & 58 \\
+coarse (table) & 1 & 1 & 78.03 & 0.77 & 7.71 & 2 & 75.67 & 0.72 &  11.86 & 52 & 68.58 & 0.71 &  6.71 & 144 \\
 \bottomrule
         \end{tabular}
     \end{table}
@@ -399,15 +401,16 @@ coarse (table)  & \(1\) & \(1\) & 78.49 & 0.79 & 8.24 & 1 & 77.73 & 0.75 & 8.36 
         }
         \centering
         \vspace{.2cm}
-        \begin{tabular}{lcc|rrrr|rrrr}
+        \setlength{\tabcolsep}{3.5pt}
+        \begin{tabular}{lcc|rrrr|rrrr|rrrr}
             \toprule
-& \multicolumn{2}{c|}{Markov.}         & \multicolumn{4}{c|}{strict guide} &  \multicolumn{4}{c}{dependent guide} \\
-nont.           & \(h\) & \(v\) & f1 & acc. & $t$ & $\lightning$ & f1 & acc. & $t$ & $\lightning$  \\ \hline \rowcolor{black!10}
-classic         & \(0\) & \(1\) & 90.60 & 0.90 & 3.81 & 10 & 88.97 & 0.89 & 6.99 & 37 \\\rowcolor{black!10}
-coarse (naive)  & \(0\) & \(1\) & 91.02 & 0.90 & 3.84 & 0 & 90.05 & 0.89 & 17.74 & 12 \\\hline
-coarse (table)  & \(0\) & \(1\) & 88.69 & 0.91 & 10.80 & 0 & 89.93 & 0.89 & 273.69 & 9 \\
-coarse (table)  & \(0\) & \(2\) & 90.26 & 0.87 & 10.78 & 5 & 88.71 & 0.86 & 12.70 & 33 \\
-coarse (table)  & \(1\) & \(1\) & 87.53 & 0.89 & 11.90 & 8 & 86.16 & 0.87 & 12.26 & 62 \\
+    & \multicolumn{2}{c|}{Markov.}         & \multicolumn{4}{c|}{strict guide} &  \multicolumn{4}{c|}{dependent guide} &  \multicolumn{4}{c}{head guide} \\
+    nont.           & \(h\) & \(v\) & f1 & acc. & $t$ & $\lightning$ & f1 & acc. & $t$ & $\lightning$  & f1 & acc. & $t$ & $\lightning$  \\ \hline\rowcolor{black!10}
+classic        & 0 & 1 & 90.51 & 0.89 &  4.73 & 2 & 89.34 & 0.87 &  5.75 & 31 & 89.84 & 0.89 & 5.67 & 8 \\\rowcolor{black!10}
+coarse (naive) & 0 & 1 & 90.81 & 0.89 &  4.87 & 2 & 89.52 & 0.88 & 10.31 & 18 & 89.85 & 0.89 & 5.69 & 7 \\\hline
+coarse (table) & 0 & 1 & 88.34 & 0.90 & 12.00 & 0 & 89.48 & 0.88 & 42.25 &  9 & 89.85 & 0.89 & 5.77 & 7 \\
+coarse (table) & 0 & 2 & 90.23 & 0.86 & 11.04 & 6 & 87.63 & 0.85 & 19.19 & 44 & 84.66 & 0.84 & 5.31 & 72 \\
+coarse (table) & 1 & 1 & 86.97 & 0.88 & 11.90 & 7 & 85.33 & 0.86 & 13.16 & 73 & 76.26 & 0.84 & 5.27 & 173 \\
 \bottomrule
         \end{tabular}
     \end{table}
@@ -498,15 +501,14 @@ coarse-nof   & 1181 & 9  & 97.19  & 1991 & 27 & 131.15 & 2766 & 45 & 79.70 \\
                     & \multicolumn{4}{c|}{strict guide} &  \multicolumn{4}{c|}{dependent guide} &  \multicolumn{4}{c}{head guide} \\
 nont.            & f1 & acc. & $t$ & $\lightning$ & f1 & acc. & $t$ & $\lightning$ & f1 & acc. & $t$ & $\lightning$ \\ \hline
 \rowcolor{black!10}
-classic (hg)     & 81.01 & 0.80 &  6.85 & 0 & 80.87 & 0.78 &  10.12 &  9 & 81.33 & 0.80 & 21.1 & 4 \\\hline
-classic          & 81.39 & 0.80 &  6.08 & 1 & 80.46 & 0.78 &  14.04 & 15 & 81.25 & 0.80 & 21.53 & 2 \\
-classic-disc     & 81.43 & 0.80 &  6.05 & 0 & 81.38 & 0.78 &  37.24 &  8 & 81.73 & 0.81 & 69.98 & 4 \\
-classic-nof      & 81.62 & 0.81 &  7.56 & 1 & 81.21 & 0.79 &  98.30 &  1 & --- & --- & --- & --- \\ \hline
-\rowcolor{black!10}
-coarse (hg)      & 81.17 & 0.81 &  6.91 & 0 & 80.89 & 0.79 &   8.09 &  1 & 81.82 & 0.80 & 32.63 & 0 \\\hline
-coarse           & 80.76 & 0.80 &  5.41 & 0 & 81.37 & 0.78 &  15.52 &  3 & 81.81 & 0.81 & 37.55 & 0 \\
-coarse-disc      & 80.63 & 0.80 &  7.08 & 0 & 81.61 & 0.79 &  14.57 &  3 & 81.73 & 0.81 & 74.47 & 4 \\
-coarse-nof       & 80.88 & 0.81 & 10.50 & 0 & 81.58 & 0.79 & 235.53 &  0 & --- & --- & --- & --- \\
+classic (hg) & 80.82 & 0.78 &  6.89 & 2 & 80.06 & 0.76 &  10.51 & 12 & 80.53 & 0.78 &   9.41 & 4 \\\hline
+classic      & 81.33 & 0.78 &  8.17 & 3 & 80.10 & 0.76 &  12.92 & 16 & 80.00 & 0.78 & 7 8.03 & 4 \\
+classic-disc & 80.87 & 0.78 &  6.87 & 1 & 79.91 & 0.76 &  25.57 & 14 & 80.68 & 0.79 & 451.13 & 2 \\
+classic-nof  & 80.31 & 0.78 & 14.28 & 0 & 80.48 & 0.76 & 267.95 &  2 &   --- &  --- &    --- & --- \\ \hline\rowcolor{black!10}
+coarse (hg)  & 80.72 & 0.78 &  6.31 & 0 & 80.19 & 0.76 &  23.60 &  3 & 79.53 & 0.78 &  11.66 & 3 \\\hline
+coarse       & 80.47 & 0.78 &  7.13 & 0 & 79.67 & 0.76 &  26.63 &  2 & 80.06 & 0.79 & 403.72 & 1 \\
+coarse-disc  & 80.69 & 0.78 &  8.44 & 0 & 79.96 & 0.76 & 106.00 &  1 & 80.68 & 0.79 & 472.50 & 2 \\
+coarse-nof   & 80.49 & 0.78 & 10.13 & 0 & 80.55 & 0.77 & 337.43 &  1 &   --- &  --- &    --- & --- \\
 \bottomrule
         \end{tabular}
     \end{table}
@@ -523,114 +525,180 @@ coarse-nof       & 80.88 & 0.81 & 10.50 & 0 & 81.58 & 0.79 & 235.53 &  0 & --- &
             & \multicolumn{4}{c|}{strict guide} &  \multicolumn{4}{c|}{dependent guide} &  \multicolumn{4}{c}{head guide} \\
 nont.           & f1 & acc. & $t$ & $\lightning$ & f1 & acc. & $t$ & $\lightning$ & f1 & acc. & $t$ & $\lightning$  \\ \hline
 \rowcolor{black!10}
-classic  (hg)   & 90.60 & 0.90 & 3.81 & 10 & 88.97 & 0.89 & 6.99 & 37 & 90.49 & 0.90 & 8.15 & 16\\\hline
-classic         & 90.52 & 0.90 & 4.71 &  9 & 89.47 & 0.89 & 8.45 & 27 & 90.36 & 0.90 & 12.97 & 5 \\
-classic-disc    & 90.77 & 0.90 & 4.16 &  2 & 89.43 & 0.89 & 11.64 & 32 & 91.07 & 0.90 & 1099.81 & 8 \\
-classic-nof     & 91.41 & 0.90 & 4.89 &  2 & 91.19 & 0.89 & 133.83 & 8 & --- & --- & --- & --- \\ \hline
+classic (hg) & 90.51 & 0.89 & 4.73 & 2 & 89.34 & 0.87 &  5.75 & 31 & 89.84 & 0.89 &  5.67 & 8 \\\hline
+classic      & 90.44 & 0.89 & 4.87 & 3 & 89.34 & 0.87 &  6.33 & 29 & 90.37 & 0.89 & 22.28 & 6 \\
+classic-disc & 90.87 & 0.89 & 4.36 & 3 & 89.59 & 0.88 &  7.43 & 23 & 90.54 & 0.89 & 32.53 & 12 \\
+classic-nof  & 90.90 & 0.89 & 5.69 & 0 & 90.50 & 0.88 & 49.57 &  7 &   --- &  --- &   --- & --- \\ \hline
 \rowcolor{black!10}
-coarse (hg)     & 91.02 & 0.90 & 3.84 &  0 & 90.05 & 0.89 & 17.74 & 12 & 90.44 & 0.90 & 6.92 & 4 \\ \hline
-coarse          & 91.01 & 0.90 & 4.31 &  2 & 90.69 & 0.90 & 10.32 & 2 & 90.62 & 0.90 & 31.28 & 1 \\
-coarse-disc     & 91.51 & 0.90 & 3.99 &  1 & 90.24 & 0.89 & 291.99 & 10 & 91.07 & 0.90 & 1113.10 & 8 \\
-coarse-nof      & 91.28 & 0.91 & 6.48 &  1 & 91.02 & 0.90 & 51.95 & 3 & --- & --- & --- & --- \\
+coarse (hg) & 90.81 & 0.89 & 4.87 & 2 & 89.52 & 0.88 & 10.31 & 18 & 89.85 & 0.89 &  5.69 & 7 \\ \hline
+coarse      & 90.63 & 0.89 & 5.25 & 1 & 90.06 & 0.88 & 10.12 &  8 & 90.02 & 0.89 & 43.93 & 4 \\
+coarse-disc & 90.74 & 0.89 & 5.15 & 0 & 89.70 & 0.88 & 34.30 & 10 & 90.54 & 0.89 & 33.06 & 12 \\
+coarse-nof  & 90.97 & 0.90 & 9.43 & 0 & 90.42 & 0.88 & 16.05 &  6 &   --- &  --- &   --- & --- \\
 \bottomrule
         \end{tabular}
     \end{table}
 
     \Cref{tbl:gridsearch:dcp:2,tbl:gridsearch:dcp:3} show the values involved in supertag prediction and parsing with the extracted supertag blueprints.
     For both models, there are 2 cases where no values are shown, both for the head guide constructor and nonterminals with \emph{-nof} extension.
-    In these cases, we noticed unreasonably long parsing times during the experiments and canceled them after 10 hours.
-    
-    In most cases both tables show very similar scores in terms of the parsing and supertag prediction accuracy when comparing results with hybrid grammar and \abrv{dcp} supertags within a combination of guide and nonterminal constructors.
-    Generally the accuracies tend to be better with \abrv{dcp} supertags and nonterminals with -disc or -nof extension over ones with hybrid grammar supertags in most of the shown cases.
-    However, these cooccur with a massive increase in parse time in the columns for the head and dependent guide constructors.
-    In case of the pretrained model and classic nonterminals, the reported numbers of parse fails are relatively high.
-    When using \abrv{dcp} supertags and the two extensions for nonterminals they tend to be smaller, specifically visible in case of the strict guide.
-    This is less observable in the results for the supervised model or coarse nonterminals, as the number of parse fails are already quite low.
+    In these cases, we noticed unreasonably long parsing times during the experiments and canceled the training after 10 hours.
+    Aside these two cases, both tables tend to show very close scores in terms of the parsing and supertag prediction accuracy when comparing results with hybrid grammar and \abrv{dcp} supertags within a combination of guide and nonterminal constructors.
+    Generally the supertag prediction accuracies are about equal in all cases per model.
+    However, in case of the \abrv{dcp} supertags we recorded massive increases in parse time in the columns for the head and dependent guide constructors and both nonterminal constructors with the two extensions.
+    Among the groups with same nonterminal and guide constructors, the f1 scores tend to be higher with some configuration of \abrv{dcp} supertags.
+    Specifically in case of the pretrained model, \abrv{dcp} supertags with \emph{-nof} extension performed consistently better in the four groups, and \abrv{dcp} supertags with \emph{-disc} extension performed better in the five out of six groups.
+    The table for the supervised model does not show clear trends in terms of the parsing scores.
 
     In conclusion, this section shows some, to our mind, very important results that suggest that the \abrv{lcfrs} compositions do not seem that important for the parsing accuracy with supertags.
     Moreover, when we diverge from the formalisms of \abrv{lcfrs} and hybrid grammars, we are able to define sets of nonterminals with coarser granularity; these corelate with smaller sets of extracted supertag blueprints.
     Our results suggest that they can improve the parsing accuracy in certain cases, this may be due to higher generalization capabilities.
     We use this opportunity to fix the best performing configuration for each model as the result of the grid search for the extraction parameters.
-    We continue the experiments with \abrv{dcp} supertags, the strict guide constructor, and classic-nof nonterminals in case of the supervised model or coarse-disc nonterminals in case of the pretrained model respectively.
-    Both have shown best results, even with some margin to the results obtained with hybrid grammars.
+    We continue the experiments with each one configuration for hybrid grammar and \abrv{dcp} supertags, and each the pretrained and supervised model as follows:
+    \begin{compactenum}
+        \item the supervised model with \abrv{lcfrs} or \abrv{dcp} supertags, in both cases with the strict guide and classic nonterminal constructors (without extensions),
+        \item the pretrained model with \abrv{lcfrs} or \abrv{dcp} supertags, in both cases with the strict guide and coarse nonterminal constructors, in case of \abrv{dcp} supertags with \emph{-nof} extended nonterminals.
+    \end{compactenum}
 
     \subsection{Experiments with Parsing Parameters and Reranking}
     In this section, we perform some experiments that are not directly concerned with the extraction procedure and its parameters.
     Specifically, we consider some options that decide wich supertags are considered during the parsing process in two dimensions:
         The number \(k\) of top-confidently predicted supertags per position that are considered during the parsing process at most, and the step size \(\beta\) for confidence values of predicted supertags that are considered at a time in the parsing process.
-    These were set to fixed values during grid search, we use the two final models to see if we can tune these parameters for better results.
+    These two parameters were set to fixed values during grid search, we use the four remaining models (the combinations supervised/pretrained model and hybrid grammar/\abrv{dcp} supertags) to see if we can tune these parameters for better results.
     Moreover, we extend the parsing procedure with the reranking mechanism presented in \cref{sec:parsing:reranking}.
     It extends the set of parameters by a number \(n\) of constituent trees that is re-weighted by the \abrv{dop} model, the best among them is the result of the extended parser.
 
-    We conduct a grid search over values for the hyperparameters \(k\) and \(\beta\) to illustrate how configurations for these two interact with each other.
-    Each experiment predicts supertags for the developement portion of the treebank and parses with them.
-    During these experiments, we fix the paramter \(n\) to \(100\) as it does not have an influence on the parsing process itself but builds on top of it.
-    We characterize the parsing results using the similar metrics as in the previous sets of experiments: using the f1 score for the constituent tree, the time needed to parse the whole developement portion of the treebank and the number of parse fails.
-    However, the parse time here only involves the time needed to fill the chart during the parsing process; it does neither include the supertag prediction nor the derivation enumeration.
-    We add the score of the oracle constituent tree with respect to the gold one among the first \(n=100\) constituent trees enumerated by the parsing process.
-    The oracle with respect to a gold constituent tree among a set of constituent trees is an element with greatest f1 score to the gold tree.
-    With this oracle score, we aim to estimate the potential to increase the parse score with a reranking process.
-
-    \begin{table}
-        \caption{\label{tbl:grid:parsing:lcfrs}
-            F1 score for the first (f1) and the best f1 score among the first 100 constituent trees predicted by the parser (of1), parse time (t) and amount of sentences that the model was not able to parse (fail) for combinations of parameters to the parsing process $\beta$ and $k$ in the developement portion of NeGra. All models use hybrid grammar supertags extracted using the strict guide constructor, coarse nonterminals and right-branching binarization with Markovization $h=0$ and $v=1$.
-        }
-        \centering\small
-        \setlength{\tabcolsep}{4pt}
-        \vspace{.2cm}
-        \begin{tabular}{r|rrrr|rrrr|rrrr|rrrr}
-            \toprule
-            & \multicolumn{4}{c|}{$k = 5$} & \multicolumn{4}{c|}{$k = 10$} & \multicolumn{4}{c|}{$k = 20$} & \multicolumn{4}{c}{$k = 50$} \\
-$\beta$     & f1 & of1 & $t$ & $\lightning$  & f1 & of1 & $t$ & $\lightning$ & f1 & of1 & $t$ & $\lightning$  & f1 & of1 & $t$ & $\lightning$    \\ \hline
-0.1   & 90.46 & 90.83 & 1.82 & 12 & 90.91 & 91.35 & 0.68 & 1 & 91.07 & 91.60 & 0.51 & 0 & 91.13 & 91.71 & 0.51 & 0\\
-0.5   & 90.40 & 90.98 & 0.43 & 12 & 90.86 & 91.50 & 1.19 & 1 & 91.02 & 91.77 & 0.44 & 0 & 91.08 & 91.86 & 0.43 & 0\\
-1.0   & 90.43 & 91.11 & 0.43 & 12 & 90.92 & 91.68 & 0.62 & 1 & 91.08 & 91.95 & 0.45 & 0 & 91.10 & 92.01 & 0.45 & 0\\
-2.0   & 90.37 & 91.26 & 0.44 & 12 & 90.87 & 91.92 & 0.64 & 1 & 91.02 & 92.15 & 0.49 & 0 & 91.07 & 92.20 & 0.53 & 0\\
-3.0   & 90.56 & 91.89 & 0.43 & 12 & 91.02 & 92.60 & 1.36 & 1 & 91.18 & 92.88 & 0.88 & 0 & 91.15 & 92.84 & 6.69 & 0\\
-5.0   & 90.43 & 92.45 & 0.49 & 12 & 90.94 & 93.29 & 1.34 & 1 & 91.10 & 93.58 & 1.68 & 0 & 91.13 & 93.62 & 8.67 & 0\\
-8.0   & 90.46 & 93.77 & 0.63 & 12 & 91.00 & 94.99 & 1.23 & 1 & 91.15 & 95.48 &13.80 & 0 & --- & ---& --- & ---\\
-\bottomrule
-        \end{tabular}
-    \end{table}
-
-    \begin{table}
-        \caption{\label{tbl:grid:parsing:dcp}
-        F1 score for the first (f1) and the best f1 score among the first 100 constituent trees predicted by the parser (of1), parse time (t) and amount of sentences that the model was not able to parse (fail) for combinations of parameters to the parsing process $\beta$ and $k$ in the developement portion of NeGra. All models use \abrv{dcp} supertags extracted using the strict guide constructor, coarse nonterminals and right-branching binarization with Markovization $h=0$ and $v=1$.
-        }
-        \centering\small
-        \setlength{\tabcolsep}{4pt}
-        \vspace{.2cm}
-        \begin{tabular}{r|rrrr|rrrr|rrrr|rrrr}
-            \toprule
-            & \multicolumn{4}{c|}{$k = 5$} & \multicolumn{4}{c|}{$k = 10$} & \multicolumn{4}{c|}{$k = 20$} & \multicolumn{4}{c}{$k = 50$} \\
-$\beta$     & f1 & of1 & $t$ & $\lightning$ & f1 & of1 & $t$ & $\lightning$ & f1 & of1 & $t$ & $\lightning$ & f1 & of1 & $t$ & $\lightning$   \\ \hline
-0.1   & 90.02 & 90.42 & 0.63 & 11 & 90.53 & 90.96 & 1.73 & 0 & 90.68 & 91.14 & 0.65 & 0 & 90.69 & 91.13 & 0.76 & 0\\
-0.5   & 90.06 & 90.59 & 1.43 & 11 & 90.55 & 91.12 & 0.70 & 0 & 90.68 & 91.30 & 0.57 & 0 & 90.74 & 91.34 & 1.79 & 0\\
-1.0   & 90.12 & 90.78 & 0.55 & 11 & 90.64 & 91.43 & 0.77 & 0 & 90.78 & 91.63 & 1.24 & 0 & 90.81 & 91.63 & 0.89 & 0\\
-2.0   & 90.12 & 91.08 & 0.57 & 11 & 90.79 & 91.95 & 0.87 & 0 & 90.86 & 92.14 & 0.69 & 0 & 90.89 & 92.11 & 2.46 & 0\\
-3.0   & 90.15 & 91.41 & 0.59 & 11 & 90.75 & 92.40 & 0.93 & 0 & 90.81 & 92.60 & 1.36 & 0 & 90.82 & 92.57 & 11.50 & 0\\
-5.0   & 90.12 & 92.20 & 0.71 & 11 & 90.69 & 93.27 & 2.81 & 0 & 90.93 & 93.49 & 5.37 & 0 & 90.86 & 93.49 & 12.66 & 0\\
-8.0   & 90.01 & 93.73 & 0.91 & 11 & 90.67 & 95.01 & 5.50 & 0 & 90.83 & 95.56 & 9.19 & 0 & --- & --- & --- & ---\\
-\bottomrule
-        \end{tabular}
-    \end{table}
-
-    \Cref{tbl:grid:parsing:lcfrs,tbl:grid:parsing:dcp} show the results with nearly all tested combinations of paramters.
-    The values for $k=50$ and $\beta = 5$ are omitted as the overall time needed to measure the results was not feasilbe.
-    We can clearly see some trends in both tables:
+    We will conduct two sets of experiments:
     \begin{itemize}
-        \item With rising values for $k$, the number of parse fails drop. Values for $\beta$ do not have an influence on the parse fails at all.
-        \item The quality of the parses increases with higher values for $k$. This trend is less clear for $\beta$, but up to the values $\beta = 3$ and $\beta = 2$ respectively, the tables show a slight but somewhat consistent increase for in the f1 score.
-        \item The quality of the oracle parse increases with rising value for $\beta$. Again, we see a slight but consistent increase with higher values for $k$ in of1 as well.
-        \item The reported parsing times behave slightly inconsistent, there are several spikes with values $>1s$. However, we clearly notice considerable increases with values illustrated in the direction to the bottom right corner. 
+        \item The first set of experiments is a grid search over values for the two parameters \(k\) and \(\beta\) using each of the four model. During these experiments, we will not use the dop model for the reranking extension, but a gold oracle that selects the constituent tree that maximizes the f-score with respect to the gold constituent tree among the best \(n = 100\) constiuent trees found during parsing. This oracle-f-score shalle give an impression of a potential score that could be achieved using perfect reranking.
+        \item The second set of experiement picks a few configurations from the previous step and investigates the results of the parsing process extended by reranking.
     \end{itemize}
+    Each experiment predicts supertags for the developement portion of the treebank and parses with them.
+    During each of the experiments in this section, we fix the paramter \(n\) to \(100\).
+    We characterize the parsing results using the similar metrics as in the previous sets of experiments: using the f1 score for the constituent tree, the time needed to parse the whole developement portion of the treebank and the number of parse fails.
+    However, in contrast to all previous experiments, the parse time in the first set of experiments only involves the time needed to fill the chart during the parsing process, as this is the only part of the parsing process that is actually involved with the two parameters.
+    During these experiments, we began to introduce a timeout to the parsing process, because we noticed some unreasonably long parsing times with high values for \(k\) and \(\beta\). Each iteration that fills a parse chart using supertags within a prediction confidence range \(\beta\) is canceled after 10 milliseconds.
 
-    We are able to notice some differences between the two tables.
-    Generally, the quality of the parses with the hybrid grammar supertags in \cref{tbl:grid:parsing:lcfrs} seems to be slightly but consistently better than those with the \abrv{dcp} supertags in \cref{tbl:grid:parsing:dcp}.
-    With the hybrid grammar supertags, we  are able to consistently improve the scores to $\mathrm{f1} > 91$ by using values as such as $k \ge 20$.
-    In the experiments with \abrv{dcp} supertags, we could not achieve such results.
-    Using \cref{tbl:grid:parsing:lcfrs}, we are able select a configuration with hybrid grammar supertags that achieves high-quality parses, while still leaving a significant gap for possible improvements using reranking and with acceptalbe parse time.
-    We see this in the combination $k=20$ and $\beta=5$.
+    \begin{table}
+        \caption{\label{tbl:grid:parsing:supervised}
+            F1 score for the first (f1) and the best f1 score among the top 100 constituent trees predicted by the parser (of1), parse time ($t$) and amount of sentences that were not able to parse ($\lightning$) for combinations of parameters to the parsing process $\beta$ and $k$ in the developement portion of NeGra. The upper half are results using hybrid grammar supertags, the bottom half are \abrv{dcp} supertags. All supertags were predicted using supervised models.
+        }
+        \centering\small
+        \setlength{\tabcolsep}{4pt}
+        \vspace{.2cm}
+        \begin{tabular}{cr|rrrr|rrrr|rrrr|rrrr}
+            \toprule
+    &            & \multicolumn{4}{c|}{$k = 5$} & \multicolumn{4}{c|}{$k = 10$} & \multicolumn{4}{c|}{$k = 20$} & \multicolumn{4}{c}{$k = 50$} \\
+    &$\beta$     & f1 & of1 & $t$ & $\lightning$  & f1 & of1 & $t$ & $\lightning$ & f1 & of1 & $t$ & $\lightning$  & f1 & of1 & $t$ & $\lightning$    \\ \hline
+    \multirow{5}*{\rotatebox{90}{\abrv{hg}}}
+    &0.1   & 79.5 & 81.1 & 1.0 & 40 & 81.8 & 83.8 & 0.9 & 1 & 81.9 & 83.9 & 1.5 &  0 & 81.8 & 83.8 & 1.2 &  0 \\
+    &0.5   & 79.6 & 81.5 & 0.7 & 40 & 81.9 & 84.2 & 0.7 & 1 & 82.1 & 84.4 & 0.8 &  0 & 82.1 & 84.4 & 1.0 &  0 \\
+    &2.0   & 79.7 & 82.4 & 1.4 & 41 & 82.0 & 85.4 & 0.7 & 2 & 82.2 & 85.5 & 1.3 &  2 & 81.9 & 85.2 & 4.1 &  6 \\
+    &5.0   & 79.8 & 84.0 & 1.2 & 40 & 81.8 & 87.0 & 1.2 & 6 & 81.6 & 86.8 & 1.8 &  7 & 81.2 & 86.2 & 3.9 & 14 \\
+    &8.0   & 79.9 & 86.0 & 0.9 & 40 & 81.7 & 89.6 & 3.7 & 8 & 81.5 & 89.7 & 3.7 & 13 & 80.9 & 88.8 & 5.2 & 24 \\
+    \hline
+    \multirow{5}*{\rotatebox{90}{\abrv{dcp}}}
+    &0.1   & 80.8 & 82.0 & 2.1 & 28 & 82.5 & 84.2 & 1.7 &  2 & 82.7 & 84.5 & 1.3 &  0 & 82.8 & 84.5 & 1.3 &  0 \\
+    &0.5   & 80.8 & 82.2 & 0.9 & 28 & 82.5 & 84.6 & 1.8 &  3 & 82.6 & 84.7 & 2.5 &  1 & 82.5 & 84.6 & 4.3 &  2 \\
+    &2.0   & 80.8 & 82.9 & 0.9 & 28 & 82.3 & 85.4 & 1.3 &  6 & 82.4 & 85.4 & 4.8 &  6 & 82.4 & 85.3 & 5.6 &  8 \\
+    &5.0   & 80.7 & 84.3 & 0.9 & 28 & 82.2 & 86.9 & 1.5 & 11 & 82.0 & 86.6 & 2.9 & 15 & 82.0 & 86.4 & 5.0 & 18 \\
+    &8.0   & 80.6 & 85.7 & 1.1 & 29 & 81.7 & 88.2 & 5.7 & 14 & 81.6 & 88.1 & 5.1 & 15 & 81.4 & 87.8 & 7.8 & 20 \\
+\bottomrule
+        \end{tabular}
+    \end{table}
+
+
+    \begin{table}
+        \caption{\label{tbl:grid:parsing:pretrained}
+        F1 score for the first (f1) and the best f1 score among the top 100 constituent trees predicted by the parser (of1), parse time ($t$) and amount of sentences that were not able to parse ($\lightning$) for combinations of parameters to the parsing process $\beta$ and $k$ in the developement portion of NeGra. The upper half are results using hybrid grammar supertags, the bottom half are \abrv{dcp} supertags. All supertags were predicted using pretrained models.
+        }
+        \centering\small
+        \setlength{\tabcolsep}{4pt}
+        \vspace{.2cm}
+        \begin{tabular}{cr|rrrr|rrrr|rrrr|rrrr}
+            \toprule
+&            & \multicolumn{4}{c|}{$k = 5$} & \multicolumn{4}{c|}{$k = 10$} & \multicolumn{4}{c|}{$k = 20$} & \multicolumn{4}{c}{$k = 50$} \\
+&$\beta$     & f1 & of1 & $t$ & $\lightning$  & f1 & of1 & $t$ & $\lightning$ & f1 & of1 & $t$ & $\lightning$  & f1 & of1 & $t$ & $\lightning$    \\ \hline
+\multirow{5}*{\rotatebox{90}{\abrv{hg}}}
+&0.1   & 90.2 & 90.6 & 0.6 & 17 & 91.3 & 91.7 & 0.6 & 1 & 91.5 & 91.9 & 0.5 & 0 & 91.6 & 91.9 & 1.2 & 0\\
+&0.5   & 90.2 & 90.6 & 0.5 & 17 & 91.2 & 91.7 & 0.5 & 2 & 91.5 & 91.9 & 0.5 & 0 & 91.5 & 91.9 & 0.5 & 0\\
+&2.0   & 90.2 & 91.2 & 1.0 & 17 & 91.3 & 92.3 & 0.5 & 2 & 91.5 & 92.6 & 0.5 & 0 & 91.4 & 92.4 & 1.4 & 2\\
+&5.0   & 90.2 & 91.9 & 0.5 & 17 & 91.2 & 93.2 & 0.6 & 2 & 91.4 & 93.4 & 0.7 & 1 & 91.1 & 93.1 & 1.6 & 4\\
+&8.0   & 90.2 & 93.1 & 0.6 & 17 & 91.2 & 94.7 & 0.9 & 2 & 91.1 & 94.8 & 2.3 & 4 & 90.7 & 94.5 & 3.2 & 7\\
+\hline
+\multirow{5}*{\rotatebox{90}{\abrv{dcp}}}
+&0.1   & 90.7 & 91.1 & 0.8 & 6 & 91.0 & 91.5 & 0.9 & 1 & 91.0 & 91.5 & 0.6 & 0 & 91.0 & 91.4 &  0.6 &  0\\
+&0.5   & 90.7 & 91.3 & 0.7 & 6 & 91.0 & 91.6 & 0.7 & 1 & 91.0 & 91.6 & 0.5 & 0 & 91.0 & 91.6 &  0.5 &  0\\
+&2.0   & 90.7 & 91.7 & 0.6 & 6 & 90.8 & 91.9 & 1.3 & 3 & 90.9 & 91.9 & 0.7 & 2 & 90.5 & 91.5 &  1.0 &  5\\
+&5.0   & 90.3 & 92.4 & 1.5 & 9 & 90.4 & 92.6 & 1.6 & 6 & 90.5 & 92.5 & 0.9 & 7 & 90.5 & 92.5 &  1.8 &  7\\
+&8.0   & 90.5 & 93.5 & 0.9 & 9 & 90.3 & 93.7 & 1.0 & 7 & 90.4 & 93.9 & 1.2 & 6 & 90.0 & 93.3 &  1.2 & 12\\
+\bottomrule
+        \end{tabular}
+    \end{table}
+
+    \Cref{tbl:grid:parsing:supervised,tbl:grid:parsing:pretrained} show the results with for the first set of experiments using the supervised and pretrained models, respectively.
+    We can see some trends in both tables:
+    \begin{itemize}
+        \item The quality of the parses tends to increase with higher values for $k$.  With larger values of \(\beta\) quality of parses tends to drop.
+        \item The quality of the oracle parse tends to increase with rising value for $\beta$ as well as \(k\).
+        \item The parse time also tends to increase with rising values of both, \(k\) and \(\beta\).
+        \item With rising values for $k$, the number of parse fails tend to drop. With larger values of \(\beta\) the number of parse fails tend to increase, due to timeouts during the parsing process.
+    \end{itemize}
+    Generally, for both tables, we do not see any consistent improvements beyond \(k=20\), but small advantages of \(k=20\) as opposed to \(k=10\).
+    Beyond values of \(\beta = 2\), the results seem to degenerate.
+    Interestingly, while we could achice higher scores with \abrv{dcp} supertags using the supervised model, the trend is opposite with the pretrained one.
+    We pick a few configurations for each model in advance to the experiments with reranking:
+    \begin{compactitem}
+        \item for the supervised model, we fix \abrv{dcp} supertags with \(k = 20\) and \(\beta \in \{0.1,0.5,2\}\),
+        \item for the pretrained model, we fix \abrv{hg} supertags with \(k = 20\) and \(\beta \in \{0.1,0.5,2,5\}\).
+    \end{compactitem}
     
-    \todo[inline]{to be continued (reranking)}
+    \begin{table}
+        \caption{\label{tbl:grid:reranking:supervised}
+        F1 score for the first (f1) and the best f1 score among the top 100 constituent trees predicted by the parser (of1), parse time ($t$) and amount of sentences that were not able to parse ($\lightning$) for combinations of parameters to the parsing process $\beta$ and $k$ in the developement portion of NeGra. The upper half are results using hybrid grammar supertags, the bottom half are \abrv{dcp} supertags. All supertags were predicted using pretrained models.
+        }
+        \centering
+        \vspace{.2cm}
+        \begin{tabular}{r|rrr|rrr|rrr}
+            \toprule
+       & \multicolumn{3}{c|}{$n = 2$} & \multicolumn{3}{c|}{$n = 10$}& \multicolumn{3}{c}{$n = 100$}\\
+ \(\beta\) & r-f1 & n-f1 & o-f1  & r-f1 & n-f1 & o-f1 & r-f1 & n-f1 & o-f1   \\
+\hline 
+0.1 & 82.76 & 82.74 & 83.56 & 82.82 & 82.74 & 84.32 & 82.82 & 82.74 & 84.45 \\
+0.5 & 82.61 & 82.58 & 83.57 & 82.82 & 82.58 & 84.50 & 82.83 & 82.58 & 84.62 \\
+  2 & 82.49 & 82.31 & 83.78 & 82.42 & 82.31 & 85.11 & 82.34 & 82.31 & 85.35 \\
+\bottomrule
+        \end{tabular}
+    \end{table}
+
+    \begin{table}
+        \caption{\label{tbl:grid:reranking:pretrained}
+        F1 score for the first (f1) and the best f1 score among the top 100 constituent trees predicted by the parser (of1), parse time ($t$) and amount of sentences that were not able to parse ($\lightning$) for combinations of parameters to the parsing process $\beta$ and $k$ in the developement portion of NeGra. The upper half are results using hybrid grammar supertags, the bottom half are \abrv{dcp} supertags. All supertags were predicted using pretrained models.
+        }
+        \centering
+        \vspace{.2cm}
+        \begin{tabular}{r|rrr|rrr|rrr}
+            \toprule
+       & \multicolumn{3}{c|}{$n = 2$} & \multicolumn{3}{c|}{$n = 10$}& \multicolumn{3}{c}{$n = 100$}\\
+ \(\beta\) & r-f1 & n-f1 & o-f1  & r-f1 & n-f1 & o-f1 & r-f1 & n-f1 & o-f1   \\
+\hline 
+0.1 & 91.58 & 91.60 & 91.82 & 91.53 & 91.60 & 91.87 & 91.56 & 91.60 & 91.88\\
+0.5 & 91.51 & 91.55 & 91.85 & 91.44 & 91.55 & 91.92 & 91.49 & 91.55 & 91.93 \\
+  2 & 91.39 & 91.59 & 92.23 & 91.54 & 91.59 & 92.51 & 91.54 & 91.59 & 92.58 \\
+  5 & 91.40 & 91.45 & 92.83 & 91.15 & 91.45 & 93.33 & 91.04 & 91.45 & 93.36 \\
+\bottomrule
+        \end{tabular}
+    \end{table}
+
+    \Cref{tbl:grid:reranking:supervised,tbl:grid:reranking:pretrained} shows the results of the second set of experiments in terms of f1 scores.
+    The score of parsing with reranking (r-f1) is set in context of the score without reranking (n-f1) as well as the score with gold oracle reranking (o-f1) from the previous set of experiments.
+    The results suggest, that our approach to reranking does in fact slightly increase the parsing accuracy with the supervised model.
+    However, it does so quite marginally and comes with additional computational cost; we do not see that it is worth the effort.\footnote{
+        The parse time with reranking is not reported in this section as the implementation is quite unoptimized.
+        We decided to not spend any more effort due to the underwhelming results.
+    }
+    In case of the pretrained model, we could not detect any advantage at all, even the opposite is the case.
+    For the remainder, we will omit the reranking extension and pick the final configurations for each model:
+    \begin{itemize}
+        \item we fix the supervised model to \abrv{dcp} supertags with parsing parameters \(k=20\) and \(\beta=0.1\), and
+        \item the pretrained model to \abrv{hg} supertags with parsing parameters \(k=20\) and \(\beta=0.1\).
+    \end{itemize}
 \end{document}
