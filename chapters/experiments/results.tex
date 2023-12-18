@@ -2,12 +2,12 @@
 
 \begin{document}
     \section{Results and Comparison to Other Parsers}\label{sec:results}
-    This section presents the results in the assessment with the test portion of the three investigated treebanks.
-    For each treebank, we extract supertag blueprints and parse using the hyperparameters that were found in the previous two sections; \cref{tbl:hyperparameters} gives an overview of the final configurations.
-    We repeat the training process for each model and each treebank multiple times, because the training process of the supertag classifiers depends on pseudo-random initializations and the outcomes vary slightly.
-    \Cref{tbl:averages} shows the result of five runs for the supervised model and pretrained models that utilize language-specific \emph{bert-base} embeddings.
-    We also report three runs for pretrained models with large transformer embeddings.
-    Specifically we use \emph{gbert-large} \citep{Cha20} in conjunction with Negra and Tiger, and \emph{roberta-large} \citep{roberta} for DPTB.
+    This section presents the assessment results with the test portion of the three investigated treebanks.
+    We extract supertag blueprints and parse each treebank using the hyperparameters found in the previous two sections; \cref{tbl:hyperparameters} gives an overview of the final configurations.
+    We repeat the training process for each model and treebank multiple times because the training process of the supertag classifiers depends on pseudo-random initialization, and the outcomes vary slightly.
+    \Cref{tbl:averages} shows the result of five runs for the supervised model and pre-trained models that utilize language-specific \emph{bert-base} embeddings.
+    We also report three runs for pre-trained models with large transformer embeddings.
+    Specifically, we use \emph{gbert-large} \citep{Cha20} in conjunction with Negra and Tiger, and \emph{roberta-large} \citep{roberta} for DPTB.
 
     \begin{table}
         \caption{\label{tbl:hybperparamters}
@@ -40,8 +40,8 @@
 
     \begin{table}
         \caption{\label{tbl:averages}
-            Our results on the test portions of the three discontinuous treebanks Negra, Tiger and \abrv{dptb}.
-            Each model was trained on each treebank multiple times with different random seeds: the supervised and small pretrained models five times, the large pretrained model three times.
+            Our results on the test portions of the three discontinuous treebanks Negra, Tiger, and \abrv{dptb}.
+            Each model was trained on each treebank multiple times with different random seeds: the supervised and small pre-trained models five times and the large pre-trained model three times.
             The row below the list of individual results shows their mean \(\mu\) and sample standard deviation \(\sigma\) denoted in the form \(\mu^{\pm \sigma}\).
         }
         \small\centering
@@ -85,8 +85,8 @@
         \end{tabular}
     \end{table}
 
-    \crefrange{tbl:supervised}{tbl:pretrained:large} show the results for the three models respectively, and put them into context of other publications in the field of discontinuous constituent parsing.
-    Each table does only contain results of publications with comparable training paradigms and information, i.e.\@ the first table does only include published supervised models, and the two latter tables include semi-supervised models that utilize \emph{bert-base}/\emph{bert-large}-equivalent pretrained embeddings.
+    \crefrange{tbl:supervised}{tbl:pretrained:large} show the results for the three models respectively and put them into the context of other publications in the field of discontinuous constituent parsing.
+    Each table only contains results of publications with comparable training paradigms and information, i.e.\@, the first table does only include published supervised models, and the two latter tables include semi-supervised models that utilize \emph{bert-base}/\emph{bert-large}-equivalent pre-trained embeddings.
     The tables distinguish between five types of parsing approaches as discussed in \cref{sec:literature}:
     \begin{compactitem}
         \item grammar-based parsers (G),
@@ -97,8 +97,8 @@
     \end{compactitem}
     The comparisons in the table should all be taken with at least two grains of salt:
     \begin{inparaenum}
-        \item The parsing speed strongly depends on the used hardware, for approaches using artificial neural networks this does especially include GPUs. We use a (semi-dated) consumer graphics card for our results, other authors used professional graphic units that are specifically designed for applications with neural networks. (E.g.\@ \citet{Cor20} used Tesla K100 GPUs that are significantly faster and have more memory than the RTX 2080.)
-        \item As remarked earlier for our parser, many results listed in the following tables depend on pseudo-random initializations and are thus variable up to a certain degree. Unfortunatly, most of the referenced publications do not report results using multiple experiment runs, but only one, and in at least one case the reported results are hardly reproducible. In an attempt to reproduce the results reported by \citet{Cor20} with their provided implementation, Richard Mörbitz obtained notably lower scores. Unfortunately, the author could not explain the gap between the two results, when Richard Mörbitz reached out. We decided to compare all results to the averages we obtained as shown in \cref{tbl:averages}.
+        \item The parsing speed strongly depends on the hardware used for approaches using artificial neural networks. This mainly includes GPUs. We used a (semi-dated) consumer graphics card for our results, and other authors used professional graphic units specifically designed for applications with neural networks. (E.g.\@ \citet{Cor20} used Tesla K100 GPUs that are significantly faster and have more memory than the RTX 2080.)
+        \item As remarked earlier for our parser, many results listed in the following tables depend on pseudo-random initializations and are thus variable to a certain degree. Unfortunately, most of the referenced publications do not report results using multiple experiment runs, but only one, and in at least one case, the reported results are hardly reproducible. In an attempt to reproduce the results reported by \citet{Cor20} with their provided implementation, Richard Mörbitz obtained notably lower scores. Unfortunately, the author could not explain the gap between the two results when Richard Mörbitz reached out. We decided to compare all results to the averages we obtained as shown in \cref{tbl:averages}.
     \end{inparaenum}
 
     \begin{table*}
@@ -108,7 +108,7 @@
         \defcitealias{FerGon21b}{Fern{\'a}ndez-G., G{\'o}mez-R., 2021b}
         \caption{
             Our results on test sets compared to other published parsers for discontinuous constituents using exclusively supervised methods.
-            The column ``Type'' gives a rough classification of the parsing approach in the following concepts: G -- statistical grammar-based, GS -- grammar-based with supertagging, C -- grammarless chart-based, T -- transition-based, N -- untraditional neural approaches.
+            The column ``Type'' gives a rough classification of the parsing approach in the following concepts: G -- statistical grammar-based, GS -- grammar-based with supertagging, C -- grammarless chart-based, T -- transition-based, and N -- untraditional neural approaches.
             \label{tbl:supervised}
         }
         \small\centering
@@ -142,10 +142,10 @@
     \end{table*}
 
     Among the supervised models in \cref{tbl:supervised}, the results reported by \citet{Cor20} stand out with a rather large margin to all other publications.
-    Comparing our supervised results to other discontinuous parsers that rely on grammars (G/GS), we suggest that supertagging is able to implement more accurate and much faster parsers than traditional statistical grammars.
+    Comparing our supervised results to other discontinuous parsers that rely on grammars (G/GS), we suggest that supertagging can implement more accurate and faster parsers than traditional statistical grammars.
     Comparing our results to all values in the table, we are close to or among the state-of-the-art published in the field of discontinuous parsing.
     The results obtained during this work shall be interpreted as an update to the ones in \citet{Rup22}.
-    However, we reach lower scores with the supervised model, but are notably faster.
+    However, we reach lower scores with the supervised model but are notably faster.
 
     \begin{table*}
         \defcitealias{FerGom22}{Fern{\'a}ndez-G., G{\'o}mez-R., 2022}
@@ -153,8 +153,9 @@
         \defcitealias{FerGon21a}{Fern{\'a}ndez-G., G{\'o}mez-R., 2021a}
         \defcitealias{FerGon21b}{Fern{\'a}ndez-G., G{\'o}mez-R., 2021b}
         \caption{
-            Our results on test sets compared to other published parsers for discontinuous constituents, all use medium-sized transformer embeddings, like \emph{bert-base} or similar.
-            The column ``Type'' gives a rough classification of the parsing approach in the following concepts: GS -- grammar-based with supertagging, C -- grammarless chart-based, T -- transition-based, N -- untraditional neural approaches.
+            Our results on test sets compared to other published parsers for discontinuous constituents.
+            All use medium-sized transformer embeddings, like \emph{bert-base} or similar.
+            The column ``Type'' gives a rough classification of the parsing approach in the following concepts: GS -- grammar-based with supertagging, C -- grammarless chart-based, T -- transition-based, and N -- untraditional neural approaches.
             \label{tbl:pretrained:small}
         }
         \small\centering
@@ -189,7 +190,8 @@
         \defcitealias{FerGon21a}{Fern{\'a}ndez-G., G{\'o}mez-R., 2021a}
         \defcitealias{FerGon21b}{Fern{\'a}ndez-G., G{\'o}mez-R., 2021b}
         \caption{
-            Our results on test sets compared to other published parsers for discontinuous constituents, all use large transformer embeddings, i.e.\@ \emph{bert-large}, \emph{roberta-large}, \emph{gbert-large} or similar.
+            Our results on test sets compared to other published parsers for discontinuous constituents.
+            All use large transformer embeddings,  i.e.\@ \emph{bert-large}, \emph{roberta-large}, \emph{gbert-large} or similar.
             The column ``Type'' gives a rough classification of the parsing approach in the following concepts: GS -- grammar-based with supertagging, N -- untraditional neural approaches.
             \label{tbl:pretrained:large}
         }
@@ -213,9 +215,9 @@
         \end{tabular}
     \end{table*}
 
-    \Cref{tbl:pretrained:small,tbl:pretrained:large} show the results of the pretrained models with transformer embeddings.
-    Comparing the scores with the previous two tables gives an impression why these models have established as a standard-tool for many areas of natural language processing in recent years: they produce significantly more accurate results without any effort during modeling and training for the downstream task.
-    In these two tables, it is even more obvious that the scores among the state-of-the-art parsers are extremely close to each other, with ours right among them.
+    \Cref{tbl:pretrained:small,tbl:pretrained:large} show the results of the pre-trained models with transformer embeddings.
+    Comparing the scores with the previous two tables gives an impression of why these models have been established as a standard tool for many areas of natural language processing in recent years: they produce significantly more accurate results without any effort during modeling and training for the downstream task.
+    In these two tables, it is even more apparent that the scores among the state-of-the-art parsers are incredibly close to each other, with ours right among them.
 
     \ifSubfilesClassLoaded{%
         \printindex

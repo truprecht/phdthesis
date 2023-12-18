@@ -2,14 +2,14 @@
 
 \begin{document}
     \section{Hyperparameter Search in DPTB and TiGer}\label{sec:gridsearch:other}
-    To tune the hyperparamerts for the experiments with \abrv{dptb} and TiGer, we use a radically reduced set of values compared to the previous section.
+    To tune the hyperparameters for the experiments with \abrv{dptb} and TiGer, we use a radically reduced set of values compared to the previous section.
     We omit hyperparamter values if that we think are unrealistic to preduce relevant results.
     Specifically, we set the following limitations:
     \begin{itemize}
         \item we omit the vanilla, near and least guide constructors (leaving 3 options),
         \item we omit the vanilla nonterminal constructor and the coarse nonterminal constructor with auxiliary table (leaving 2 options), 
         \item we only use right branching binarization in case of the strict guide constructor, and the head guide constructor in tandem with head-inward transformation,
-        \item we use the Markovization paramters \(h = 0\) and \(v \in \{1,2\}\) (leaving 2 options),
+        \item we use the Markovization parameters \(h = 0\) and \(v \in \{1,2\}\) (leaving two options),
         \item in case of \abrv{dcp} supertags, we only investigate the strict guide constructor with \emph{-nof} and \emph{-disc} extensions for a small amount (we choose 1 or 2 samples as explained in the discussion of the results) of combinations of nonterminal and guide constructors and Markovization parameters that performed best with \abrv{lcfrs} supertags.
     \end{itemize}
 
@@ -19,29 +19,10 @@
     \subsection{DPTB}
     \Cref{tbl:experiments:dptb} shows the results for the hybrid grammar supertag prediction and parsing accuracies for each experiment in the grid search for \abrv{dptb}
     Each experiment was conducted using the supervised and the pretrained prediction model.
-    
-        
-%     \begin{table}
-%         \caption{\label{tbl:experiments:dptb:tags}
-%             Overview of the extracted supertag blueprints from \abrv{dptb}'s training and developement portion for combinations of guide and nonterminal constructors as well as vertival Markovization context for the used rank transformation.
-%         }
-%         \centering
-%         \vspace{.2cm}
-%         \begin{tabular}{lr|rr|rr|rr}
-%             \toprule
-%         &        &  \multicolumn{2}{c|}{strict} & \multicolumn{2}{c|}{dependent} & \multicolumn{2}{c}{head}  \\
-% nont.   &\(v\)   & $N$ & $\overline{N}$& $N$ & $\overline{N}$ & $N$ & $\overline{N}$  \\ \hline
-% classic & \(1\)  &  2403 & 28 & 4295 & 51 & 4347 & 65 \\
-% classic & \(2\)  &  5627 & 64 & 9152 & 123 & 8505 & 136 \\
-% coarse  & \(1\)  &  1778 & 22 & 3431 & 41 & 3919 & 60 \\
-% coarse  & \(2\)  &  3780 & 44 & 6853 & 80 & 6992 & 107 \\
-% \bottomrule
-%         \end{tabular}
-%     \end{table}
 
     \begin{table}
         \caption{\label{tbl:experiments:dptb}
-        Parsing f1 score, accuracy of predicted supertag blueprints and number of parse fails in \abrv{dptb}'s developement set for both prediction models (Mod.) combinations of guide and nonterminal constructors as well as vertival Markovization context for the used rank transformation.
+        Parsing f1 score, accuracy of predicted supertag blueprints, and number of parse fails in \abrv{dptb}'s development set for both prediction models (Mod.) combinations of guide and nonterminal constructors as well as vertical Markovization context for the used rank transformation.
         }
         \centering
         \setlength{\tabcolsep}{4pt}
@@ -63,23 +44,23 @@ sup. & coarse  & \(2\)  & 89.97 & 0.82 & 15.01 & 5 & 88.87 & 0.80 & 15.95 & 38 &
         \end{tabular}
     \end{table}
 
-    The trends for the parsing quality diviate from those that we observed in the German NeGra treebank.
-    With both models, the parsing quality is notably better with vertical Markovization context in case of the strict guide.
-    However in all cases with $v=2$, the number of parse fails increases and the quality of supertag predictions descreases notably compared to the same configuration but with $v=1$.
-    With the pretrained model, the parsing quality decreases with $v=2$ and the other two guide constructors.
-    In case of the supervised model, there is no clear trend in those cases, the differences are either small or reversed.
-    Generally, the presented parsing qualities with the supervised model are overall quite close, except those with the strict guide and $v=1$.
-    However, we see 2 combinations that stand out from the remainder:
+    The trends for the parsing quality deviate from those that we observed in the German NeGra treebank.
+    With both models, the parsing quality is notably better with vertical Markovization context in the case of the strict guide.
+    However, in all cases with $v=2$, the number of parse fails increases, and the quality of supertag predictions decreases notably compared to the same configuration but with $v=1$.
+    With the pre-trained model, the parsing quality decreases with $v=2$ and the other two guide constructors.
+    In the case of the supervised model, there is no clear trend. In those cases, the differences are either minor or reversed.
+    Generally, the presented parsing qualities with the supervised model are quite close, except those with the strict guide and $v=1$.
+    However, we see two combinations that stand out from the remainder:
     \begin{compactitem}
         \item the strict guide and coarse nonterminal constructors with $v=2$, and
         \item the head guide and coarse guide constructor with $v=1$.
     \end{compactitem}
-    These two achieve best parsing qualities with the pretrained model, with the supervised model the first case reports the best parsing quality as well.
-    While the number of parse fails is rather high in the first case using the supervised model, the second gives a good compromise among parsing and prediction quality as well as a low amount of parse fails with both prediction models.
+    These two achieve the best parsing qualities with the pretrained model, with the supervised model the first case reports the best parsing quality as well.
+    While the number of parse failures is rather high in the first case using the supervised model, the second gives a good compromise between parsing and prediction quality as well as a low number of parse failures with both prediction models.
 
     \begin{table}
         \caption{\label{tbl:experiments:dptb:dcp}
-        Parsing f1 score, accuracy of predicted \abrv{dcp} supertag blueprints and number of parse fails in \abrv{dptb}'s developement set for both prediction models (Mod.) combinations of guide and nonterminal constructors as well as vertical Markovization context for the used rank transformation.
+        Parsing f1 score, accuracy of predicted \abrv{dcp} supertag blueprints, and number of parse fails in \abrv{dptb}'s development set for both prediction models (Mod.) combinations of guide and nonterminal constructors as well as vertical Markovization context for the used rank transformation.
         }
         \centering
         \setlength{\tabcolsep}{4pt}
@@ -106,7 +87,7 @@ sup. & head       &  coarse-nof & \(1\)  & 88.95 & 0.86 & 34.98 & 15  \\
 
     \begin{table}
         \caption{\label{tbl:experiments:dptb:k}
-        Parsing f1 score, accuracy of predicted \abrv{dcp} supertag blueprints and number of parse fails in TiGer's developement set for both prediction models (Mod.) combinations of guide and nonterminal constructors as well as vertical Markovization context for the used rank transformation.
+        Parsing f1 score, accuracy of predicted \abrv{dcp} supertag blueprints, and number of parse fails in TiGer's development set for both prediction models (Mod.) combinations of guide and nonterminal constructors as well as vertical Markovization context for the used rank transformation.
         }
         \centering
         \setlength{\tabcolsep}{4pt}
@@ -129,40 +110,24 @@ sup. &   5  & 90.71 & 2.6 & 9 & 90.55 & 5.4 & 13 & 90.56 & 7.0 & 14 \\
     \end{table}
 
     We repeat the experiments with \abrv{dcp} supertags with each \emph{-nof} and \emph{-disc} extensions for the nonterminals; the results are shown in \cref{tbl:experiments:dptb:dcp}.
-    The table shows the previous results with hybrid grammar supertags for comparison in rows with gray background.
-    These set of experiments shows only small differences in parsing quality.
-    We suppose they are neglicible and simply decide for the single most promising combination for each model via highest f1 score and least amount of parse fails and end up with
+    The table shows the previous results with hybrid grammar supertags for comparison in rows with gray backgrounds.
+    This set of experiments shows only small differences in parsing quality.
+    We suppose they are negligible and decide on the single most promising combination for each model via the highest f1 score and least amount of parse fails and end up with
     \begin{compactitem}
-        \item the head guide and coarse nonterminal constructors, no added vertival Markovization context ($v=1$) and hybrid grammar supertags for the pretrained model, and
+        \item the head guide and coarse nonterminal constructors, no added vertival Markovization context ($v=1$) and hybrid grammar supertags for the pre-trained model, and
         \item the strict guide and coarse nonterminal constructors, vertical Markovization context \(v=2\) and hybrid grammar supertags for the supervised model.
     \end{compactitem}
-    Finally, we train models using these hyperparameters and conduct a small grid search for the two parsing parameters \(k\) and \(\beta\), the results are shown in \cref{tbl:experiments:dptb:k}.
+    Finally, we train models using these hyperparameters and conduct a small grid search for the two parsing parameters \(k\) and \(\beta\). The results are shown in \cref{tbl:experiments:dptb:k}.
     We pick the values according to the greatest f-score and settle with \(k=10\) and \(\beta=2\) for both models.
 
     \subsection{TiGer}
     
 
-%     \begin{table}
-%         \caption{\label{tbl:experiments:tiger:tags}
-%             Overview of the extracted supertag blueprints from TiGer's training and developement portion for combinations of guide and nonterminal constructors as well as vertival Markovization context for the used rank transformation.
-%         }
-%         \centering
-%         \vspace{.2cm}
-%         \begin{tabular}{lr|rr|rr|rr}
-%             \toprule
-%         &        & \multicolumn{2}{c|}{strict} & \multicolumn{2}{c|}{dependent} & \multicolumn{2}{c}{head}  \\
-% nont.   &\(v\)   & $N$ & $\overline{N}$& $N$ & $\overline{N}$&  $N$ & $\overline{N}$  \\ \hline
-% classic & \(1\)  &  3065 & 83 & 5468 & 180 & 6033 & 234 \\
-% classic & \(2\)  &  8113 & 221 & 13383 & 422 & 12201 & 421 \\
-% coarse  & \(1\)  &  2075 & 47 & 4160 & 130 & 5564 & 219 \\
-% coarse  & \(2\)  &  5197 & 116 & 9896 & 296 & 10652 & 377 \\
-% \bottomrule
-%         \end{tabular}
-%     \end{table}
+
 
     \begin{table}
         \caption{\label{tbl:experiments:tiger}
-        Parsing f1 score, accuracy of predicted supertag blueprints and number of parse fails in \abrv{dptb}'s developement set for both prediction models (Mod.) combinations of guide and nonterminal constructors as well as vertival Markovization context for the used rank transformation.
+        Parsing f1 score, accuracy of predicted supertag blueprints, and number of parse fails in \abrv{dptb}'s development set for both prediction models (Mod.) combinations of guide and nonterminal constructors as well as vertical Markovization context for the used rank transformation.
         }
         \centering
         \setlength{\tabcolsep}{4pt}
@@ -185,8 +150,8 @@ sup. &   5  & 90.71 & 2.6 & 9 & 90.55 & 5.4 & 13 & 90.56 & 7.0 & 14 \\
     \end{table}
 
     The results reported in \cref{tbl:experiments:tiger} for the TiGer treebank are very similar to those in NeGra.
-    With the pretrained model, we see a clear trend that the values for the strict guide constructor consistently outperform those of the other two in terms of higher parasing quality and/or less parse fails.
-    The supervised model also reproduces this trend, except for one instance (cf.\@ f1 score using dependent guide, classic nonterminal constructor, $v=1$; but with significantly more parse fails).
+    With the pre-trained model, we see a clear trend that the values for the strict guide constructor consistently outperform those of the other two in terms of higher parsing quality or fewer parse fails.
+    The supervised model also reproduces this trend, except for one instance (cf.\@ f1 score using the dependent guide and classic nonterminal constructor, $v=1$, but with significantly more parse fails).
     We pick the following combination for each model:
     \begin{compactitem}
         \item strict guide and coarse nonterminal constructors, no added vertival Markovization context ($v=1$) and hybrid grammar supertags for the pretrained model, and
@@ -195,7 +160,7 @@ sup. &   5  & 90.71 & 2.6 & 9 & 90.55 & 5.4 & 13 & 90.56 & 7.0 & 14 \\
 
     \begin{table}
         \caption{\label{tbl:experiments:tiger:dcp}
-        Parsing f1 score, accuracy of predicted \abrv{dcp} supertag blueprints and number of parse fails in TiGer's developement set for both prediction models (Mod.) combinations of guide and nonterminal constructors as well as vertical Markovization context for the used rank transformation.
+        Parsing f1 score, accuracy of predicted \abrv{dcp} supertag blueprints, and number of parse fails in TiGer's development set for both prediction models (Mod.) combinations of guide and nonterminal constructors as well as vertical Markovization context for the used rank transformation.
         }
         \centering
         \setlength{\tabcolsep}{4pt}
@@ -216,7 +181,7 @@ sup. & strict     &  coarse-nof & \(1\)  & 85.59 & 0.84 & 39.86 & 0  \\
 
     \begin{table}
         \caption{\label{tbl:experiments:tiger:k}
-        Parsing f1 score, accuracy of predicted \abrv{dcp} supertag blueprints and number of parse fails in TiGer's developement set for both prediction models (Mod.) combinations of guide and nonterminal constructors as well as vertical Markovization context for the used rank transformation.
+        Parsing f1 score, accuracy of predicted \abrv{dcp} supertag blueprints, and number of parse fails in TiGer's development set for both prediction models (Mod.) combinations of guide and nonterminal constructors as well as vertical Markovization context for the used rank transformation.
         }
         \centering
         \setlength{\tabcolsep}{4pt}
@@ -238,10 +203,10 @@ sup. &   5  & 87.49 & 5.5 & 4 & 87.46 & 3.3 & 6 & 87.42 & 5.0 & 7 \\
         \end{tabular}
     \end{table}
 
-    Similar to the same set of experiments in \abrv{dptb}, the values show almost no difference using \abrv{dcp} supertags with the to nonterminal extensions, except for a small detoriation in terms of lower parsing accuracy and higher parsing time.
-    Again, we suppose it is niglicible and settle with the hybrid grammar configuration for the supervised and pretrained model.
+    Similar to the same set of experiments in \abrv{dptb}, the values show almost no difference using \abrv{dcp} supertags with the two nonterminal extensions, except for a slight deterioration in terms of lower parsing accuracy and higher parsing time.
+    Again, we suppose it is negligible and settle with the hybrid grammar configuration for the supervised and pre-trained model.
     Lastly, we train supertag prediction models using these sets of parameters and conduct a small grid search over the parameters for the parsing procedure, $k$ and $\beta$.
     \cref{tbl:experiments:tiger:k} lists the results for each tested combination and both models.
-    For each of the two models, the values are distributed in quite small ranges.
+    The values are distributed in relatively small ranges for each of the two models.
     We decide to pick simply via the greatest f1-scores and least values for \(k\) and \(\beta\) and end up with \(k=20\) and \(\beta=0.1\) for the pretrained model, and \(k=20\) and \(\beta=0.5\) for the supervised model.
 \end{document}

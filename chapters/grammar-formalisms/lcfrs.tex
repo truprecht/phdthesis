@@ -75,9 +75,9 @@
     \end{definition}
 
     The fanout function \(\fanout_G\) ensures that the variables occurring in the compositions are consistent with the tuples that can be computed with rules for the \abrv{rhs} nonterminals.
-    The length of the compositions occurring in the rules with the same \abrv{lhs} nonterminal are thus equal.
+    The lengths of the compositions occurring in the rules with the same \abrv{lhs} nonterminal are thus equal.
 
-    \begin{definition}[\abrv{Lcfrs} Grammar Forms]We distinguish the rules and the grammars of the following form:
+    \begin{definition}[\abrv{Lcfrs} Grammar Forms]We distinguish rules and grammar instances of the following form:
         \begin{compactitem}
             \item A rule of rank zero, one and two are called \deflab<\lcfrs!rule>{nullary}, \deflab<\lcfrs!rule>{unary} and \deflab<\lcfrs!rule>{binary}, respectively.
             \item An \abrv{lcfrs} containing only nullary, unary, and binary rules are called \deflab<\lcfrs>[lcfrs:bin]{binary}.
@@ -161,10 +161,10 @@
 
     \vspace{\baselineskip}
 
-    During the extraction and parsing grammar rules are instantiated with sentence positions. \citep[Definition 6.8]{Kal10}
-    That is, instead of terminals that resemble objects in the sentence, we will assume matching sentence positions as lexical symbols in the rules.
+    During the extraction and parsing, grammar rules are instantiated with sentence positions. \citep[Definition 6.8]{Kal10}
+    I.e., instead of terminals that resemble objects in the sentence, we will assume matching sentence positions as lexical symbols in the rules.
     All derivations are assembled such that the compositions only concatenate consecutive sequences of positions.
-    Each derivation is considered equivalent to a constituent tree that assumes the \abrv{lhs} nonterminals as inner nodes and the sentence positions as leaves.
+    Each derivation is equivalent to a constituent tree that assumes the \abrv{lhs} nonterminals as inner nodes and the sentence positions as leaves.
 
     \begin{definition}[Position Instantiation]
         Let \(G = (N, \varSigma, S, R)\) be a grammar, and \(w = \sigma_1 \ldots \sigma_n\) a word of length \(n \in \DN_+\) over the same alphabet with \((\sigma_i \in \varSigma \mid i \in [n])\).
@@ -221,8 +221,8 @@
 
     \vspace{\baselineskip}
 
-    The following definitions deal with the extraction of \abrv{lcfrs} rules from constituent structures.
-    They are similar to the extraction of \emph{treebank grammars} by \citet{MaierSogaard08} but extend the procedure to accommodate lexical \abrv{lcfrs} and can be seen as a reversal of the previous definition for a constituent structure for a derivation.
+    The following definitions deal with extracting \abrv{lcfrs} rules from constituent structures.
+    They are similar to the extraction of \emph{treebank grammars} by \citet{MaierSogaard08} but extend the procedure to accommodate lexical \abrv{lcfrs}. They can be seen as a reversal of the previous definition of a constituent structure for a derivation.
     We start with an elementary definition that quantifies and assembles continuous sequences among sets of positions.
 
     \begin{definition}[Linearization]
@@ -231,7 +231,7 @@
         \begin{compactitem}
             \item \(s = |\{i \in \pi \mid i+1 \notin \pi\}|\) is the number of greatest contiguous sets in \(\pi\),
             \item \(w_j\) is a sequence of increasing integers for each \(j \in [s]\),
-            \item for each \(j \in [s-1]\), the last (and therefore greatest) element in \(w_j\) is less then the first (ant therefore least) element in \(w_{j+1}\).
+            \item for each \(j \in [s-1]\), the last (and therefore greatest) element in \(w_j\) is less than the first (and therefore least) element in \(w_{j+1}\).
         \end{compactitem}
         The positive integer \(s\) is called \deflab{fanout of the set \(\pi\)}.
     \end{definition}\todo{vlt.\@ Umbenennen in Discontinuous Span oder zumindest die Verbindung dazu herstellen}
@@ -241,7 +241,7 @@
     The composition is obtained from the linearization of the superseding set by substituting the sequences occurring in the collection with appropriate variables.
 
     \begin{definition}[Composition for Positions]
-        Let \(k \in \DN\) be some natural, \((\pi_i \subset \DN_+ \mid i \in [k])\) a collection of mutual exclusive, finite and non-empty sets, and \(\pi_0 \supseteq \bigcup_{i \in [k]} \pi_i\) a finite and non-empty superset of their elements.
+        Let \(k \in \DN\) be some natural, \((\pi_i \subset \DN_+ \mid i \in [k])\) a collection of mutually exclusive, finite and non-empty sets, and \(\pi_0 \supseteq \bigcup_{i \in [k]} \pi_i\) a finite and non-empty superset of their elements.
         The families \((s_i \mid i \in [0,k])\) and \((w_i^j \mid i \in [0,k])\) are the fanouts and linearizations of the sets \(\pi_0, \ldots, p_k\), respectively, such that \((w_i^j \mid j \in [s_i])\) identifies the linearization for \(\pi_i\).
         We define the \emph{composition for \(\pi_0, \ldots, \pi_k\)}, denoted by \(\mathrm{comp}(\pi_0, \pi_1, \ldots, \pi_k)\), as the composition \((u_1, \ldots, u_{s_0}) \in \C^{\pi_0}_{(s_1\cdots s_k, s_0)}\) where each \(u_\ell\) is obtained from \(w_0^\ell\) by replacing each occurrence of a sequence \(w_i^j\) with the variable \(\x_i^j\).
     \end{definition}
@@ -256,8 +256,8 @@
     \end{example}
 
     When grammars are used for parsing, they are often extended by weight structures.
-    The following definition does not employ a general framework, e.g.\@ semirings, but assumes real values that are assigned to each rule and added within a derivation.
-    We interpret these values as scores or confidence values, and understand higher values as better.
+    The following definition does not employ a general framework, e.g.\@, semirings, but assumes real values assigned to each rule and added within a derivation.
+    We interpret these values as scores or confidence values and understand higher values as better.
     This interpretation is equivalent to the usual probabilistic interpretation \citep[Viterbi semiring]{Goodman} with negative logarithmic values.
 
     \begin{definition}[Weighted Grammar]

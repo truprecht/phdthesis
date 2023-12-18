@@ -2,24 +2,24 @@
 
 \begin{document}
     \section{Implementation}
-    This section gives a short overview of the software that implements the supertag extraction and parsing procedures that are described in the previous chapters.
-    We developed the software over the course of multiple years, two iterations were already used in previous publictions for parsing with \abrv{lcfrs} supertags. \citep{RupMoe21,Rup22}
-    While the first of these iterations was developed in colabouration with my colleague, all that came after that was my own work.
+    This section briefly overviews the software that implements the supertag extraction and parsing procedures described in the previous chapters.
+    We developed the software over multiple years. Previous publications already used two iterations for parsing with \abrv{lcfrs} supertags. \citep{RupMoe21,Rup22}
+    While the first of these iterations was developed in collaboration with my colleague Richard Mörbitz, all that came after was my work.
     The implementation provides the following modules and functionalities:
     \begin{itemize}
         \item data structures for hybrid grammar and \abrv{dcp} supertags combined in a submodule called \texttt{grammar},
         \item procedures for the extraction of supertags from the common formats used to distribute discontinuous constituent treebanks, namely NeGra's \texttt{.export} format as well as TiGer's \texttt{.xml} format, in a submodule called \texttt{grammar.extraction},
-        \item a polymorphic (i.e.\@ it is able to take on the shape of different architectures depending on the passed options) \abrv{ann} model used for a combined prediction of supertags and \abrv{pos} tags, as well as its training procedures in a submodule called \texttt{tagging}, 
-        \item a unified parsing procedure for prediced supertags using the hybrid grammar and \abrv{dcp} formalisms in a submodule called \texttt{grammar.parsing},
-        \item an extraction and parsing procedure using the discontinuous data oriented parsing approach used to rerank predicted constituent trees in a submodule called \texttt{grammar.dop},
+        \item a polymorphic (i.e.\@ it can take on the shape of different architectures depending on the passed options) \abrv{ann} model used for a combined prediction of supertags and \abrv{pos} tags, as well as its training procedures in a submodule called \texttt{tagging}, 
+        \item a unified parsing procedure for predicted supertags using the hybrid grammar and \abrv{dcp} formalisms in a submodule called \texttt{grammar.parsing},
+        \item extraction and parsing procedure using the discontinuous data-oriented parsing approach used to rerank predicted constituent trees in a submodule called \texttt{grammar.dop},
         \item a subcommand \texttt{grid} that runs every combination in a set of specified options for the extraction and training procedures.
     \end{itemize}
     
-    Most of the data structures and the extraction procedures are implemented in the Python programming language.
-    We use the library provided by \texttt{disco-dop} \citep{Cra12} to read and preprocess treebanks, as well as the assessment of predicted constituent trees.
+    Most data structures and extraction procedures are implemented in the Python programming language.
+    We use the library provided by \texttt{disco-dop} \citep{Cra12} to read and preprocess treebanks and assess predicted constituent trees.
     \texttt{Pytorch} \citep{} and \texttt{flair} \citep{} provide the implementations used for the construction and training of the \abrv{ann} model.
     The module for the parsing procedure is compiled using \texttt{cython} \citep{} to enhance the parsing speed.
     In contrast to our earlier publications \citet{RupMoe21,Rup22}, the current version does not employ \texttt{disco-dop}'s parser for \abrv{lcfrs} anymore.
-    We chose to replace it by an own implementation that is specialized to parsing with lexical instances of hybrid grammars and \abrv{dcp}.
+    We replaced it with our implementation, which specializes in parsing with lexical instances of hybrid grammars and \abrv{dcp}.
     The implementation is publicly available\footnote{\url{asdafsfasf}} as \emph{free software} licensed under GPLv2.
 \end{document}

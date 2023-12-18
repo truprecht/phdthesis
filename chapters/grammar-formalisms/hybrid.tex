@@ -2,17 +2,17 @@
 
 \begin{document}
     \section{Hybrid Grammars}\label{sec:grammar:hybrid}
-    Hybrid grammars \citep{Ned14,Geb17,Geb20} combine the capabilities of two grammar formalisms, by equipping rules with one composition for each of them.
+    Hybrid grammars \citep{Ned14,Geb17,Geb20} combine the capabilities of two grammar formalisms by equipping rules with one composition for each of them.
     Between the two compositions, there is an \emph{alignment} that connects matching lexical symbols between the two compositions.
     As proposed by \citet{Ned14}, we will focus on \abrv{lcfrs}/\abrv{dcp}\footnote{
-        As \cite{Ned14} and all following publications, we use a syntactically restricted form of \abrv{dcp} that prevents circular argument passing, they call it \abrv{sdcp}.
+        As \cite{Ned14} and all following publications, we use a syntactically restricted form of \abrv{dcp} that prevents circular argument passing. They call it \abrv{sdcp}.
         The definition given in \cref{sec:grammar:dcp} is even more restricted and does not allow to produce multiple noncontiguous tree sequences.
-    } hybrid grammars for constituent parsing, and just refer to them as hybrid grammars (or even shorter as \abrv{hg}).
+    } hybrid grammars for constituent parsing, and refer to them as hybrid grammars (or even shorter as \abrv{hg}).
     Intuitively, the \abrv{lcfrs} compositions are in charge of processing string during parsing and defining the sets of derivations for given sentences.
     The \abrv{dcp} compositions induce constituent structures for the found derivations.
 
     The structure of hybrid grammars closely resembles a combination of the two previous formalisms.
-    As in the previous section, we refrain from repeating the definitions with small adjustments and focus on the particularities of \abrv{hg} as a formalism.
+    As in the previous section, we refrain from repeating the definitions with minor adjustments and focus on the particularities of \abrv{hg} as a formalism.
     Let us consider a hybrid grammar \((N, \varGamma, \varSigma, S, R)\) with the usual components.
     The alphabet \(\varSigma\) contains the lexical symbols that are used in the \abrv{lcfrs} as well as the \abrv{dcp} compositions.
     The symbols in \(\varGamma\) are exclusively used at inner nodes in \abrv{dcp} compositions.
@@ -21,11 +21,11 @@
         \item Each nonterminal symbol \(A\) has a fanout \(\fanout(A) \in \DN_+\) that determines the length of all \abrv{lcfrs} compositions in the rules with \abrv{lhs} \(A\).
         \item For each initial rule, the \abrv{dcp} composition must contain at least one root node that wraps the remainder of the composition.
     \end{itemize}
-    The alignment between lexical symbols in the two compositions is trivial in the case of lexical grammars, as each composition contains exactly one lexical symbol.
+    The alignment between lexical symbols in the two compositions is trivial in the case of lexical grammar instances, as each composition contains exactly one lexical symbol.
     As this thesis focuses on lexical grammars, we will refrain from denoting these alignments explicitly.
     For each derivation \(d\) in an \abrv{hg}, there are two projections: \(\pi_{\abrv{lcfrs}}(d)\) that is obtained by removing the \abrv{dcp} (and keeping the \abrv{lcfrs}) compositions, and vice versa, \(\pi_{\abrv{dcp}}(d)\) by removing the \abrv{dcp} compositions.
     With these projections, we consider two yields: \(\yield(\pi_{\abrv{lcfrs}}(d))\) that computes sequences of strings, and \(\yield(\pi_{\abrv{dcp}}(d))\) that computes sequences of trees.
-    The alignment between lexical symbols in each rule is construed to transfer the order of lexical symbols in the strings formed by \(\yield(\pi_{\abrv{lcfrs}}(d))\) to the leaves of the trees formed by \(\yield(\pi_{\abrv{dcp}}(d))\).
+    The alignment between lexical symbols in each rule is construed to transfer the order of lexical symbols in the strings formed by \(\yield(\pi_{\abrv{lcfrs}}(d))\) to the leaves of the trees created by \(\yield(\pi_{\abrv{dcp}}(d))\).
     This mechanism is used to model discontinuities in derived constituent structures.
     \Citet{Ned14} described such a tree in combination with a total order on the leaf positions (induced by an aligned string) as \emph{hybrid tree}.
     In the case of constituent hybrid trees, it is equivalent to the definition of constituent structures (together with token sequences) shown in \cref{sec:preliminaries:ctrees}.
@@ -119,7 +119,7 @@
         \begin{minipage}[t]{.65\linewidth}
             The figure to the right illustrates a derivation \(d\) in \(G\).
             The two projections \(\pi_{\abrv{lcfrs}}(d)\) and \(\pi_{\abrv{dcp}}(d)\) are shown in \cref{fig:hybrid:derivation}.
-            The yield of \(d\) is understood as a combination of both projections' yields with aligned leaf and string positions as shown in \cref{fig:hybrid:hybridtree}.
+            The yield of \(d\) combines both projections' yields with aligned leaf and string positions as shown in \cref{fig:hybrid:hybridtree}.
             The illustrated hybrid tree is equivalent to the constituent structure and token sequence shown in \cref{fig:pre:ctree}.
         \end{minipage}
         \hfill
@@ -144,7 +144,7 @@
     \begin{minipage}{.4\linewidth}
         \begin{example}
             The figure to the right illustrates a position instance for the derivation \(d\) (cf.\@ \cref{ex:hg:derivation}) in the sequence of tokens ``where the survey was carried out''.
-            It is an admissible derivation, i.e.\@ the yield of the string projection is the sequence of consecutive positions from 1 to 6.
+            It is an admissible derivation, i.e.\@, the yield of the string projection is the sequence of consecutive positions from 1 to 6.
             The constituent structure is one of our running examples, as seen in \cref{ex:dcp:comp}.
         \end{example}
     \end{minipage}
