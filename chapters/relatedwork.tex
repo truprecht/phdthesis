@@ -69,7 +69,7 @@
     \citet{MaierSogaard08,MailKal10} investigated probabilistic \abrv{srcg} and \abrv{lcfrs} as formalisms for data-driven parsing discontinuous constituents.
     They extended well-known approaches for extracting context-free grammar, namely the extraction of treebank grammars, probabilistic weight assignment via maximum likelihood estimation, and binarization.
     
-    \citet{CraSchBod16} introduced \emph{discontinuous tree subsitution grammars} (short: \abrv{dtsg}) as a generalization of tree substituion grammars \citep{} to the discontinuous case.
+    \citet{CraSchBod16} introduced \emph{discontinuous tree subsitution grammars} (short: \abrv{dtsg}) as a generalization of tree substituion grammars to the discontinuous case.
     The formalism is built around the tree substitution operation that replaces a designated leaf with an operand tree, similar to the substitution operation in \abrv{tag}.
     \citet{Cra11} introduced their parsing model with \abrv{lcfrs} as ``backbone'', suggesting that \abrv{dtsg} resemble \abrv{lcfrs} with latent annotations as it was also pointed out by \citet[Section 8.5.1]{Geb20}.
     Their data-oriented parser is described in more detail below the next heading.
@@ -148,7 +148,7 @@
     Yet, these are restricted to a small degree in discontinuity, specifically to fanout 2 like \abrv{tag}.
 
     \subsection{Transition Systems}\label{sec:literature:transition}
-    Transition systems have a tradition in parsing, such \emph{shift-reduce parsers} for deterministic context-free languages such as programming languages. \citep{}
+    Transition systems have a tradition in parsing, such \emph{shift-reduce parsers} for deterministic context-free languages such as programming languages. \citep[Section 4.6]{aho2020compilers}
     They are built around operations that incrementally construct a tree using two data structures for intermediate results:
     \begin{compactitem}
         \item a \emph{buffer} that initially contains the input sequence, which will be consumed from left to right using some operations and
