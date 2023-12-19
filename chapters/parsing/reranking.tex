@@ -1,7 +1,7 @@
 \documentclass[../../document.tex]{subfiles}
 
 \begin{document}
-    \section{Reranking}
+    \section{Reranking}\label{sec:reranking}
     This section focuses on a refinement procedure to pick one final constituent tree among a sequence of \(k\) parses.
     A \deflab{reranking} process is an empirical prediction that assesses a previous empirical prediction by assigning confidence values to each label in conjunction with its prior confidence value.
     In the case of reranking in the field of parsing, it takes the predicted sequence of \(k\) best parses, each complemented with the score of the parse, and computes a new score for each parse tree; we use the best among these scores to pick the final parse tree.

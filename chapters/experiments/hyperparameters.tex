@@ -1,7 +1,7 @@
 \documentclass[../../document.tex]{subfiles}
 
 \begin{document}
-    \section{Hyperparameters}
+    \section{Hyperparameters}\label{sec:hyperparameters}
     This section describes the set of parameters that steer the procedures for the extraction of supertag blueprints as well as the training procedure for the classifier involved in the supertag prediction.
     We will enumerate the considered hyperparameters and ranges of appropriate sets of values for them and describe how they are tuned in general.
     The following two subsections are dedicated to two disjoint subsets of hyperparameters that we consider:
@@ -33,7 +33,7 @@
     \paragraph*{Guide Constructors}
     We investigate the six guide constructors introduced in \cref{sec:guides}: the vanilla, strict, near, least, dependent, and head guide constructors.
     While the first four define guides only using the given constituent structures, the latter two require a head assignment for each constituent tree in the treebank used for the extraction.
-    We conduct experiments with all six options but separate them in \cref{sec:experiments:nts-guides,sec:experiments:head} to stress that the latter case requires additional information for the treebanks.
+    We conduct experiments with all six options but separate them in \cref{sec:gridsearch:nts-guides,sec:gridsearch:head} to stress that the latter case requires additional information for the treebanks.
 
     \paragraph*{Nonterminal Constructors}
     We conduct experiments using each of the three nonterminal constructors defined in \cref{sec:ntconstructors}, namely the vanilla, classic, and coarse nonterminal constructors.

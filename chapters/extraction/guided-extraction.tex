@@ -8,7 +8,7 @@
     Sepcifically, the generalization deals with the following two limitations:
     \begin{compactitem}
         \item
-            Constructing lexical LCFRS rules picked a sentence position for each inner node of the constituent structure according to a fixed strategy (cf.\@ step \ref{enum:lcfrs:step3} in \cref{sec:extraction:readoff}).
+            Constructing lexical LCFRS rules picked a sentence position for each inner node of the constituent structure according to a fixed strategy (cf.\@ step \ref{enum:lcfrs:step3} in \cref{sec:extraction:lcfrs}).
             Such a strategy is now formalized by a \emph{guide} that maps each inner node position of a constituent structure to sentence position in its yield.
             The concept is generalized by introducing multiple strategies to define guides for a given constituent structure called \emph{guide constructors}.
         \item
@@ -382,7 +382,7 @@
     The nonterminal symbols constructed by \(\varphi\) are called \emph{\(x\) nonterminals}.
 
     \paragraph{Vanilla Nonterminal Constructor.}\deflab<nonterminal constructor>[vnont]{vanilla nonterminal (constructor)}[]
-    This resembles the nonterminals in the extraction in \cref{sec:extraction:readoff}.
+    This resembles the nonterminals in the extraction in \cref{sec:extraction:lcfrs}.
     Each nonterminal is of the form \(A_{n}^{d}\) where \(A \in \varGamma\) is a constituent symbol, \(n \in \DN_+\) is a fanout of a discontinuous span in the constituent tree \(\xi\), and \(d \in \{-1,0,+1\}\) is the difference between the fanout of the extracted rule and \(f\).
     This set of \emph{vanilla nonterminals} \(N\) is partitioned such that \(\mathit{fo}_{\hat{n}} = \{ A^d_{\hat{n}-d} \in N \mid A \in \varGamma, d \in [-1,1], \hat{n}-d > 0 \}\).
     The \deflab{vanilla nonterminal constructor} is a function \(\phi\) such that \(\phi(\xi, \rho, L) = \xi(\rho)_{n}^{d}\) where \(n = \fanout(\yield(\xi|_\rho))\) and \(d = \fanout(L) - n\) for each indexed tree \(\xi \in \itrees_\varGamma\), position \(\rho \in \pos(\xi)\) and \(L \subseteq \yield(\xi|_\rho)\).
@@ -425,7 +425,7 @@
     \begin{example}[Coarse Nonterminals]
         \Cref{tab:coarse-nonterminals} shows an example of a clustering of constituent symbols in grammars extracted from the English Penn Treebank provided by \citet{Cha06}.
         Creating such a table requires domain-specific knowledge about the corpus and the underlying language.
-        \citet{DoHoSa70} give a coarse tagset used in the english \abrv{xtag} grammar.
+        \citet{Doran99} give a coarse tagset used in the english \abrv{xtag} grammar.
         \citet{SchiTeuSt99} give a standardized set of \abrv{pos} symbols in tandem with a coarse categorization used in German corpora.
         They can be used to substitute the \abrv{pos} symbols in the constituent symbols that were constructed during a binarization with a horizontal markovization window \(h>0\).
     \end{example}

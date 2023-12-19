@@ -49,7 +49,7 @@
     \end{compactitem}
     Each rule of a \abrv{tag} is a tree where designated nodes indicate if one of the two operations can be applied.
     The adjunct operation contrasts \abrv{tag} from other tree grammar formalisms such as \emph{tree substitution grammars}.
-    There are hand-crafted \abrv{tag} for English \citep{xtag01} and Korean \citep{xtag02} published by the \abrv{Xtag} research group \citep{Anoop00}, as well as data-driven procedures that extract grammars from treebanks, e.g.\@ by \citet{xia1999extracting,Bla18}.
+    There are hand-crafted \abrv{tag} for English \citep{xtag01} and Korean \citep{xtag02} published by the \abrv{Xtag} research group \citep{Doran99}, as well as data-driven procedures that extract grammars from treebanks, e.g.\@ by \citet{xia1999extracting,Bla18}.
     The latter uses a heuristic approach to distinguish which operation introduces each constituent node in the tree.
     Lexicalized \abrv{tag} was the formalism used for the introduction of supertagging. \citep{bangalore1999supertagging}
     The approach was still investigated in recent years for dependency parsing in German and French treebanks by \citet{Kas17,Bla18}.
@@ -204,7 +204,7 @@
     Nevertheless, we recognize some familiar trends among the parsers that allow us to compare them in the following.
 
     \subsubsection*{Continuous Parsing with Reordering}
-    One way to illustrate discontinuous constituent trees is to extend a continuous tree in tandem with an alignment or reordering of its leaves (e.g.\@,  as we did in \cref{def:ctree}).
+    One way to illustrate discontinuous constituent trees is to extend a continuous tree in tandem with an alignment or reordering of its leaves (e.g.\@,  as we did in the definintion of constiuent tree in \cref{sec:preliminaries:ctrees}).
     \citet{FerGon21a} exploit this to reduce parsing discontinuous constituents in two steps
     \begin{inparaenum}[]
         \item they first predict an alignment that re-arranges the sequence of input tokens, and then
@@ -284,10 +284,10 @@
     The approaches to semantic parsing are just as diverse as the proposed formalisms to represent meaning.
     In the following, we  want to share a small glimpse into parsing approaches that relate to some extent to the previously discussed procedures for syntax analysis; c.f.\@ \citet{kamath2018survey} for a broad overview.
     Grammar and transition-based parsing concepts well known in syntax analysis are also represented in parsing for semantic representations, albeit less prevalent.
-    Representation formalisms that are based on graph structures, such as \abrv{amr}, may be approached using graph grammar or automata formalisms, for example \emph{directed acyclic graph automata} (short: \abrv{dag} automata) \citep{fancellu2019semantic} or \emph{hyperedge replacement grammars} \citep{drewes1997hyperedge}, e.g.\@ \citet{peng2015synchronous} propose a probabilistic synchronous grammar that recognizes a string with context-free grammar rules while generating an \abrv{amr}.
+    Representation formalisms that are based on graph structures, such as \abrv{amr}, may be approached using graph grammar or automata formalisms, for example \emph{directed acyclic graph automata} (short: \abrv{dag} automata) \citep{fancellu-etal-2019-semantic} or \emph{hyperedge replacement grammars} \citep{drewes1997hyperedge}, e.g.\@ \citet{peng2015synchronous} propose a probabilistic synchronous grammar that recognizes a string with context-free grammar rules while generating an \abrv{amr}.
     \citet{peng2018amr,vilares-gomez-rodriguez-2018-transition} define transition systems that are able to produce \abrv{amr}.
     Sequence-to-sequence models are more common in the literature; they are used to generate a linearized semantic representation, e.g.\@, a logic formula \citep{dong-lapata-2016-language} or \abrv{amr} (\citep{zhang-etal-2019-amr}), from an input sentence using artificial neural networks.
-    \citet{fancellu2019semantic} propose to enhance the decoder of a sequence-to-sequence model using a \abrv{dag} automaton.
+    \citet{fancellu-etal-2019-semantic} propose to enhance the decoder of a sequence-to-sequence model using a \abrv{dag} automaton.
 
     \section{Parsing with Supertagging}\label{sec:literature:supertagging}
     \citet{bangalore1999supertagging} propose the approach of \emph{supertagging} as a preliminary step in parsing with lexicalized tree-adjoining grammars.
