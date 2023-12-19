@@ -7,7 +7,7 @@
     \begin{compactenum}
         \item
             Each \abrv{lcfrs} supertag blueprint is a tuple \((r, b)\) where \(r\) is a lexical \abrv{lcfrs} rule containing the terminal \wildcard{} and \(b \in \{\text{True}, \text{False}\}\) is a boolean marker.
-            The marker \(b\) stores information from the lexicalization process and is needed to reverse the process in order to transform a derivation into a constituent tree.
+            The marker \(b\) stores information from the lexicalization process and is needed to reverse the process to transform a derivation into a constituent tree.
         \item
             Each \abrv{dcp} supertag blueprint is a tuple \((r, f)\) where \(r\) is a lexical \abrv{dcp} rule containing the terminal \wildcard{} and \(f \in \DN_+\) is an integer.
             During the parsing process, \(f\) acts as a restriction for the fanout of all derivations rooted by a supertag instantiated for \((r,f)\).
@@ -20,17 +20,17 @@
     \begin{compactenum}
         \item
             The process described in \cref{sec:extraction:readoff} first extracts a derivation \abrv{lcfrs} rules for each tree in a treebank.
-            After that, the rules within each of the derivations are lexicalized by transporting the terminal symbols occurring in the leaves into inner nodes.
-            With the help of annotations that are added to the rules and nonterminals within the rules, this transportation is reversible.
+            After that, the rules within each derivation are lexicalized by transporting the terminal symbols occurring in the leaves into inner nodes.
+            This transportation is reversible with the help of annotations that are added to the rules and nonterminals within the rules.
             This approach was the fruit of a collaboration with Richard Mörbitz. \citep{MoeRup20,RupMoe21}
         \item
             The extraction procedure described in \cref{sec:extraction:guided} first assigns a sentence position to each inner node of the constituent structure.
-            In the following, it extracts a derivation of lexical grammar rules according to the positions assigned to the inner nodes in each subtree.
-            This approach extends the previous by parametrizing the lexical rule extraction, but requires a more complex grammar formalism: hybrid grammars instead of \abrv{lcfrs}.
-            The section builds upon my latest publication \citep{Rup22}, and extends it by further formalizing the supertags and adding some more options for the extraction parameters.
+            The following extracts a derivation of lexical grammar rules according to the positions assigned to the inner nodes in each subtree.
+            This approach extends the previous by parametrizing the lexical rule extraction but requires a more complex grammar formalism: hybrid grammars instead of \abrv{lcfrs}.
+            The section builds upon our latest publication \citep{Rup22} and extends it by further formalizing the supertags and adding more options for the extraction parameters.
     \end{compactenum}
-    Both of these procesdures make use of the rank transformations described in \cref{section:ranktransformations}.
-    One of the trasformations described in the section is binarization, a standard-tool in parsing constituent trees.
+    These processes use the rank transformations described in \cref{section:ranktransformations}.
+    One of the transformations described in the section is binarization, a standard tool for parsing constituent trees.
     The other \emph{head-inward transformation} was not published before.
 
     

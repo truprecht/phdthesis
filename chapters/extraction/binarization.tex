@@ -2,33 +2,23 @@
 
 \begin{document}
     \section{Rank Transformations}\label{sec:ranktransformations}
-    In a treebank, we may encounter nodes in constituent trees with arbitrary amounts of successors.
-    E.g.\@ \cref{fig:extraction:ranks} shows the distribution of node ranks occurring in a treebank that we use in our experiments (left). The right plot shows that even nodes with the same label occur with widely varying ranks.
-    Most grammar extraction procedures construct a rule for each inner node (or a connected set of inner nodes) in a constituent tree with the rank matching the number of successors of the node (or the sum over all successors in the set of nodes).
-    Usually, it is desirable to obtain binary grammar instances because the design of efficient parsing algorithms is more straightforward in the binary case.
-    More importantly, these binary grammar instances can be constructed  in similar derivations. This is called \deflab<binariation>{Markovization}.
-    This is used as a generalization mechanism because these rules extracted in this fashion admit larger sets of derivations.
-    \citet[figure 2]{KleMan03} show the influence of Markovization on grammar instances extracted from the Penn Treebank regarding size and parsing accuracy.
+    This section focuses on transformations for constituent trees to restrict occurring node ranks.
+    For instance, \emph{binarization} is a standard preprocessing step in constituent parsing that produces trees exclusively equipped with binary nodes.
+    In the literature, it is sometimes considered a step transforming a grammar instance \citep{}, we follow \citet{CraSchBod16} and regard rank transformations for constituent trees.
+    As usual, all referenced or described transformations are reversible.
 
-    In the scope of this thesis, we view \deflab{binarization}[binarization] as a preprocessing step for constituent trees rather than grammars.
-    It is an operation that transforms a given constituent tree into a \hyperlink{binctree}{binary} constituent tree such that it can be changed back into the original constituent tree.
-    The binarization process affords new \emph{artificial nodes} that will appear as descendants of nodes with one or more than two successors.
-    The symbols at these artificial nodes are determined by a chosen \deflab<binarization>[bin:strat]{binarization strategy}, which determines the structure of atr and Markovization parameters. \citep{Son08,Cra12}
-    There are also specific binarization strategies for \abrv{lcfrs} capable of minimizing the parsing complexity of the resulting grammar. \citep{Gil10}
+    Binarization is a usual tool to produce grammar instances in normal forms, e.g., the Chomsky normal form for parsing with context-free grammar instances.
+    The process was generalized to other grammar formalisms such as \abrv{lcfrs}. \citep{Kal10, Cra12}
+    During the process, constituent tree nodes with a rank greater than two are broken down by introducing binary \emph{artificial nodes}.
+    These artificial nodes have annotations that clearly distinguish them from the original nodes.
+    There are several approaches to constructing the artificial nodes, i.e., the direction in which the nodes are split.
+    \citet{Son08} investigated their influence on parsing with binary context-free grammars obtained using various such approaches.
+    \citet{KleMan03} extend binarization by \emph{Markovization} for the artificial node symbols.
+    They show that the extension can produce more compact grammar instances or increase their parsing accuracy.
 
-    Moreover, \cref{sec:extraction:bin:hi} will consider a different strategy to construct trees with at most three successors per node, called \deflab<binarization>[bin:ter]{head-inward transformation}.
-    It reverses the head-outward binarization strategy to incorporate the concept of binarization into lexical dependency grammars.
-
-    Binarization and head-inward transformation will be referred to as \deflab{rank transformations}.
-
-    \begin{figure}
-        \includegraphics[width=\linewidth]{figures/dptb-ranks.pdf}
-        \caption{\label{fig:extraction:ranks}
-            Distribution of node ranks in the training portion of \abrv{dptb}.
-            The right plots show the rank distribution only for nodes with the label \abrv{np}.
-            The last tick on the x-axis in each plot is a cumulative bucket for ranks greater or equal to \(20\).
-        }
-    \end{figure}
+    In this section, we will first briefly bring up and compare well-established approaches to binarize constituent structures in \cref{sec:binarization}.
+    We coarsely follow \citet{Cra12} and characterize the approaches in terms of a \emph{transformation strategy} that defines the structural transformation and extensions (\emph{Markovization, directive indicators, trailing nodes}) that alter the artificial constituent symbols introduced during this step.
+    Lastly, we introduce a new strategy to construct trees with at most three successors per node, called \deflab<binarization>[bin:ter]{head-inward transformation}.
 
     \subsection{Binarization}\label{sec:binarization}
     The \deflab{binarization} of constituent structures removes and replaces nodes that have either one or more than two successors.
@@ -138,11 +128,15 @@
     \end{figure}
 
     \paragraph{Minimizing Fanout or Parsing Complexity.}
-    These two strategies replace non-binary nodes with a combination of new binary nodes such that an assessment function for the resulting tree is minimized.
-    In the \deflab<binarization!binarization strategies>[bin:minfo]{minimal fanout binarization}[first case], this function coincides with the occurring fanouts.
-    In the \deflab<binarization!binarization strategies>[bin:minpc]{minimal parsing complexity binarization}[latter case], it is a combination of the parsing complexity and fanout.
-    In contrast to the previous binarization strategies, these two may scramble the order of the successors in the constructed subtrees and construct branches of intermediate nodes in both directions.
-    As in the two previous strategies, the symbols at the constructed nodes contain the parent constituent symbol and the constituent symbol of the processed successors.
+    Two binarization strategies specifically consider the properties of \abrv{lcfrs} instances extracted from constituent treebanks after binarization.
+    \citet{gomez2009optimal} criticize that the usual strategies can produce constituent nodes with larger fanout than in the original treebank.
+    As the parsing complexity with \abrv{lcfrs} instances crucially depends on the fanouts, binarization strategies may have an influence on the parsing effort.
+    They propose a binarization strategy that minimizes the fanouts in its results.
+    \citet{Gil10} argue that the parsing complexity not only depends on the single occurring fanouts but on the combination of fanouts in each node and its children.
+    They adapt the strategy to minimize the sum of fanouts in such node triplets.
+    In contrast to the previous strategies, these two scramble the order of the successors in the constructed subtrees.
+    They are rarely considered in parsing, and experiments conducted by \citet{Cra12} show underwhelming results regarding parse time and accuracy.
+    We do not investigate these two strategies in our experiments.
 
     \begin{figure}
         \resizebox{.3\linewidth}{!}{\subfile{figures/binarization/survey.tex}}\hfill

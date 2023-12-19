@@ -36,7 +36,7 @@
     A (total) function from \(A\) to \(B\) is a relation from \(A\) to \(B\) such that for each \(a \in A\), there is exactly one \(b\) with \((a,b) \in f\).
     As usual, we denote the type of such a function by \(A \to B\), a quantification by \(f\colon A \to B\), and the argument-value relation by \(f(a) = b\).
     A partial function from \(A\) to \(B\) is a subset \(f \subseteq A \times B\) such that for each \(a \in A\), there is at most one \(b\) with \((a,b) \in f\).
-    The type of a partial function is denoted with an upper half arrow e.g., \(f\colon A \parto B\).
+    The type of a partial function is denoted with an upper half arrow, e.g., \(f\colon A \parto B\).
     The image of a (total or partial) function is the set of elements in \(B\) that are assigned to any value in \(A\), denoted by \(\im(f) = \{b\in B \mid (A \times \{b\}) \cap f \neq \emptyset\}\).
     The domain of definition of a partial function is the set of elements in \(A\) with an assigned value in \(B\), denoted by \(\dom(f) = \{a\in A \mid (\{a\} \times B) \cap f \neq \emptyset\}\).
     In some contexts, a partial function \(f\) is handled in the same manner as a total function from \(\dom(f)\) to \(B\) without further notice.
@@ -67,7 +67,15 @@
     \end{inparaenum}
 
     \paragraph{Sequences.}
-    A (finite) \deflab{sequence} over \(A\) of length \(k \in \DN\) is a \([k]\)-indexed family over \(A\); \(A^k\) denotes all sequences over \(A\) of length \(k\).
+    An \emph{integer index set} \(I\) is a subset of \(\DN_+\) such that
+    \begin{inparaenum}[]
+        \item either \(1 \in I\) or \(I = \emptyset\), and
+        \item for each \(i \in \DN_+ \setminus \{1\}\), if \(i \in I\) then \(i-1 \in I\).
+    \end{inparaenum}
+    Let \(I\) denote such an integer index set.
+    A \deflab{sequence} over \(A\) is an \(I\)-indexed family over \(A\).
+    If there is a \(k\in \DN_+\) such that \(I = [k]\), then we call it either a \emph{finite sequence over \(A\)} or, more specifically, a \emph{sequence over \(A\) of length \(k\)}, otherwise an \emph{infinite sequence}.
+    \(A^k\) denotes all sequences over \(A\) of length \(k\).
     When a collection of \(k\) elements in \(A\) is quantified, they are usually enumerated with an ellipsis and separated by commas; this notation of the form \(a_1, \ldots, a_k \in A\) defines an implicit sequence \((a_i \in A \mid i \in [k])\).
     With a collection of fixed elements \(a_1, \ldots, a_k \in A\), the sequence \((a_i \in A \mid i \in [k])\) is abbreviated by an ellipsis without commas \(a_1 \ldots a_k\) (when there is a clear enumeration of items, like the index of the variables \(a_1, \ldots, a_k\)).
     An occurrence of the single element \(a_1\) may also denote the singleton sequence (of length 1).
@@ -97,7 +105,7 @@
     \paragraph{Alphabets and Strings.}
     An \deflab{alphabet} is a non-empty and finite set. Its elements are called \deflab<alphabet>{symbol}[symbols].
     Usually, uppercase Greek letters are used to denote alphabets, like \(\varSigma\), \(\varPi\), or \(\varGamma\).
-    A \deflab<sequence>{string} is a (finite) sequence over an alphabet \(\varSigma\).
+    A \deflab<sequence>{string} is a finite sequence over a set of symbols \(\varSigma\).
     The set of all strings over \(\varSigma\) is \(\varSigma^*\).
     The notation for sequences is also used for strings.
     Subsequences in a string are called \emph{substrings}.
@@ -107,12 +115,16 @@
     For any alphabet \(\varSigma\) and set \(\varGamma\), the set of trees \(\T_\varSigma(\varGamma)\) is defined inductively: it is the smallest subset \(T\) of \((\varSigma \cup \varGamma \cup \{ (, )\})^*\) such that
     \begin{inparaenum}
         \item \(\varGamma \subseteq T\) and
-        \item for each symbol \(\sigma \in \varSigma\), positive integer \(k \in \DN_+\) and trees \(t_1, \ldots, t_k \in T\), the sequence \(\sigma(t_1 \cdots t_k)\) is in \(T\).
+        \item for each symbol \(\sigma \in \varSigma\), positive integer \(k \in \DN_+\) and trees \(t_1, \ldots, t_k \in T\), the sequence \(\sigma(t_1 \cdots t_k)\) is in \(T\).\footnote{
+            We do not consider ranked trees.
+            Each symbol \(\sigma \in \varSigma\) in a tree may occur with an arbitrary amount of successors denoted in parenthesis after it.
+            Moreover, such a symbol may occur multiple times in a tree with varying amounts of successors.
+        }
     \end{inparaenum}
     As such, trees are finite structures, but unlike strings, we do not consider empty trees.
     In case \(\varGamma \subseteq \varSigma\), the symbols at the leaves are not distinguished from inner nodes; then the set \(\T_\varSigma(\varGamma)\) is abbreviated by \(\T_\varSigma\).
 
-    A \deflab<tree>{node} in the tree \(t \in \T_\varSigma(\varGamma)\) is an occurrence of a symbol in \(\varSigma \cup \varGamma\).
+    A \deflab<tree>{node} in the tree \(t \in \T_\varSigma(\varGamma)\) is an occurrence of a symbol in \(\varSigma \cup \varGamma\), i.e.\@ it is a combination of the symbol \(\sigma\) and a position it occurs.
     If a node is accompanied by a sequence of trees denoted in parentheses behind the symbol, these trees are called the \deflab<tree!node>{child}[children] of the node.
     Vice versa, from the viewpoint of a child node, the node before the wrapping parenthesis is called the \deflab<tree!node>{parent}.
     Each other node within the parenthesis is called a \deflab<tree!node>{sibling}.
@@ -121,7 +133,7 @@
     Each leaf is of rank zero; nodes of rank one are called \deflab<tree!node>{unary}, and those of rank two are called \deflab<tree!node>{binary}.
     A tree is called \deflab<tree>[bintree]{binary} if each inner node has exactly two successors.
 
-    Each illustration of a tree usually starts with the root node at the top, below that are its children connected by edges, this scheme recurs until the leaves at the bottom.
+    Each illustration of a tree usually starts with the root node at the top. Below are its children connected by edges; this scheme recurs until the leaves are at the bottom.
     \cref{fig:pre:ctree} shows an example.
 
     \paragraph{Tree Positions.}
@@ -135,8 +147,9 @@
     The set of all inner node positions in \(t\) is denoted by \(\npos(t)\), and the set of leaf positions is \(\lpos(t)\).
     Let \(\rho \in \pos(t)\) be some position.
     Each subsequence in \(t\) that is also a tree in \(T_\varSigma\) is called a \deflab<tree>{subtree} in \(t\).
-    The subtree below a position \(\rho\) is denoted by \(t|_\rho\).
-    The \deflab<tree>{ancestor}[ancestors] of \(\rho\) are all real prefixes of the sequence \(\rho\), denoted by \(\ancestors(\rho) = \{ \rho_{:e} \mid e \in [|\rho|] \}\).
+    The subtree at a position \(\rho\) is denoted by \(t|_\rho\).
+    The \deflab<tree>{ancestor}[ancestors] of \(\rho\) are all real prefixes of the sequence \(\rho\), denoted by \(\ancestors(\rho)\).
+    If \(\rho\) is of the form \(\rho = p_1 \ldots p_\ell\) for some \(\ell \in \DN_+\) and \(p_1, \ldots, p_\ell \in \DN_+\), then \(\ancestors(\rho) = \{ p_1 \ldots p_i \mid 0 \leq i \leq \ell-1 \}\).
     The \deflab<tree>{descendant}[descendants] of \(\rho\) in \(t\) are all positions in the subtree below \(\rho\), denoted by \(\descendants_t(\rho) = \{ \rho \cdot \rho' \in \pos(t) \mid \rho' \in \pos(t|_\rho) \}\).
     The symbol at a position \(\rho\) in \(t\) is denoted  \(t(\rho)\).
     We use the same terminology for position as for nodes, i.e.\@ child position, parent position, etc.; \(\children_t(\rho) = \{\rho\} \cdot \DN_+ \cap \pos(t)\) denotes the set of child positions below each position \(\rho\) in \(t\), and \(\parent(\rho) = \rho_{:|\rho|}\) the parent position for each \(\rho \in {\DN_+}^+\).
@@ -174,7 +187,7 @@
 %    \end{proof}
 
     \paragraph{Indexed Trees.}
-    An \deflab<tree>[itree]{indexed tree} over \(\varSigma\) is an element in \(\T_{\varSigma}(\DN_+)\), i.e.\@ inner nodes are symbols in \(\varSigma\) and leaves are positive integers, such that each leave occurs at most once.
+    An \deflab<tree>[itree]{indexed tree} over \(\varSigma\) is an element in \(\T_{\varSigma}(\DN_+)\), i.e.\@ inner nodes are symbols in \(\varSigma\), and leaves are positive integers, such that each leaf occurs at most once.
     For each inner node in an indexed tree, the children are ordered by the least value that occurs in a leaf.
     The notation for positions, indexing, and substitution are inherited from trees; the yield of an indexed tree is its set of leaves instead of a string.
     The set of all indexed trees over \(\varSigma\) is denoted by \(\itrees_\varSigma\).
@@ -189,9 +202,9 @@
     For the scope of this thesis, the number of parameters for each value is limited to exactly one to keep the definition simple.
     Let's consider a single distinct variable \(y \notin X\), a set of shallow trees \(X(\varSigma^*) = \{ x(w) \mid x \in X, w \in \Sigma^* \}\) and a string \(c\) in \((X(\varSigma^*) \cup \varSigma)^*\).
     A second-order substitution of \(X\) in \(c\) defined by an \(X\)-indexed family \((v_x \in (\varSigma \cup \{y\})^* \mid x \in X)\) yields the string in \(\varSigma^*\) obtained from \(c\) by replacing each occurrence of shallow trees \(x(w) \in X(\varSigma^*)\) by \(v_x[y=w]\).
-    We specifically stress that the variable \(y\) may be an element in \(\varSigma\) and the result \(c[v]\) might also contain it.
+    We specifically stress that the variable \(y\) may be an element in \(\varSigma\), and the result \(c[v]\) might also contain it.
 
-    Because trees are just specific strings, both definitions of substitution are easily lifted to trees and sequences of trees, as long as the variables do not coincide with parentheses.
+    Because trees are just specific strings, both definitions of substitution are easily lifted to trees and sequences of trees as long as the variables do not coincide with parentheses.
     Let \(\varGamma\) be an alphabet distinct from \(X\), and \(\{ (, ) \} \cap (X \cup \{y\}) = \emptyset\), and \(y \notin \varSigma\).
     Now, the variable occurrences are of the form \(X(\T_\varSigma(\varGamma)^*) = \{x(t_1, \ldots, t_k) \mid k \in \DN, t_1, \ldots, t_k \in \T_{\varSigma}(\varGamma)\}\) where each element has a root in \(X\), in the following the set is abbreviated by \(\hat{X}\).
     A second-order substitution of \(X\) in \(c \in \T_\varSigma(\varGamma \cup \hat{X})^*\) defined by an \(X\)-indexed family \((v_x \in \T_\varSigma(\varGamma \cup \{y\})^* \mid x \in X)\) yields a sequence of trees in \(\T_\varSigma(\varGamma)*\) obtained from \(c\) by replacing each occurrence of \(x(v) \in \hat{X}\) by \(v_x[y=v]\).
@@ -220,9 +233,9 @@
 
     \section{Modeling Natural Languages using Formal Methods}\label{sec:preliminaries:ctrees}
     In the syntactic analysis of sentences in natural languages, we deal with \deflab[ctree]{constituent tree}[constituent trees].
-    They illustrate a hierarchy of sub-phrases in the sentence, where each element in the hierarchy is labeled by a category, called \deflab<constituent tree>[csymbol]{constituent symbol}.
+    They illustrate a hierarchy of sub-phrases in the sentence, where a category labels each element in the hierarchy, called \deflab<constituent tree>[csymbol]{constituent symbol}.
     These sub-phrases do not necessarily form contiguous regions in the sentence:
-    If such a tree contains a node with a non-contiguous sub-phrase, we call it \deflab<constituent tree>{discontinuous}; otherwise it is \deflab<constituent tree>{continuous}.
+    If such a tree contains a node with a non-contiguous sub-phrase, we call it \deflab<constituent tree>{discontinuous}; otherwise, it is \deflab<constituent tree>{continuous}.
     E.g.\@ \cref{fig:pre:ctree} illustrates a discontinuous constituent tree.
     The symbols at inner nodes, like \(\cn{s}\) and \(\cn{vp}\), are constituent symbols.
     The lower node labeled by \(\cn{vp}\) governs a noncontiguous region in the sentence: \emph{where} and \emph{carried out}.
@@ -241,18 +254,19 @@
         }
     \end{figure}
 
-    The first layer of nodes in a constituent tree above phrase positions contains distinct symbols, called \emph{part of speech} (\abrv{pos}) tags.
-    They are mutually exclusive to constituent symbols in upper layers, i.e.\@ each symbol occurring at the first layer must be a \abrv{pos} tag and no other constituent symbol, and each symbol above the first layer must not be a \abrv{pos} symbol.
+    The first layer of nodes in a constituent tree above phrase positions contains distinct symbols called \emph{part of speech} (\abrv{pos}) tags.
+    They are mutually exclusive to constituent symbols in upper layers, i.e., each symbol occurring at the first layer must be a \abrv{pos} tag and no other constituent symbol, and each symbol above the first layer must not be a \abrv{pos} symbol.
     They indicate the most primitive categorization of individual tokens in the sentence.
     In our example tree, the symbols \(\cn{wrb}\) and \(\cn{pt}\) are \abrv{pos} tags.
 
     Within a constituent tree, we consider a \emph{lexical head} as the critical token for a syntactic category (i.e. the constituent symbol) of a phrase.
-    For each inner node in the constituent tree, there is exactly one position in the sentence predestined for this role.
+    Each inner node in the constituent tree has exactly one position in the sentence predestined for this role.
     Vice versa, a position may be the lexical head of multiple inner nodes.
     However, there is one condition: The lexical head must either be a leaf directly below the node or a lexical head of a child node.
 
     Now, let us formalize the above.
-    We assume an alphabet of \deflab{token}[tokens] \(\Sigma\), i.e.\@ words, punctuation marks, parentheses, etc.\@ that are used to form sentences, and two additional alphabets, \(\varPi\) of \abrv{pos} tags, and \(\varGamma\) of constituent symbols.
+    We assume a set \(\Sigma\) of words, punctuation marks, parentheses, etc.\@ that are used to form sentences; we call the elements in \(\Sigma\) \deflab{token}[tokens].
+    Additionally, there are two alphabets: The set \(\varPi\) of \abrv{pos} tags and the set \(\varGamma\) of constituent symbols.
     \(\Sigma^*\) denotes the set of all strings over these tokens, a superset that contains all grammatical sentences (and also everything else that consists of the tokens in \(\Sigma\)).
 
     A \emph{constituent tree} is a triple \((t, p, w)\) where
@@ -265,7 +279,7 @@
     To accommodate discontinuous constituents, each constituent structure is defined as an indexed tree over \(\varGamma\) so that each leaf is the position of a token.
 
     \(\head(t)\) denotes the leaf that indexes the lexical head for the root in the constituent structure \(t\).
-    When a tree is illustrated and its lexical heads are considered, then, for each inner node in the constituent structure, the path to its lexical head is double-struck.
+    When a tree is illustrated, and its lexical heads are considered, then, for each inner node in the constituent structure, the path to its lexical head is double-struck.
     \Cref{fig:pre:ctree} shows an example.
     %    We call each direct child that does not contain the lexical head a \emph{modifier}.
 
@@ -278,9 +292,9 @@
     It is used as a refinement for a set of candidate constituent trees and often involves more ambitious or orthogonal methods to the underlying \(k\) best parser.
 
     Besides constituent trees, there are \emph{dependency trees} that express a syntactic analysis of natural language.
-    They present grammatical relations between phrases within a sentence, such as arguments, adjuncts, complements, and sometimes even more fine-grained ones like distinctions between subjects and objects.
+    They present grammatical relations between phrases within a sentence, such as arguments, adjuncts, complements, and sometimes even more fine-grained ones, like distinctions between subjects and objects.
     These relations are illustrated in a tree where each phrase is represented by its head.
-    There are similar phenomena as (dis-)continuity in dependency trees, they are referred to as \emph{(un-)projectivity}.
+    There are similar phenomena as (dis-)continuity in dependency trees. They are referred to as \emph{(un-)projectivity}.
     We will not engage in dependency trees in this work. Some references are discussed in \cref{sec:literature}.
 
     \subsection{Assessing the Prediction of Constituent Structures}
@@ -467,7 +481,7 @@
         The function \(\hat{p}\) is defined such that the term \(\prod_{\rho \in \pos(d)} \hat{p}(d(\rho))\) is a probability distribution over all derivation trees \(d \in D\) in the grammar.
         As the sequence of tokens \(w\) is part of the constituent tree \(\xi\), this is trivially equivalent to a joint probability distribution \(p(\xi) = p(w, \xi)\), which is characteristic for a generative model.
         The values assigned by the function \(\hat{p}\) form the model parameters. They are restricted to probability distributions.
-        Probabilistic grammars can generate constituent trees (trivially in tandem with a sequence of tokens) by probabilistically sampling rules.
+        Probabilistic grammars can generate constituent trees (trivially in tandem with a sequence of tokens) by sampling rules probabilistically.
     \end{example}
 
     \begin{example}[Supertagging in the empirical prediction framework.]
@@ -571,7 +585,7 @@
         \item
             Some measures that aim to improve the ability to generalize from training examples among them are \emph{weight decay} and \emph{dropout} \citep{dropout}.
             Both are quantified in terms of real values:
-                A term for the magnitude of all parameters is added to the loss and scaled by weight decay. This discourages high values for parameters associated with being specifically tied to training instances (called overfitting).
+                A term for the magnitude of all parameters is added to the loss and scaled by weight decay. This discourages high values for parameters associated with being tied explicitly to training instances (called overfitting).
                 Dropout is the probability of omitting the value (and replacing it by \(0\)) at an index in the vector computed after selected modules.
     \end{itemize}
 

@@ -6,7 +6,7 @@
     In contrast to \abrv{lcfrs}, it is a formalism where each rule produces trees instead of plain strings.
     The most striking difference to the previous formalism, however, lies in the composition expressions contained in each rule:
     They not only allow substitution with parameters produced by successors in a derivation (first-order substitution), but each single parameter may also contain variables that are substituted in the same step (second-order substitution).
-    This corresponds to the information flow from the bottom to the top in a derivation as expressed by synthetic attributes (first-order substitution) and the information flow from the top to the bottom in a derivation by inherent attributes (second-order substitution) in attribute grammars. \citep[cf.\@ Section 1: Notations]{Der88}
+    This corresponds to the information flow from the bottom to the top in a derivation expressed by synthetic attributes (first-order substitution) and the flow from the top to the bottom in a derivation by inherent attributes (second-order substitution) in attribute grammars. \citep[cf.\@ Section 1: Notations]{Der88}
     In the implementation of these two systems of substitution, two pairwise distinct sets of variables are used: \(\X\) for the first (as in \abrv{lcfrs}), and \(\Y\) for the second-order substitution.
 
     In their most general form, the object produced by a derivation in such a \abrv{dcp} is not necessarily computable, as the two types of substitution may mutually recur.
@@ -15,20 +15,23 @@
     To avoid unnecessarily complicated definitions, the subset of \abrv{dcp} shown in this section is even further restricted:
     \begin{inparaenum}
         \item Each composition yields one sequence of consecutive trees (and not sequences of ranges) that is a subforest in the parse.
-        \item Each rule's composition expression allows exactly one second-order substitution (which may be the empty sequence).
+        \item Each rule's composition expression allows exactly one second-order substitution (which may be the empty sequence). Thus, the symbol \(\y\) occurs exactly once in each composition.
     \end{inparaenum}
+    We chose both restrictions to avoid having to distinguish successor derivations with special properties for the evaluation of the expressions.
 
     \begin{definition}[Composition]
         We fix the \(\DN\)-family of finite sets of variables \((\X_k = \{\x_i \mid i \in [k]\} \mid k \in \DN)\), and the singleton set \(\Y = \{\y\}\).
-        The identifier \(\X\) denotes the union \(\bigcup_{k \in \DN} \X_k = \{\x_i \mid i \in \DN\}\).
+        The identifier \(\X\) denotes the set of all variables \(\bigcup_{k \in \DN} \X_k = \{\x_i \mid i \in \DN\}\).
         Let \(\varSigma\) and \(\varGamma\) be alphabets disjoint from \(\X \cup \Y\).
-        The \(\DN\)-family \((S_k = \{x(v) \mid x \in \X_k, v \in \T_\varGamma(\varSigma \cup Y)^*\} \mid k \in \DN)\) denotes expressions for occurrences of first-order substitutions using \(k\) variables.
+        The \(\DN\)-family \((S_k = \{x(v) \mid x \in \X_k, v \in \T_\varGamma(\varSigma \cup Y)^*\} \mid k \in \DN)\) denotes substitution sites with variables up to subscript \(k\).
         The \(\DN\)-family of \abrv{dcp} \deflab<\dcp>[dcp:comp]{composition}[compositions] over \(\varSigma\) and \(\varGamma\) is \((\C^{\varGamma\varSigma}_k \mid k \in \DN)\) such that \(\C^{\varGamma\varSigma}_k\) contains each nonempty sequence \(c\) in \((\T_\varGamma(\varSigma \cup \Y \cup S_k))^+\) such that each variable in \(\X_k \cup \Y\) occurs exactly once in \(c\).
-        We associate the identifier \(\C^{\varGamma\varSigma}\) with the set of all such \abrv{dcp} compositions \(\bigcup_{k \in \DN} \C^{\varGamma\varSigma}_{k}\).
+        The identifier \(\C^{\varGamma\varSigma}\) debotes the set of all \abrv{dcp} compositions \(\bigcup_{k \in \DN} \C^{\varGamma\varSigma}_{k}\).
 
         Each composition \(c \in \C^{\varGamma\varSigma}_k\) is associated with a function \[
-        \sem{c}\colon \big(\T_\varGamma(\varSigma \cup Y)^*\big)^k \to \T_\varGamma(\varSigma \cup Y)^*
-        \] such that \(\sem{c}(\xi_1, \ldots, \xi_k) = c[\x_1=\xi_1, \ldots, \x_k=\xi_k]\) is the second-order substitution of \(\X_k\) in \(c\).
+            \sem{c}\colon \big(\T_\varGamma(\varSigma \cup Y)^*\big)^k \to \T_\varGamma(\varSigma \cup Y)^*
+        \] that is defined as follows:
+            Let \((\x_i(w_i) \in S_k \mid i \in [k])\) be the family of substitution sites occurring in \(c\) and \((v_i \in \T_\varGamma(\varSigma \cup Y)^* \mid i \in [k])\) a family of arguments.
+            Then \(\sem{c}\) is defined as a second-order substitution of \(\X_k\) in \(c\) such that \(\sem{c}(\xi_1, \ldots, \xi_k) = c[\x_1(w_1)=\xi_1[\y=w_1], \ldots, \x_k(w_k)=\xi_k[\y=w_k]\).
     \end{definition}
 
     %    The occurrences of variables are abbreviated in the following two ways:
@@ -53,19 +56,18 @@
         \begin{align*}
             \sem{c_6} \big( \sem{c_1}(), \sem{c_2}() \big)
             &= \sem{c_6} \big( \: (\tn{where} \, \y), \: (\y \, \tn{out}) \: \big) \\
-            &= \cn{vp}(\x_1(\y) \, \x_2(\tn{carried}))[\x_1=(\tn{where} \, \y), \x_2=(\y \, \tn{out})] \\
-            &= \cn{vp}(\x_1 \, \x_2)[\x_1=(\tn{where} \, \y)[\y=\y], \x_2=(\y \, \tn{out})[\y=\tn{carried}]] \\
-            &= \cn{vp}(\x_1 \, \x_2)[\x_1=(\tn{where} \, \y), \x_2=(\tn{carried out})] \\
+            &= \cn{vp}(\x_1(\y) \, \x_2(\tn{carried}))[\x_1(\y)=(\tn{where} \, \y), \x_2(\tn{carried})=(\tn{carried}\, \tn{out})] \\
             &= \cn{vp}(\tn{where} \, \y \, \tn{carried out})
         \end{align*}
     \end{example}
 
-    Aside from the form of the compositions (and therefore also the concept of fan-out), \abrv{dcp} grammars, derivations, and most of the concepts of rule and grammar forms are defined analogously to \abrv{lcfrs} grammars, and we will refrain from repeating them completely but focus on the differences to \abrv{lcfrs} grammars.
+    Aside from the form of the compositions (and therefore also the concept of fanout), \abrv{dcp} grammars, derivations, and most of the concepts of rule and grammar forms are defined analogously to \abrv{lcfrs} grammars, and we will refrain from repeating them completely but focus on the differences to \abrv{lcfrs} grammars.
     As we have seen, \abrv{dcp} compositions contain elements from two alphabets, \(\varGamma\) for inner nodes (which we will assume to be constituent symbols) and  \(\varSigma\) for leaf nodes (tokens or sentence positions, respectively), only the symbols in \(\varSigma\) are considered lexical symbols.
     The tuple for a \abrv{dcp} grammar is hence extended by the additional alphabet and assumes the form \((N, \varGamma, \varSigma, S, R)\).
     There is no fanout in \abrv{dcp} because the sequences of trees produced by compositions are not meant to be separated.
     To avoid that a complete derivation produces more than one tree, we require that the composition in each non-nullary rule whose \abrv{lhs} nonterminal is an initial nonterminal in \(S\) is of the form \(\gamma ( \omega )\) for some \(\gamma \in \varGamma\) and \(\omega \in \C^{\varGamma \varSigma}\), i.e.\@ there is at least one inner node that assembles the results of all successor rules.
     As in other grammar formalisms, the yield for a derivation recursively computes the composition functions.
+    This recursive evaluation will leave exactly one superfluous variable symbol \(\y\) that originates from the root's composition; it is removed from the result.
     In contrast to string grammars, like \abrv{lcfrs}, the yield of a complete derivation is a tree in \(\T_\varGamma(\varGamma)\).
 
     As \abrv{lcfrs}, we deal with \abrv{dcp} grammars that are instantiated with sentence positions as lexical symbols during the rule extraction as well as parsing.
