@@ -2,59 +2,58 @@
 
 \begin{document}
     \chapter{Conclusion and Future Work}
-    This chapter concludes the thesis with a short summary of our contributions and results.
-    After that, we give some pointers for future work.
+    This chapter concludes the thesis with a summary of our contributions and results and gives some pointers for future work.
 
-    After considering the basic mathematical notation and fundamental concepts of three grammar formalisms in \crefrange{sec:preliminaries}{sec:grammars}, we described two extraction procedures for lexicalized grammars from discontinuous constiuent treebanks in \cref{sec:extraction}.
-    Both extractions make no assumptions about the constituent treebanks.
+    \Cref{sec:extraction} describes two extraction procedures for lexicalized grammars from discontinuous constituent treebanks.
+    Both of them make no assumptions about the constituent treebanks by themselves, but the section also introduces extensions to utilize head assignments in the extraction.
     The first procedure is concerned exclusively with \abrv{lcfrs} as grammar formalism, and the second is used to extract either \abrv{lcfrs}/\abrv{dcp} hybrid grammars or \abrv{dcp}.
-    \Cref{sec:parsing} described a parsing algorithm that exploits the extracted lexical grammar rules:
-        A discriminative classifier predicts a small amount of lexical rules per input sentence position, which are then used to parse the sentence with a small grammar.
-    This prediction step is called supertagging.
+    \Cref{sec:parsing} describes a parsing framework that exploits the extracted lexical grammar rules:
+        A discriminative classifier predicts a small number of lexical rules per input sentence position, which are then used to parse the sentence with a small grammar; the prediction step is called supertagging.
     The section also introduces an algorithm for parsing with \abrv{dcp} grammar instances, which has not seen application in the natural language processing community before.
-    We conduct a series of experiments with three discontinuous constituent treebanks and two neural network architectures to implement the prediction.
-    \Cref{sec:gridsearch,sec:gridsearch:other} show the vast amount of experiments that we conduct to find feasible parameters for the extraction of and parsing with supertags.
-    Using the parameters, we are able to obtain results among the state-of-the-art in the field of discontinuous parsing.\todo{den ersten teil mehr zusammenfassen, preliminaries und grammars sollten hier nicht mehr auftauchen; supertagging erwähnen}
-    In comparison to parsers that rely on statistical grammars, we achieve more accurate results while being magnitudes faster.
+    We experimented with three discontinuous constituent treebanks and two neural network architectures to implement the prediction.
+    \Cref{sec:gridsearch,sec:gridsearch:other} show our vast experiments to find feasible parameters for extracting and parsing with supertags.
+    Using the parameters, we are able to obtain results among the state-of-the-art in the field of discontinuous parsing.
+    Compared to parsers relying on statistical grammar formalisms, we achieve more accurate results while being magnitudes faster.
     
     We show the number of extracted supertags for varying extraction parameters in \cref{sec:gridsearch,sec:gridsearch:other}.
     Compared to the sets of grammar rules extracted for statistical parsing, these are quite small.
-    For instance, \citet[cf.\@ Figure 7.4]{Geb20} reports grammars ranging from 60 thousand to 50 milion rules depending on the grade of refinement; the smallest ones have no practical relevance, however, as parsing with them is too inaccurate.\footnote{
-        \citet{CraSchBod16} do not list the number of extracted fragments in their experiments, but from the results of \citet{San11} we suppose the are in the around the order of milions as well.
+    For instance, \citet[cf.\@ Figure 7.4]{Geb20} reports grammars ranging from 60 thousand to 50 million rules depending on the grade of refinement; the smallest ones have no practical relevance, however, as parsing with them is too inaccurate.\footnote{
+        \citet{CraSchBod16} do not list the number of extracted fragments in their experiments, but from the results of \citet{San11}, we suppose they are also in the order of millions.
     }
     For the same treebank, we used a set of 2075 supertag blueprints in our final models.
-    \citet{Geb20} put the argument for the interpretability grammar-based parsing for natural language into question, as the instances extracted from treebanks tend to grow vast.
-    We suggest that the extraction of supertag blueprints is an appropriate measure for the extraction of compact and controllable grammars and their argument does not hold to it.
-    \todo{vergleich mit anderen supertag größen}
+    \citet{Geb20} put the argument for the interpretability of grammar-based parsing for natural language into question, as the instances extracted from treebanks tend to grow vast.
+    We suggest that extracting supertag blueprints is an appropriate measure for extracting compact and controllable grammars, and their argument does not hold to it.
+    \citet[][in Table 1]{Bla18} report they extract two sets of \abrv{tag} supertags from the treebank, a small set with 2516 and a full set with 3426 supertags; the set we use in our final model is smaller than these two.
+    However, they achieve higher accuracy in the prediction of supertags.
 
-    During the search for viable hyperparamters in \cref{sec:gridsearch,sec:gridsearch:other} we noted some trends worth mentioning.
-    We experimented with six different guide constructors that dertermine the structure of the lexicalized grammar derivations. Aside from two of them, namely the near and least guide constructors, we could achieve quite similar prediction and parsing accuracy for models trained using supertag blueprints with each guide constructor.
+    While searching for viable hyperparamters in \cref{sec:gridsearch,sec:gridsearch:other} we noted some trends worth mentioning.
+    We experimented with six different guide constructors that determine the structure of the lexicalized grammar derivations. Aside from two of them, namely the near and least guide constructors, we could achieve similar prediction and parsing accuracy for models trained using supertag blueprints with each guide constructor.
     Even with supertag blueprints extracted with the least or near guide constructor, the differences in parsing f-score were around 4 points among each model; we expected much greater margins before conducting the experiments.
     However, the experiments show notable differences in the number of extracted supertag blueprints for each extraction parameter.
     Specifically, we show the smallest sets of supertags in a new series of experiments that exclusively use definite clause programs as grammar formalism in \cref{sec:gridsearch:dcp}.
-    The formalism allows us to further reduce the set of nonterminal symbols and omits the string composition function that appears in hybrid grammar rules.
-    Even with such configurations that achieve the very small sets of extracted supertag blueprints, most experiments show only marginal differences in parsing accuracy.
+    The formalism allows us to reduce the set of nonterminal symbols further and omits the string composition function that appears in hybrid grammar rules.
+    Even with such configurations that achieve very small sets of extracted supertag blueprints, most experiments show only marginal differences in parsing accuracy.
     On the other hand, experiments with the constituent symbol clusters we used to construct coarse nonterminals in \cref{sec:gridsearch:coarse} show worse parsing but slightly higher supertag prediction accuracy.
-    Further research could find more appropriate clusters to further reduce the set of nonterminals while maintaining the parsing accuracy.
+    Further research could find more appropriate clusters to reduce the set of nonterminals while maintaining the parsing accuracy.
 
     We also want to underline the set of experiments with the head guide constructor added in this work.
-    Despite that the sets of supertag blueprints tend to be (much) larger than with the strict guide constructor, they achieve similar parsing accuracy in the end; in the case of \abrv{dptb} we even decide for the head guide constructor for the supervised model.
-    We suggest these experiments are with mentioning because the extraction process utilizing the head assignment is more akin to the strategy to extract tree-adjoining grammar supertags as done, for instance, by \cite{Kaeshammer2012GermanAE, Bla18}.
+    Despite that the sets of supertag blueprints tend to be (much) larger than with the strict guide constructor, they achieve similar parsing accuracy in the end; in the case of \abrv{dptb}, we even decide for the head guide constructor for the supervised model.
+    We suggest these experiments are worth mentioning because the extraction process utilizing the head assignment is more akin to the strategy to extract tree-adjoining grammar supertags as done, for instance, by \cite{Kaeshammer2012GermanAE, Bla18}.
     Further research could investigate the similarities and differences between these approaches to find improvements.
-    We chose to abstain those investigations as we wanted to focus on treebank-independent approaches for the extraction.
+    We chose to abstain from those investigations to focus on treebank-independent approaches for the extraction.
 
     The experiments also show that our attempt at improving the parsing accuracy with a reranking procedure fails.
-    We chose the discontinuous data-oriented parsing as a formalism for the task for two reasons.
-        Firstly, we chose a grammar formalism because we did not want to indroduce some other discriminative classifier on top of the supertagging prediction, as this would undermine the interpretability of the parsing approach.
-        Secondly, \citet{CraSchBod16} already showed that the formalism can be used to improve the results of parsing with linear context-free rewriting systems.
-    But the oracle f-scores in \cref{sec:gridsearch:reranking} suggest that there is potential of improvement by choosing among one of \(n\) best constituent trees found by parsing with the predicted supertags.
-    We suppose that a viable reranking approach can be found in some further research.
+    We chose discontinuous data-oriented parsing as a formalism for the task for two reasons.
+        Firstly, we chose a grammar formalism because we did not want to introduce some other discriminative classifier on top of the supertagging prediction, as this would undermine the interpretability of the parsing approach.
+        Secondly, \citet{CraSchBod16} already showed that this formalism can be used to improve the results of parsing with linear context-free rewriting systems.
+    But the oracle f-scores in \cref{sec:gridsearch:reranking} suggest a potential for improvement by choosing among one of \(n\) best constituent trees found by parsing with the predicted supertags.
+    We suppose a viable reranking approach can be found in further research.
 
-    All in all, we suppose that our approach is a viable compromise between the advantages of parsing with strong discriminative classifiers and the merits of grammar-based parsers.
-    Even with exclusively supervised models, we achieve higher accuracy scores in less parse time compared to state-of-the-art parsers solely based on grammars.
-    Supertagging also has the benefit that it is able to use pretrained models utilizing knowledge that is not part of the treebanks used to extract the grammar rules.
-    With said models, we are able to parse as accurate as other stat-of-the-art parsers for discontinuous constituents.
-    In the recent years, some parts of the \abrv{nlp} community have written off parsing with grammar formalisms as being too unaccurate and slow (cf. \citealp{StaSte20} in Section 1, \citealp{zhang2020survey} in Section 10).
+    Our approach is a viable compromise between the advantages of parsing with robust discriminative classifiers and the merits of grammar-based parsers.
+    Even with exclusively supervised models, we achieve higher accuracy scores in less parse time than state-of-the-art parsers solely based on grammar formalisms.
+    Supertagging also has the benefit of using pre-trained models utilizing knowledge that is not part of the treebanks used to extract the grammar rules.
+    With said models, we can parse as accurately as other stat-of-the-art parsers for discontinuous constituents.
+    In recent years, some parts of the \abrv{nlp} community have written off parsing with grammar formalisms as being too inaccurate and slow (cf. \citealp{StaSte20} in Section 1, \citealp{zhang2020survey} in Section 10).
     We tend to agree regarding approaches that solely rely on grammar formalisms.
     But we suggest this work gives enough evidence that these formalisms can act as a solid foundation for parsers that combine them with strong machine learning models.
 \end{document}
