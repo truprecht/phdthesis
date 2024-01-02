@@ -236,7 +236,7 @@
     They illustrate a hierarchy of sub-phrases in the sentence, where a category labels each element in the hierarchy, called \deflab<constituent tree>[csymbol]{constituent symbol}.
     These sub-phrases do not necessarily form contiguous regions in the sentence:
     If such a tree contains a node with a non-contiguous sub-phrase, we call it \deflab<constituent tree>{discontinuous}; otherwise, it is \deflab<constituent tree>{continuous}.
-    E.g.\@ \cref{fig:pre:ctree} illustrates a discontinuous constituent tree.
+    For instance, \cref{fig:pre:ctree} illustrates a discontinuous constituent tree.
     The symbols at inner nodes, like \(\cn{s}\) and \(\cn{vp}\), are constituent symbols.
     The lower node labeled by \(\cn{vp}\) governs a noncontiguous region in the sentence: \emph{where} and \emph{carried out}.
 
@@ -255,14 +255,9 @@
     \end{figure}
 
     The first layer of nodes in a constituent tree above phrase positions contains distinct symbols called \emph{part of speech} (\abrv{pos}) tags.
-    They are mutually exclusive to constituent symbols in upper layers, i.e., each symbol occurring at the first layer must be a \abrv{pos} tag and no other constituent symbol, and each symbol above the first layer must not be a \abrv{pos} symbol.
+    They are mutually exclusive to the constituent symbols found in upper layers, i.e., each symbol occurring at the first layer must be a \abrv{pos} tag and no other constituent symbol, and each symbol above the first layer must not be a \abrv{pos} symbol.
     They indicate the most primitive categorization of individual tokens in the sentence.
     In our example tree, the symbols \(\cn{wrb}\) and \(\cn{pt}\) are \abrv{pos} tags.
-
-    Within a constituent tree, we consider a \emph{lexical head} as the critical token for a syntactic category (i.e. the constituent symbol) of a phrase.
-    Each inner node in the constituent tree has exactly one position in the sentence predestined for this role.
-    Vice versa, a position may be the lexical head of multiple inner nodes.
-    However, there is one condition: The lexical head must either be a leaf directly below the node or a lexical head of a child node.
 
     Now, let us formalize the above.
     We assume a set \(\Sigma\) of words, punctuation marks, parentheses, etc.\@ that are used to form sentences; we call the elements in \(\Sigma\) \deflab{token}[tokens].
@@ -278,10 +273,19 @@
     In each constituent tree, we distinguish three parts: the sequence of tokens, the \abrv{pos} tag above each token, and the \deflab<constituent tree>[cstruct]{constituent structure} that contains the constituent symbols and defines the hierarchical structure.
     To accommodate discontinuous constituents, each constituent structure is defined as an indexed tree over \(\varGamma\) so that each leaf is the position of a token.
 
-    \(\head(t)\) denotes the leaf that indexes the lexical head for the root in the constituent structure \(t\).
-    When a tree is illustrated, and its lexical heads are considered, then, for each inner node in the constituent structure, the path to its lexical head is double-struck.
-    \Cref{fig:pre:ctree} shows an example.
-    %    We call each direct child that does not contain the lexical head a \emph{modifier}.
+    A \emph{head assignment for $(t,p,w)$} is a function \(h\colon \pos(t) \to \DN_+\) assigning each inner node position in the constituent structure \(t\) to one of the leaves at or below it.
+    For each \(\rho \in \lpos\), the value \(h(\rho)\) is \(\xi(\rho)\); for each \(\rho \in \npos(t)\), $h$ must assign the value \(h(\rho)\) to a child inner node as well, i.e. \[
+        h(\rho) \in \{ h(\rho') \mid \rho' \in \children_t(\rho) \} \text{.}
+    \]
+    The \emph{lexical head assignment for $(t,p,w)$} is such a head assignment.
+    For each (sub-)phrase within \(w\) that is governed by the node at position \(\rho \in \npos(t)\), it determines the word that is critical for the constituent symbol \(t(\rho)\).
+    We consider the lexical head assignment a complementary and fixed object for each constituent tree; the identifier \(\head_{(t,p,w)}\) denotes the lexical head assignment for \((t,p,w)\).
+    The leaf \(\head_{(t,p,w)}(\rho)\) is called the \emph{lexical head} of the node at \(\rho\).
+    When the lexical head assignment is considered in an illustration of a constituent tree, there is exactly one double-struck path exiting each inner node of the constituent structure.
+    The assigned lexical head is found by following the double-struck edges down to a leaf.
+    For instance, \cref{fig:pre:ctree} shows such an illustration and the lexical head of its root is \(4\) (representing the fourth word ``was'' in $w$).
+    Let us assume a binary constituent structure \(t\) and an inner node position \(\rho \in \npos(t)\).
+    If the leaf \(\head_{(t,p,w)}(\rho)\) is located at or below position \(\rho \cdot 1\), then the subtree at \(\rho \cdot 2\) is called the \deflab[dependent]{dependent of $\rho$}; vice versa, the subtree at \(\rho \cdot 1\) is called dependent of $\rho$ if \(\head_{(t,p,w)}(\rho)\) is at or below \(\rho \cdot 2\).
 
     A \emph{treebank} is a finite set of constituent trees.
     They are assembled by linguists for texts collected from news articles, written speeches, etc., and annotated with their constituent structure.
@@ -291,11 +295,11 @@
     \emph{Reranking} is a process that uses such a collection of potential constituent trees for a sentence and produces new confidence values.
     It is used as a refinement for a set of candidate constituent trees and often involves more ambitious or orthogonal methods to the underlying \(k\) best parser.
 
-    Besides constituent trees, there are \emph{dependency trees} that express a syntactic analysis of natural language.
+    Besides constituent trees, there are also \emph{dependency trees} that express a syntactic analysis of natural language.
     They present grammatical relations between phrases within a sentence, such as arguments, adjuncts, complements, and sometimes even more fine-grained ones, like distinctions between subjects and objects.
-    These relations are illustrated in a tree where each phrase is represented by its head.
+    These relations are illustrated in a tree where each phrase is represented by its lexical head.
     There are similar phenomena as (dis-)continuity in dependency trees. They are referred to as \emph{(un-)projectivity}.
-    We will not engage in dependency trees in this work. Some references are discussed in \cref{sec:literature}.
+    We will not engage in dependency trees in this work. Some references are discussed in \cref{sec:literature:beyond}.
 
     \subsection{Assessing the Prediction of Constituent Structures}
     When assessing the quality of a parser, we measure two dimensions:

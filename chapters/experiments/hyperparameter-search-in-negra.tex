@@ -226,12 +226,14 @@ coarse  & \(1\) & \(1\) & 89.82 & 0.88 &  8 & 88.98 & 0.87 & 23 & 89.29 & 0.87 &
     \end{itemize}
 
     \subsection{Experiments with Head and Dependent Guides}\label{sec:gridsearch:head}
-    This section describes a series of experiments involving the two guide constructors that utilize the head assignment for constituent trees.
-    As laid out in \cref{sec:extraction:dependency}, using the head guide in the extraction of supertag blueprints shares some similarities with constructing grammars for dependency parsing.
-    We introduced a specific rank transformation (head-inward) in \cref{sec:extraction:bin:hi} that mimics some aspects of binarization but induces trees with a similar head assignment as the original constituency structure.
-    Both guide constructors in this section do require certain knowledge about the corpus or additional data.
-    The three corpora that we use are not equipped with assignments for the lexical heads, but we use a heuristic implementation supplied by \texttt{disco-dop} to obtain these.
+    This section describes a series of experiments involving the two guide constructors that utilize the lexical head assignment for constituent trees.
+    The three corpora that we use are not equipped with lexical head assignments, but we use a heuristic implementation supplied by \texttt{disco-dop} to obtain them.
     The approach is not applicable in settings where this kind of data is not available.
+
+    As laid out in \cref{sec:guides}, using the head guide in the extraction of supertag blueprints shares some similarities with constructing grammars for dependency parsing.
+    We introduced a specific rank transformation (head-inward) in \cref{sec:extraction:bin:hi} that mimics some aspects of binarization but induces trees with a complementary lexical head assignment for the head guide constructor.
+    The other rank transformation strategies are not reasonable in conjunction with this constructor, therefore we restrict the grid search accordingly.
+    Similarily, the dependent guide constructor is only applicable in the case of head-outward binarized constituent trees and we restrict the grid search accordingly.
 
     We conduct a grid search with the following chunk of hyperparameters and values:
     \begin{itemize}

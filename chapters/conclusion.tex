@@ -5,7 +5,7 @@
     This chapter concludes the thesis with a summary of our contributions and results and gives some pointers for future work.
 
     \Cref{sec:extraction} describes two extraction procedures for lexicalized grammars from discontinuous constituent treebanks.
-    Both of them make no assumptions about the constituent treebanks by themselves, but the section also introduces extensions to utilize head assignments in the extraction.
+    Both of them make no assumptions about the constituent treebanks by themselves, but the section also introduces extensions to utilize lexical head assignments in the extraction.
     The first procedure is concerned exclusively with \abrv{lcfrs} as grammar formalism, and the second is used to extract either \abrv{lcfrs}/\abrv{dcp} hybrid grammars or \abrv{dcp}.
     \Cref{sec:parsing} describes a parsing framework that exploits the extracted lexical grammar rules:
         A discriminative classifier predicts a small number of lexical rules per input sentence position, which are then used to parse the sentence with a small grammar; the prediction step is called supertagging.
@@ -38,7 +38,7 @@
 
     We also want to underline the set of experiments with the head guide constructor added in this work.
     Despite that the sets of supertag blueprints tend to be (much) larger than with the strict guide constructor, they achieve similar parsing accuracy in the end; in the case of \abrv{dptb}, we even decide for the head guide constructor for the supervised model.
-    We suggest these experiments are worth mentioning because the extraction process utilizing the head assignment is more akin to the strategy to extract tree-adjoining grammar supertags as done, for instance, by \cite{Kaeshammer2012GermanAE, Bla18}.
+    We suggest these experiments are worth mentioning because the extraction process utilizing the lexical head assignment is more akin to the strategy to extract tree-adjoining grammar supertags as done, for instance, by \cite{Kaeshammer2012GermanAE, Bla18}.
     Further research could investigate the similarities and differences between these approaches to find improvements.
     We chose to abstain from those investigations to focus on treebank-independent approaches for the extraction.
 

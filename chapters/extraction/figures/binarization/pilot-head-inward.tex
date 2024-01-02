@@ -14,14 +14,17 @@
             \tn{And}\strut & \tn{neither}\strut & \tn{can}\strut & \tn{your}\strut & \tn{pilot}\strut & \tn{.}\strut \\
         };
 
-        \node[above=22mm of pos-1-3] {\cn{s}}
+        \node[above=27.5mm of pos-1-3] {\cn{s}}
         [sibling distance=6em]
         child {
             node {\cn{s}\binsyml{}}
             child {node[above=1mm of pos-1-1] {1}}
-            child { node[above=8.5mm of pos-1-2] {\cn{advp}}
+            child { node[above=14mm of pos-1-2] {\cn{s}\binsymr{}}
                 child {
-                    node[above=1mm of pos-1-2] {2}
+                    node {\cn{advp}}
+                    child {
+                        node[above=1mm of pos-1-2] {2}
+                        edge from parent[double]}
                     edge from parent[double]}
                 edge from parent[double]}}
         child {
@@ -36,7 +39,11 @@
                     node[above=1mm of pos-1-5] {5}
                     edge from parent[double]}
                 edge from parent[double]}
-            child {node[above=1mm of pos-1-6] {6}}};
+            child {
+                node[above=14mm of pos-1-6] {\cn{s}\binsymr{}}
+                child {
+                    node[above=1mm of pos-1-6] {6}
+                    edge from parent[double]}}};
 
         % redraw corssing edges with white foundation
         %        \begin{scope}

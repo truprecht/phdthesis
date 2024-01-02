@@ -45,11 +45,11 @@
     \section*{Analyzing the Syntax of Natural Language Sentences}
     Two major forms express the syntax of natural language: \deflab{dependency graphs} and \deflab{constituent trees}.
     The analyzation and illustration of a natural language phrase in such an expression is called \deflab{parsing}.
-    Dependency graphs describe relations between the words of a sentence, such as the \emph{head-dependent relation} that identifies the central word of each (sub-)phrase as \emph{head} and connects its subphases as \emph{dependents}. \citep[Section 18.1]{Jur23}
+    Dependency graphs describe relations between the words of a sentence, such as the \emph{lexical head-dependent relation} that identifies the central word of each (sub-)phrase as \emph{lexical head} and connects its subphases as \emph{dependents}. \citep[Section 18.1]{Jur23}
     \Cref{fig:dependency} shows examples for dependency graphs.
     They consist of the analyzed sentence and an arrow for each word in the sentence.
     The arrow from above indicates the root of the dependency graph.
-    Each arrow between two words depicts a head-dependent relation; the arrow's base is at the head, and the tip is at the dependent.
+    Each arrow between two words depicts a lexical head-dependent relation; the arrow's base is at the lexical head, and the tip is at the dependent.
     E.g.\@ ``was'' is the root, and ``survey'' is a dependent of ``was'' in both graphs. 
             
     A constituent tree illustrates a hierarchy of (sub-)phrases in a sentence; each phrase is labeled with a common category that denotes its function within the sentence or in a superseded phrase.
@@ -58,8 +58,7 @@
     At the next higher level, there are part-of-speech tags, which constitute the most simple syntactic structures in natural language and classify the role of each single word.
     Each symbol beyond that denotes a constituent with connections drawn to all words or subphases that are part of the constituent.
     E.g.\@ in the first tree, ``survey'' is a word in the sentence, ``\cn{nn}'' is its assigned part-of-speech tag \emph{noun}, and the symbol ``\cn{np}'' above it denotes a \emph{noun phrase} that consists of ``the survey''.
-    These two expressions for the syntax are not mutually exclusive, and we will later consider head-dependent relations as an extension for constituent trees.
-    But for now, we focus on constituent trees.
+    These two expressions for the syntax are not mutually exclusive, and we will later consider lexical head as an extension; but for now, we focus on constituent trees.
 %    We will sometimes consider constituent trees where each constituent is extended by a head assignment, including a head-dependent relation.
 %    In that case, the constituent trees are illustrated using double-struck edges that indicate the word in the sentence that acts as the head of the phrase.
 %    For each word in the sentence and for each constituent where the word is the head, the head of each child constituent is then dependent if it is unequal.

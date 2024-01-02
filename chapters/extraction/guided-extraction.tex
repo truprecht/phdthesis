@@ -282,12 +282,18 @@
     This also requires special treatment concerning binarization, which is applied to the constituent structures for the two following guide constructors.
     This is explained further in the following paragraphs.
 
-    \paragraph{Head Guide Constructor.}\deflab<guide>[hguide]{head guide (constructor)}[] \todo{die Zuweisung der Heads sollte teil der Konstituentenbäume sein}
-    As the name suggests, these guides assign the head position to each inner node of the constituent structure.
-    This implements an intuitive approach to deal with the relation between the inner nodes and their assigned head position: For each lexical symbol, there will be a lexical rule that contains the information to produce precisely the inner nodes it is head of.
-    Naturally, this requires that the constituent structure is equipped with the necessary head assignment.
-    And we have to remember that there is no sensible head assignment for binarized constituent trees in general.
-    Therefore, we limit this guide constructor to the cases of plain (i.e., without rank transformation) or head-inward transformed (cf.\@ \cref{sec:extraction:bin:hi}) constituent trees.
+    \paragraph{Head Guide Constructor.}\deflab<guide>[hguide]{head guide (constructor)}[]
+    As the name suggests, these guides assign the lexical head to each inner node of the constituent structure.
+    This implements an intuitive approach to deal with the relation between the inner nodes and their assigned lexical head: For each lexical symbol, there will be a lexical rule that contains the information to produce precisely the inner nodes it is head of.
+    Naturally, this requires that the constituent structure is equipped with the necessary lexical head assignment.
+
+    With this guide, our grammar extraction procedure aims to mimic the strategies established in dependency parsing \citep{kuhlmann2009treebank} as follows:
+    \begin{itemize}
+        \item Each constituent structure is interpreted as dependency tree by combining the nodes that are assigned to the same lexical head. This will yield a tree consisting of sentence positions, each occurring exactly once.
+        \item The \abrv{lcfrs} compositions are constructed then in the same manner as for dependency grammars: There is one for each position in the sentence; it is constructed using the ordered contiguous sequences of positions in the subtree rooted at the position such that, for each child, its sequences of positions are replaced by appropriate variable symbols.
+        \item The resulting derivation has the same shape as the dependency tree. For each position in the dependency tree for the lexical head \(i\), there is a lexical rule with the terminal \(i\) in the derivation at the same position.
+    \end{itemize}
+    \Cref{sec:extractionalg} shows an example for the extraction of a derivation using the head guide.
 
     \begin{theorem}
         Let \(\xi\) be an indexed tree with a head assignment.
@@ -307,7 +313,7 @@
         If \(\head(\xi|_\rho) = \head(\xi|_{\rho'})\), we see again quickly the property as mentioned earlier that this leaf must also be the head at all positions between \(\rho\) and \(\rho'\).
     \end{proof}
 
-    \paragraph{Dependent Guide Constructor.}\label{sec:extraction:dependency}\deflab<guide>[vguide]{dependent guide (constructor)}[]
+    \paragraph{Dependent Guide Constructor.}\deflab<guide>[vguide]{dependent guide (constructor)}[]
     Dependent guides aim to offer assignments that complement head-outward binarized constituent structures.
     They assign the head of a dependent to each inner node in the constituent structure.
     We consider these guides only for head-outward binarized constituent structures, as each inner node has precisely one dependent.
@@ -498,7 +504,7 @@
     \begin{wrapfigure}[8]{r}{0pt}
         \subfile{figures/guides/example-guide-head.tex}
     \end{wrapfigure}
-    \parexample
+    \parexample\label{ex:extraction:head}
     The tree to the right shows a running example with the usual illustration of values assigned by a guide next to each inner node.
     The partial function \(\phi^{\text{top}}\) only assigns the topmost node to each leaf; the assigned values are illustrated in circles if the position is in the preimage of the function.
     Instead of the top three nodes, only the \nt{sbar} node at position \(\varepsilon\) is mapped to \(4\) in the example; the two following nodes (with symbols \nt{s} and \nt{vp}) are not defined in \(\phi^{\text{top}}\).
@@ -514,19 +520,52 @@
     \begin{center}
         \subfile{figures/hybrid/headed.tex}
     \end{center}
+    \exampleqed
 
-    \begin{wrapfigure}[6]{r}{0pt}
-        \subfile{figures/hybrid/ho-head.tex}
+    % \begin{wrapfigure}[6]{r}{0pt}
+    %     \subfile{figures/hybrid/ho-head.tex}
+    % \end{wrapfigure}
+    % \parexample
+    % The example to the right shows a head-outward binarized constituent structure with values assigned by a head guide.
+    % The position for the node that was introduced during the binarization procedure (with symbol \(\cn{vp\,\binsym{}}\)) is mapped to the head of the original node, which must also be a descendant with the head-outward strategy.
+    % This example shows how the extraction procedure does not preserve the structure from the binarization in the case of the head guide.
+    % When all nodes formed during binarization are assigned to the same leaf, they are part of the same rule.
+    % The resulting derivation is equivalent to extracting the plain (unbinarized) constituent structure, as shown in the previous example.
+    % \begin{center}
+    %     \subfile{figures/hybrid/ho-headed-deriv.tex}
+    % \end{center}
+
+    \subsection{Viable Combinations of Extraction Parameters}\label{sec:viable-paramters}
+    \Cref{sec:binarization,sec:ntconstructors,sec:guides} introduced parameters for the extraction procedure.
+    As we have seen in \cref{sec:guides}, the guide constructors expect different prerequisites such that not all combinations of parameter values are compatible.
+    The vanilla, strict, least and near guide constructors make no assumptions regarding the binarization strategy and can be freely combined.
+    However, we suspect the vanilla and strict guide constructors are best combined with right-branching binarization because these guides are defined via the right successor of each node.
+    
+    The dependent guide constructor expects a binary constituent structure complemented by a head assignment; thus, it can only be coupled it with the head-outward binarization strategy.
+    Similarly, the head guide constructor expects a head assignment and cannot be coupled with the left- or right-branching binarization strategy.
+    Formally, the head-outward binarization strategy produces viable inputs for the head guide constructor, but the canonical head assignments are not useful when it comes to the extraction:
+        A head guide will combine all artificial nodes that are introduced during the binarization and assigned to the same lexical head; hence the effects of the rank transformation are void.
+    The following example illustrates this setting; it produces a rule of rank four that combines all nodes introduced during the head-outward binarization of the former root labeled \cn{s}.
+    In our experiments, we use the head guide constructor exclusively in case of no applied rank transformations or in case of the head-inward transformation.
+
+    \begin{wrapfigure}[7]{r}{0pt}
+        \subfile{figures/hybrid/pilot-ho-head.tex}
     \end{wrapfigure}
-    \parexample
-    The example to the right shows a head-outward binarized constituent structure with values assigned by a head guide.
-    The position for the node that was introduced during the binarization procedure (with symbol \(\cn{vp\,\binsym{}}\)) is mapped to the head of the original node, which must also be a descendant with the head-outward strategy.
-    This example shows how the extraction procedure does not preserve the structure from the binarization in the case of the head guide.
-    When all nodes formed during binarization are assigned to the same leaf, they are part of the same rule.
-    The resulting derivation is equivalent to extracting the plain (unbinarized) constituent structure, as shown in the previous example.
+    \parexample[Continues \cref{fig:ex:markovization}]
+    Consider the constituent structureafter applying the head-outward binarization strategy from the previous example  together with the values assigned by its head guide.
+    All nodes that originate from the \cn{s} constituent are assigned to the lexical head \(3\).
+    For the root position $\rho_0 = \varepsilon$, there are four descendant positions that are assigned to different lexical heads: $\rho_1 = 1\,1\,1$, $\rho_2=1\,1\,2$, $\rho_3 =1\,2$ and $\rho_4=2$.
+    Three of them, namely $\rho_1$, $\rho_2$ and $\rho_4$, are positions of the leaves 1, 2 and 6, respectively; the position \(\rho_3\) points to the subtree with the $\cn{np}$ node.
+    The compositions constructed for the root position assume four arguments; the \abrv{dcp} composition contains all the artificial nodes introduced during the binarization.
+    The following illistration shows the resulting derivation.
     \begin{center}
-        \subfile{figures/hybrid/ho-headed-deriv.tex}
+        \subfile{figures/hybrid/pilot-ho-head-deriv.tex}
     \end{center}
+    \exampleqed
+
+    Aside from these restrictions of compatible binarization strategies and guide constructors, the nonterminal constructors and Markovization paramters can be chosen freely.
+    They determine the structure and number of the extracted supertag blueprints.
+    \Cref{sec:gridsearch,sec:gridsearch:other} show a vast series of experiments that extract supertag blueprints using many different combinations of extraction parameters.
 
     \ifSubfilesClassLoaded{%
         \printindex

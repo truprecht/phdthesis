@@ -1,0 +1,18 @@
+\documentclass[../../../../document.tex]{subfiles}
+
+\begin{document}
+    \begin{tikzpicture}[baseline=(n.north),level distance=8ex, font=\small, inner sep=2pt, level 1/.style={sibling distance=6em}]
+        \node (root) {\(\nt{s} \to (\x_1^1\,\x_2^1\,\tn{3}\,\x_3^1\,\x_4^1)\;
+                    (\cn{s} (\cn{s}\binsyml{}(\cn{s}\binsyml{}(\x_1\,\cn{s}\binsymr{}(\x_2\,\tn{3}))\,\x_3)\,\x_4))\,
+                    (\text{arg}(\nt{s}\binsyml{}), \text{arg}(\nt{s}\binsymr{}), \nt{np}, \text{arg}(\nt{s}))\)}
+        child {
+            node (s1) {\(\text{arg}(\nt{s}\binsyml{}) \to (1)\;(1)\)}}
+        child {
+            node[yshift=-4ex,xshift=-3em] (s2) {\(\text{arg}(\nt{s}\binsymr{}) \to (2)\;(2)\)}}
+        child {
+            node[xshift=2em, yshift=-8ex] (n) {\(\nt{np} \to (\x_1^1\,\tn{5})\;(\cn{np} (\x_1 \, \tn{5}))\,(\text{arg}(\nt{np}))\)}
+            child {node[yshift=3ex] {\(\text{arg}(\nt{np}) \to (\tn{4})\;(\tn{4})\)}}}
+        child {
+            node  (s4) {\(\text{arg}(\nt{s}) \to (6)\;(6)\)}};
+    \end{tikzpicture}
+\end{document}
