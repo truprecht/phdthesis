@@ -441,18 +441,13 @@ coarse (table) & 1 & 1 & 86.97 & 0.88 & 11.90 & 7 & 85.33 & 0.86 & 13.16 & 73 & 
     These blueprints are extracted without the \abrv{lcfrs} composition, everything else stays the same.
     Alas, the sets of extracted blueprints can inherently be seen as more \emph{coarse} in the same sense as with nonterminals:
         If we fix every other hyperparameter and compare \abrv{dcp} supertag blueprints with hybrid grammar supertag blueprints, then the former defines a partition of the latter; i.e.\@ for each hybrid grammar blueprint there is exactly one \abrv{dcp} blueprint that just differs in the missing composition.
-    In contrast to \abrv{lcfrs} and hybrid grammars, \abrv{dcp} do not rely on fanout-consistent nonterminal symbols.
-    We conduct experiments with two extensions to classic and coarse nonterminals:
-    \begin{itemize}
-        \item We replace the fanout subscript for each nonterminal with the subscript ``\(_{\text{disc}}\)'' if it is greater than \(1\), or remove it if it is \(1\). These nonterminals are denoted with the suffix ``\emph{-disc}'' attached to classic or coarse nonterminals, respectively.
-        \item We remove the fanout subscript for each nonterminal without any replacement. These nonterminals are denoted with the suffix ``\emph{-nof}'' attached to classic or coarse nonterminals, respectively.
-    \end{itemize}
-    Both of these extensions lead to coarser nonterminals than those without extension; particularly nonterminals with the -nof extension are coarser than those with -disc.
+    The \emph{nof} and \emph{disc extension} for the classic and coarse nonterminal constructor lead to even coarser sets of blueprints.
+    In particular, nonterminals with the disc extension are coarser than those without the extension; and the nonterminals with nof extension are coarser then those with the disc extension.
 
     We repeat the experiments of the previously obtained sets of configurations and extract \abrv{dcp} blueprints.
     We conduct a grid search with the following chunk of hyperparameters and values:
     \begin{itemize}
-        \item We construct classic and coarse nonterminals, each either as usual or with -disc or -nof extension.
+        \item We construct classic and coarse nonterminals, each either as usual or with disc or nof extension.
         \item We use the strict, dependent, and head guide constructors.
     \end{itemize}
     The following hyperparameters are fixed:
@@ -489,7 +484,7 @@ coarse-nof   & 1181 & 9  & 97.19  & 1991 & 27 & 131.15 & 2766 & 45 & 79.70 \\
     The lines marked with (hg) above the results for each nonterminal constructor show the previous experiments with hybrid grammar supertag blueprints for comparison.
     Each experiment in the three following lines can be seen as an experiment with coarser supertag blueprints than the one before:
         First with \abrv{dcp} instead of hybrid grammar as underlying formalism which essentially removes the \abrv{lcfrs} composition, and then with two incrementally coarser sets of nonterminals.
-    The greatest change in the size of the extracted sets of blueprints comes with the removal of the fanout annotations (\emph{-nof} nonterminals).
+    The greatest change in the size of the extracted sets of blueprints comes with the removal of the fanout annotations (nof extension).
 
     \begin{table}
         \caption{\label{tbl:gridsearch:dcp:2}
@@ -541,13 +536,13 @@ coarse-nof  & 90.97 & 0.90 & 9.43 & 0 & 90.42 & 0.88 & 16.05 &  6 &   --- &  ---
     \end{table}
 
     \Cref{tbl:gridsearch:dcp:2,tbl:gridsearch:dcp:3} show the values involved in supertag prediction and parsing with the extracted supertag blueprints.
-    For both models, there are 2 cases where no values are shown, both for the head guide constructor and nonterminals with \emph{-nof} extension.
+    For both models, there are 2 cases where no values are shown, both for the head guide constructor and nonterminals with nof extension.
     In these cases, we noticed unreasonably long parsing times during the experiments and canceled the training after 10 hours.
     Aside from these two cases, both tables tend to show very close scores in terms of the parsing and supertag prediction accuracy when comparing results with hybrid grammar and \abrv{dcp} supertags within a combination of guide and nonterminal constructors.
     Generally, the supertag prediction accuracies are about equal in all cases per model.
     However, in the case of the \abrv{dcp} supertags, we recorded massive increases in parse time in the columns for the head and dependent guide constructors and both nonterminal constructors with the two extensions.
     Among the groups with the same nonterminal and guide constructors, the f1 scores tend to be higher with some configuration of \abrv{dcp} supertags.
-    Specifically in the case of the pretrained model, \abrv{dcp} supertags with \emph{-nof} extension performed consistently better in the four groups, and \abrv{dcp} supertags with \emph{-disc} extension performed better in the five out of six groups.
+    Specifically in the case of the pretrained model, \abrv{dcp} supertags with nof extension performed consistently better in the four groups, and \abrv{dcp} supertags with disc extension performed better in the five out of six groups.
     The table for the supervised model does not show clear trends in terms of the parsing scores.
 
     In conclusion, this section shows some, to our mind, very important results that suggest that the \abrv{lcfrs} compositions do not seem that important for the parsing accuracy with supertags.
@@ -557,7 +552,7 @@ coarse-nof  & 90.97 & 0.90 & 9.43 & 0 & 90.42 & 0.88 & 16.05 &  6 &   --- &  ---
     We continue the experiments with each configuration for hybrid grammar and \abrv{dcp} supertags, and each the pre-trained and supervised model as follows:
     \begin{compactenum}
         \item the supervised model with \abrv{lcfrs} or \abrv{dcp} supertags, in both cases with the strict guide and classic nonterminal constructors (without extensions),
-        \item the pre-trained model with \abrv{lcfrs} or \abrv{dcp} supertags, in both cases with the strict guide and coarse nonterminal constructors, in case of \abrv{dcp} supertags with \emph{-nof} extended nonterminals.
+        \item the pre-trained model with \abrv{lcfrs} or \abrv{dcp} supertags, in both cases with the strict guide and coarse nonterminal constructors, in case of \abrv{dcp} supertags with nof extended nonterminals.
     \end{compactenum}
 
     \subsection{Experiments with Parsing Parameters and Reranking}\label{sec:gridsearch:reranking}

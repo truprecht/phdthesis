@@ -10,7 +10,7 @@
         \item we omit the vanilla nonterminal constructor and the coarse nonterminal constructor with auxiliary table (leaving 2 options), 
         \item we only use right branching binarization in case of the strict guide constructor, and the head guide constructor in tandem with head-inward transformation,
         \item we use the Markovization parameters \(h = 0\) and \(v \in \{1,2\}\) (leaving two options),
-        \item in case of \abrv{dcp} supertags, we only investigate the strict guide constructor with \emph{-nof} and \emph{-disc} extensions for a small amount (we choose 1 or 2 samples as explained in the discussion of the results) of combinations of nonterminal and guide constructors and Markovization parameters that performed best with \abrv{lcfrs} supertags.
+        \item in case of \abrv{dcp} supertags, we only investigate the strict guide constructor with nof and disc extensions for a small amount (we choose 1 or 2 samples as explained in the discussion of the results) of combinations of nonterminal and guide constructors and Markovization parameters that performed best with \abrv{lcfrs} supertags.
     \end{itemize}
 
     We explore the remaining grid of configurations completely with hybrid grammar and \abrv{dcp} supertags, which yields a total of $3 \cdot 2 \cdot 2 = 12$ experiments per treebank and prediction model with \abrv{lcfrs} supertags and 2--4 additional experiments with \abrv{dcp} supertags per model.
@@ -109,7 +109,7 @@ sup. &   5  & 90.71 & 2.6 & 9 & 90.55 & 5.4 & 13 & 90.56 & 7.0 & 14 \\
         \end{tabular}
     \end{table}
 
-    We repeat the experiments with \abrv{dcp} supertags with each \emph{-nof} and \emph{-disc} extensions for the nonterminals; the results are shown in \cref{tbl:experiments:dptb:dcp}.
+    We repeat the experiments with \abrv{dcp} supertags with each nof and disc extensions for the nonterminals; the results are shown in \cref{tbl:experiments:dptb:dcp}.
     The table shows the previous results with hybrid grammar supertags for comparison in rows with gray backgrounds.
     This set of experiments shows only small differences in parsing quality.
     We suppose they are negligible and decide on the single most promising combination for each model via the highest f1 score and least amount of parse fails and end up with

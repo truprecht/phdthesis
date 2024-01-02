@@ -457,6 +457,14 @@
         \end{tabular}
     \end{table}
 
+    \paragraph{Nonterminal Constructors for \abrv{Dcp} Supertags}
+    Since \abrv{dcp} supertags do not contain \abrv{lcfrs} compositions, the nonterminals occurring in them do not need to be consistent with any fanout.
+    We use two additional \emph{extensions} for the classic and coarse nonterminal constructor in the case of dcp supertags:
+    \begin{itemize}
+        \item The \emph{nof extension} completely removes the fanout subscripts in all constructed nonterminal symbols.
+        \item The \emph{disc extension} removes the fanout subscript if it is 1, and replaces it by the marker ``$_{\text{disc}}$'' if it is greater then 1; i.e.\@ it distinguishes nonterminals for continuous and discontinuous derivations.
+    \end{itemize}
+    in \cref{sec:experiments} will refer to the nonterminal constructors extended by adding the name as suffix, for instance \emph{coarse-disc} for the coarse nonterminal constructor with the disc extension.
 
     \subsection{Lexical Derivation Extraction}\label{sec:extractionalg}
     This small subsection describes how we define a derivation of lexical \abrv{hg} rules using the discussed prerequisites.
