@@ -7,7 +7,7 @@
     We repeat the training process for each model and treebank multiple times because the training process of the supertag classifiers depends on pseudo-random initialization, and the outcomes vary slightly.
     \Cref{tbl:averages} shows the result of five runs for the supervised model and pre-trained models that utilize language-specific \emph{bert-base} embeddings.
     We also report three runs for pre-trained models with large transformer embeddings.
-    Specifically, we use \emph{gbert-large} \citep{Cha20} in conjunction with Negra and Tiger, and \emph{roberta-large} \citep{roberta} for DPTB.
+    Specifically, we use \emph{gbert-large} \citep{Cha20} in conjunction with \negra{} and \tiger{}, and \emph{roberta-large} \citep{roberta} for \dptb{}.
 
     \begin{table}
         \caption{\label{tbl:hyperparameters}
@@ -18,7 +18,7 @@
         \begin{tabular}{c|c|ccc}
         \toprule
         &                   & \multicolumn{3}{c}{treebank} \\
-        model   &   parameter           & Negra     & Tiger     & \abrv{dptb} \\\midrule
+        model   &   parameter           & \negra{}     & \tiger{}     & \dptb{} \\\midrule
         \multirow{7}{*}{supervised}
             & rank transformation           & \abrv{rb} bin. & \abrv{rb} bin.& \abrv{rb} bin. \\
             & Markovization                 & $v=1, h=0$ & $v=1, h=0$ & $v=1, h=0$ \\
@@ -40,7 +40,7 @@
 
     \begin{table}
         \caption{\label{tbl:averages}
-            Our results on the test portions of the three discontinuous treebanks Negra, Tiger, and \abrv{dptb}.
+            Our results on the test portions of the three discontinuous treebanks \negra{}, \tiger{} , and \dptb{}.
             Each model was trained on each treebank multiple times with different random seeds: the supervised and small pre-trained models five times and the large pre-trained model three times.
             The row below the list of individual results shows their mean \(\mu\) and sample standard deviation \(\sigma\) denoted in the form \(\mu^{\pm \sigma}\).
         }
@@ -49,7 +49,7 @@
         \vspace{.2cm}
         \begin{tabular}{c*{3}{|ccc}}
             \toprule
-             \multirow{2}{*}{Model}  & \multicolumn{3}{c|}{NeGra}  & \multicolumn{3}{c|}{Tiger}  & \multicolumn{3}{c}{DPTB} \\
+             \multirow{2}{*}{Model}  & \multicolumn{3}{c|}{\negra{}}  & \multicolumn{3}{c|}{\tiger{}}  & \multicolumn{3}{c}{\dptb{}} \\
             &  F1   & F1-d   & sent/s & F1 & F1-d  & sent/s & F1 & F1-d & sent/s  \\\midrule
             \multirow{6}{*}{supervised}
                 & 83.2 & 52.3 & 142 & 82.2 & 57.2 & 142 & 90.8 & 73.1 & 159 \\
@@ -116,7 +116,7 @@
         \vspace{.2cm}
         \begin{tabular}{c|c*{3}{|ccc}}
             \toprule
-            \multirow{2}{*}{Type} & \multirow{2}{*}{Model}  & \multicolumn{3}{c|}{NeGra}  & \multicolumn{3}{c|}{Tiger}  & \multicolumn{3}{c}{DPTB} \\
+            \multirow{2}{*}{Type} & \multirow{2}{*}{Model}  & \multicolumn{3}{c|}{\negra{}}  & \multicolumn{3}{c|}{\tiger{}}  & \multicolumn{3}{c}{\dptb{}} \\
             &                         &  F1   & F1-d   & sent/s & F1 & F1-d  & sent/s & F1 & F1-d & sent/s  \\\midrule
             \multirow{3}{*}{G}
             & \citealp{CraSchBod16}   & 76.8  &   --   &   2 & 78.2 &   --   &  1 & 87.0 & --   & $<1$ \\
@@ -163,7 +163,7 @@
         \vspace{.2cm}
         \begin{tabular}{c|c*{3}{|ccc}}
             \toprule
-            \multirow{2}{*}{Type} & \multirow{2}{*}{Model} & \multicolumn{3}{c|}{NeGra}  & \multicolumn{3}{c|}{Tiger}  & \multicolumn{3}{c}{DPTB} \\
+            \multirow{2}{*}{Type} & \multirow{2}{*}{Model} & \multicolumn{3}{c|}{\negra{}}  & \multicolumn{3}{c|}{\tiger{}}  & \multicolumn{3}{c}{\dptb{}} \\
             &                         &  F1   & F1-d   & sent/s & F1 & F1-d  & sent/s & F1 & F1-d & sent/s  \\\midrule
             \multirow{3}{*}{GS}
             & \citealp{RupMoe21}       & 90.9  &  72.6  &  68 & 88.3 &  69.0  & 60 & 93.3 & 80.5 & 57   \\
@@ -200,7 +200,7 @@
         \vspace{.2cm}
         \begin{tabular}{c|c*{3}{|ccc}}
             \toprule
-            \multirow{2}{*}{Type} & \multirow{2}{*}{Model}  & \multicolumn{3}{c|}{NeGra}  & \multicolumn{3}{c|}{Tiger}  & \multicolumn{3}{c}{DPTB} \\
+            \multirow{2}{*}{Type} & \multirow{2}{*}{Model}  & \multicolumn{3}{c|}{\negra{}}  & \multicolumn{3}{c|}{\tiger{}}  & \multicolumn{3}{c}{\dptb{}} \\
             &                         &  F1   & F1-d   & sent/s & F1 & F1-d  & sent/s & F1 & F1-d & sent/s  \\\midrule
             \multirow{2}{*}{GS}
             & \citealp{Rup22}        & 93.9  & 79.1  &  88 & 91.6 &  75.4  & 77 & 94.9 & 82.4 & 64          \\

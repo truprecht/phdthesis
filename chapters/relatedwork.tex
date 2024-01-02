@@ -108,16 +108,16 @@
     \subsubsection*{Pseudocontinuous Parsing}
     Some authors decided to avoid discontinuous structures and their expensive parsing procedures altogether.
     In pseudo-continuous parsing, the discontinuous treebanks are transformed into continuous ones to extract good enough context-free grammar for constituent parsing.
-    \citet{DubKel03} derive a continuous variant of the NeGra treebank by shifting subtrees of discontinuous nodes into their antecedents; this transformation is called \emph{node raising}, and unfortunately, it is not reversible in a straightforward manner.
+    \citet{DubKel03} derive a continuous variant of the \negra{} treebank by shifting subtrees of discontinuous nodes into their antecedents; this transformation is called \emph{node raising}, and unfortunately, it is not reversible in a straightforward manner.
     \citet{levy-manning-2004-deep} contributed an algorithm that heuristically identifies the shifted nodes and can recover a discontinuous constituent tree.
     However, they conjecture that this approach is not suited to processing languages with relatively free word order, such as German, as the context-free transformation seemed a poor approximation in their experiments.
     \citet{boyd-2007-discontinuity} proposes an alternative transformation that splits each discontinuous node into continuous siblings.
     The process is reversed by identifying the resulting derivations' split nodes (complemented by a special marker symbol).
-    Their experiments find that the reversion procedure is unambiguous in their considered case of the TiGer treebank (in contrast to the previous approach).
+    Their experiments find that the reversion procedure is unambiguous in their considered case of the \tiger{} treebank (in contrast to the previous approach).
     Both approaches were investigated by \citet{hsu2010comparing}.
     They concluded that node raising is preferable as it maintains more of the constituent trees' structure.
     \citet{Ver16} improved the node-raising strategy by introducing unary nodes that identify the moved subtrees in tandem with markers that indicate their current location concerning their origin.
-    They implemented a parser using the \abrv{pcfg-la} framework by \citet{Petrov06} and could achieve competitive results in their experiments with the TiGer treebank.
+    They implemented a parser using the \abrv{pcfg-la} framework by \citet{Petrov06} and could achieve competitive results in their experiments with the \tiger{} treebank.
     
     % \subsection{Reranking}
     % The efficiency of parsing with grammar formalisms comes mostly from their locality assumptions; for instance, each derivation's weight is computed independently using its rules' assigned weights.
@@ -210,7 +210,7 @@
         \item they first predict an alignment that re-arranges the sequence of input tokens, and then
         \item they use two state-of-the-art parsers for continuous constituents to parse with the re-arranged sequence of tokens.
     \end{inparaenum}
-    Despite that, there are some errors in the prediction of the alignment (the precision and recall of the relocated tokens are around $0.8$ in \abrv{dptb}, \abrv{negra} and TiGer), they report competitive parsing scores with their final results.
+    Despite that, there are some errors in the prediction of the alignment (the precision and recall of the relocated tokens are around $0.8$ in \dptb{}, \negra{} and \tiger{}), they report competitive parsing scores with their final results.
     \citet{Sun22} extend this approach by introducing a re-arrangement algorithm that does not rely on predicting specific sentence positions.
     They report more accurate alignment predictions and also more accurate overall results.
 

@@ -2,8 +2,8 @@
 \usepackage{multicol}
 
 \begin{document}
-    \section{Exhibitory Hyperparameter Search in NeGra}\label{sec:gridsearch}
-    This section describes an exemplary and quite exhaustive evaluation of the extraction and training parameters, both under the umbrella term hyperparameters, in the case of the NeGra corpus.
+    \section{Exhibitory Hyperparameter Search in \abrv{Negra}}\label{sec:gridsearch}
+    This section describes an exemplary and quite exhaustive evaluation of the extraction and training parameters, both under the umbrella term hyperparameters, in the case of the \negra{} treebank.
     For the two other treebanks that we report results for, this is briefly documented in the following section.
     
     Fundamentally, we try to find appropriate hyperparameters using a modified version grid search.
@@ -16,15 +16,15 @@
     In each experiment, we train two models for the supertag prediction with a set of fixed training hyperparameters:
     \begin{compactitem}
         \item A \abrv{bert} model\footnote{
-            To be specific, we use \texttt{bert-based-cased-german} for the German NeGra corpus in during the hyperparameter search.
+            To be specific, we use \texttt{bert-based-cased-german} for the German \negra{} treebank in during the hyperparameter search.
         } is trained using the usual suggested values for the learning rate ($5\cdot 10^{-5}$), number of epochs ($10$), dropout probability at \(10^{-2}\), and \texttt{AdamW} as optimizer.
         \item A supervised model as specified in \cref{sec:models} is trained for $10$ epochs and with \texttt{AdamW} as optimizer as well.
     \end{compactitem}
 
     In the following experiment of this section, we will compare the experiments for each combination of hyperparameter values in multiple dimensions:
     \begin{enumerate}
-        \item The number of supertag blueprints extracted from the training portion of NeGra (denoted by \(N\)) and the number of \emph{unseen} supertag blueprints, i.e.\@ blueprints that occur in the development portion but not in the training portion (denoted by \(\overline{N}\), smaller values are considered better).
-        \item The \emph{perplexity of the unigram distribution} of supertag blueprints in the training and development portions of NeGra (denoted by \(\mathit{UP}\), smaller values are considered better). We consider this value as a measure of diversity in the extracted supertag blueprints, and hence the complexity of the supertag prediction in the given data. It does not only consider the number of occurring blueprints but also how often they occurred in the data. Higher values are a hint that there are supertag blueprints that appear rarely and therefore harder to predict.
+        \item The number of supertag blueprints extracted from the training portion of \negra{} (denoted by \(N\)) and the number of \emph{unseen} supertag blueprints, i.e.\@ blueprints that occur in the development portion but not in the training portion (denoted by \(\overline{N}\), smaller values are considered better).
+        \item The \emph{perplexity of the unigram distribution} of supertag blueprints in the training and development portions of \negra{} (denoted by \(\mathit{UP}\), smaller values are considered better). We consider this value as a measure of diversity in the extracted supertag blueprints, and hence the complexity of the supertag prediction in the given data. It does not only consider the number of occurring blueprints but also how often they occurred in the data. Higher values are a hint that there are supertag blueprints that appear rarely and therefore harder to predict.
         \item The f1 score after parsing with the predicted supertags in the development portion (denoted by \(f1\), higher values are better).
         \item The supertag prediction accuracy in the development portion (denoted by acc., higher values are considered better).
         \item The number of sentences in the development portion that we were not able to parse (denoted by $\lightning$, lower values are better).
@@ -56,7 +56,7 @@
     
     \begin{table}
         \caption{\label{tbl:gridsearch:1:1}
-            Overview of the extracted supertag blueprints from NeGra's training and development portion for combinations of guide and nonterminal constructors.
+            Overview of the extracted supertag blueprints from \negra{}'s training and development portion for combinations of guide and nonterminal constructors.
         }
         \centering
         \setlength{\tabcolsep}{5pt}
@@ -81,7 +81,7 @@
     
     \begin{table}
         \caption{\label{tbl:gridsearch:1:2}
-            Parsing f1 score, accuracy of predicted supertag blueprints and number of parse fails using the supervised supertag prediction model in the NeGra's development set for combinations of guide and nonterminal constructors.
+            Parsing f1 score, accuracy of predicted supertag blueprints and number of parse fails using the supervised supertag prediction model in the \negra{}'s development set for combinations of guide and nonterminal constructors.
         }
         \centering
         \vspace{.2cm}
@@ -99,7 +99,7 @@
     
     \begin{table}
         \caption{\label{tbl:gridsearch:1:3}
-            Parsing f1 score, accuracy of predicted supertag blueprints and number of parse fails using the \abrv{bert} prediction model in the NeGra's development set for combinations of guide and nonterminal constructors.
+            Parsing f1 score, accuracy of predicted supertag blueprints and number of parse fails using the \abrv{bert} prediction model in the \negra{}'s development set for combinations of guide and nonterminal constructors.
         }
         \centering
         \vspace{.2cm}
@@ -146,7 +146,7 @@
     
     \begin{table}
         \caption{\label{tbl:gridsearch:2:1}
-            Overview of the extracted supertag blueprints from NeGra's training and development portion for combinations of guide and nonterminal constructors as well as binarization parameters.
+            Overview of the extracted supertag blueprints from \negra{}'s training and development portion for combinations of guide and nonterminal constructors as well as binarization parameters.
         }
         \centering
         \vspace{.2cm}
@@ -175,7 +175,7 @@ coarse  & \(1\) & \(1\)    & 3234 & 48 & 255.45 & 3939 & 65 & 307.16 & 4085 & 71
 
     \begin{table}
         \caption{\label{tbl:gridsearch:2:2}
-        Parsing f1 score, accuracy of predicted supertag blueprints and number of parse fails using the supervised prediction model in the NeGra's development set for combinations of guide and nonterminal constructors as well as binarization parameters.
+        Parsing f1 score, accuracy of predicted supertag blueprints and number of parse fails using the supervised prediction model in \negra{}'s development set for combinations of guide and nonterminal constructors as well as binarization parameters.
         }
         \centering
         \vspace{.2cm}
@@ -195,7 +195,7 @@ coarse  & \(1\) & \(1\) & 80.86 & 0.77 &  2 & 79.86 & 0.75 &  4 & 80.36 & 0.76 &
 
     \begin{table}
         \caption{\label{tbl:gridsearch:2:3}
-        Parsing f1 score, accuracy of predicted supertag blueprints and number of parse fails using the \abrv{bert} prediction model in the NeGra's development set for combinations of guide and nonterminal constructors as well as binarization parameters.
+        Parsing f1 score, accuracy of predicted supertag blueprints and number of parse fails using the \abrv{bert} prediction model in \negra{}'s development set for combinations of guide and nonterminal constructors as well as binarization parameters.
         }
         \centering
         \vspace{.2cm}
@@ -248,7 +248,7 @@ coarse  & \(1\) & \(1\) & 89.82 & 0.88 &  8 & 88.98 & 0.87 & 23 & 89.29 & 0.87 &
 
     \begin{table}
         \caption{\label{tbl:gridsearch:head:1}
-        Overview of the extracted supertag blueprints from NeGra's training and development portion for configurations involving the head guide constructor.
+        Overview of the extracted supertag blueprints from \negra{}'s training and development portion for configurations involving the head guide constructor.
         }
         \centering
         \vspace{.2cm}
@@ -274,7 +274,7 @@ dependent & 1 & 1 & 11364 & 231 & 544.94 & 5874 & 99 & 311.89 \\
     
     \begin{table}
         \caption{\label{tbl:gridsearch:head:2}
-        Parsing f1 score, accuracy of predicted supertag blueprints and number of parse fails using the supervised prediction model in the NeGra's development set for configurations involving the head guide constructor.
+        Parsing f1 score, accuracy of predicted supertag blueprints and number of parse fails using the supervised prediction model in \negra{}'s development set for configurations involving the head guide constructor.
         }
         \centering
         \vspace{.2cm}
@@ -296,7 +296,7 @@ dependent & 1 & 1                      & 71.01 & 0.71 &  7.60 & 136 & 76.70 & 0.
 
     \begin{table}
         \caption{\label{tbl:gridsearch:head:3}
-        Parsing f1 score, accuracy of predicted supertag blueprints and number of parse fails using the \abrv{bert} prediction model in the NeGra's development set for configurations involving the head guide constructor.
+        Parsing f1 score, accuracy of predicted supertag blueprints and number of parse fails using the \abrv{bert} prediction model in \negra{}'s development set for configurations involving the head guide constructor.
         }
         \centering
         \vspace{.2cm}
@@ -339,7 +339,7 @@ dependent & 1 & 1                      & 79.40 & 0.84 & 4.57 & 154 & 86.67 & 0.8
     This short section will show results for experiments with an explicitly defined table for coarse nonterminals.
     We compare the naive strategy that defines nonterminals by replacing constituent symbols by their first character with those obtained by the replacements defined in \cref{tab:coarse-nonterminals} given in \cref{sec:ntconstructors}.
     As the latter set of nonterminals is smaller than the naive coarse nonterminals, we expand the experiments with the same Markovization configurations as before ($(h,v) \in \{(0,1), (1,1), (0,2)\}$) but keep the fixed right-factor binarization strategy.
-    These experiments are addressed here in a dedicated section rather than within the previous section, as we want to stress that the substitution tables for the coarse nonterminals require knowledge about the corpus as well as some foundational knowledge about its language to aggregate similar symbols.
+    These experiments are addressed here in a dedicated section rather than within the previous section, as we want to stress that the substitution tables for the coarse nonterminals require knowledge about the treebank as well as some foundational knowledge about its language to aggregate similar symbols.
     All other nonterminal constructors are agnostic to the used corpora.
 
     In this section, we conduct a grid search with the following chunk of hyperparameters and values:
@@ -357,7 +357,7 @@ dependent & 1 & 1                      & 79.40 & 0.84 & 4.57 & 154 & 86.67 & 0.8
 
     \begin{table}
         \caption{\label{tbl:gridsearch:coarse:1}
-        Overview of the extracted supertag blueprints from NeGra's training and development portion for configurations involving the coarse constituent symbols from \cref{tab:coarse-nonterminals}.
+        Overview of the extracted supertag blueprints from \negra{}'s training and development portion for configurations involving the coarse constituent symbols from \cref{tab:coarse-nonterminals}.
         }
         \centering
         \vspace{.2cm}
@@ -379,7 +379,7 @@ coarse (table) & 1 & 1 & 4463 & 77 & 333.43 & 7947 & 159 & 434.02 & 11806 & 321 
     
     \begin{table}
         \caption{\label{tbl:gridsearch:coarse:2}
-        Parsing f1 score, accuracy of predicted supertag blueprints and number of parse fails using the supervised prediction model in the NeGra's development set for configurations involving the coarse constituent symbols from \cref{tab:coarse-nonterminals}.
+        Parsing f1 score, accuracy of predicted supertag blueprints and number of parse fails using the supervised prediction model in \negra{}'s development set for configurations involving the coarse constituent symbols from \cref{tab:coarse-nonterminals}.
         }
         \centering
         \vspace{.2cm}
@@ -399,7 +399,7 @@ coarse (table) & 1 & 1 & 78.03 & 0.77 & 7.71 & 2 & 75.67 & 0.72 &  11.86 & 52 & 
 
     \begin{table}
         \caption{\label{tbl:gridsearch:coarse:3}
-        Parsing f1 score, accuracy of predicted supertag blueprints and number of parse fails using the \abrv{bert} prediction model in the NeGra's development set for configurations involving the coarse constituent symbols from \cref{tab:coarse-nonterminals}.
+        Parsing f1 score, accuracy of predicted supertag blueprints and number of parse fails using the \abrv{bert} prediction model in \negra{}'s development set for configurations involving the coarse constituent symbols from \cref{tab:coarse-nonterminals}.
         }
         \centering
         \vspace{.2cm}
@@ -463,7 +463,7 @@ coarse (table) & 1 & 1 & 86.97 & 0.88 & 11.90 & 7 & 85.33 & 0.86 & 13.16 & 73 & 
 
     \begin{table}
         \caption{\label{tbl:gridsearch:dcp:1}
-            Overview of the extracted \abrv{dcp} supertag blueprints from NeGra's training and development portion with extacted \abrv{dcp} supertags for configurations of guides and nonterminal constructors. The two rows marked with ``(hg)'' show values obtained with hybrid grammar supertags for comparison.
+            Overview of the extracted \abrv{dcp} supertag blueprints from \negra{}'s training and development portion with extacted \abrv{dcp} supertags for configurations of guides and nonterminal constructors. The two rows marked with ``(hg)'' show values obtained with hybrid grammar supertags for comparison.
         }
         \centering
         \vspace{.2cm}
@@ -493,7 +493,7 @@ coarse-nof   & 1181 & 9  & 97.19  & 1991 & 27 & 131.15 & 2766 & 45 & 79.70 \\
 
     \begin{table}
         \caption{\label{tbl:gridsearch:dcp:2}
-        Parsing f1 score, accuracy of predicted supertag blueprints and number of parse fails using the supervised prediction model in the NeGra's development set with extacted \abrv{dcp} supertags for configuations of guides and nonterminal constructors. The two rows marked with ``(hg)'' show values obtained with hybrid grammar supertags for comparison.
+        Parsing f1 score, accuracy of predicted supertag blueprints and number of parse fails using the supervised prediction model in \negra{}'s development set with extacted \abrv{dcp} supertags for configuations of guides and nonterminal constructors. The two rows marked with ``(hg)'' show values obtained with hybrid grammar supertags for comparison.
         }
         \centering
         \setlength{\tabcolsep}{5pt}
@@ -517,7 +517,7 @@ coarse-nof   & 80.49 & 0.78 & 10.13 & 0 & 80.55 & 0.77 & 337.43 &  1 &   --- &  
 
     \begin{table}
         \caption{\label{tbl:gridsearch:dcp:3}
-        Parsing f1 score, accuracy of predicted supertag blueprints and number of parse fails using the \abrv{bert} prediction model in the NeGra's development set with extacted \abrv{dcp} supertags for configuations of guides and nonterminal constructors. The two rows marked with ``(hg)'' show values obtained with hybrid grammar supertags for comparison.
+        Parsing f1 score, accuracy of predicted supertag blueprints and number of parse fails using the \abrv{bert} prediction model in \negra{}'s development set with extacted \abrv{dcp} supertags for configuations of guides and nonterminal constructors. The two rows marked with ``(hg)'' show values obtained with hybrid grammar supertags for comparison.
         }
         \centering
         \setlength{\tabcolsep}{5pt}
@@ -581,7 +581,7 @@ coarse-nof  & 90.97 & 0.90 & 9.43 & 0 & 90.42 & 0.88 & 16.05 &  6 &   --- &  ---
 
     \begin{table}
         \caption{\label{tbl:grid:parsing:supervised}
-            F1 score for the first (f1) and the best f1 score among the top 100 constituent trees predicted by the parser (of1), parse time ($t$), and amount of sentences that were not able to parse ($\lightning$) for combinations of parameters to the parsing process $\beta$ and $k$ in the development portion of NeGra. The upper half are results using hybrid grammar supertags, and the bottom half are \abrv{dcp} supertags. All supertags were predicted using supervised models.
+            F1 score for the first (f1) and the best f1 score among the top 100 constituent trees predicted by the parser (of1), parse time ($t$), and amount of sentences that were not able to parse ($\lightning$) for combinations of parameters to the parsing process $\beta$ and $k$ in the development portion of \negra{}. The upper half are results using hybrid grammar supertags, and the bottom half are \abrv{dcp} supertags. All supertags were predicted using supervised models.
         }
         \centering\small
         \setlength{\tabcolsep}{4pt}
@@ -610,7 +610,7 @@ coarse-nof  & 90.97 & 0.90 & 9.43 & 0 & 90.42 & 0.88 & 16.05 &  6 &   --- &  ---
 
     \begin{table}
         \caption{\label{tbl:grid:parsing:pretrained}
-        F1 score for the first (f1) and the best f1 score among the top 100 constituent trees predicted by the parser (of1), parse time ($t$), and amount of sentences that were not able to parse ($\lightning$) for combinations of parameters to the parsing process $\beta$ and $k$ in the development portion of NeGra. The upper half are results using hybrid grammar supertags, and the bottom half are \abrv{dcp} supertags. All supertags were predicted using pre-trained models.
+        F1 score for the first (f1) and the best f1 score among the top 100 constituent trees predicted by the parser (of1), parse time ($t$), and amount of sentences that were not able to parse ($\lightning$) for combinations of parameters to the parsing process $\beta$ and $k$ in the development portion of \negra{}. The upper half are results using hybrid grammar supertags, and the bottom half are \abrv{dcp} supertags. All supertags were predicted using pre-trained models.
         }
         \centering\small
         \setlength{\tabcolsep}{4pt}
@@ -655,7 +655,7 @@ coarse-nof  & 90.97 & 0.90 & 9.43 & 0 & 90.42 & 0.88 & 16.05 &  6 &   --- &  ---
     
     \begin{table}
         \caption{\label{tbl:grid:reranking:supervised}
-        F1 score for the first (f1) and the best f1 score among the top 100 constituent trees predicted by the parser (of1), parse time ($t$), and amount of sentences that were not able to parse ($\lightning$) for combinations of parameters to the parsing process $\beta$ and $k$ in the development portion of NeGra. The upper half are results using hybrid grammar supertags, and the bottom half are \abrv{dcp} supertags. All supertags were predicted using pre-trained models.
+        F1 score for the first (f1) and the best f1 score among the top 100 constituent trees predicted by the parser (of1), parse time ($t$), and amount of sentences that were not able to parse ($\lightning$) for combinations of parameters to the parsing process $\beta$ and $k$ in the development portion of \negra{}. The upper half are results using hybrid grammar supertags, and the bottom half are \abrv{dcp} supertags. All supertags were predicted using pre-trained models.
         }
         \centering
         \vspace{.2cm}
@@ -673,7 +673,7 @@ coarse-nof  & 90.97 & 0.90 & 9.43 & 0 & 90.42 & 0.88 & 16.05 &  6 &   --- &  ---
 
     \begin{table}
         \caption{\label{tbl:grid:reranking:pretrained}
-        F1 score for the first (f1) and the best f1 score among the top 100 constituent trees predicted by the parser (of1), parse time ($t$), and amount of sentences that were not able to parse ($\lightning$) for combinations of parameters to the parsing process $\beta$ and $k$ in the development portion of NeGra. The upper half are results using hybrid grammar supertags, and the bottom half are \abrv{dcp} supertags. All supertags were predicted using pre-trained models.
+        F1 score for the first (f1) and the best f1 score among the top 100 constituent trees predicted by the parser (of1), parse time ($t$), and amount of sentences that were not able to parse ($\lightning$) for combinations of parameters to the parsing process $\beta$ and $k$ in the development portion of \negra{}. The upper half are results using hybrid grammar supertags, and the bottom half are \abrv{dcp} supertags. All supertags were predicted using pre-trained models.
         }
         \centering
         \vspace{.2cm}
