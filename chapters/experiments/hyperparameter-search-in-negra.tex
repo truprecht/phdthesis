@@ -35,7 +35,7 @@
     The results of the experiments are presented in tables that contain the above values as assessment.
     
     \subsection{Guides, Nonterminals, and Binarization}\label{sec:gridsearch:nts-guides}
-    For the first steps in our search for values for our hyperparameters, we consider two chunks of parameters in succession: the first chunks are the nonterminal and guide constructors, and the second are nonterminal and guide constructors as well as the rank transformation parameters (i.e.\@ the factor and Markovization parameters for binarization).
+    For the first steps in our search for values for our hyperparameters, we consider two chunks of parameters in succession: the first chunks are the nonterminal and guide constructors, and the second are nonterminal and guide constructors as well as the rank transformation parameters (i.e.\@ the binarization strategy and Markovization parameters).
     At first glance, the first chunk seems redundant because it is well included in the second.
     But we use it to dismiss some guide constructors in the following which does restrict the number of combinations for hyperparameter values considerably.
     In this section, we do not list the parse time for the development set in the results of each experiment, as they are all quite similar between 4 and 6 seconds and we do not consider it as a value we want to base our decisions on.
@@ -47,8 +47,8 @@
     \end{compactitem}
     The rest of the parameters are fixed as follows:
     \begin{compactitem}
-        \item the constituent trees are binarized with Markovization \(h=0\) and \(v=1\) (i.e.\@ no binarization context) with right factorization in the case of the vanilla, strict, least and near guide constructors,
-        \item the constituent trees are binarized with Markovization \(h=0\) and \(v=1\) (i.e.\@ no binarization context) with head-outward factorization in the case of the dependent constructor,
+        \item the constituent trees are binarized with Markovization \(h=0\) and \(v=1\) (i.e.\@ no binarization context) with the right-branching strategy in the case of the vanilla, strict, least and near guide constructors,
+        \item the constituent trees are binarized with Markovization \(h=0\) and \(v=1\) (i.e.\@ no binarization context) with head-outward strategy in the case of the dependent constructor,
         \item the extraction produces hybrid grammar supertags, and
         \item coarse nonterminals are produced using the first character of constituent symbols (there is no coarse table).
     \end{compactitem}
@@ -134,8 +134,8 @@
     \begin{compactitem}
         \item the strict and dependent guide constructors,
         \item the classic and coarse nonterminal constructors,
-        \item binarization with left, right, or head-outward factorization, respectively with Markovization parameters \(h \in \{0,1\}\) and \(v \in \{1,2\}\) in the case of the strict guide constructor, and
-        \item binarization with head-outward factorization and the same Markovization parameters \(h \in \{0,1\}\) and \(v \in \{1,2\}\) in the case of the dependent guide constructor.
+        \item binarization with the left-branching, right-branching or head-outward strategy, respectively with Markovization parameters \(h \in \{0,1\}\) and \(v \in \{1,2\}\) in the case of the strict guide constructor, and
+        \item binarization with the head-outward strategy and the same Markovization parameters \(h \in \{0,1\}\) and \(v \in \{1,2\}\) in the case of the dependent guide constructor.
     \end{compactitem}
     The rest of the parameters are fixed as follows:
     \begin{compactitem}
@@ -152,7 +152,8 @@
         \vspace{.2cm}
         \begin{tabular}{lcc|rrr|rrr|rrr}
             \toprule
-& \multicolumn{2}{c|}{Markov.}         & \multicolumn{3}{c|}{right fac.} & \multicolumn{3}{c|}{left fac.} & \multicolumn{3}{c}{head-outward}  \\
+            &  &     & \multicolumn{9}{c}{rank transformation strategy} \\
+            & \multicolumn{2}{c|}{Markov.}         & \multicolumn{3}{c|}{\abrv{rb}} & \multicolumn{3}{c|}{\abrv{lb}} & \multicolumn{3}{c}{\abrv{ho}} \\
 nont.  & \(h\) &\(v\)        & $N$ & $\overline{N}$ & $\mathit{UP}$ & $N$ & $\overline{N}$ & $\mathit{UP}$ & $N$ & $\overline{N}$ & $\mathit{UP}$  \\ \hline
 classic & \(0\) & \(1\)    & 2214 & 23 & 110.22 & 2427 & 27 & 121.01 & 2600 & 29 & 147.07  \\
 classic & \(0\) & \(2\)    & 5625 & 90 & 356.74 & 5987 & 93 & 386.89 & 6617 & 106 & 463.34  \\
@@ -181,7 +182,8 @@ coarse  & \(1\) & \(1\)    & 3234 & 48 & 255.45 & 3939 & 65 & 307.16 & 4085 & 71
         \vspace{.2cm}
         \begin{tabular}{lcc|rrr|rrr|rrr}
             \toprule
-& \multicolumn{2}{c|}{Markov.}         & \multicolumn{3}{c|}{right fac.} & \multicolumn{3}{c|}{left fac.} & \multicolumn{3}{c}{head-outward} \\
+    &  &     & \multicolumn{9}{c}{rank transformation strategy} \\
+    & \multicolumn{2}{c|}{Markov.}         & \multicolumn{3}{c|}{\abrv{rb}} & \multicolumn{3}{c|}{\abrv{lb}} & \multicolumn{3}{c}{\abrv{ho}} \\
 nont.  & \(h\) &\(v\) & f1 & acc. & $\lightning$ & f1 & acc. & $\lightning$ & f1 & acc. & $\lightning$   \\ \hline
 classic & \(0\) & \(1\) & 80.82 & 0.78 &  2 & 80.67 & 0.77 &  1 & 80.64 & 0.78 &  4 \\
 classic & \(0\) & \(2\) & 77.62 & 0.68 & 45 & 77.13 & 0.68 & 54 & 76.70 & 0.68 & 63 \\
@@ -201,7 +203,8 @@ coarse  & \(1\) & \(1\) & 80.86 & 0.77 &  2 & 79.86 & 0.75 &  4 & 80.36 & 0.76 &
         \vspace{.2cm}
         \begin{tabular}{lcc|rrr|rrr|rrr}
             \toprule
-& \multicolumn{2}{c|}{Markov.}         & \multicolumn{3}{c|}{right fac.} & \multicolumn{3}{c|}{left fac.} & \multicolumn{3}{c}{head-outward} \\
+&  &     & \multicolumn{9}{c}{rank transformation strategy} \\
+& \multicolumn{2}{c|}{Markov.}         & \multicolumn{3}{c|}{\abrv{rb}} & \multicolumn{3}{c|}{\abrv{lb}} & \multicolumn{3}{c}{\abrv{ho}} \\
 nont.  & \(h\) &\(v\) & f1 & acc. & $\lightning$ & f1 & acc. & $\lightning$ & f1 & acc. & $\lightning$  \\ \hline
 classic & \(0\) & \(1\) & 90.51 & 0.89 &  2 & 89.89 & 0.88 &  3 & 90.36 & 0.88 &  4 \\
 classic & \(0\) & \(2\) & 87.19 & 0.84 & 49 & 86.66 & 0.83 & 52 & 85.98 & 0.83 & 67 \\
@@ -214,15 +217,15 @@ coarse  & \(1\) & \(1\) & 89.82 & 0.88 &  8 & 88.98 & 0.87 & 23 & 89.29 & 0.87 &
     \end{table}
 
     With both nonterminal constructors, we observe decreasing supertag prediction and parsing accuracy as well as more parse fails with greater Markovization values in both \cref{tbl:gridsearch:2:2,tbl:gridsearch:2:3}.
-    With the strict guide, there are only small differences in the results for left and right factorization and head-outward binarization.
-    They seem slightly but consistently worse with binarization strategies other than right factorization and we suppose there is no significant benefit in any of them.
+    With the strict guide, there are only small differences in the results for left- and right-branching and head-outward binarization.
+    They seem slightly but consistently worse with binarization strategies other than right-branching and we suppose there is no significant benefit in any of them.
 
     Concluding the observations, we consider classic and coarse nonterminals only in conjunction with Markovization \(h=0\) and \(v=1\) in the following.
-    For the binarization strategies, we will restrict ourselves to the right factorization due to slightly better results and smaller sets of extracted supertag blueprints.
+    For the binarization, we will restrict ourselves to the right-branching strategy due to slightly better results and smaller sets of extracted supertag blueprints.
     This leaves us with the following \(4\) configurations that we use in the remaining sections:
     \begin{itemize}
-        \item dependent guides with head-outward binarized constituent trees, or strict guides with right-factor binarized constituent trees, each with either
-        \item classic or coarse nonterminals in case of Markovization parameters \(h=0\) and \(v=1\).
+        \item the dependent guide and head-outward strategy for binarization, or the strict guide and right-branching strategy for binarization, each with either
+        \item classic or coarse nonterminals and Markovization parameters \(h=0\) and \(v=1\).
     \end{itemize}
 
     \subsection{Experiments with Head and Dependent Guides}\label{sec:gridsearch:head}
@@ -338,7 +341,7 @@ dependent & 1 & 1                      & 79.40 & 0.84 & 4.57 & 154 & 86.67 & 0.8
     \subsection{Further Experiments with Coarse Nonterminals}\label{sec:gridsearch:coarse}
     This short section will show results for experiments with an explicitly defined table for coarse nonterminals.
     We compare the naive strategy that defines nonterminals by replacing constituent symbols by their first character with those obtained by the replacements defined in \cref{tab:coarse-nonterminals} given in \cref{sec:ntconstructors}.
-    As the latter set of nonterminals is smaller than the naive coarse nonterminals, we expand the experiments with the same Markovization configurations as before ($(h,v) \in \{(0,1), (1,1), (0,2)\}$) but keep the fixed right-factor binarization strategy.
+    As the latter set of nonterminals is smaller than the naive coarse nonterminals, we expand the experiments with the same Markovization configurations as before ($(h,v) \in \{(0,1), (1,1), (0,2)\}$) but keep the fixed right-branching binarization strategy.
     These experiments are addressed here in a dedicated section rather than within the previous section, as we want to stress that the substitution tables for the coarse nonterminals require knowledge about the treebank as well as some foundational knowledge about its language to aggregate similar symbols.
     All other nonterminal constructors are agnostic to the used corpora.
 
@@ -350,7 +353,7 @@ dependent & 1 & 1                      & 79.40 & 0.84 & 4.57 & 154 & 86.67 & 0.8
     The following hyperparameters are fixed:
     \begin{itemize}
         \item we use coarse nonterminal constructors with substitutions as defined in \cref{tab:coarse-nonterminals}, and
-        \item right factorization and head-outward as binarization strategies in the case of strict guides and dependent guides, respectively.
+        \item right-branching and head-outward binarization strategies in the case of strict guides and dependent guides, respectively.
     \end{itemize}
     \Crefrange{tbl:gridsearch:coarse:1}{tbl:gridsearch:coarse:3} illustrate the results in terms of statistics for the extracted supertag blueprints as well as supertag prediction and parsing accuracies in the same dimensions as before.
     The values are compared to the ones from the previous section's experiments.

@@ -60,20 +60,20 @@
         %        The binarization operation, denoted just by \(b\), extends the function \(f\) such that \todo{formal definition is complicated, as we deal with constituent trees}
         %    \end{definition}
 
-    \paragraph{Left- or Right-Branching Factorization.}
+    \paragraph{Left- or Right-Branching Binarization.}
     These strategies replace each node with \( n>2 \) successors with a series of \( n-1 \) binary nodes.
-    The \deflab<binarization!binarization strategies>[binarization:l2r]{right-branching factorization} constructs nodes as follow:
+    The \deflab<binarization!binarization strategies>[binarization:l2r]{right-branching strategy} (short: \abrv{rb}) constructs nodes as follow:
     \begin{itemize}
         \item The first (and topmost) node has the same symbol as the original node.
         \item For each \(2 \leq i \leq n-1\), the \(i\)th node's symbol consists of the original node's symbol and the symbols of its rightmost \(n-i-1\) successors. Those symbols are denoted in the form \(\binnode{A}{B_i,B_{i+1},\ldots,B_n}\) where \(A\) is the root node and \(B_1, \ldots, B_n\) are its children.
         \item For each \(1 \leq i \leq n-2\), the left successor of the \(i\)-th node is the \(i\)-th successor of the original node, and its right successor is the \((i+1)\)-th constructed node.
         \item The successors of the last (bottom-most) node are the two rightmost successors of the original node.
     \end{itemize}
-    The \deflab<binarization!binarization strategies>[binarization:r2l]{left-branching factorization} mirrors the right-branching strategy: It constructs a series of binary nodes connected via their left successors in the opposite direction.
+    The \deflab<binarization!binarization strategies>[binarization:r2l]{left-branching strategy} (short: \abrv{lb}) mirrors the right-branching strategy: It constructs a series of binary nodes connected via their left successors in the opposite direction.
     If a binarized constituent tree was complemented by a head assigment, then it is lost after applying the left- or right-branching binarization strategy; there is no reasonable head assignment that can be obtained after such binarization.
 
     \paragraph{Head-Outward Binarization.}
-    This \deflab<binarization!binarization strategies>[binarization:r2l]{head-outward binarization}[strategy] mixes left- and right-branching factorization at each higher-ranked node depending on the successor that contains its lexical head.
+    The \deflab<binarization!binarization strategies>[binarization:ho]{head-outward strategy} (short: \abrv{ho}) mixes the left- and right-branching strategies at each higher-ranked node depending on the successor that contains its lexical head.
     If the node is of rank \(k\) and its lexical head is at or below its \(n\)-th successor, then
     \begin{enumerate}
         \item the trailing \(k-n\) successors are split according to the left-branching binarization strategy forming \(k-n-1\) artificial nodes, and
@@ -154,7 +154,7 @@
 
         \caption{\label{fig:ex:binarization}
             Comparing the two left- and right-branching binarization strategies in our two running examples.
-            In both cases, head-outward binarization coincides with right-branching factorization.
+            In both cases, head-outward binarization coincides with right-branching binarization.
         }
     \end{figure}
 
