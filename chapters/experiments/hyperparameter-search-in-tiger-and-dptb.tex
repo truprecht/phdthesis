@@ -19,6 +19,25 @@
     \subsection{\abrv{Dptb}}
     \Cref{tbl:experiments:dptb} shows the results for the hybrid grammar supertag prediction and parsing accuracies for each experiment in the grid search for \abrv{dptb}
     Each experiment was conducted using the supervised and the pretrained prediction model.
+    
+    \begin{table}
+        \caption{\label{tbl:experiments:dptb:size}
+        Number of extracted supertag blueprints from the training portion ($N$) and number of extracted supertag blueprint in the dev portion that do not appear in the training portion ($\overline{N}$) using the \dptb{} treebank.
+        }
+        \centering
+        \setlength{\tabcolsep}{4pt}
+        \vspace{.2cm}
+        \begin{tabular}{lc|rr|rr|rr}
+            \toprule
+             &        & \multicolumn{2}{c|}{strict} & \multicolumn{2}{c|}{dependent} & \multicolumn{2}{c}{head}  \\
+ nont.   &\(v\)   & $N$ & $\overline{N}$ & $N$ & $\overline{N}$ & $N$ & $\overline{N}$ \\ \hline
+  classic & \(1\)  & 2403 &  28 &  4295 &  51 &  4374 &  66  \\
+  classic & \(2\)  & 5627 &  64 &  9152 & 123 &  8544 & 137  \\
+  coarse  & \(1\)  & 1778 &  22 &  3431 &  41 &  3946 &  61  \\
+  coarse  & \(2\)  & 3780 &  44 &  6853 &  80 &  7030 & 108  \\
+    \bottomrule
+        \end{tabular}
+    \end{table}
 
     \begin{table}
         \caption{\label{tbl:experiments:dptb}
@@ -65,22 +84,22 @@ sup. & coarse  & \(2\)  & 89.97 & 0.82 & 15.01 & 5 & 88.87 & 0.80 & 15.95 & 38 &
         \centering
         \setlength{\tabcolsep}{4pt}
         \vspace{.2cm}
-        \begin{tabular}{lllc|rrrr}
+        \begin{tabular}{lllc|cc|rrrr}
             \toprule
-Mod. &  guide &   nont.   &\(v\)   & f1 & acc. & $t$ & $\lightning$ \\ \hline \rowcolor{black!10}
-pret. & strict (hg) &  coarse & \(2\)  & 94.30 & 0.89 & 10.51 & 13  \\\hline
-pret. & strict      &  coarse-disc  & \(2\)  & 94.30 & 0.89 & 11.09 & 8  \\
-pret. & strict      &  coarse-nof & \(2\)  & 94.40 & 0.89 & 10.38 & 8  \\ \hline\rowcolor{black!10}
-pret. & head  (hg)  &  coarse & \(1\)  & 94.57 & 0.92 & 10.93 & 4  \\\hline
-pret. & head        &  coarse-disc & \(1\)  & 93.95 & 0.91 & 16.86 & 6  \\
-pret. & head        &  coarse-nof & \(1\)  & 94.04 & 0.92 & 19.45 & 9  \\
+Mod. &  guide &   nont.   &\(v\)   & $N$ & $\overline{N}$ & f1 & acc. & $t$ & $\lightning$ \\ \hline \rowcolor{black!10}
+pret. & strict (hg) &  coarse       & \(2\) & 3780 & 44 & 94.30 & 0.89 & 10.51 & 13  \\\hline
+pret. & strict      &  coarse-disc  & \(2\) & 3723 & 41  & 94.30 & 0.89 & 11.09 & 8  \\
+pret. & strict      &  coarse-nof   & \(2\) & 3432 & 36 & 94.40 & 0.89 & 10.38 & 8  \\ \hline\rowcolor{black!10}
+pret. & head  (hg)  &  coarse       & \(1\) & 3946 & 61 & 94.57 & 0.92 & 10.93 & 4  \\\hline
+pret. & head        &  coarse-disc  & \(1\) & 3824 & 60 & 93.95 & 0.91 & 16.86 & 6  \\
+pret. & head        &  coarse-nof   & \(1\) & 3564 & 57 & 94.04 & 0.92 & 19.45 & 9  \\
 \midrule \rowcolor{black!10}
-sup. & strict (hg) &  coarse & \(2\)  & 89.97 & 0.82 & 15.01 & 5  \\\hline
-sup. & strict    &  coarse-disc & \(2\)  & 89.74 & 0.82 & 14.35 & 6  \\
-sup. & strict     &  coarse-nof & \(2\)  & 89.86 & 0.82 & 18.83 & 4  \\\hline\rowcolor{black!10}
-sup. & head (hg)  &  coarse & \(1\)  & 89.48 & 0.86 & 16.50 & 0  \\\hline
-sup. & head      &  coarse-disc & \(1\)  & 89.25 & 0.86 & 30.92 & 9  \\
-sup. & head       &  coarse-nof & \(1\)  & 88.95 & 0.86 & 34.98 & 15  \\
+sup. & strict (hg) &  coarse        & \(2\) & 3780 & 44 & 89.97 & 0.82 & 15.01 & 5  \\\hline
+sup. & strict    &  coarse-disc     & \(2\) & 3723 & 41 & 89.74 & 0.82 & 14.35 & 6  \\
+sup. & strict     &  coarse-nof     & \(2\) & 3432 & 36 & 89.86 & 0.82 & 18.83 & 4  \\\hline\rowcolor{black!10}
+sup. & head (hg)  &  coarse         & \(1\) & 3946 & 61 & 89.48 & 0.86 & 16.50 & 0  \\\hline
+sup. & head      &  coarse-disc     & \(1\) & 3824 & 60 & 89.25 & 0.86 & 30.92 & 9  \\
+sup. & head       &  coarse-nof     & \(1\) & 3564 & 57 & 88.95 & 0.86 & 34.98 & 15  \\
     \bottomrule
         \end{tabular}
     \end{table}
@@ -94,7 +113,7 @@ sup. & head       &  coarse-nof & \(1\)  & 88.95 & 0.86 & 34.98 & 15  \\
         \vspace{.2cm}
         \begin{tabular}{cr|rrr|rrr|rrr}
             \toprule
-&     &       \multicolumn{3}{c|}{$k = 10$} & \multicolumn{3}{c|}{$k = 20$} & \multicolumn{3}{c|}{$k = 50$} \\
+&     &       \multicolumn{3}{c|}{$k = 10$} & \multicolumn{3}{c|}{$k = 20$} & \multicolumn{3}{c}{$k = 50$} \\
 Mod. &  $\beta$  & f1 & $t$ & $\lightning$ & f1 & $t$ & $\lightning$ \\ \hline
 pret. & 0.1  & 94.82 & 4.4 & 1 & 94.81 & 2.0 & 1 & 94.81 & 1.6 & 0 \\
 pret. & 0.5  & 94.86 & 1.5 & 1 & 94.85 & 1.7 & 1 & 94.83 & 1.8 & 2 \\
@@ -121,7 +140,24 @@ sup. &   5  & 90.71 & 2.6 & 9 & 90.55 & 5.4 & 13 & 90.56 & 7.0 & 14 \\
     We pick the values according to the greatest f-score and settle with \(k=10\) and \(\beta=2\) for both models.
 
     \subsection{\abrv{Tiger}}
-
+    \begin{table}
+        \caption{\label{tbl:experiments:tiger:size}
+        Number of extracted supertag blueprints from the training portion ($N$) and number of extracted supertag blueprint in the dev portion that do not appear in the training portion ($\overline{N}$) using the \tiger{} treebank.
+        }
+        \centering
+        \setlength{\tabcolsep}{4pt}
+        \vspace{.2cm}
+        \begin{tabular}{lc|rr|rr|rr}
+            \toprule     
+            &        & \multicolumn{2}{c|}{strict} & \multicolumn{2}{c|}{dependent} & \multicolumn{2}{c}{head}  \\
+  nont.   &\(v\)   & $N$ & $\overline{N}$ & $N$ & $\overline{N}$ & $N$ & $\overline{N}$ \\ \hline
+   classic & \(1\)  & 3065 &  83 &  5468 & 180 &  6033 & 234  \\
+   classic & \(2\)  & 8113 & 221 & 13383 & 422 & 12201 & 421   \\
+   coarse  & \(1\)  & 2075 &  47 &  4160 & 130 &  5564 & 219      \\
+   coarse  & \(2\)  & 5197 & 116 &  9896 & 296 & 10652 & 377  \\
+    \bottomrule
+        \end{tabular}
+    \end{table}
     \begin{table}
         \caption{\label{tbl:experiments:tiger}
         Parsing f1 score, accuracy of predicted supertag blueprints, and number of parse fails in \abrv{dptb}'s development set for both prediction models (Mod.) combinations of guide and nonterminal constructors as well as vertical Markovization context for the used rank transformation.
@@ -162,16 +198,16 @@ sup. &   5  & 90.71 & 2.6 & 9 & 90.55 & 5.4 & 13 & 90.56 & 7.0 & 14 \\
         \centering
         \setlength{\tabcolsep}{4pt}
         \vspace{.2cm}
-        \begin{tabular}{lllc|rrrr}
+        \begin{tabular}{lllc|cc|rrrr}
             \toprule
-Mod. &  guide &   nont.   &\(v\)   & f1 & acc. & $t$ & $\lightning$ \\ \hline \rowcolor{black!10}
-pret. & strict (hg) &  coarse & \(1\)  & 92.75 & 0.92 & 50.58 & 1  \\\hline
-pret. & strict    &  coarse-disc & \(1\)  & 92.70 & 0.92 & 53.09 & 1  \\
-pret. & strict     &  coarse-nof & \(1\)  & 92.73 & 0.92 & 54.37 & 2  \\
+Mod. &  guide &   nont.   &\(v\)  & $N$ & $\overline{N}$  & f1 & acc. & $t$ & $\lightning$ \\ \hline \rowcolor{black!10}
+pret. & strict (hg) &  coarse & \(1\)     & 2075 & 47 & 92.75 & 0.92 & 50.58 & 1  \\\hline
+pret. & strict    &  coarse-disc & \(1\)  & 1875 & 38 & 92.70 & 0.92 & 53.09 & 1  \\
+pret. & strict     &  coarse-nof & \(1\)  & 1466 & 33 & 92.73 & 0.92 & 54.37 & 2  \\
 \midrule \rowcolor{black!10}
-sup. & strict (hg) &  coarse & \(1\)  & 85.76 & 0.84 & 32.82 & 0  \\\hline
-sup. & strict    &  coarse-disc & \(1\)  & 85.61 & 0.84 & 33.70 & 0  \\
-sup. & strict     &  coarse-nof & \(1\)  & 85.59 & 0.84 & 39.86 & 0  \\
+sup. & strict (hg) &  coarse & \(1\)     & 2075 & 47 & 85.76 & 0.84 & 32.82 & 0  \\\hline
+sup. & strict    &  coarse-disc & \(1\)  & 1875 & 38 & 85.61 & 0.84 & 33.70 & 0  \\
+sup. & strict     &  coarse-nof & \(1\)  & 1466 & 33 & 85.59 & 0.84 & 39.86 & 0  \\
     \bottomrule
         \end{tabular}
     \end{table}
@@ -185,7 +221,7 @@ sup. & strict     &  coarse-nof & \(1\)  & 85.59 & 0.84 & 39.86 & 0  \\
         \vspace{.2cm}
         \begin{tabular}{cr|rrr|rrr|rrr}
             \toprule
-&      &      \multicolumn{3}{c|}{$k = 10$} & \multicolumn{3}{c|}{$k = 20$} & \multicolumn{3}{c|}{$k = 50$} \\
+&      &      \multicolumn{3}{c|}{$k = 10$} & \multicolumn{3}{c|}{$k = 20$} & \multicolumn{3}{c}{$k = 50$} \\
 Mod. &  $\beta$  & f1 & $t$ & $\lightning$ & f1 & $t$ & $\lightning$ \\ \hline
 pret. & 0.1  & 92.78 & 3.6 & 1 & 92.80 & 4.8 & 0 & 92.80 & 4.8 & 0 \\
 pret. & 0.5  & 92.76 & 3.1 & 1 & 92.79 & 3.1 & 0 & 92.78 & 6.7 & 0 \\
