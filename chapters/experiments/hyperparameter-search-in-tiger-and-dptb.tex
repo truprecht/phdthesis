@@ -3,26 +3,26 @@
 \begin{document}
     \section{Hyperparameter Search in  \abrv{Dptb} and \abrv{Tiger}}\label{sec:gridsearch:other}
     To tune the hyperparameters for the experiments with \abrv{dptb} and \tiger{}, we use a radically reduced set of values compared to the previous section.
-    We omit hyperparamter values if that we think are unrealistic to preduce relevant results.
+    We omit hyperparameter values if we think they are unrealistic to produce relevant results.
     Specifically, we set the following restrictions:
     \begin{itemize}
-        \item we omit the vanilla, near and least guide constructors (leaving 3 options),
-        \item we omit the vanilla nonterminal constructor and the coarse nonterminal constructor with auxiliary table (leaving 2 options), 
+        \item we omit the vanilla, near and least guide constructors (leaving three options),
+        \item we omit the vanilla nonterminal constructor and the coarse nonterminal constructor with auxiliary table (leaving two options), 
         \item we only use right branching binarization in case of the strict guide constructor, and the head guide constructor in tandem with head-inward transformation,
         \item we use the Markovization parameters \(h = 0\) and \(v \in \{1,2\}\) (leaving two options),
         \item in case of \abrv{dcp} supertags, we only investigate the strict guide constructor with nof and disc extensions for a small amount (we choose 1 or 2 samples as explained in the discussion of the results) of combinations of nonterminal and guide constructors and Markovization parameters that performed best with \abrv{lcfrs} supertags.
     \end{itemize}
 
-    We explore the remaining grid of configurations completely with hybrid grammar and \abrv{dcp} supertags, which yields a total of $3 \cdot 2 \cdot 2 = 12$ experiments per treebank and prediction model with \abrv{lcfrs} supertags and 2--4 additional experiments with \abrv{dcp} supertags per model.
-    Each of the following two subsections will guide through the experiments with one treebank in the same fashion as in the experiments with \negra{} in the previous section.
+    We explore the remaining grid of configurations thoroughly with hybrid grammar and \abrv{dcp} supertags, which yields a total of $3 \cdot 2 \cdot 2 = 12$ experiments per treebank and prediction model with \abrv{lcfrs} supertags and 2--4 additional experiments with \abrv{dcp} supertags per model.
+    The following two subsections will guide the experiments with one treebank in the same fashion as in the experiments with \negra{} in the previous section.
 
     \subsection{\abrv{Dptb}}
     \Cref{tbl:experiments:dptb} shows the results for the hybrid grammar supertag prediction and parsing accuracies for each experiment in the grid search for \abrv{dptb}
-    Each experiment was conducted using the supervised and the pretrained prediction model.
+    Each experiment was conducted using the supervised and the pre-trained prediction model.
     
     \begin{table}
         \caption{\label{tbl:experiments:dptb:size}
-        Number of extracted supertag blueprints from the training portion ($N$) and number of extracted supertag blueprints in the dev portion that do not appear in the training portion ($\overline{N}$) using the \dptb{} treebank.
+        The number of extracted supertag blueprints from the training portion ($N$) and the number of extracted supertag blueprints in the dev portion that do not appear in the training portion ($\overline{N}$) using the \dptb{} treebank.
         }
         \centering
         \setlength{\tabcolsep}{4pt}
@@ -41,7 +41,7 @@
 
     \begin{table}
         \caption{\label{tbl:experiments:dptb}
-        Parsing f1 score, accuracy of predicted supertag blueprints, parse time ($t$) and and number of parse fails ($\lightning$) in \abrv{dptb}'s development set for both prediction models (Mod.), combinations of guide and nonterminal constructors as well as vertical Markovization context ($v$) for the used rank transformation.
+        The parsing f1 score, the accuracy of predicted supertag blueprints, parse time ($t$), and number of parse fails ($\lightning$) in \abrv{dptb}'s development set for both prediction models (Mod.), combinations of guide and nonterminal constructors as well as vertical Markovization context ($v$) for the used rank transformation.
         }
         \centering
         \setlength{\tabcolsep}{4pt}
@@ -68,18 +68,18 @@ sup. & coarse  & \(2\)  & 89.97 & 0.82 & 15.01 & 5 & 88.87 & 0.80 & 15.95 & 38 &
     However, in all cases with $v=2$, the number of parse fails increases, and the quality of supertag predictions decreases notably compared to the same configuration but with $v=1$.
     With the pre-trained model, the parsing quality decreases with $v=2$ and the other two guide constructors.
     In the case of the supervised model, there is no clear trend. In those cases, the differences are either minor or reversed.
-    Generally, the presented parsing qualities with the supervised model are quite close, except those with the strict guide and $v=1$.
+    Generally, the parsing qualities presented with the supervised model are pretty close, except for those with the strict guide and $v=1$.
     However, we see two combinations that stand out from the remainder:
     \begin{compactitem}
         \item the strict guide and coarse nonterminal constructors with $v=2$, and
         \item the head guide and coarse guide constructor with $v=1$.
     \end{compactitem}
-    These two achieve the best parsing qualities with the pretrained model, with the supervised model the first case reports the best parsing quality as well.
-    While the number of parse failures is rather high in the first case using the supervised model, the second gives a good compromise between parsing and prediction quality as well as a low number of parse failures with both prediction models.
+    These two achieve the best parsing qualities with the pre-trained model; with the supervised model, the first case also reports the best parsing quality.
+    While the number of parse failures is relatively high in the first case using the supervised model, the second gives a good compromise between parsing and prediction quality and a low number of parse failures with both prediction models.
 
     \begin{table}
         \caption{\label{tbl:experiments:dptb:dcp}
-        Number of extracted supertag blueprints ($N$), number of supertag blueprints that appear in the developement but not in the training portion, ($\overline{N}$), parsing f1 score, accuracy of predicted \abrv{dcp} supertag blueprints, parse time ($t$) and number of parse fails ($\lightning$) in \abrv{dptb}'s development set for both prediction models (Mod.), combinations of guide and nonterminal constructors as well as vertical Markovization context ($v$) for the used rank transformation.
+        The number of extracted supertag blueprints ($N$), The number of supertag blueprints that appear in the development but not in the training portion, ($\overline{N}$), The parsing f1 score, the accuracy of predicted \abrv{dcp} supertag blueprints, parse time ($t$) and The number of parse fails ($\lightning$) in \abrv{dptb}'s development set for both prediction models (Mod.), combinations of guide and nonterminal constructors as well as vertical Markovization context ($v$) for the used rank transformation.
         }
         \centering
         \setlength{\tabcolsep}{4pt}
@@ -106,7 +106,7 @@ sup. & head       &  coarse-nof     & \(1\) & 3564 & 57 & 88.95 & 0.86 & 34.98 &
 
     \begin{table}
         \caption{\label{tbl:experiments:dptb:k}
-        Parsing f1 score, parse time ($t$) and number of parse fails ($\lightning$) in \dptb{}'s development set for both prediction models (Mod.) and combinations of number of supertags ($k$) and confidence interval ($\beta$) used for parsing.
+        The parsing f1 score, parse time ($t$), and the number of parse fails ($\lightning$) in \dptb{}'s development set for both prediction models (Mod.) and combinations of the The number of supertags ($k$) and confidence interval ($\beta$) used for parsing.
         }
         \centering
         \setlength{\tabcolsep}{4pt}
@@ -142,7 +142,7 @@ sup. &   5  & 90.71 & 2.6 & 9 & 90.55 & 5.4 & 13 & 90.56 & 7.0 & 14 \\
     \subsection{\abrv{Tiger}}
     \begin{table}
         \caption{\label{tbl:experiments:tiger:size}
-        Number of extracted supertag blueprints from the training portion ($N$) and number of extracted supertag blueprints in the dev portion that do not appear in the training portion ($\overline{N}$) using the \tiger{} treebank.
+        The number of extracted supertag blueprints from the training portion ($N$) and the number of extracted supertag blueprints in the dev portion that do not appear in the training portion ($\overline{N}$) using the \tiger{} treebank.
         }
         \centering
         \setlength{\tabcolsep}{4pt}
@@ -160,7 +160,7 @@ sup. &   5  & 90.71 & 2.6 & 9 & 90.55 & 5.4 & 13 & 90.56 & 7.0 & 14 \\
     \end{table}
     \begin{table}
         \caption{\label{tbl:experiments:tiger}
-        Parsing f1 score, accuracy of predicted supertag blueprints, parse time ($t$) and and number of parse fails ($\lightning$) in \tiger{}'s development set for both prediction models (Mod.), combinations of guide and nonterminal constructors as well as vertical Markovization context ($v$) for the used rank transformation.
+        The parsing f1 score, the accuracy of predicted supertag blueprints, parse time ($t$), and the number of parse fails ($\lightning$) in \tiger{}'s development set for both prediction models (Mod.), combinations of guide and nonterminal constructors as well as vertical Markovization context ($v$) for the used rank transformation.
         }
         \centering
         \setlength{\tabcolsep}{4pt}
@@ -193,7 +193,7 @@ sup. &   5  & 90.71 & 2.6 & 9 & 90.55 & 5.4 & 13 & 90.56 & 7.0 & 14 \\
 
     \begin{table}
         \caption{\label{tbl:experiments:tiger:dcp}
-        Number of extracted supertag blueprints ($N$), number of supertag blueprints that appear in the developement but not in the training portion, ($\overline{N}$), parsing f1 score, accuracy of predicted \abrv{dcp} supertag blueprints, parse time ($t$) and number of parse fails ($\lightning$) in \abrv{dptb}'s development set for both prediction models (Mod.), combinations of guide and nonterminal constructors as well as vertical Markovization context ($v$) for the used rank transformation.
+        of extracted supertag blueprints ($N$), of supertag blueprints that appear in the development but not in the training portion, ($\overline{N}$), The parsing f1 score, the accuracy of predicted \abrv{dcp} supertag blueprints, parse time ($t$) and parse fails ($\lightning$) in \abrv{dptb}'s development set for both prediction models (Mod.), combinations of guide and nonterminal constructors as well as vertical Markovization context ($v$) for the used rank transformation.
         }
         \centering
         \setlength{\tabcolsep}{4pt}
@@ -214,7 +214,7 @@ sup. & strict     &  coarse-nof & \(1\)  & 1466 & 33 & 85.59 & 0.84 & 39.86 & 0 
 
     \begin{table}
         \caption{\label{tbl:experiments:tiger:k}
-        Parsing f1 score, parse time ($t$) and number of parse fails ($\lightning$) in \tiger{}'s development set for both prediction models (Mod.) and combinations of number of supertags ($k$) and confidence interval ($\beta$) used for parsing.
+        The parsing f1 score, the parse time ($t$), and parse fails ($\lightning$) in \tiger{}'s development set for both prediction models (Mod.) and combinations of supertags ($k$) and confidence interval ($\beta$) used for parsing.
         }
         \centering
         \setlength{\tabcolsep}{4pt}
@@ -237,9 +237,9 @@ sup. &   5  & 87.49 & 5.5 & 4 & 87.46 & 3.3 & 6 & 87.42 & 5.0 & 7 \\
     \end{table}
 
     Similar to the same set of experiments in \abrv{dptb}, the values show almost no difference using \abrv{dcp} supertags with the two nonterminal extensions, except for a slight deterioration in terms of lower parsing accuracy and higher parsing time.
-    Again, we suppose it is negligible and settle with the hybrid grammar configuration for the supervised and pre-trained model.
+    Again, we suppose it isn't essential and settle with the hybrid grammar configuration for the supervised and pre-trained model.
     Lastly, we train supertag prediction models using these sets of parameters and conduct a small grid search over the parameters for the parsing procedure, $k$ and $\beta$.
     \cref{tbl:experiments:tiger:k} lists the results for each tested combination and both models.
-    The values are distributed in relatively small ranges for each of the two models.
+    The values are distributed in relatively small ranges for each model.
     We decide to pick simply via the greatest f1-scores and least values for \(k\) and \(\beta\) and end up with \(k=20\) and \(\beta=0.1\) for the pretrained model, and \(k=20\) and \(\beta=0.5\) for the supervised model.
 \end{document}

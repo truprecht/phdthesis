@@ -5,7 +5,7 @@
     This section presents the assessment results with the test portion of the three investigated treebanks.
     We extract supertag blueprints and parse each treebank using the hyperparameters found in the previous two sections; \cref{tbl:hyperparameters} gives an overview of the final configurations.
     We repeat the training process for each model and treebank multiple times because the training process of the supertag classifiers depends on pseudo-random initialization, and the outcomes vary slightly.
-    \Cref{tbl:averages} shows the result of five runs for the supervised model and pre-trained models that utilize language-specific \emph{bert-base} embeddings.
+    \Cref{tbl:averages} shows the result of five runs for the supervised and pre-trained models that utilize language-specific \emph{bert-base} embeddings.
     We also report three runs for pre-trained models with large transformer embeddings.
     Specifically, we use \emph{gbert-large} \citep{Cha20} in conjunction with \negra{} and \tiger{}, and \emph{roberta-large} \citep{roberta} for \dptb{}.
 
@@ -40,7 +40,7 @@
 
     \begin{table}
         \caption{\label{tbl:averages}
-            Our results on the test portions of the three discontinuous treebanks \negra{}, \tiger{} , and \dptb{}.
+            Our results on the test portions of the three discontinuous treebanks \negra{}, \tiger{}, and \dptb{}.
             Each model was trained on each treebank multiple times with different random seeds: the supervised and small pre-trained models five times and the large pre-trained model three times.
             The row below the list of individual results shows their mean \(\mu\) and sample standard deviation \(\sigma\) denoted in the form \(\mu^{\pm \sigma}\).
         }
@@ -155,7 +155,7 @@
         \caption{
             Our results on test sets compared to other published parsers for discontinuous constituents.
             All use medium-sized transformer embeddings, like \emph{bert-base} or similar.
-            The column ``Type'' gives a rough classification of the parsing approach in the following concepts: GS -- grammar-based with supertagging, C -- grammarless chart-based, T -- transition-based, and N -- untraditional neural approaches.
+            The column ``Type'' gives a rough classification of the parsing approach in the following concepts: GS -- grammar-based with supertagging, C -- grammarless chart-based, T -- transition-based, and N -- untraditional neural methods.
             \label{tbl:pretrained:small}
         }
         \small\centering
@@ -192,7 +192,7 @@
         \caption{
             Our results on test sets compared to other published parsers for discontinuous constituents.
             All use large transformer embeddings,  i.e.\@ \emph{bert-large}, \emph{roberta-large}, \emph{gbert-large} or similar.
-            The column ``Type'' gives a rough classification of the parsing approach in the following concepts: GS -- grammar-based with supertagging, N -- untraditional neural approaches.
+            The column ``Type'' gives a rough classification of the parsing approach in the following concepts: GS -- grammar-based with supertagging, N -- untraditional neural methods.
             \label{tbl:pretrained:large}
         }
         \small\centering
@@ -217,7 +217,7 @@
 
     \Cref{tbl:pretrained:small,tbl:pretrained:large} show the results of the pre-trained models with transformer embeddings.
     Comparing the scores with the previous two tables gives an impression of why these models have been established as a standard tool for many areas of natural language processing in recent years: they produce significantly more accurate results without any effort during modeling and training for the downstream task.
-    In these two tables, it is even more apparent that the scores among the state-of-the-art parsers are incredibly close to each other, with ours right among them.
+    In these two tables, it is even more apparent that the scores among the state-of-the-art parsers are incredibly close, with ours right among them.
 
     \ifSubfilesClassLoaded{%
         \printindex

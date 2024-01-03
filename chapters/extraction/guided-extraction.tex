@@ -8,7 +8,7 @@
     Sepcifically, the generalization deals with the following two limitations:
     \begin{compactitem}
         \item
-            Constructing lexical LCFRS rules picked a sentence position for each inner node of the constituent structure according to a fixed strategy (cf.\@ step \ref{enum:lcfrs:step3} in \cref{sec:extraction:lcfrs}).
+            Constructing lexical \abrv{lcfrs} rules picked a sentence position for each inner node of the constituent structure according to a fixed strategy (cf.\@ step \ref{enum:lcfrs:step3} in \cref{sec:extraction:lcfrs}).
             Such a strategy is now formalized by a \emph{guide} that maps each inner node position of a constituent structure to sentence position in its yield.
             The concept is generalized by introducing multiple strategies to define guides for a given constituent structure called \emph{guide constructors}.
         \item
@@ -47,7 +47,7 @@
 
     In this thesis, we will generalize the concept of guides by relaxing the second condition: each sentence position may be mapped to multiple inner node positions in the constituent structure.
     This allows us to define rules that produce multiple constituent nodes.
-    We will use this in the end of this section to derive lexical grammars for constituent structures that are inspired by those extracted for dependency parsing.
+    We will use this at the end of this section to derive lexical grammars for constituent structures that are inspired by those extracted for dependency parsing.
     They are extracted such that each rule contains a lexical symbol in tandem with each inner node of the constituent structure that the lexical symbol is the lexical head of.
 
     \begin{definition}[Guide]
@@ -289,11 +289,11 @@
 
     With this guide, our grammar extraction procedure aims to mimic the strategies established in dependency parsing \citep{kuhlmann2009treebank} as follows:
     \begin{itemize}
-        \item Each constituent structure is interpreted as dependency tree by combining the nodes that are assigned to the same lexical head. This will yield a tree consisting of sentence positions, each occurring exactly once.
+        \item Each constituent structure is interpreted as a dependency tree by combining the nodes that are assigned to the same lexical head. This will yield a tree consisting of sentence positions, each occurring exactly once.
         \item The \abrv{lcfrs} compositions are constructed then in the same manner as for dependency grammars: There is one for each position in the sentence; it is constructed using the ordered contiguous sequences of positions in the subtree rooted at the position such that, for each child, its sequences of positions are replaced by appropriate variable symbols.
         \item The resulting derivation has the same shape as the dependency tree. For each position in the dependency tree for the lexical head \(i\), there is a lexical rule with the terminal \(i\) in the derivation at the same position.
     \end{itemize}
-    \Cref{sec:extractionalg} shows an example for the extraction of a derivation using the head guide.
+    \Cref{sec:extractionalg} shows an example of the extraction of a derivation using the head guide.
 
     \begin{theorem}
         Let \(\xi\) be an indexed tree with a head assignment.
@@ -381,7 +381,7 @@
         \item assigned by the guide to nodes at or below \(\rho\), or
         \item below \(\rho\) and not in the image of the guide.
     \end{inparaenum}
-    It is the set of leaves that occurs in the (sub-)derivation of rules extracted at and below \(\rho\).
+    It is the set of leaves occurring in the (sub-)derivation of rules extracted at and below \(\rho\).
     The partition \(\mathit{fo}\) and its connection to the definition of each nonterminal constructor assure that the constructed nonterminals are considered with consistent fanouts.
     In the following, we will define some instances of nonterminal constructors.
     Similar to the guide constructors, each instance will carry a name of the form \emph{\(x\) nonterminal constructor}.
@@ -406,7 +406,7 @@
     \exampleqed
 
     \paragraph{Classic Nonterminal Constructor.}\deflab<nonterminal constructor>[cnont]{classic nonterminal (constructor)}[]
-    This constructor is intended to produce nonterminals that are akin to usual strategies in LCFRS extraction \cite{MaierSogaard08}.
+    This constructor intends to produce nonterminals akin to usual strategies in LCFRS extraction \cite{MaierSogaard08}.
     It combines the superscript and subscript of the vanilla nonterminals and annotates constituent symbols with their sum.
     Moreover, each occurrence of a constituent symbol that is the product of a merge during a rank transformation (cf.\@ merging a chain of unary nodes in \cref{sec:binarization}) is replaced by the topmost constituent symbol of such chain.
     We define a modified set of constituent symbols \(\varGamma' = \{ f(\gamma) \mid \gamma \in \varGamma \}\) where \(f(\gamma)\) is the symbol obtained by replacing each occurrence of the form \(\nt{A$_1$+A$_2$+...+A$_k$}\) in \(\gamma\) by \(\nt{A$_1$}\).
@@ -462,9 +462,9 @@
     We use two additional \emph{extensions} for the classic and coarse nonterminal constructor in the case of dcp supertags:
     \begin{itemize}
         \item The \emph{nof extension} completely removes the fanout subscripts in all constructed nonterminal symbols.
-        \item The \emph{disc extension} removes the fanout subscript if it is 1, and replaces it by the marker ``$_{\text{disc}}$'' if it is greater then 1; i.e.\@ it distinguishes nonterminals for continuous and discontinuous derivations.
+        \item The \emph{disc extension} removes the fanout subscript if it is 1 and replaces it by the marker ``$_{\text{disc}}$'' if it is greater than 1; i.e.\@ it distinguishes nonterminals for continuous and discontinuous derivations.
     \end{itemize}
-    in \cref{sec:experiments} will refer to the nonterminal constructors extended by adding the name as suffix, for instance \emph{coarse-disc} for the coarse nonterminal constructor with the disc extension.
+    in \cref{sec:experiments} will refer to the nonterminal constructors extended by adding the name as a suffix, for instance, \emph{coarse-disc} for the coarse nonterminal constructor with the disc extension.
 
     \subsection{Lexical Derivation Extraction}\label{sec:extractionalg}
     This small subsection describes how we define a derivation of lexical \abrv{hg} rules using the discussed prerequisites.
@@ -486,7 +486,7 @@
     The derivation for \(\xi\), \(\varphi\) and \(\psi\) is defined from top to bottom as follows:
     \begin{itemize}
         \item We start with the root position \(\rho_0 = \varepsilon\).
-        \item For the position \(\rho_0\), let \(\rho_1, \ldots, \rho_s\) be the sequence of topmost parallel positions that are descendants of \(\rho_0\) and assigned to another leaf than \(\phi(\rho_0)\) and ordered with respect to the least leaf assigned to the nodes in the subtree:
+        \item For the position \(\rho_0\), let \(\rho_1, \ldots, \rho_s\) be the sequence of topmost parallel positions that are descendants of \(\rho_0\) and assigned to another leaf than \(\phi(\rho_0)\) and ordered concerning the least leaf assigned to the nodes in the subtree:
             \begin{compactitem}
                 \item For each \(j \in [s]\), \(\phi(\parent(\rho_j)) = \phi(\rho_0) \neq \phi^{\text{top}}(\rho_j)\), and there is no other \(\rho_{s+1}\) which fulfills this property.
                 \item For each \(j,k \in [s]\) with \(j<k\) holds \(\min L(\rho_j) < \min L(\rho_k)\).
@@ -546,32 +546,32 @@
     \subsection{Viable Combinations of Extraction Parameters}\label{sec:viable-paramters}
     \Cref{sec:binarization,sec:ntconstructors,sec:guides} introduced parameters for the extraction procedure.
     As we have seen in \cref{sec:guides}, the guide constructors expect different prerequisites such that not all combinations of parameter values are compatible.
-    The vanilla, strict, least and near guide constructors make no assumptions regarding the binarization strategy and can be freely combined.
+    The vanilla, strict, least, and near guide constructors make no assumptions regarding the binarization strategy and can be freely combined.
     However, we suspect the vanilla and strict guide constructors are best combined with right-branching binarization because these guides are defined via the right successor of each node.
     
-    The dependent guide constructor expects a binary constituent structure complemented by a head assignment; thus, it can only be coupled it with the head-outward binarization strategy.
+    The dependent guide constructor expects a binary constituent structure complemented by a head assignment; thus, it can only be coupled with the head-outward binarization strategy.
     Similarly, the head guide constructor expects a head assignment and cannot be coupled with the left- or right-branching binarization strategy.
-    Formally, the head-outward binarization strategy produces viable inputs for the head guide constructor, but the canonical head assignments are not useful when it comes to the extraction:
-        A head guide will combine all artificial nodes that are introduced during the binarization and assigned to the same lexical head; hence the effects of the rank transformation are void.
+    Formally, the head-outward binarization strategy produces viable inputs for the head guide constructor, but the canonical head assignments are not helpful when it comes to the extraction:
+        A head guide combines all artificial nodes introduced during the binarization and assigns them the same lexical head; hence, the effects of the rank transformation are void.
     The following example illustrates this setting; it produces a rule of rank four that combines all nodes introduced during the head-outward binarization of the former root labeled \cn{s}.
-    In our experiments, we use the head guide constructor exclusively in case of no applied rank transformations or in case of the head-inward transformation.
+    In our experiments, we use the head guide constructor exclusively in case of no applied rank transformations or case of the head-inward transformation.
 
     \begin{wrapfigure}[7]{r}{0pt}
         \subfile{figures/hybrid/pilot-ho-head.tex}
     \end{wrapfigure}
     \parexample[Continues \cref{fig:ex:markovization}]
-    Consider the constituent structureafter applying the head-outward binarization strategy from the previous example  together with the values assigned by its head guide.
-    All nodes that originate from the \cn{s} constituent are assigned to the lexical head \(3\).
-    For the root position $\rho_0 = \varepsilon$, there are four descendant positions that are assigned to different lexical heads: $\rho_1 = 1\,1\,1$, $\rho_2=1\,1\,2$, $\rho_3 =1\,2$ and $\rho_4=2$.
-    Three of them, namely $\rho_1$, $\rho_2$ and $\rho_4$, are positions of the leaves 1, 2 and 6, respectively; the position \(\rho_3\) points to the subtree with the $\cn{np}$ node.
+    Consider the constituent structure after applying the head-outward binarization strategy from the previous example and the values assigned by its head guide.
+    All nodes constructed from the \cn{s} constituent are assigned to the lexical head \(3\).
+    For the root position $\rho_0 = \varepsilon$, four descendant positions are assigned to different lexical heads: $\rho_1 = 1\,1\,1$, $\rho_2=1\,1\,2$, $\rho_3 =1\,2$ and $\rho_4=2$.
+    Three of them, namely $\rho_1$, $\rho_2$ and $\rho_4$, are positions of the leaves 1, 2, and 6, respectively; the position \(\rho_3\) points to the subtree with the $\cn{np}$ node.
     The compositions constructed for the root position assume four arguments; the \abrv{dcp} composition contains all the artificial nodes introduced during the binarization.
-    The following illistration shows the resulting derivation.
+    The following illustration shows the resulting derivation.
     \begin{center}
         \subfile{figures/hybrid/pilot-ho-head-deriv.tex}
     \end{center}
     \exampleqed
 
-    Aside from these restrictions of compatible binarization strategies and guide constructors, the nonterminal constructors and Markovization paramters can be chosen freely.
+    Aside from these restrictions of compatible binarization strategies and guide constructors, the nonterminal constructors and Markovization parameters can be chosen freely.
     They determine the structure and number of the extracted supertag blueprints.
     \Cref{sec:gridsearch,sec:gridsearch:other} show a vast series of experiments that extract supertag blueprints using many different combinations of extraction parameters.
 

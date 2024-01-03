@@ -2,23 +2,23 @@
 
 \begin{document}
     \chapter{Experiments}\label{sec:experiments}
-    This chapter describes the experiments that we conducted for the extraction and parsing with supertags in three discontinuous constituent treebanks.
-    First, \cref{sec:implementation} gives a short overview of the software that we used to conduct the experiments.
-    \Cref{sec:hyperparameters} describes the options that are available to steer the supertag extraction and the training process for the classifiers used for supertagging.
-    \Cref{sec:treebanks} glances on the three treebanks that we use to investigate the implementation.
-    The meat of this chapter's content is an evaluation that shall find out which options for the supertag extraction work best in the treebanks.
-    This search extends an earlier set of published experiments \citep{Rup22}, in particular with the newly added options for the extraction.
+    This chapter describes the experiments we conducted for extracting and parsing with supertags in three discontinuous constituent treebanks.
+    First, \cref{sec:implementation} gives a short overview of the software we used to conduct the experiments.
+    \Cref{sec:hyperparameters} describes the options available to steer the supertag extraction and the training process for the classifiers used for supertagging.
+    \Cref{sec:treebanks} glances at the three treebanks we use to investigate the implementation.
+    The meat of this chapter's content is an evaluation that shall determine which supertag extraction options work best in the treebanks.
+    This search extends an earlier set of published experiments \citep{Rup22}, particularly with the newly added options for the extraction procedure.
     It is described in detail for one of the three treebanks, \negra{}, in \cref{sec:gridsearch}.
-    We also conduct a hyperparameter search for the other corpora with reduced sets of options, which are presented in \cref{sec:gridsearch:other}.
-    We conclude the chapter with an overview of the parsing quality that we are able to achieve with the options found in the earlier sections.
+    We also conduct a hyperparameter search for the other corpora with reduced options, presented in \cref{sec:gridsearch:other}.
+    We conclude the chapter with an overview of the parsing quality that we can achieve with the options found in the earlier sections.
     These results are compared to other state-of-the-art parsing technologies for discontinuous constituent trees.
 
-    All experiments of our experiments were executed on a local compute server with an Intel Xeon Silver 4114 CPU (40 Cores each at 2.2 GHz), one NVidia GeForce RTX 2080 and two Tesla K80 GPUs.\footnote{
-        The RTX 2080 is significantly faster than the K80 GPUs, but the latter have more memory which was needed to train the pretrained models with large transformer embeddings.
+    All experiments of our experiments were executed on a local compute server with an Intel Xeon Silver 4114 CPU (40 Cores each at 2.2 GHz), one NVidia GeForce RTX 2080, and two Tesla K80 GPUs.\footnote{
+        The RTX 2080 is significantly faster than the K80 GPUs, but the latter model has more memory, which was needed to train the pre-trained models with large transformer embeddings.
         We executed some sets of experiments in \cref{sec:gridsearch,sec:gridsearch:other} in parallel using both GPU models, so the reported time needed for the prediction might vary a bit.
         The results reported in \cref{sec:results} are all obtained using the RTX 2080. 
     }
-    Our reported parse times are all sequential executions; the implementation is currently not parallelized but could easily be modified to, as the sentences are parsed independently of each other.
+    Our reported parse times are all sequential executions; the implementation is not parallelized but could easily be modified, as the sentences are parsed independently.
     
     \subfile{experiments/implementation.tex}
     \subfile{experiments/hyperparameters.tex}
