@@ -1,0 +1,55 @@
+\documentclass[../../document.tex]{subfiles}
+
+\begin{document}
+    \section{Data and Tasks}\label{sec:treebanks}
+    In the experiments of this chapter, we use three treebanks that are commonly investigated in discontinuous constituent parsing.
+    \abrv{Negra} \citep{Skut98} and \tiger{} \citep{Brants04} are German constituent treebanks treebanks, and \dptb{} is a conversion of the English Penn Treebank \citep{Marcus94} into a discontinuous constituent treebank in the same format as \negra{} published by \citet{EvaKal11}.
+    For each treebank, we consider the task of constituent parsing including \abrv{pos} tag prediction; the sets of constituent and \abrv{pos} symbols are defined by each individual data set.
+    All three treebanks contain newspaper text sentences that were enhanced using constituent structures and \abrv{pos} tags.
+    There are published splits for the three treebanks commonly used in discontinuous parsing; the split by \citet{DubKel03} is used for \negra{}, the split by \citet{Sed13} is used for  \tiger{}, and the split by \citet{collins-1996-new} for \dptb{}.
+    \Cref{tbl:treebanks} gives a brief overview over the size of the treebanks, their sets of constituent and \abrv{pos} symbols, and their split portions.
+    
+    \citet{Maier15} pointed out an issue with the annotation of two trees in the \tiger{} treebank.
+    We follow their suggestion and skip these trees in the training portion.
+    \citet{CoaCoh19} published a script for the \tiger{} treebank that automatically resolves issues in the annotation where some nodes were provided with multiple parents.\footnote{The script can be found in their repository: \url{https://github.com/mcoavoux/multilingual_disco_data}.}
+
+    \begin{table}
+        \caption{}
+        \vspace{.2cm}
+        \begin{tabular}{c|ccc}
+            \toprule
+                    & \negra{} & \tiger{} & \dptb{} \\
+            \midrule
+            \multirow{3}{*}{size}
+                                            & 20602 sentences   & 50472 sentences & 49208 sentences \\
+                                            & 355096 tokens     & 888238 tokens & 1173766 tokens \\
+                                            & 17.24 tok./sent.  & 17.60 tok./sent & 23.85 tok./sent. \\
+            \abrv{pos} symbols              & 55        & 54        & 45    \\
+            constituent symbols             & 27        & 25        & 29  \\
+            constituent nodes               & 165087    & 420440    & 967655 \\
+            discontinuous constituent nodes &   8133 (4.93\%)    &  20493 (4.87\%) & 16765 (1.73\%) \\
+            discontinuous constituent trees &   5688 (27.61\%)   &  14020 (27.77\%) & 9790 (19.90\%) \\
+            \multirow{2}{*}{training portion} & 
+                            \multirow{2}{*}{18602 sentences}  & 
+                                                    \multirow{2}{*}{45472 sentences}  & 
+                                                                                    39832 sentences\\
+                                                                                &&& (section 2--21)\\
+            \multirow{2}{*}{dev portion} & 
+                            \multirow{2}{*}{1000 sentences}  & 
+                                                    \multirow{2}{*}{5000 sentences}  & 
+                                                                                    1700 sentences\\
+                                                                                &&& (section 22)\\
+            \multirow{2}{*}{test portion} & 
+                            \multirow{2}{*}{1000 sentences}  & 
+                                                    \multirow{2}{*}{5000 sentences}  & 
+                                                                                    2416 sentences\\
+                                                                                &&& (section 23)\\
+            \bottomrule
+        \end{tabular}
+    \end{table}
+
+    \ifSubfilesClassLoaded{%
+        \printindex
+        \bibliography{../../references}%
+    }{}
+\end{document}
