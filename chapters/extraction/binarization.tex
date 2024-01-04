@@ -12,8 +12,8 @@
     During the process, constituent tree nodes with a rank greater than two are broken down by introducing binary \emph{artificial nodes}.
     These artificial nodes have annotations that clearly distinguish them from the original nodes.
     There are several approaches to constructing the artificial nodes, i.e., the direction in which the nodes are split.
-    \citet{Son08} investigated their influence on parsing with binary context-free grammars obtained using various such approaches.
-    \citet{KleMan03} extend binarization by \emph{Markovization} for the artificial node symbols.
+    \Citet{Son08} investigated their influence on parsing with binary context-free grammars obtained using various such approaches.
+    \Citet{KleMan03} extend binarization by \emph{Markovization} for the artificial node symbols.
     They show that the extension can produce more compact grammar instances or increase their parsing accuracy.
 
     In this section, we will first briefly bring up and compare well-established approaches to binarize constituent structures in \cref{sec:binarization}.
@@ -132,10 +132,10 @@
 
     \paragraph{Minimizing Fanout or Parsing Complexity.}
     Two binarization strategies specifically consider the properties of \abrv{lcfrs} instances extracted from constituent treebanks after binarization.
-    \citet{gomez2009optimal} criticize that the usual strategies can produce constituent nodes with larger fanout than in the original treebank.
+    \Citet{gomez2009optimal} criticize that the usual strategies can produce constituent nodes with larger fanout than in the original treebank.
     The parsing complexity with \abrv{lcfrs} instances depends on the fanouts, so binarization strategies may influence the parsing effort.
     They propose a binarization strategy that minimizes the fanouts in its results.
-    \citet{Gil10} argue that the parsing complexity not only depends on the single occurring fanouts but on the combination of fanouts in each node and its children.
+    \Citet{Gil10} argue that the parsing complexity not only depends on the single occurring fanouts but on the combination of fanouts in each node and its children.
     They adapt the strategy to minimize the sum of fanouts in such node triplets.
     In contrast to the previous strategies, these two scramble the order of the successors in the constructed subtrees.
     They are rarely considered in parsing, and experiments conducted by \citet{Cra12} show underwhelming results regarding parse time and accuracy.
