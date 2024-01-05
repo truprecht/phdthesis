@@ -1,21 +1,21 @@
 \documentclass{scrbook}
 
-\usepackage{libertine, subfiles}
+\usepackage[tt=false]{libertine}
+\usepackage{subfiles}
 \usepackage[german, english, iso]{isodate}
 \input{mathops}
 \usepackage[pdfborderstyle={/S/U/W 1}]{hyperref}
-\usepackage{natbib, paralist, makeidx, xifthen, wrapfig, subcaption, needspace, booktabs, xfp, algorithm, algorithmicx, multirow}
+\usepackage{natbib, paralist, makeidx, xifthen, wrapfig, subcaption, needspace, booktabs, xfp, algorithm, algorithmicx, multirow, doi}
 \usepackage[table]{xcolor}
 \usepackage[capitalize]{cleveref}
 \usepackage[noend]{algpseudocode}
-\bibliographystyle{abbrvnat}
+\bibliographystyle{abbrvnatsc}
 \BeforeBeginEnvironment{wrapfigure}{\setlength{\intextsep}{0pt}}
 \makeindex
 
 % tikz setup
 \usepackage{tikz}
 \usetikzlibrary{matrix, positioning, fit, decorations.pathreplacing, shapes}
-
 
 \newcommand{\abrv}[1]{\textsc{#1}}
 \NewDocumentCommand{\deflab}{d<>omo}{%
@@ -32,6 +32,7 @@
 \newcommand{\negra}{\abrv{negra}}
 \newcommand{\tiger}{\abrv{tiger}}
 \newcommand{\dptb}{\abrv{dptb}}
+\renewcommand*{\doitext}{\noexpand\textsc{doi}: }
 
 \newcounter{SectionEnvCounter}
 \numberwithin{SectionEnvCounter}{section}
@@ -88,6 +89,5 @@
 
     \printindex
 
-    \nocite{*}
     \bibliography{references}
 \end{document}
