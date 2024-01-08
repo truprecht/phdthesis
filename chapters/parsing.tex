@@ -20,7 +20,7 @@
             These constituent structures are extended to constituent trees by adding predicted \abrv{pos} symbols and the tokens from the input sentence.
         \item\label{parsing:item:4}
             Lastly, a reranking approach is used to (re-)score the constituent trees and pick the best as a result.
-            We use \emph{data-oriented parsing}, a precise statistical grammar formalism, as the final stage of a coarse to fine parsing approach. \citep{CraSchBod16}
+            We use \emph{data-oriented parsing}, a precise statistical grammar formalism, as the final stage of a coarse to fine parsing approach \citep{CraSchBod16}.
     \end{enumerate}
     For step \ref{parsing:item:1}, we use a neural network to compute the prediction confidence for each blueprint at each position in the input sentence.
     % The training of these models is described in \cref{chapter:training}.
@@ -35,10 +35,10 @@
         }
     \end{figure}
 
-    
+
     \subfile{parsing/dcp-parsing.tex}
     \subfile{parsing/reranking.tex}
-    
+
     \ifSubfilesClassLoaded{%
         \printindex
         \bibliography{../refeferences.bib}%

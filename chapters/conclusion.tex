@@ -14,7 +14,7 @@
     \Cref{sec:gridsearch,sec:gridsearch:other} show our vast experiments to find feasible parameters for extracting and parsing with supertags.
     Using the parameters, we are able to obtain results among the state-of-the-art in the field of discontinuous parsing.
     Compared to parsers relying on statistical grammar formalisms, we achieve more accurate results while being magnitudes faster.
-    
+
     We show the number of extracted supertags for varying extraction parameters in \cref{sec:gridsearch,sec:gridsearch:other}.
     Compared to the sets of grammar rules extracted for statistical parsing, these are quite small.
     For instance, \citet[in Figure~7.4]{Geb20} reports grammars ranging from 60 thousand to 50 million rules depending on the grade of refinement; the smallest ones have no practical relevance, however, as parsing with them is too inaccurate.\footnote{
@@ -53,7 +53,7 @@
     Even with exclusively supervised models, we achieve higher accuracy scores in less parse time than state-of-the-art parsers solely based on grammar formalisms.
     Supertagging also has the benefit of using pre-trained models utilizing knowledge that is not part of the treebanks used to extract the grammar rules.
     With said models, we can parse as accurately as other stat-of-the-art parsers for discontinuous constituents.
-    In recent years, some parts of the \abrv{nlp} community have written off parsing with grammar formalisms as being too inaccurate and slow (cf. \citealp{StaSte20} in Section 1, \citealp{zhang2020survey} in Section 10).
+    In recent years, some parts of the \abrv{nlp} community have written off parsing with grammar formalisms as being too inaccurate and slow (cf. \citealp[Section~1]{StaSte20}; and \citealp[Section~10]{zhang2020survey}).
     We tend to agree regarding approaches that solely rely on grammar formalisms.
     But we suggest this work gives enough evidence that these formalisms can act as a solid foundation for parsers that combine them with strong machine learning models.
 \end{document}

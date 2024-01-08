@@ -22,7 +22,7 @@
             The process described in \cref{sec:extraction:lcfrs} first extracts a derivation \abrv{lcfrs} rules for each tree in a treebank.
             After that, the rules within each derivation are lexicalized by transporting the terminal symbols occurring in the leaves into inner nodes.
             This transportation is reversible with the help of annotations that are added to the rules and nonterminals within the rules.
-            This approach was the fruit of a collaboration with Richard Mörbitz. \citep{MoeRup20,RupMoe21}
+            This approach was the fruit of a collaboration with Richard Mörbitz \citep{MoeRup20,RupMoe21}.
         \item
             The extraction procedure described in \cref{sec:extraction:guided} first assigns a sentence position to each inner node of the constituent structure.
             The following extracts a derivation of lexical grammar rules according to the positions assigned to the inner nodes in each subtree.
@@ -33,7 +33,7 @@
     One of the transformations described in the section is binarization, a standard tool for parsing constituent trees.
     The other \emph{head-inward transformation} was not published before.
 
-    
+
     \subfile{extraction/binarization.tex}
     \subfile{extraction/lcfrs-lexicalization.tex}
     \subfile{extraction/guided-extraction.tex}

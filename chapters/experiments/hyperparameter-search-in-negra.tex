@@ -5,7 +5,7 @@
     \section{Exhibitory Hyperparameter Search in \abrv{Negra}}\label{sec:gridsearch}
     This section describes an exemplary and exhaustive evaluation of the extraction and training parameters under the umbrella term hyperparameters in the case of the \negra{} treebank.
     For the two other treebanks that we report results for, this is briefly documented in the following section.
-    
+
     Fundamentally, we try to find appropriate hyperparameters using a modified version grid search.
     In a grid search, we fix a set of values for each parameter and experiment with each admissible combination of values for each parameter.
     Each of these experiments consists of the extraction of supertag blueprints, the training of a classifier for the prediction of supertags, and the assessment of the prediction and parsing procedures using the trained classifier.
@@ -30,10 +30,10 @@
         \item The number of sentences in the development portion that we could not parse (denoted by $\lightning$; lower values are better).
         \item The parse time of all sentences in the development portion in seconds (denoted by \(t\); lower values are better).
     \end{enumerate}
-    
+
     The following sections each describe some parameter chunks and the sets of values that we considered for the experiments in the grid search with these chunks.
     The results of the experiments are presented in tables that contain the above values as assessment.
-    
+
     \subsection{Guides, Nonterminals, and Binarization}\label{sec:gridsearch:nts-guides}
     For the first steps in our search for values for our hyperparameters, we consider two chunks of parameters in succession: the first chunks are the nonterminal and guide constructors, and the second are nonterminal and guide constructors as well as the rank transformation parameters (i.e.\@ the binarization strategy and Markovization parameters).
     At first glance, the first chunk seems redundant because it is well included in the second.
@@ -53,7 +53,7 @@
         \item coarse nonterminals are produced using the first character of constituent symbols (there is no coarse table).
     \end{compactitem}
     The results are shown in \crefrange{tbl:gridsearch:1:1}{tbl:gridsearch:1:3}.
-    
+
     \begin{table}
         \caption{\label{tbl:gridsearch:1:1}
             Number of extracted supertag blueprints from \negra{}'s training portion, number of blueprints that occur in the development but not in the training portion, and blueprint perplexity for combinations of guide and nonterminal constructors.
@@ -71,14 +71,14 @@
             \bottomrule
         \end{tabular}
     \end{table}
-    
+
     While the number of extracted supertags and the perplexity presented in \cref{tbl:gridsearch:1:1} differ considerably for varying nonterminals constructors as well as the guide constructors, the two latter tables show astonishingly similar values for the prediction and parsing accuracy.
     We generally see smaller sets of extracted supertags for nonterminal constructors in the following order: vanilla, classic, and then coarse nonterminals.
     That was expected as the sets of constructed nonterminals are coarser in the same order.
     The number of unseen blueprints and the perplexity follow the same trend as we expected.
     For the guide constructors, we generally see the least set of extracted blueprints using the strict guide,  closely followed by the vanilla guide.
     The largest set of supertag blueprints was extracted using the dependent guide.
-    
+
     \begin{table}
         \caption{\label{tbl:gridsearch:1:2}
             The parsing f1 score, the accuracy of predicted supertag blueprints, and the number of parse fails using the supervised supertag prediction model in \negra{}'s development set for combinations of guide and nonterminal constructors.
@@ -95,8 +95,8 @@
             \bottomrule
         \end{tabular}
     \end{table}
-    
-    
+
+
     \begin{table}
         \caption{\label{tbl:gridsearch:1:3}
             The parsing f1 score, the accuracy of predicted supertag blueprints, and the number of parse fails using the pre-trained architecture model in \negra{}'s development set for combinations of guide and nonterminal constructors.
@@ -113,7 +113,7 @@
             \bottomrule
         \end{tabular}
     \end{table}
-    
+
     The prediction and parsing scores shown in \cref{tbl:gridsearch:1:2,tbl:gridsearch:1:3} do not vary much in the axis for the nonterminal constructors.
     However, the number of parse fails does generally seem to decrease with the afore-observed coarser sets of constituents.
     Among the values for the guide constructors, there are small but observable differences in the prediction and parsing accuracies:
@@ -128,7 +128,7 @@
     These two guide constructors are very similar, as the latter was introduced as a variant that excludes rare cases that are handled inconsistently by the former.
     The results suggest that this leads to strictly better results.
     With the same reasoning, we will exclude the vanilla from the remainder of the experiments in favor of the classic nonterminal constructor.
-    
+
     The second chunk of hyperparameters adds binarization parameters to the grid.
     We consider the following hyperparameter values:
     \begin{compactitem}
@@ -143,7 +143,7 @@
         \item coarse nonterminals are produced using the first character of constituent symbols (there is no coarse table).
     \end{compactitem}
     The results are shown in \crefrange{tbl:gridsearch:2:1}{tbl:gridsearch:2:3}.
-    
+
     \begin{table}
         \caption{\label{tbl:gridsearch:2:1}
         Number of extracted supertag blueprints from \negra{}'s training portion, number of blueprints that occur in the development but not in the training portion, and blueprint perplexity for combinations of guide and nonterminal constructors and binarization parameters.
@@ -274,7 +274,7 @@ dependent & 1 & 1 & 11364 & 231 & 544.94 & 5874 & 99 & 311.89 \\
     \Cref{tbl:gridsearch:head:1} shows that the sets of supertag blueprints with both guide constructors are considerably larger than those with the strict guide, even without added Markovization contexts.
     We see a lower perplexity in supertag blueprints extracted with the head guide constructor than with the strict guide constructor in certain combinations.
 
-    
+
     \begin{table}
         \caption{\label{tbl:gridsearch:head:2}
         The parsing f1 score, the accuracy of predicted supertag blueprints, and the number of parse fails using the supervised prediction model in \negra{}'s development set for configurations involving the head guide constructor.
@@ -379,7 +379,7 @@ coarse (table) & 1 & 1 & 4463 & 77 & 333.43 & 7947 & 159 & 434.02 & 11806 & 321 
 
     As expected, the sets of extracted blueprints are significantly smaller with the coarse nonterminals provided by the table compared to naively constructed coarse nonterminals.
     However, with added context by Markovization, these quickly grow to the size of the sets extracted with classic nonterminals.
-    
+
     \begin{table}
         \caption{\label{tbl:gridsearch:coarse:2}
         The parsing f1 score, the accuracy of predicted supertag blueprints, and the number of parse fails using the supervised prediction model in \negra{}'s development set for configurations involving the coarse constituent symbols from \cref{tab:coarse-nonterminals}.
@@ -419,7 +419,7 @@ coarse (table) & 1 & 1 & 86.97 & 0.88 & 11.90 & 7 & 85.33 & 0.86 & 13.16 & 73 & 
 \bottomrule
         \end{tabular}
     \end{table}
-    
+
     \Cref{tbl:gridsearch:2:2,tbl:gridsearch:2:3} suggest that the current set of experiments could not improve upon the parsing accuracy achieved by those shown in the previous section.
     Interestingly, the parsing accuracy with predicted supertags without added Markovization context is lower than that with horizontal Markovization window \(h=1\) in the case of the strict guide constructor. The supertag prediction accuracy tends to the opposite direction and the number of parse fails is lower.
     We propose the reason for this result as follows:
@@ -436,8 +436,8 @@ coarse (table) & 1 & 1 & 86.97 & 0.88 & 11.90 & 7 & 85.33 & 0.86 & 13.16 & 73 & 
     It might be worth experimenting with other nonterminal clusters to obtain coarse nonterminal constructors.
     If our hypothesis is correct, a refinement procedure such as reranking might counter the effects on the parsing accuracy.
     However, since the supertag prediction accuracy has shown no measurable improvement over the naively constructed coarse nonterminals, we doubt that this would lead to higher parsing accuracies.
-    In conclusion for this small set of experiments, we drop this approach to construct coarse nonterminals from all following experiments. 
-    
+    In conclusion for this small set of experiments, we drop this approach to construct coarse nonterminals from all following experiments.
+
 
     \subsection{Experiments with \abrv{Dcp} Supertags}\label{sec:gridsearch:dcp}
     This section introduces a series of experiments that use \abrv{dcp} as underlying grammar formalism instead of hybrid grammars.
@@ -650,7 +650,7 @@ coarse-nof  & 90.97 & 0.90 & 9.43 & 0 & 90.42 & 0.88 & 16.05 &  6 &   --- &  ---
         \item for the supervised model, we fix \abrv{dcp} supertags with \(k = 20\) and \(\beta \in \{0.1,0.5,2\}\),
         \item for the pretrained model, we fix \abrv{hg} supertags with \(k = 20\) and \(\beta \in \{0.1,0.5,2,5\}\).
     \end{compactitem}
-    
+
     \begin{table}
         \caption{\label{tbl:grid:reranking:supervised}
         F1 score for the best constituent trees obtained using the supertag score (n-f1), the best constituent trees obtained using reranking (r-f1), and the best f1 score among the top $n$ constituent trees predicted by the parser (o-f1) in the development portion of \negra{} using different combinations of the parsing parameter $\beta$ and number of considered constituent trees $n$. The supervised model predicts the supertag blueprints.
@@ -661,7 +661,7 @@ coarse-nof  & 90.97 & 0.90 & 9.43 & 0 & 90.42 & 0.88 & 16.05 &  6 &   --- &  ---
             \toprule
        & \multicolumn{3}{c|}{$n = 2$} & \multicolumn{3}{c|}{$n = 10$}& \multicolumn{3}{c}{$n = 100$}\\
  \(\beta\) & r-f1 & n-f1 & o-f1  & r-f1 & n-f1 & o-f1 & r-f1 & n-f1 & o-f1   \\
-\hline 
+\hline
 0.1 & 82.76 & 82.74 & 83.56 & 82.82 & 82.74 & 84.32 & 82.82 & 82.74 & 84.45 \\
 0.5 & 82.61 & 82.58 & 83.57 & 82.82 & 82.58 & 84.50 & 82.83 & 82.58 & 84.62 \\
   2 & 82.49 & 82.31 & 83.78 & 82.42 & 82.31 & 85.11 & 82.34 & 82.31 & 85.35 \\
@@ -679,7 +679,7 @@ coarse-nof  & 90.97 & 0.90 & 9.43 & 0 & 90.42 & 0.88 & 16.05 &  6 &   --- &  ---
             \toprule
        & \multicolumn{3}{c|}{$n = 2$} & \multicolumn{3}{c|}{$n = 10$}& \multicolumn{3}{c}{$n = 100$}\\
  \(\beta\) & r-f1 & n-f1 & o-f1  & r-f1 & n-f1 & o-f1 & r-f1 & n-f1 & o-f1   \\
-\hline 
+\hline
 0.1 & 91.58 & 91.60 & 91.82 & 91.53 & 91.60 & 91.87 & 91.56 & 91.60 & 91.88\\
 0.5 & 91.51 & 91.55 & 91.85 & 91.44 & 91.55 & 91.92 & 91.49 & 91.55 & 91.93 \\
   2 & 91.39 & 91.59 & 92.23 & 91.54 & 91.59 & 92.51 & 91.54 & 91.59 & 92.58 \\

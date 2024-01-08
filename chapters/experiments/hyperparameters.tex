@@ -15,7 +15,7 @@
     Some of them can be associated with the structure of the grammar rules contained in the extracted blueprints, such as the grammar formalism, rank transformation strategy, and guide constructor, and others with the granularity (cf.\@ \cref{sec:reranking}) of the extracted supertag blueprints, such as the Markovization parameters as well as the nonterminal constructors.
     The following list of hyperparameters gives a short description and viable values for each option involved in extracting supertag blueprints.
     Generally, we will investigate configurations for all of these parameters by experimenting with each combination of parameter values. This is called grid search and is further explained in \cref{sec:gridsearch}.
-    
+
     \paragraph*{Grammar Formalism}
     Our experiments concern hybrid grammar and \abrv{dcp} supertags using the extraction procedure in \cref{sec:extraction:guided}.
     We omit \abrv{lcfrs} supertags as they are a particular case of the hybrid grammar supertags that can be achieved with specific extraction parameters as described in \cref{sec:extraction:lcfrs}, namely the vanilla nonterminal constructor and the vanilla guide constructor.
@@ -25,7 +25,7 @@
     As they were described in \cref{sec:binarization}, they are specified by the following parameters:
     \begin{itemize}
         \item A transformation strategy determines the target ranks occurring in the trees after applying the rank transformation and the order/direction in which artificial nodes are  introduced. We distinguish four strategies: left-branching binarization, right-branching binarization, head-outward binarization, and head-inward transformation.
-        \item Markovization contexts determine the information used to construct artificial nodes during the rank transformation process. This information is distinguished in horizontal and vertical Markovization context, denoted by \(h\) and \(v\), respectively. Both options are assigned to natural values \(h \ge 0\) and \(v \ge 1\). Usually, in grammar-based parsing, one would investigate combinations of values in the intervals \(0 \le h \le 3\) and \(1 \le v \le 2\). We saw in preliminary investigations that the number of extracted supertag blueprints rapidly rises with values beyond the minimal \(h = 0\) and \(v = 1\), negatively impacting the supertag prediction accuracy. \citep{Rup22} We will restrict our experiments to the three least combinations \((h, v) \in \{(0,1), (1,1), (0,2)\}\).
+        \item Markovization contexts determine the information used to construct artificial nodes during the rank transformation process. This information is distinguished in horizontal and vertical Markovization context, denoted by \(h\) and \(v\), respectively. Both options are assigned to natural values \(h \ge 0\) and \(v \ge 1\). Usually, in grammar-based parsing, one would investigate combinations of values in the intervals \(0 \le h \le 3\) and \(1 \le v \le 2\). We saw in preliminary investigations that the number of extracted supertag blueprints rapidly rises with values beyond the minimal \(h = 0\) and \(v = 1\), negatively impacting the supertag prediction accuracy \citep{Rup22}. We will restrict our experiments to the three least combinations \((h, v) \in \{(0,1), (1,1), (0,2)\}\).
         \item Direction markers are an extension for the artificial nodes constructed during a rank transformation to illustrate the direction/order in which they were introduced. This extension has no effect when using a left- or right-branching binarization strategy, as markers would be fixed in those cases. That is not the case for the other two strategies, where such markers denote if a sub-derivation was extracted from a constituent to the left or to the right of a lexical head. In the case of the head-outward binarization strategy, this can be seen as a state that switches at a certain point during the derivation, where the bottom part is marked to be right-branching and the top part to be left-branching. This parameter's value is binary: whether the markers are present or not. We will investigate both values in tandem with the dependent and head guides.
         \item A second extension for the rank transformations introduces a trailing unary node above the child that is processed last during the transformation at a node. E.g.\@ in right-branching binarization, this adds a trailing right-most binarization node. With all but the head guide constructor, this would be counter-productive as we expect constituent trees without unary nodes during the extraction of supertag blueprints. As in the previous case, this is a binary parameter, whether or not the trailing nodes are present. We will investigate both values in the experiments with the head guide constructor.
     \end{itemize}
@@ -51,13 +51,13 @@
         While the supervised architecture is trained exclusively with information from the training portion of an input constituent treebank, the pre-trained architecture relies on models that are shared within the \abrv{nlp} community, which were already trained using large corpora of natural language sentences.
         Therefore, the latter requires data in the language of the used constituent tree corpus as well as people (or architecture, more realistically) willing to train models and share them.
         One might also consider that the performance of such obtained classifiers critically depends on the data that is collected, investigated, and preprocessed by some corporations, as well as the availability and licensing agreements for the shared models.
-    
+
     Generally, when training classifiers with \abrv{ann}, there are numerous hyperparameters for several aspects of the architectures themselves and some parameters and extensions for the gradient descent algorithm.
     For most of our experiments, we will use fixed values for them to ensure we can conduct and evaluate them in a reasonable time.
     Integrating these hyperparameters into the grid search described for the values in the extraction procedure would result in a vast search space.
     We rather use the following sources to fix the values for the training parameters:
     \begin{compactitem}
-        \item There are recommended values for the training in some cases, such as the learning rate, batch size, and optimizer in fine-tuning pre-trained transformer encoders. \citep{Devlin2019}
+        \item There are recommended values for the training in some cases, such as the learning rate, batch size, and optimizer in fine-tuning pre-trained transformer encoders \citep{Devlin2019}.
         \item There are mechanisms integrated into the training procedure that tune some hyperparameters on the fly, such as \texttt{AnnealOnPlateau} that adapts the learning rate while observing the prediction accuracy on the development set during the training. In most cases, the parameters should initialized with good enough values, but we do not need to find a perfect fit to reach a satisfactory outcome.
         \item Some hyperparameters, such as the supervised architecture, are fixed to values that coincide (or are close to) with those used in related work.
         \item The remainder of hyperparameters was tuned using a sample of a data set with supertag blueprints that were extracted using an arbitrary configuration of extraction parameters.
@@ -69,7 +69,7 @@
     The more significant part of the model is a pre-trained module that we can only use as is, and the number of supertag blueprints determines the size of the topmost feed-forward layer.
     Hence, no undetermined hyperparameters for the architecture are left in this case.
     The  supervised model is based on a \abrv{bilstm} encoding architecture and was introduced by \citet{kiperwasser2016simple}.
-    It has been used for parsing, in particular for discontinuous constituents. \citep{kiperwasser2016simple,CoaCoh19,StaSte20,Cor20}
+    It has been used for parsing, in particular for discontinuous constituents \citep{kiperwasser2016simple,CoaCoh19,StaSte20,Cor20}.
     We consider the following hyperparameters to the modules and their assigned values as fixed in our experiments:
     \begin{itemize}
         \item the size of the word and character-level embeddings are 256 and 128, respectively,
@@ -93,7 +93,7 @@
     \end{itemize}
     All values are chosen as follows:
     There are advised values for the parameters used in fine-tuning the pre-trained model by \citet{Devlin2019}.
-    We adopt them in our grid search and training of the final model and the same specific values used in prior experiments. \citep[cf.\@][]{Rup22}
+    We adopt them in our grid search and training of the final model and the same specific values used in prior experiments \citep[cf.\@][]{Rup22}.
     We use the same values for the supervised model as in these prior experiments.
     They originate from those reported by \citet{Cor20,StaSte20} who used the same model in their experiments.
 

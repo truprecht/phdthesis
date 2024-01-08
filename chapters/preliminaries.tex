@@ -247,7 +247,7 @@
 
         \caption{\label{fig:pre:ctree}
             Discontinuous constituent tree for the phrase \emph{where the survey was carried out}.
-            The tree is illustrated in two slightly different ways: 
+            The tree is illustrated in two slightly different ways:
                 The left one focuses on the discontinuous sentence structure by recreating the token order with crossing branches in the constituent structure.
                 The right one corresponds to the definition of constituent trees in this section and separates the sequence of tokens in the sentence and the \abrv{pos} symbols from the constituent structure using sentence positions as leaves in the constituent structure.
             In both illustrations, the path to its lexical head is double-struck for each node in the constituent structure.
@@ -318,7 +318,7 @@
     According these two sets, \(P\) for all predictions and \(G\) for the gold constituent trees, the precision (\(p = \frac{|P \cap G|}{|P|}\)), recall (\(r = \frac{|P \cap G|}{|G|}\)) and f1-score (\(\frac{2\cdot p\cdot r}{p + r}\)) are computed in the usual fashion.
     The \abrv{pos} tags are often part of the prediction but not assessed as part of the f1-score.
     They are rather reported separately as the accuracy of the predicted \abrv{pos} tags compared to the gold ones.
-    The Python tool \emph{discodop} supplies an implementation for both the f1-score of constituent structures and the accuracy of \abrv{pos} tags. \citep{CraSchBod16}
+    The Python tool \emph{discodop} supplies an implementation for both the f1-score of constituent structures and the accuracy of \abrv{pos} tags \citep{CraSchBod16}.
 
     \begin{figure}
         \null\hfill
@@ -518,7 +518,7 @@
     If the input is a sequence, static embeddings are applied element-wise.
     E.g.\@ a sequence of tokens \(\sigma_1 \cdots \sigma_n\) is embedded as a sequence of vectors \((f_W(\sigma_i) \mid i \in [n])\).
 
-    Some architectures complement element-wise token embeddings by \emph{character-wise embeddings}. \citep[e.g.\@][]{kiperwasser2016simple,Akb18}
+    Some architectures complement element-wise token embeddings by \emph{character-wise embeddings} \citep[e.g.\@][]{kiperwasser2016simple,Akb18}.
     These are recurrent modules (cf.\@ \cref{sec:preliminaries:nn:recurrent}) that process the sequence of characters and yield a vector of specified length for each token (which, in turn, requires a static embedding for the set of characters).
     This type of module is associated with the handling of unknown words with the following intuition:
         If a token does not occur in the training data, it has no specific element-wise embedding.
@@ -620,7 +620,7 @@
             The vector assigned to each token in a sequence by an \abrv{llm} is context-sensitive:
                 It does not only depend on the token itself but on its position and all other tokens in the sequence as well.
                 This is achieved using positional embeddings and transformer architectures.
-            The breakthrough for \abrv{llm} as a component in \abrv{ann} was the release of \abrv{bert}. \citep{Devlin2019}
+            The breakthrough for \abrv{llm} as a component in \abrv{ann} was the release of \abrv{bert} \citep{Devlin2019}.
             Since then, \abrv{bert} and its derivatives were adopted into models to solve various tasks on language understanding \citep[they experiment with models for question answering, entailment recognition, sentiment analysis, i.a.]{Devlin2019, roberta}, language generation \citep[they experiment with models for summarization, translation, i.a.]{bertgeneration}, information extraction \citep[they experiment with models for named entity recognition, relation extraction]{biobert} and also our field of research: constituent parsing \citep{Cor20, FerGom20a, FerGom22,Coa21, Sun22}.
             It is still used in state-of-the-art models today.
     \end{compactitem}

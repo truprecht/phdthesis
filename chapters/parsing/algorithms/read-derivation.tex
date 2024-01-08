@@ -7,16 +7,16 @@
         \Require{A chart $C$ as computed by \Call{fillChart}{$\ldots$}}
         \Require{A weight assignment $W$ as computed by \Call{fillChart}{$\ldots$}}
         \Require{A set of root nonterminals $S$}
-        
+
         \State{$H := (H_{(A, L)} := \mathbf{undefined} \mid A \in N, L \subseteq [n])$}
         \State{$E := (E_{(A, L)} := \emptyset \mid A \in N, L \subseteq [n])$}
         \State{$D := (D_{(A, L, i)} := \mathbf{undefined} \mid A \in N, L \subseteq [n], i \in [k])$}
         \State{$W' := (W'_{(A, L, i)} := \text{$W_{(A, L)}$ if $i>1$ else $\infty$} \mid A \in N, L \subseteq [n], i \in [k])$}
-        
+
         \Function{weight}{$(A \to c\,(B_1, \ldots, B_\ell), f)$, $L_1 \ldots L_\ell$, $k_1 \ldots k_\ell$}
             \State{\Return $\mu(r) + \sum_{i = 1}^{\ell} W'_{(B_i, L_i, k_i)}$}
         \EndFunction
-        
+
         \Function{successors}{$k_1 \ldots k_\ell$}
             \State{\(K := \emptyset\)}
             \For{$i \in 1, \ldots, \ell$}
@@ -26,7 +26,7 @@
             \EndFor
             \State{\Return $K$}
         \EndFunction
-    
+
         \Function{chkEdge}{$(A \to c\,(B_1, \ldots, B_\ell), f), L_1 \ldots L_\ell, k_1 \ldots k_\ell$}
             \For{$i$ in $1, \ldots, \ell$}
                 \If{$\Call{exploreKthBestNode}{B_i, L_i, k_i}$ is False}
@@ -35,7 +35,7 @@
             \EndFor
             \State{\Return True}
         \EndFunction
-    
+
         \Procedure{chkNode}{$A, L, k$}
             \If{$H_{(A, L)}$ is \textbf{undefined}}
                 \State{$H_{(A, L)} := \{(r, \vec{L}, 1^{|\vec{L}|}) \mid (r, \vec{L}) \in C_{(A,L)}\}$}

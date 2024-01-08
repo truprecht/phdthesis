@@ -16,10 +16,10 @@
     All experiments of our experiments were executed on a local compute server with an Intel Xeon Silver 4114 CPU (40 Cores each at 2.2 GHz), one NVidia GeForce RTX 2080, and two Tesla K80 GPUs.\footnote{
         The RTX 2080 is significantly faster than the K80 GPUs, but the latter model has more memory, which was needed to train the pre-trained models with large transformer embeddings.
         We executed some sets of experiments in \cref{sec:gridsearch,sec:gridsearch:other} in parallel using both GPU models, so the reported time needed for the prediction might vary a bit.
-        The results reported in \cref{sec:results} are all obtained using the RTX 2080. 
+        The results reported in \cref{sec:results} are all obtained using the RTX 2080.
     }
     Our reported parse times are all sequential executions; the implementation is not parallelized but could easily be modified, as the sentences are parsed independently.
-    
+
     \subfile{experiments/implementation.tex}
     \subfile{experiments/hyperparameters.tex}
     \subfile{experiments/treebanks.tex}

@@ -11,13 +11,13 @@
             \State{$C := (C_{(A,L)} := \emptyset \mid A \in N \cup X, L \subset [n])$}
             \State{$W := (W_{(A,L)} := -\inf \mid A \in N \cup X, L \subset [n])$}
             \State{$I := (I_{A} := \emptyset \mid A \in N)$}
-            
+
             \For{$i$ in $[n]$ and $s := (A \to c\,(B_1,\ldots,B_k), f)$ in $S_i$}
                 \State{$B_1' \ldots B_{k+1}' :=$ order $B_1, \ldots, B_k, X_i$ according to the occurrences in $c$}
                 \State{$\mathit{item} := (A, f, B_1' \ldots B_{k+1}', \emptyset))$}
                 \State{add $(\mathit{item}, s, \weight(s))$ to $Q$}
             \EndFor
-            
+
             \While{$Q \neq \emptyset$}
                 \State{pop $((A, f, B_1 \ldots B_{k-1} B_k, L), \mathit{bt}, \mathit{wt})$ from $Q$ s.t.\@ $\mathit{wt}$ is minimal}
                 \If{$k = 0$ and $\fanout(L) = f$}
@@ -37,7 +37,7 @@
                 \EndIf
             \EndWhile
         \EndProcedure
-        
+
         \Procedure{addSuccessor}{$Q$, $W$, $((A, f, B_1 \ldots B_{k-1} B_k, L), \mathit{bt}, \mathit{wt})$, $L'$}
             \If{$L \cap L' = \emptyset$ and $\min L' < \min L$}
                 \State{$\mathit{item'} := (A, f, B_1 \ldots B_{k-1}, L' \cup L)$}

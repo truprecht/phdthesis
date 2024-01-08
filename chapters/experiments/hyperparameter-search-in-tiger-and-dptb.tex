@@ -7,7 +7,7 @@
     Specifically, we set the following restrictions:
     \begin{itemize}
         \item we omit the vanilla, near and least guide constructors (leaving three options),
-        \item we omit the vanilla nonterminal constructor and the coarse nonterminal constructor with auxiliary table (leaving two options), 
+        \item we omit the vanilla nonterminal constructor and the coarse nonterminal constructor with auxiliary table (leaving two options),
         \item we only use right branching binarization in case of the strict guide constructor, and the head guide constructor in tandem with head-inward transformation,
         \item we use the Markovization parameters \(h = 0\) and \(v \in \{1,2\}\) (leaving two options),
         \item in case of \abrv{dcp} supertags, we only investigate the strict guide constructor with nof and disc extensions for a small amount (we choose 1 or 2 samples as explained in the discussion of the results) of combinations of nonterminal and guide constructors and Markovization parameters that performed best with \abrv{lcfrs} supertags.
@@ -19,7 +19,7 @@
     \subsection{\abrv{Dptb}}
     \Cref{tbl:experiments:dptb} shows the results for the hybrid grammar supertag prediction and parsing accuracies for each experiment in the grid search for \abrv{dptb}
     Each experiment was conducted using the supervised and the pre-trained prediction model.
-    
+
     \begin{table}
         \caption{\label{tbl:experiments:dptb:size}
         The number of extracted supertag blueprints from the training portion ($N$) and the number of extracted supertag blueprints in the dev portion that do not appear in the training portion ($\overline{N}$) using the \dptb{} treebank.
@@ -119,7 +119,7 @@ pret. & 0.1  & 94.82 & 4.4 & 1 & 94.81 & 2.0 & 1 & 94.81 & 1.6 & 0 \\
 pret. & 0.5  & 94.86 & 1.5 & 1 & 94.85 & 1.7 & 1 & 94.83 & 1.8 & 2 \\
 pret. &   2  & 94.87 & 1.5 & 1 & 94.84 & 1.6 & 2 & 94.76 & 2.8 & 4 \\
 pret. &   5  & 94.85 & 1.7 & 2 & 94.78 & 1.8 & 4 & 94.70 & 1.7 & 7 \\
-\midrule 
+\midrule
 sup. & 0.1  & 90.90 & 2.6 & 1 & 90.91 & 2.2 &  0 & 90.87 & 1.9 &  0 \\
 sup. & 0.5  & 90.90 & 2.2 & 1 & 90.88 & 2.6 &  1 & 90.84 & 5.1 &  1 \\
 sup. &   2  & 90.96 & 2.2 & 3 & 90.74 & 4.8 &  8 & 90.80 & 6.9 &  8 \\
@@ -148,7 +148,7 @@ sup. &   5  & 90.71 & 2.6 & 9 & 90.55 & 5.4 & 13 & 90.56 & 7.0 & 14 \\
         \setlength{\tabcolsep}{4pt}
         \vspace{.2cm}
         \begin{tabular}{lc|rr|rr|rr}
-            \toprule     
+            \toprule
             &        & \multicolumn{2}{c|}{strict} & \multicolumn{2}{c|}{dependent} & \multicolumn{2}{c}{head}  \\
   nont.   &\(v\)   & $N$ & $\overline{N}$ & $N$ & $\overline{N}$ & $N$ & $\overline{N}$ \\ \hline
    classic & \(1\)  & 3065 &  83 &  5468 & 180 &  6033 & 234  \\
@@ -227,7 +227,7 @@ pret. & 0.1  & 92.78 & 3.6 & 1 & 92.80 & 4.8 & 0 & 92.80 & 4.8 & 0 \\
 pret. & 0.5  & 92.76 & 3.1 & 1 & 92.79 & 3.1 & 0 & 92.78 & 6.7 & 0 \\
 pret. &   2  & 92.77 & 3.4 & 1 & 92.81 & 3.4 & 0 & 92.80 & 3.9 & 0 \\
 pret. &   5  & 92.77 & 4.9 & 1 & 92.82 & 3.5 & 1 & 92.78 & 2.8 & 3 \\
-\midrule 
+\midrule
 sup. & 0.1  & 87.46 & 4.2 & 1 & 87.50 & 3.2 & 0 & 87.48 & 5.6 & 0 \\
 sup. & 0.5  & 87.54 & 6.0 & 1 & 87.57 & 2.6 & 0 & 87.54 & 3.6 & 1 \\
 sup. &   2  & 87.54 & 5.5 & 2 & 87.57 & 8.3 & 1 & 87.52 & 3.5 & 2 \\

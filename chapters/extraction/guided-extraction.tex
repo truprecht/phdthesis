@@ -4,7 +4,7 @@
     \section{Guided Extraction} \label{sec:extraction:guided}
     We implemented the extraction of \abrv{lcfrs} supertags as described in the previous section and published results in parsing with them. \cite{RupMoe21}
     During the evaluation, we noted that the extracted sets of supertags were rather large and their prediction less accurate than other publications involved with supertagging.
-    Following up, we published a generalization of the extraction procedure with the aim of tackling these issues. \citep{Rup22}
+    Following up, we published a generalization of the extraction procedure with the aim of tackling these issues \citep{Rup22}.
     Sepcifically, the generalization deals with the following two limitations:
     \begin{compactitem}
         \item
@@ -425,7 +425,7 @@
         \item its first letter.
     \end{inparaenum}
     The latter case roughly approximates the first one when such a table is unavailable.
-    The coarse nonterminal constructor mimics the nonterminals in coarse-to-fine parsing. \citep{Cha06,Tei17}
+    The coarse nonterminal constructor mimics the nonterminals in coarse-to-fine parsing \citep{Cha06,Tei17}.
 %    For our examples, the nonterminals are \(\text{S}\) and \(\text{V}\).
 
     \begin{example}[Coarse Nonterminals]
@@ -439,7 +439,7 @@
 
     \begin{table}
         \caption{\label{tab:coarse-nonterminals}
-            Clusters of constituent symbols are used in a coarse-to-fine parsing approach. \citep{Cha06}
+            Clusters of constituent symbols are used in a coarse-to-fine parsing approach \citep{Cha06}.
             The authors extract coarse grammar rules using cluster names instead of constituent symbols as nonterminals.
             These grammar rules are used to find candidate parses, which aid in a parsing process with a finer grammar defined over the original constituent symbols.
         }
@@ -548,7 +548,7 @@
     As we have seen in \cref{sec:guides}, the guide constructors expect different prerequisites such that not all combinations of parameter values are compatible.
     The vanilla, strict, least, and near guide constructors make no assumptions regarding the binarization strategy and can be freely combined.
     However, we suspect the vanilla and strict guide constructors are best combined with right-branching binarization because these guides are defined via the right successor of each node.
-    
+
     The dependent guide constructor expects a binary constituent structure complemented by a head assignment; thus, it can only be coupled with the head-outward binarization strategy.
     Similarly, the head guide constructor expects a head assignment and cannot be coupled with the left- or right-branching binarization strategy.
     Formally, the head-outward binarization strategy produces viable inputs for the head guide constructor, but the canonical head assignments are not helpful when it comes to the extraction:
