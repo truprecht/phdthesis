@@ -4,7 +4,7 @@
     \section{Statistical Parsing with Predicted Supertags}\label{sec:parsing}
     In this section, we will describe two approaches to combine predicted supertags into derivations, one for \abrv{lcfrs} and \abrv{hg} supertags and one for \abrv{dcp} supertags.
     For the remainder of the section, consider we have a set \(B\) of supertag blueprints, an input sentence of length \(n\), an assignment of prediction confidence values \(\mu\colon B \times [n] \to \DR\) obtained from the prediction of blueprints (step \ref{parsing:item:1} of the parsing process outlined at the beginning of the chapter), and assume that we aim to find a collection of up to \(k \in \DN_+\) best derivations.
-    The three objects are used to construct a series of grammars in growing size, in the same fashion as described by \citet[Section 5.1]{Clark04} and \citet[Section 2.2.2]{Auli12}.
+    The three objects are used to construct a series of grammars in growing size, in the same fashion as described by \citet[Section~5.1]{Clark04} and \citet[Section~2.2.2]{Auli12}.
     This strategy defines a sequence of decreasing thresholds \((\beta_i \in \DR \mid i \in I)\) where the set of indices \(I\) is a \(\DN_+\) prefix.
     These values are used to define growing intervals of confidence values that are admitted in the constructed grammars, each starting from the best confidence value for each position and up to \(\beta_i^j = \max_{b \in B} \mu(b, j) + \beta_i\) for each \(i \in I\) and \(j \in [n]\).
     For each index \(i \in I\) and position \(j \in [n]\), we define the set \(S_i^j = \{ b \in B \mid \mu(b, j) \ge \beta^j_i \}\) of supertag blueprints that were predicted with confidence that differs at most by \(\beta_i\) from the highest confident prediction at the same position \(j\).
@@ -29,7 +29,7 @@
     The \abrv{dcp} compositions in \abrv{hg} supertags, as well as the transportation marker in \abrv{lcfrs} supertags, do not influence at all the sets of derivations.
     They are solely used to define the constituent structure for an already determined derivation.
     With both formalisms, we exploit statistical parsing procedures for \abrv{lcfrs} as \citet{Geb20} did in the case of parsing with hybrid grammars.
-    Parsing procedures for \abrv{lcfrs} are well documented, e.g.\@ as described by \citet[Section 7.1]{Kal10}.
+    Parsing procedures for \abrv{lcfrs} are well documented, e.g.\@ as described by \citet[Section~7.1]{Kal10}.
     For the case of \(k\) best parsing, the approach can be extended using the techniques described by \citet{HuaChia05} to enumerate found derivations with increasing weight.
     In previous versions, we used the \abrv{lcfrs} parser implemented by \citet{CraSchBod16} and extended it for our purposes.\footnote{
         For using \emph{disco-dop} with our predicted supertags, we implemented some transformations to accommodate that it is only able to parse with binary and simple \abrv{lcfrs}.
@@ -62,14 +62,14 @@
     \begin{algorithm}
         \caption{\label{alg:parsing:chart}
             Weighted parsing algorithm for \abrv{dcp} supertags.
-            This coarsely resembles an algorithm for parsing \abrv{lcfrs} as shown by \citet[the ``na\"ive algorithm'' in section~3]{Burden05}.
+            This coarsely resembles an algorithm for parsing \abrv{lcfrs} as shown by \citet[the ``na\"ive algorithm'' in Section~3]{Burden05}.
         }
         \subfile{algorithms/parsing.tex}
     \end{algorithm}
     
     \paragraph{Step \ref{step:parsing:chart}}
     \Cref{alg:parsing:chart} illustrates a process that implements this step.
-    It is derived from an \abrv{lcfrs} parsing algorithm as presented by \citet[the na\"ive algorithm in sec.~3]{Burden05}.
+    It is derived from an \abrv{lcfrs} parsing algorithm as presented by \citet[the na\"ive algorithm in Section~3]{Burden05}.
     In the following, we will refer to this original presentation of the parsing algorithm by \abrv{bl}.
     Unlike \abrv{bl}, we opted to describe the process not in the form of a deduction system but in pseudocode.
     This process demands the inputs mentioned above: a set of supertags for each position in the sentence to be parsed and weights according to the prediction confidence.
@@ -160,7 +160,7 @@
     
     \paragraph{Step \ref{step:parsing:derivation}}
     The listing of \cref{alg:parsing:deriv} shows how the parse chart \(C\) and the weight assignment \(W\) obtained in the previous step are used to enumerate derivation trees with increasing weight.
-    The algorithm is derived from \citet[Algorithm 2, 3 and 4]{HuaChia05} with some adjustments to accommodate our grammar format (i.e.\@ multiple initial nonterminals, non-binary grammars, and the form of \abrv{dcp} supertags).
+    The algorithm is derived from \citet[Algorithms~2, 3 and 4]{HuaChia05} with some adjustments to accommodate our grammar format (i.e.\@ multiple initial nonterminals, non-binary grammars, and the form of \abrv{dcp} supertags).
     In the following, we will refer to this publication as \abrv{hc} when we compare the two algorithms.
     Aside from the two structures \(C\) and \(W\), our illustration of the algorithm expects the following inputs: the length \(n\) of the sentence to parse, the prediction confidence assignment \(\mu\colon S \to \DR\) for each supertag, and a set of initial nonterminals.
     In it, we observe tuples of the following two forms:
@@ -222,7 +222,7 @@
     \begin{itemize}
         \item The sets of sentence positions that occur throughout both \cref{alg:parsing:chart,alg:parsing:deriv} (e.g.\@ in the index of the collections \(C\), \(W\) and \(D\) as well as in the parse items) are expressed as sequences of \emph{spans} of the form \(((l_1, r_1), \ldots, (l_s, r_s))\) where \(s \in \DN_+\) and \(l_1,\ldots,l_s,r_1,\ldots,r_s \in [0,n]\) and \(n \DN_+\) is the sentence length.
             Such a sequence must contain non-overlapping and non-bordering spans in increasing order from left to right. Therefore each pair of neighboring indices are strictly increasing \(r_i < l_{i+1}\) for \(i \in [s-1]\).
-            Sequences of spans are a technique in discontinuous parsing \citep[e.g.][cf.\@ range vector in def.\@ 6.6]{Kal10}.
+            Sequences of spans are a technique in discontinuous parsing \citep[e.g.][cf.\@ range vector in Definition~6.6]{Kal10}.
             These span sequences are more efficient in storing the sets of positions and computing the union when \(s\) is much smaller than the set of positions in the spans (which is usually the case).
             Moreover, the minimum \(l_1\) and the fanout \(s\) are easily accessible.
         \item The queues \(Q\) in \cref{alg:parsing:chart} and \(H_{(A,L)}\) in \cref{alg:parsing:deriv} are implemented using the \emph{heap} data structure.

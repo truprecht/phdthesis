@@ -6,11 +6,11 @@
     In contrast to \abrv{lcfrs}, it is a formalism where each rule produces trees instead of plain strings.
     The most striking difference to the previous formalism, however, lies in the composition expressions contained in each rule:
     They not only allow substitution with parameters produced by successors in a derivation (first-order substitution), but each single parameter may also contain variables that are substituted in the same step (second-order substitution).
-    This corresponds to the information flow from the bottom to the top in a derivation expressed by synthetic attributes (first-order substitution) and the flow from the top to the bottom in a derivation by inherent attributes (second-order substitution) in attribute grammars. \citep[cf.\@ Section 1: Notations]{Der88}
+    This corresponds to the information flow from the bottom to the top in a derivation expressed by synthetic attributes (first-order substitution) and the flow from the top to the bottom in a derivation by inherent attributes (second-order substitution) in attribute grammars. \citep[cf.\@][Section~1]{Der88}
     In the implementation of these two systems of substitution, two pairwise distinct sets of variables are used: \(\X\) for the first (as in \abrv{lcfrs}), and \(\Y\) for the second-order substitution.
 
     In their most general form, the object produced by a derivation in such a \abrv{dcp} is not necessarily computable, as the two types of substitution may mutually recur.
-    Some restrictive forms that excluded circular dependencies in the expressed productions were introduced to solve this issue. \citep[Section~3.4 about non-circular attribute grammars]{Cou82}
+    Some restricted forms that exclude circular dependencies in the expressed productions were introduced to solve this issue. \citep[Section~3.4 discusses non-circular attribute grammars]{Cou82}
     It is easy to see that the definition shown in this section supersedes each of these restricted forms, as it exclusively allows fixed terminal objects or a single second-order variable as a parameter for second-order substitution.
     To avoid unnecessarily complicated definitions, the subset of \abrv{dcp} shown in this section is even further restricted:
     \begin{inparaenum}

@@ -161,7 +161,7 @@
 
     \vspace{\baselineskip}
 
-    During the extraction and parsing, grammar rules are instantiated with sentence positions. \citep[Definition 6.8]{Kal10}
+    During the extraction and parsing, grammar rules are instantiated with sentence positions. \citep[Definition~6.8]{Kal10}
     I.e., instead of terminals that resemble objects in the sentence, we will assume matching sentence positions as lexical symbols in the rules.
     All derivations are assembled such that the compositions only concatenate consecutive sequences of positions.
     Each derivation is equivalent to a constituent tree that assumes the \abrv{lhs} nonterminals as inner nodes and the sentence positions as leaves.
@@ -258,7 +258,7 @@
     When grammars are used for parsing, they are often extended by weight structures.
     The following definition does not employ a general framework, e.g.\@, semirings, but assumes real values assigned to each rule and added within a derivation.
     We interpret these values as scores or confidence values and understand higher values as better.
-    This interpretation is equivalent to the usual probabilistic interpretation \citep[Viterbi semiring]{Goodman} with negative logarithmic values.
+    This interpretation is equivalent to the usual probabilistic interpretation \citep[cf.][Viterbi semiring]{Goodman} with negative logarithmic values.
 
     \begin{definition}[Weighted Grammar]
         Let \(G = (N, \varSigma, S, R)\) be an \abrv{lcfrs} and \(\weight \colon R \to \DR_{\ge 0}\) an assignment of a non-negative value to each rule in \(G\).

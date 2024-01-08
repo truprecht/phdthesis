@@ -11,7 +11,7 @@
 
     \section{Concurrent Work in Discontinuous Constiuent Parsing}\label{sec:literature:constituency}
     This section describes and compares different strategies to parse sentences into constituent structures.
-    We will highlight \emph{data-driven} parsers, i.e.\@ those that use a treebank to extract grammar rules without human intervention \citep[c.f.\@ Section 1.1]{Kal10} in contrast to approaches that utilize \emph{hand-crafted} grammars.
+    We will highlight \emph{data-driven} parsers, i.e.\@ those that use a treebank to extract grammar rules without human intervention \citep[cf.\@][Section~1.1]{Kal10} in contrast to approaches that utilize \emph{hand-crafted} grammars.
     It categorizes relevant publications in the field and categorizes them into general concepts that we consider as traditional or established for parsing.
     Each category is dedicated to a subsection that is summarized in the following.
     
@@ -71,7 +71,7 @@
     
     \Citet{CraSchBod16} introduced \emph{discontinuous tree subsitution grammars} (short: \abrv{dtsg}) as a generalization of tree substituion grammars to the discontinuous case.
     The formalism is built around the tree substitution operation that replaces a designated leaf with an operand tree, similar to the substitution operation in \abrv{tag}.
-    \Citet{Cra11} introduced their parsing model with \abrv{lcfrs} as ``backbone'', suggesting that \abrv{dtsg} resemble \abrv{lcfrs} with latent annotations as it was also pointed out by \citet[Section 8.5.1]{Geb20}.
+    \Citet{Cra11} introduced their parsing model with \abrv{lcfrs} as ``backbone'', suggesting that \abrv{dtsg} resemble \abrv{lcfrs} with latent annotations as it was also pointed out by \citet[Section~8.5.1]{Geb20}.
     Their data-oriented parser is described in more detail below the next heading.
 
     \defabrv{Combinatory categorial grammars}{\abrv{ccg}}%
@@ -100,7 +100,7 @@
     \subsubsection*{Grammars with Latent Annotations}
     \Citet{Mat05} introduced context-free grammars with latent annotations (short: \abrv{cfg-la}) by splitting nonterminals into two parts: an observable symbol (which takes the form of a constituent or \abrv{pos} symbol as in usual treebank grammars) and an unobservable \emph{latent annotation symbol}.
     They defined an EM algorithm to find a weight assignment that maximizes the likelihood of a treebank concerning a grammar instance with a fixed set of latent annotation symbols.
-    As these grammars are inherently ambiguous, the best-weighted derivation may not coincide with the best-weighted constituent tree; finding the latter is known to be intractable in practice \citep[they conclude that finding the best-weighted constituent tree is \emph{NP-hard} in Section 3]{Mat05}.
+    As these grammars are inherently ambiguous, the best-weighted derivation may not coincide with the best-weighted constituent tree; finding the latter is known to be intractable in practice \citep[they conclude that finding the best-weighted constituent tree is \emph{NP-hard} in Section~3]{Mat05}.
     They give approximate solutions for the objective that works well enough, e.g.\@, by considering a fixed amount of \(n\)-best derivations.
     \Citet{Petrov06} enhance the approach with an iterative extraction algorithm that automatically introduces new latent annotation symbols; in each iteration, some of the symbols are \emph{split} by adding new symbols and copying all rules replacing the split nonterminal symbol with the new latent annotation.
     \Citet{Geb20} extends the approach to the discontinuous case with hybrid grammars as underlying formalism.
@@ -148,7 +148,7 @@
     Yet, these are restricted to a small degree in discontinuity, specifically to fanout 2 like \abrv{tag}.
 
     \subsection{Transition Systems}\label{sec:literature:transition}
-    Transition systems have a tradition in parsing, such \emph{shift-reduce parsers} for deterministic context-free languages such as programming languages. \citep[Section 4.6]{aho2020compilers}
+    Transition systems have a tradition in parsing, such \emph{shift-reduce parsers} for deterministic context-free languages such as programming languages. \citep[Section~4.6]{aho2020compilers}
     They are built around operations that incrementally construct a tree using two data structures for intermediate results:
     \begin{compactitem}
         \item a \emph{buffer} that initially contains the input sequence, which will be consumed from left to right using some operations and
@@ -243,12 +243,12 @@
     The following subsection gives an overview of the relations and shares some entry points for different approaches in parsing dependencies.
     After that, we dedicate a subsection to a different area, namely \emph{semantic representations}.
     It gives a small overview of some representations and points to recent work in the area.
-    \Citet[Sections 18 and 19]{Jur23} give great surveys for these two topics in their book.
+    \Citet[Sections~18 and 19]{Jur23} give great surveys for these two topics in their book.
 
     \subsection{Dependency Parsing}
     Dependencies form a school of analyses that recognize syntactic structure as relations between tokens.
-    Several different relations are distinguished in the literature \citep[Table 3 shows the list of dependency relations annotated in the Universal Dependencies treebanks]{de2021universal}, and their composition varies between specific treebanks and languages.
-    For instance, in the treebanks distributed with the CoNLL shared task in 2006, there are 82 dependency relations illustrated in the Chinese but only 7 in the Japanese treebank \citep[Table 1]{buchholz2006conll}.
+    Several different relations are distinguished in the literature \citep[Table~3 shows the list of dependency relations annotated in the Universal Dependencies treebanks]{de2021universal}, and their composition varies between specific treebanks and languages.
+    For instance, in the treebanks distributed with the CoNLL shared task in 2006, there are 82 dependency relations illustrated in the Chinese but only 7 in the Japanese treebank \citep[Table~1]{buchholz2006conll}.
     The specific relations and annotation styles are also sometimes a subject of debate. \citep{Gerdes2016DependencyAC,Rehbein2017UniversalDA,osborne2019status}
     The \emph{Universal Dependencies} project \citep{de2021universal} was established to build a multilingual set of treebanks with consistent relations and annotation schemes.
 
