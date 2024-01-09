@@ -2,7 +2,7 @@
 
 \begin{document}
     \section{Guided Extraction} \label{sec:extraction:guided}
-    We implemented the extraction of \abrv{lcfrs} supertags as described in the previous section and published results in parsing with them. \cite{RupMoe21}
+    We implemented the extraction of \abrv{lcfrs} supertags as described in the previous section and published results in parsing with them \citep{RupMoe21}.
     During the evaluation, we noted that the extracted sets of supertags were rather large and their prediction less accurate than other publications involved with supertagging.
     Following up, we published a generalization of the extraction procedure with the aim of tackling these issues \citep{Rup22}.
     Sepcifically, the generalization deals with the following two limitations:
@@ -313,7 +313,7 @@
         If \(\head(\xi|_\rho) = \head(\xi|_{\rho'})\), we see again quickly the property as mentioned earlier that this leaf must also be the head at all positions between \(\rho\) and \(\rho'\).
     \end{proof}
 
-    \paragraph{Dependent Guide Constructor.}\deflab<guide>[vguide]{dependent guide (constructor)}[]
+    \paragraph{Dependent Guide Constructor.}\deflab<guide>[dguide]{dependent guide (constructor)}[]
     Dependent guides aim to offer assignments that complement head-outward binarized constituent structures.
     They assign the head of a dependent to each inner node in the constituent structure.
     We consider these guides only for head-outward binarized constituent structures, as each inner node has precisely one dependent.
@@ -406,7 +406,7 @@
     \exampleqed
 
     \paragraph{Classic Nonterminal Constructor.}\deflab<nonterminal constructor>[cnont]{classic nonterminal (constructor)}[]
-    This constructor intends to produce nonterminals akin to usual strategies in LCFRS extraction \cite{MaierSogaard08}.
+    This constructor intends to produce nonterminals akin to usual strategies in LCFRS extraction \citep{MaierSogaard08}.
     It combines the superscript and subscript of the vanilla nonterminals and annotates constituent symbols with their sum.
     Moreover, each occurrence of a constituent symbol that is the product of a merge during a rank transformation (cf.\@ merging a chain of unary nodes in \cref{sec:binarization}) is replaced by the topmost constituent symbol of such chain.
     We define a modified set of constituent symbols \(\varGamma' = \{ f(\gamma) \mid \gamma \in \varGamma \}\) where \(f(\gamma)\) is the symbol obtained by replacing each occurrence of the form \(\nt{A$_1$+A$_2$+...+A$_k$}\) in \(\gamma\) by \(\nt{A$_1$}\).

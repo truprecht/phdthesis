@@ -17,7 +17,7 @@
     In \emph{weighted grammars} such weights are defined via an assignment for each rule, and operations to accumulate the assigned weights for each parse.
     These weight assignments per rule are usually integrated into parsing algorithms so that intermediate results already take the ranking into account.
     In the literature, there is a lot of theoretical work about general frameworks for weight structures in parsing with grammars.
-    E.g., \citet{Goodman} gives an overview of weighted parsing with weights within the semiring framework.
+    For instance, \citet{Goodman} gives an overview of weighted parsing with weights within the semiring framework.
     However, in practice, it often boils down to numerical values interpreted as probabilities or additive costs.
     We will focus on the latter one and equip grammar rules with non-negative cost values.
     These values are added when considering a collection of rules deriving a parse and wrapped to the supremum value when considering multiple different collections of rules that derive the same parse.
@@ -30,7 +30,7 @@
     \todo{auch notation range concatenation grammars}
 
     Secondly, \cref{sec:grammar:dcp} aims at definite clause programs (\abrv{dcp}), which were introduced by \citet{Der85} as a logic characterization of attribute grammars.
-    They were used in the context of parsing by \cite{Ned14,Geb17,Geb20} in combination with \abrv{lcfrs} forming hybrid grammars.
+    They were used in the context of parsing by \citet{Ned14,Geb17,Geb20} in combination with \abrv{lcfrs} forming hybrid grammars.
     In contrast to context-free grammars and \abrv{lcfrs}, each rule in this grammar formalism computes a collection of trees instead of strings.
     Here, a subset of \abrv{dcp} is considered, whose rules may only produce consecutive parts in trees.
     Parsing with \abrv{dcp} finds a derivation that produces a tree with the input sentence in its leaves and assumes the tree as a constituency structure.
