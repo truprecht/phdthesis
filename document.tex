@@ -13,6 +13,17 @@
 \BeforeBeginEnvironment{wrapfigure}{\setlength{\intextsep}{0pt}}
 \makeindex
 
+% fix multiple defined references by algorithmicx
+% https://tex.stackexchange.com/questions/177025/hyperref-cleveref-and-algpseudocode-same-identifier-warning
+\makeatletter
+\newcounter{algorithmicH}% New algorithmic-like hyperref counter
+\let\oldalgorithmic\algorithmic
+\renewcommand{\algorithmic}{%
+  \stepcounter{algorithmicH}% Step counter
+  \oldalgorithmic}% Do what was always done with algorithmic environment
+\renewcommand{\theHALG@line}{ALG@line.\thealgorithmicH.\arabic{ALG@line}}
+\makeatother
+
 % tikz setup
 \usepackage{tikz}
 \usetikzlibrary{matrix, positioning, fit, decorations.pathreplacing, shapes}
