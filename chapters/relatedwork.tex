@@ -69,7 +69,7 @@
     \Citet{MaierSogaard08,MailKal10} investigated probabilistic \abrv{srcg} and \abrv{lcfrs} as formalisms for data-driven parsing discontinuous constituents.
     They extended well-known approaches for extracting context-free grammar, namely the extraction of treebank grammars, probabilistic weight assignment via maximum likelihood estimation, and binarization.
 
-    \Citet{CraSchBod16} introduced \emph{discontinuous tree subsitution grammars} (short: \abrv{dtsg}) as a generalization of tree substituion grammars to the discontinuous case.
+    \Citet{CraSchBod16} introduced \emph{discontinuous tree substitution grammars} (short: \abrv{dtsg}) as a generalization of tree substitution grammars to the discontinuous case.
     The formalism is built around the tree substitution operation that replaces a designated leaf with an operand tree, similar to the substitution operation in \abrv{tag}.
     \Citet{Cra11} introduced their parsing model with \abrv{lcfrs} as ``backbone'', suggesting that \abrv{dtsg} resemble \abrv{lcfrs} with latent annotations as it was also pointed out by \citet[Section~8.5.1]{Geb20}.
     Their data-oriented parser is described in more detail below the next heading.
@@ -204,7 +204,7 @@
     Nevertheless, we recognize some familiar trends among the parsers that allow us to compare them in the following.
 
     \subsubsection*{Continuous Parsing with Reordering}
-    One way to illustrate discontinuous constituent trees is to extend a continuous tree in tandem with an alignment or reordering of its leaves (e.g.\@,  as we did in the definintion of constiuent tree in \cref{sec:preliminaries:ctrees}).
+    One way to illustrate discontinuous constituent trees is to extend a continuous tree in tandem with an alignment or reordering of its leaves (e.g.\@, as we did in the definition of constituent trees in \cref{sec:preliminaries:ctrees}).
     \Citet{FerGon21a} exploit this to reduce parsing discontinuous constituents in two steps
     \begin{inparaenum}[]
         \item they first predict an alignment that re-arranges the sequence of input tokens, and then
@@ -232,9 +232,9 @@
     To their surprise, they achieved state-of-the-art results.
     \Citet{FerGon21b} extended the approach to the discontinuous case.
     They investigated multiple techniques for the linearization of constituent trees, among them also shift-reduce action sequences analogously to parsers based on transition systems as suggested by \citet{Ma2017DeterministicAF,liu-zhang-2017-encoder}.
-    A recent investigation by \citet{bai2023constituency} exploits pretrained large language models (short: \abrv{llm}), such as \abrv{gpt4} \citep{openai2023gpt4}.
+    A recent investigation by \citet{bai2023constituency} exploits pretrained large language models (short: \abrv{llm}s), such as \abrv{gpt4} \citep{openai2023gpt4}.
     These models were prompted to parse an input sentence, either without context or supplied with a few constituent trees as examples.
-    They conclude that \abrv{llm} enhance the parsing quality for sequence-to-sequence models in case they are fine-tuned.
+    They conclude that \abrv{llm}s enhance the parsing quality for sequence-to-sequence models in case they are fine-tuned.
 
     \section{Parsing Beyond Consituency Relations}\label{sec:literature:beyond}
     In our work, we exclusively investigated constituent trees as one representative for the syntactic analysis of natural language.
@@ -284,7 +284,7 @@
     The approaches to semantic parsing are just as diverse as the proposed formalisms to represent meaning.
     In the following, we  want to share a small glimpse into parsing approaches that relate to some extent to the previously discussed procedures for syntax analysis; c.f.\@ \citet{kamath2018survey} for a broad overview.
     Grammar and transition-based parsing concepts well known in syntax analysis are also represented in parsing for semantic representations, albeit less prevalent.
-    Representation formalisms that are based on graph structures, such as \abrv{amr}, may be approached using graph grammar or automata formalisms, for example \emph{directed acyclic graph automata} (short: \abrv{dag} automata) \citep{fancellu-etal-2019-semantic} or \emph{hyperedge replacement grammars} \citep{drewes1997hyperedge}, e.g.\@ \citet{peng2015synchronous} propose a probabilistic synchronous grammar that recognizes a string with context-free grammar rules while generating an \abrv{amr}.
+    Representation formalisms that are based on graph structures, such as \abrv{amr}, may be approached using graph grammar or automata formalisms, for example, \emph{directed acyclic graph automata} (short: \abrv{dag} automata) \citep{fancellu-etal-2019-semantic} or \emph{hyperedge replacement grammars} \citep{drewes1997hyperedge}, e.g.\@ \citet{peng2015synchronous} propose a probabilistic synchronous grammar that recognizes a string with context-free grammar rules while generating an \abrv{amr}.
     \Citet{peng2018amr,vilares-gomez-rodriguez-2018-transition} define transition systems that are able to produce \abrv{amr}.
     Sequence-to-sequence models are more common in the literature; they are used to generate a linearized semantic representation, e.g.\@, a logic formula \citep{dong-lapata-2016-language} or \abrv{amr} (\citep{zhang-etal-2019-amr}), from an input sentence using artificial neural networks.
     \Citet{fancellu-etal-2019-semantic} propose to enhance the decoder of a sequence-to-sequence model using a \abrv{dag} automaton.
