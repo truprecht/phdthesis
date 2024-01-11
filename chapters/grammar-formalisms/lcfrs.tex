@@ -21,11 +21,12 @@
         For each \(k\in \DN\) and \(s, s_1, \ldots, s_k \in \DN_+\), the identifier \(\C^\varSigma_{(s_1\cdots s_k, s)}\) denotes the set of all \abrv{lcfrs} compositions over \(\varSigma\) of length \(s\) where each variable in \(\X_{s_1 \cdots s_k}\) but not other variable in \(\X \setminus \X_{s_1\cdots s_k}\) occurs.
         \(\C^\varSigma\) denotes the set of all \abrv{lcfrs} compositions over \(\varSigma\) of any length.
 
-        We associate a function, denoted by \(\sem{(u_1, \ldots, u_s)}\), from \(k\) string tuples, where the \(i\)-th tuple is of length \(s_i\), to a string tuple of length \(s\) with each composition in \((u_1, \ldots, u_s) \in \C^\varSigma_{(s_1\cdots s_k s)}\).
+        Consider such a composition \((u_1, \ldots, u_s) \in \C^\varSigma_{(s_1\cdots s_k s)}\) for some integers \(k \in \DN\) and \(s, s_1, \ldots, s_k \in \DN_+\).
+        We associate a function, denoted by \(\sem{(u_1, \ldots, u_s)}\), from \(k\) string tuples, where the \(i\)-th tuple is of length \(s_i\), to a string tuple of length \(s\) with \((u_1, \ldots, u_s)\).
         Given the arguments \(\big(v_i = (v_i^j \mid j \in [s_i]) \mid i \in [k]\big)\), the result is the string tuple \(
         \sem{(u_1, \ldots, u_s)}(v_1, \ldots, v_k) = (u_1[\phi], \ldots, u_s[\phi])
         \) where \(\phi\) is the \(\X_{s_1 \cdots s_k}\)-indexed family with \(\phi_{x_i^j} = v_i^j\).
-        Intuitively, this function replaces each occurring variable of the form \(\x_i^j\) in \(u_1, \ldots, u_s\) with the \(j\)-th component of the \(i\)-th argument.
+        In easy terms, this function replaces each occurring variable of the form \(\x_i^j\) in \(u_1, \ldots, u_s\) with the \(j\)-th component of the \(i\)-th argument.
     \end{definition}
 
     \begin{example}\label{ex:lcfrs:comp}
@@ -39,15 +40,15 @@
         \end{align*}
 
         The subscript in the family of compositions \(\C^\Sigma\) determines the arity of the associated functions.
-        E.g.\@ \(\sem{c_1} \in \C^\Sigma_{(\varepsilon, 1)}\) takes no arguments (it is constant) and yields a single string,
-        \(\sem{c_8} \in \C^\Sigma_{(2\,1, 2)}\) takes two arguments: s sequence of strings of length 2 and a singleton sequence of strings, and gives a sequence of length 2 as a result.
-        For example:
+        For instance, \(\sem{c_1} \in \C^\Sigma_{(\varepsilon, 1)}\) takes no arguments (it is constant) and yields a single string,
+        \(\sem{c_8} \in \C^\Sigma_{(2\,1, 2)}\) takes two arguments: a sequence of strings of length 2 and a singleton sequence of strings, and gives a sequence of length 2 as a result.
+        The following equation shows an application of the function \(\sem{c_8}\) to two sequences of strings: 
         \begin{multline*}
             \sem{c_8}\Big( \; \big( \tn{A hearing}, \: \tn{on the issue} \big), \, \big( \tn{today} \big) \; \Big)
             \\= \big( \tn{A hearing}, \: \tn{scheduled on the issue today} \big)
         \end{multline*}
 
-        The functions may form terms, e.g.
+        The following sequence of terms denotes a series of such applications:
         \begin{align*}
             \sem{c_7}\Big( \; \sem{c_5}\big(\,\sem{c_1}()\,\big), \: \sem{c_4}\big(\,\sem{c_3}()\,\big) \; \Big)
             =& \sem{c_7}\Big( \; \sem{c_5}\big(\tn{A}\big), \: \sem{c_4}\big(\tn{issue}\big) \; \Big) \\
@@ -58,7 +59,7 @@
 
     \begin{definition}[\abrv{Lcfrs} Rules and Grammars]
         Let \(\varSigma\) and \(N\) be a sets and \(\mathit{fo}\colon N \to \DN_+\) a function.
-        An \abrv{lcfrs} \deflab<\lcfrs>{rule} (with terminals in \(\varSigma\), nonterminals in \(N\), and fanout \(\mathit{fo}\)) is of the form \(A \to c\,(B_1, \ldots, B_k)\) where \(k \in \DN\), \(A, B_1, \ldots, B_k\) and \(c \in \C^\varSigma_{(\mathit{fo}(B_1) \cdots \mathit{fo}(B_k), \mathit{fo}(A))}\).
+        An \abrv{lcfrs} \deflab<\lcfrs>{rule} (with terminals in \(\varSigma\), nonterminals in \(N\), and fanout \(\mathit{fo}\)) is of the form \(A \to c\,(B_1, \ldots, B_k)\) where \(k \in \DN\), \(A, B_1, \ldots, B_k \in N\) and \(c \in \C^\varSigma_{(\mathit{fo}(B_1) \cdots \mathit{fo}(B_k), \mathit{fo}(A))}\) is a composition.
         \(A\) is called the left-hand side (\abrv{lhs}) nonterminal and \(B_1, \ldots B_k\) are the right-hand side (\abrv{rhs}) nonterminals, \(c\) is the composition of the rule.
         The natural \(k\) is the \deflab<\lcfrs!rule>[lcfrs:rk]{rank} of the rule.
         The set of all such \abrv{lcfrs} rules is denoted by \(\Rules^{\varSigma, N, \mathit{fo}}\).
@@ -79,8 +80,8 @@
 
     \begin{definition}[\abrv{Lcfrs} Grammar Forms]We distinguish rules and grammar instances of the following form:
         \begin{compactitem}
-            \item A rule of rank zero, one and two are called \deflab<\lcfrs!rule>{nullary}, \deflab<\lcfrs!rule>{unary} and \deflab<\lcfrs!rule>{binary}, respectively.
-            \item An \abrv{lcfrs} containing only nullary, unary, and binary rules are called \deflab<\lcfrs>[lcfrs:bin]{binary}.
+            \item A rule of rank zero, one and two is called \deflab<\lcfrs!rule>{nullary}, \deflab<\lcfrs!rule>{unary} and \deflab<\lcfrs!rule>{binary}, respectively.
+            \item An \abrv{lcfrs} containing only nullary, unary, and binary rules is called \deflab<\lcfrs>[lcfrs:bin]{binary}.
             \item A rule whose composition contains exactly one terminal in \(\varSigma\) is called \deflab<\lcfrs!rule>[lcfrs:lex]{lexical}.
             \item An \abrv{lcfrs} containing only lexical rules is called \deflab<\lcfrs>{lexical}.
             \item A rule whose composition contains no terminal at all is called \deflab<\lcfrs!rule>{non-lexical}.
@@ -161,21 +162,21 @@
 
     \vspace{\baselineskip}
 
-    During the extraction and parsing, grammar rules are instantiated with sentence positions \citep[Definition~6.8]{Kal10}.
+    During the extraction and parsing, \abrv{lcfrs} rules are instantiated with sentence positions \citep[Definition~6.8]{Kal10}.
     I.e., instead of terminals that resemble objects in the sentence, we will assume matching sentence positions as lexical symbols in the rules.
     All derivations are assembled such that the compositions only concatenate consecutive sequences of positions.
     Each derivation is equivalent to a constituent tree that assumes the \abrv{lhs} nonterminals as inner nodes and the sentence positions as leaves.
 
     \begin{definition}[Position Instantiation]
-        Let \(G = (N, \varSigma, S, R)\) be a grammar, and \(w = \sigma_1 \ldots \sigma_n\) a word of length \(n \in \DN_+\) over the same alphabet with \((\sigma_i \in \varSigma \mid i \in [n])\).
+        Let \(G = (N, \varSigma, S, R)\) be an \abrv{lcfrs}, and \(w = \sigma_1 \ldots \sigma_n\) a word of length \(n \in \DN_+\) over the same alphabet with \((\sigma_i \in \varSigma \mid i \in [n])\).
         Consider a rule \(r\in R\) of the form \(A \to c (B_1, \ldots, B_k)\); a rule \(r' \in \Rules^{[n],N,\fanout_G}\) that is equipped with positions in \(w\) as lexical symbols is called a \deflab{position instantiation} of \(r\) in \(w\) if it is obtained from \(r\) by replacing each lexical symbol \(\sigma\) in \(c\) with a position \(i \in [n]\) such that \(\sigma_i = \sigma\).
-        The grammar \(G' = (N, [n], S, R')\) is called the \deflab[\lcfrs]{position instantiation} of \(G\) in \(w\) if, for each \(r \in R\), the set of rules \(R'\) contains each position instantiation of \(r\) in \(w\).
+        The \abrv{lcfrs} \(G' = (N, [n], S, R')\) is called the \deflab[\lcfrs]{position instantiation} of \(G\) in \(w\) if, for each \(r \in R\), the set of rules \(R'\) contains each position instantiation of \(r\) in \(w\).
 
         A derivation \(d \in \derivs^{R'}\) is called \deflab[\lcfrs]{admissible}, if the yield \(\yield(d)\) of the form \((s_1, \ldots, s_k)\) contains contiguous sequences of positions in \(w\) and the last position in \(s_i\) is at least by 2 smaller than the first position in \(s_{i+1}\) for each \(i \in [k-1]\).
     \end{definition}
 
     \begin{definition}[Constituent Structure for Derivation]
-        Consider a position instantiation \((N, [n], S, R)\) of some grammar in a word \(w = \sigma_1 \ldots \sigma_n\) that is of length \(n\), and an admissible derivation \(d \in \derivs^R\) of the form \(d = r\,(d_1, \ldots, d_k)\) where the root \(r\) is of the form \(A \to c\,(B_1, \ldots, B_k)\).
+        Consider a position instantiation \((N, [n], S, R)\) of some \abrv{lcfrs} in a word \(w = \sigma_1 \ldots \sigma_n\) that is of length \(n\), and an admissible derivation \(d \in \derivs^R\) of the form \(d = r\,(d_1, \ldots, d_k)\) where the root \(r\) is of the form \(A \to c\,(B_1, \ldots, B_k)\).
         The composition \(c\) contains (possibly empty) sequences of positions \(w_1, \ldots, w_{k+1} \in [n]^*\) such that,
         \begin{compactitem}
                 \item \(w_1\) is the sequence of terminal symbols occurring before the variable \(\x_1^1\) in \(c\),
@@ -191,7 +192,7 @@
     Let us consider the \abrv{lcfrs} \(\mathrm{G}\) from the previous examples and an instantiation \(\mathrm{G'} = (N, [8], \nt{v}, R)\) of \(\mathrm{G}\) in the string following string (where the positions are illustrated as subscript to the right of each token): \[
         \tn{A}_1 \quad \tn{hearing}_2 \quad \tn{is}_3 \quad \tn{scheduled}_4 \quad \tn{on}_5 \quad \tn{the}_6 \quad \tn{issue}_7 \quad \tn{today}_8
     \]
-    The left figure illustrates a derivation in the instantiated grammar \(\mathrm{G'}\).
+    The left figure illustrates a derivation in the instantiated \abrv{lcfrs} \(\mathrm{G'}\).
     The right figure illustrates the constituent structure for \(d\).
 
     \null\hfill
@@ -255,12 +256,12 @@
         It is \(\mathrm{comp}(\pi_0, \pi_1, \pi_2) = (\x_1^1, 5\,\x_2^1)\).
     \end{example}
 
-    When grammars are used for parsing, they are often extended by weight structures.
+    When \abrv{lcfrs} are used for parsing, they are often extended by weight structures.
     The following definition does not employ a general framework, e.g.\@, semirings, but assumes real values assigned to each rule and added within a derivation.
     We interpret these values as scores or confidence values and understand higher values as better.
     This interpretation is equivalent to the usual probabilistic interpretation \citep[cf.][Viterbi semiring]{Goodman} with negative logarithmic values.
 
-    \begin{definition}[Weighted Grammar]
+    \begin{definition}[Weighted \abrv{lcfrs}]
         Let \(G = (N, \varSigma, S, R)\) be an \abrv{lcfrs} and \(\weight \colon R \to \DR_{\ge 0}\) an assignment of a non-negative value to each rule in \(G\).
         We call \(\weight\) a \deflab{weight assignment} for \(G\) and the tuple \((G, \weight)\) a \deflab{weighted \abrv{lcfrs}}.
         The weight of a derivation \(d \in \derivs_G\) is the sum over all positions' weights: \[ \weight(d) = \sum_{\rho \in \pos(d)} \weight(d(\rho))\text{.} \]

@@ -10,15 +10,15 @@
 
     \section{Mathematical Notation}\label{sec:preliminaries:math}
     Sets are considered with the usual notation \(\subseteq\), \(\subset\), \(\cup\), \(\cap\) and \(\setminus\) for the inclusive and exclusive subset relation, as well as the operations for union, intersection, and difference, respectively.
-    \(\emptyset\) is the empty set and \(\power(A)\) is the power set, i.e.\@ the set containing all subsets, of some set \(A\).
+    The symbol \(\emptyset\) denotes the empty set and \(\power(A)\) is the power set, i.e.\@ the set containing all subsets, of some set \(A\).
     The sets of integers, naturals (including zero), positives, and rationals are denoted by $\DZ$, $\DN$, $\DN_+$, and $\DR$, respectively.
     The \deflab{range} of integers between the pair \(n, m \in \DZ\) with \(n \leq m\) is denoted by \([n,m] = \{i \in \DZ \mid n \leq i \leq m\}\).
     For any positive integer \(n\), the notion \([n]\) abbreviates \([1,n]\), and \([0]\) is the empty set \(\emptyset\).
-    A \emph{\(\DN_+\) prefix} is a set \(I \subseteq \DN_+\) such that
-    \begin{inparaitem}[]
-        \item \(1 \in I\), and
-        \item for each \(i > 1\), if \(i \in I\) then \(i-1 \in I\) as well.
-    \end{inparaitem}
+    % A \emph{\(\DN_+\) prefix} is a set \(I \subseteq \DN_+\) such that
+    % \begin{inparaitem}[]
+    %     \item \(1 \in I\), and
+    %     \item for each \(i > 1\), if \(i \in I\) then \(i-1 \in I\) as well.
+    % \end{inparaitem}
 
     \paragraph{Relations.}
     Let \(A\) and \(B\) be some sets.
@@ -33,7 +33,7 @@
     \end{inparaenum}
 
     \paragraph{Functions.}
-    A (total) function from \(A\) to \(B\) is a relation from \(A\) to \(B\) such that for each \(a \in A\), there is exactly one \(b\) with \((a,b) \in f\).
+    A (total) function from \(A\) to \(B\) is a relation \(f\) from \(A\) to \(B\) such that for each \(a \in A\), there is exactly one \(b\) with \((a,b) \in f\).
     As usual, we denote the type of such a function by \(A \to B\), a quantification by \(f\colon A \to B\), and the argument-value relation by \(f(a) = b\).
     A partial function from \(A\) to \(B\) is a subset \(f \subseteq A \times B\) such that for each \(a \in A\), there is at most one \(b\) with \((a,b) \in f\).
     The type of a partial function is denoted with an upper half arrow, e.g., \(f\colon A \parto B\).
@@ -56,11 +56,11 @@
     If the values and index set of a family coincide in such a notation, then the index is omitted completely.
     For example, we write \(\min [k]\) instead of \(\min_{i \in [k]} i\).
     The minima and maxima are determined according to the usual numerical order.
-    In case we encounter different objects or we use any other total ordering \(\unlhd\), we denote it as a superscript, e.g., \(\min^{\unlhd}\).
-    \(\argmin\) yields all indices with minimal value, for instance \(\argmin_{i \in [k]} v_i\) is the subset \(M \subseteq [k]\) such that, for each \(\hat{i} \in M\), there is no \(j \in [k]\) with \(v_j \unlhd v_{\hat{i}}\).
+    In case we encounter different objects or we use any other total ordering \(\unlhd\), we denote it as a superscript, for instance, \(\min^{\unlhd}\).
+    The symbol \(\argmin\) denotes the set of all indices with minimal value, for instance, \(\argmin_{i \in [k]} v_i\) is the subset \(M \subseteq [k]\) such that, for each \(\hat{i} \in M\), there is no \(j \in [k]\) with \(v_j \unlhd v_{\hat{i}}\).
     Vice versa, \(\argmax\) yields the indices with maximal value.
 
-    An \(A\)-indexed \deflab<family>{partition} of \(B\) is a \(A\)-indexed family \(p\) over subsets in \(\power(B)\) such hat:
+    An \(A\)-indexed \deflab<family>{partition} of \(B\) is a \(A\)-indexed family \(p\) over subsets in \(\power(B)\) such that:
     \begin{inparaenum}
         \item For each pair \(a, a' \in A\) of distinct elements \(a \neq a'\), the assigned subsets are disjoint: \(p(a) \cap p(a') = \emptyset\).
         \item The union of all subsets \(\bigcup_{a \in A} p(a)\) is the set \(B\).
@@ -88,10 +88,11 @@
     The concatenation of a whole collection of sequences \((w_i \in A^* \mid i \in [k])\) in order of their indices is denoted with an ellipsis \(w_1 \ldots w_k\).
 
     A \deflab<sequence>{subsequence} \(v \in A^*\) in \(w\in A^*\) is a sequence of elements occurring consecutively within \(w\).
-    The subsequence \(v\) may be located within \(w\) by a pair of indices for its start \(s \in [|w|+1]\) and its end \(e \in [s, |w|+1]\) such that \(v_i = w_{s-1+i}\) for each \(i \in [e-s])\).
+    The subsequence \(v\) is located within \(w\) by a pair of indices for its start \(s \in [|w|+1]\) and its end \(e \in [s, |w|+1]\) such that \(v_i = w_{s-1+i}\) for each \(i \in [e-s]\).
     Whenever such a subsequence in \(w\) is identified using its location between the indices \(s\) and \(e\), it is denoted by \(w_{s:e}\).
-    If one of the two indices is left empty, it denotes a prefix or postfix of the sequence \(w\).
-    E.g. \(w_{:s}\) are the first \(s-1\) items and \(w_{s:}\) are the trailing \(|w|-s-1\) items in \(w\).
+    If one of the two indices is left empty, it denotes a \emph{prefix} or \emph{postfix in \(w\)}, respectively.
+    For instance, \(w_{:s}\) is the prefix in in \(w\) containing the first \(s-1\) elements, and \(w_{s:}\) denotes the postfix in \(w\) that contains the trailing \(|w|-s-1\) elements.
+    For each \(e \in [|w|]\), the subsequence \(w_{:e}\) is called \emph{proper prefix in \(w\)}; analogously, for each \(s\in [1,|w|+1]\), the subsquence \(w_{s:}\) is a \emph{proper postfix in \(w\)}.
 
     Let \(\unlhd\) be a total order on \(A\), the \deflab<relation>[lexorder]{lexicographic order} on \(A^*\), denoted by \(\unlhd^*\), is defined such that
     \begin{compactenum}
@@ -99,7 +100,6 @@
         \item \(w\cdot a\cdot u \rel^* w\cdot b\cdot v \) for each \(a,b \in A\) with \(a \rel b\) and each \(w,u,v \in A^*\).
     \end{compactenum}
     For example, \(\leq^*\) is the lexicographic order over sequences of numerical values where \(\varepsilon \leq^* 1\:1\:2\) and \(1\:1\:2\leq^*1\:2\).
-
 
     \section{Strings and Trees}\label{sec:preliminaries:trees}
     \paragraph{Alphabets and Strings.}
@@ -124,11 +124,12 @@
     As such, trees are finite structures, but unlike strings, we do not consider empty trees.
     In case \(\varGamma \subseteq \varSigma\), the symbols at the leaves are not distinguished from inner nodes; then the set \(\T_\varSigma(\varGamma)\) is abbreviated by \(\T_\varSigma\).
 
-    A \deflab<tree>{node} in the tree \(t \in \T_\varSigma(\varGamma)\) is an occurrence of a symbol in \(\varSigma \cup \varGamma\), i.e.\@ it is a combination of the symbol \(\sigma\) and a position it occurs.
+    A \deflab<tree>{node} in the tree \(t \in \T_\varSigma(\varGamma)\) is an occurrence of a symbol in \(\varSigma \cup \varGamma\); it is a combination of the symbol \(\sigma\) and a position it occurs.
     If a node is accompanied by a sequence of trees denoted in parentheses behind the symbol, these trees are called the \deflab<tree!node>{child}[children] of the node.
     Vice versa, from the viewpoint of a child node, the node before the wrapping parenthesis is called the \deflab<tree!node>{parent}.
     Each other node within the parenthesis is called a \deflab<tree!node>{sibling}.
     The leftmost node is called the \deflab<tree>{root} of the tree; each node without children is called a \deflab<tree>{leaf} of the tree; and each node with children is called an \deflab<tree>[inode]{inner node}.
+    The sequence of all sybols at leaves in a tree \(t\) from left to right is called the \emph{yield of \(t\)} and denoted by \(\yield(t)\).
     The \deflab<tree!node>{rank} of a node is its number of children, \(\rank(t)\) denotes the rank of the root in \(t\).
     Each leaf is of rank zero; nodes of rank one are called \deflab<tree!node>{unary}, and those of rank two are called \deflab<tree!node>{binary}.
     A tree is called \deflab<tree>[bintree]{binary} if each inner node has exactly two successors.
@@ -148,11 +149,11 @@
     Let \(\rho \in \pos(t)\) be some position.
     Each subsequence in \(t\) that is also a tree in \(T_\varSigma\) is called a \deflab<tree>{subtree} in \(t\).
     The subtree at a position \(\rho\) is denoted by \(t|_\rho\).
-    The \deflab<tree>{ancestor}[ancestors] of \(\rho\) are all real prefixes of the sequence \(\rho\), denoted by \(\ancestors(\rho)\).
+    The \deflab<tree>{ancestor}[ancestors] of \(\rho\) are all proper prefixes of the sequence \(\rho\), denoted by \(\ancestors(\rho)\).
     If \(\rho\) is of the form \(\rho = p_1 \ldots p_\ell\) for some \(\ell \in \DN_+\) and \(p_1, \ldots, p_\ell \in \DN_+\), then \(\ancestors(\rho) = \{ p_1 \ldots p_i \mid 0 \leq i \leq \ell-1 \}\).
     The \deflab<tree>{descendant}[descendants] of \(\rho\) in \(t\) are all positions in the subtree below \(\rho\), denoted by \(\descendants_t(\rho) = \{ \rho \cdot \rho' \in \pos(t) \mid \rho' \in \pos(t|_\rho) \}\).
     The symbol at a position \(\rho\) in \(t\) is denoted  \(t(\rho)\).
-    We use the same terminology for position as for nodes, i.e.\@ child position, parent position, etc.; \(\children_t(\rho) = \{\rho\} \cdot \DN_+ \cap \pos(t)\) denotes the set of child positions below each position \(\rho\) in \(t\), and \(\parent(\rho) = \rho_{:|\rho|}\) the parent position for each \(\rho \in {\DN_+}^+\).
+    We use the same terminology for position as for nodes, for instance, the terms child position, parent position, etc.\@ are used interchangeably in the same manner; \(\children_t(\rho) = \{\rho\} \cdot \DN_+ \cap \pos(t)\) denotes the set of child positions below each position \(\rho\) in \(t\), and \(\parent(\rho) = \rho_{:|\rho|}\) the parent position for each \(\rho \in {\DN_+}^+\).
     Two positions \(\rho, \rho' \in \pos(t)\) are called \emph{independent}, if \(\rho\) is neither a descendant nor an ancestor of \(\rho'\).
 
     A \deflab<tree>{subforest} of \(t\) is a sequence of trees occurring consecutively (as siblings) within \(t\).
@@ -187,7 +188,7 @@
 %    \end{proof}
 
     \paragraph{Indexed Trees.}
-    An \deflab<tree>[itree]{indexed tree} over \(\varSigma\) is an element in \(\T_{\varSigma}(\DN_+)\), i.e.\@ inner nodes are symbols in \(\varSigma\), and leaves are positive integers, such that each leaf occurs at most once.
+    An \deflab<tree>[itree]{indexed tree} over \(\varSigma\) is an element in \(\T_{\varSigma}(\DN_+)\); that is, inner nodes are symbols in \(\varSigma\), and leaves are positive integers, such that each leaf occurs at most once.
     For each inner node in an indexed tree, the children are ordered by the least value that occurs in a leaf.
     The notation for positions, indexing, and substitution are inherited from trees; the yield of an indexed tree is its set of leaves instead of a string.
     The set of all indexed trees over \(\varSigma\) is denoted by \(\itrees_\varSigma\).
@@ -206,18 +207,18 @@
 
     Because trees are just specific strings, both definitions of substitution are easily lifted to trees and sequences of trees as long as the variables do not coincide with parentheses.
     Let \(\varGamma\) be an alphabet distinct from \(X\), and \(\{ (, ) \} \cap (X \cup \{y\}) = \emptyset\), and \(y \notin \varSigma\).
-    Now, the variable occurrences are of the form \(X(\T_\varSigma(\varGamma)^*) = \{x(t_1, \ldots, t_k) \mid k \in \DN, t_1, \ldots, t_k \in \T_{\varSigma}(\varGamma)\}\) where each element has a root in \(X\), in the following the set is abbreviated by \(\hat{X}\).
+    Now, the variable occurrences are of the form \(X(\T_\varSigma(\varGamma)^*) = \{x(t_1, \ldots, t_k) \mid x \in X, k \in \DN, t_1, \ldots, t_k \in \T_{\varSigma}(\varGamma)\}\) where each element has a root in \(X\); in the following the set is abbreviated by \(\hat{X}\).
     A second-order substitution of \(X\) in \(c \in \T_\varSigma(\varGamma \cup \hat{X})^*\) defined by an \(X\)-indexed family \((v_x \in \T_\varSigma(\varGamma \cup \{y\})^* \mid x \in X)\) yields a sequence of trees in \(\T_\varSigma(\varGamma)*\) obtained from \(c\) by replacing each occurrence of \(x(v) \in \hat{X}\) by \(v_x[y=v]\).
     The variable \(\y\) may be an element of \(\varGamma\).
 
     \begin{example}[Substitution]
         Consider an alphabet \(\Sigma = \{\text{a}, \ldots, \text{g}\}\) of (terminal) symbols and two sets of variables \(\X = \{\x_1, \x_2, \x_3\}\) and \(\Y = \{\y\}\).
-        In first-order substitutions, all occurring variables in a string are replaced by argument strings, e.g.
+        In first-order substitutions, all occurring variables in a string are replaced by argument strings, for instance as follows:
         \begin{align*}
             \x_1 \, \text{b} \, \x_2 \, \text{f} \, \x_3\,[\x_1=\varepsilon, \x_2=\text{cde}, \x_3=\text{g}] &= \text{bcdefg} \\
             \x_1 \, \text{bb} \, \x_1 \, [\x_1=\text{a}] &= \text{abba}
         \end{align*}
-        In second-order substitutions, there is an argument with each variable \(x\) in \(\X\) that may be inserted for the variable \(\y\) in the value for \(x\), e.g.
+        In second-order substitutions, there is an argument given in parentheses behind each variable \(x\) in \(\X\) that replaces the variable \(\y\) in its argument, such as the following examples:
         \begin{align*}
             \text{a} \, \x_1(\text{cc}) \, \text{a} \, [\x_1=\text{b}\,\y\,\text{b}] = \text{a} \, (\text{b}\,\y\,\text{b})[\y=\text{cc}] \, \text{a} &= \text{abccba} \\
             \x_1(\text{bb}) \, \x_1(\varepsilon) \, [\x_1=\text{a}\,\y\,\text{a}] = (\text{a}\,\y\,\text{a})[\y=\text{bb}] (\text{a}\,\y\,\text{a})[\y=\varepsilon] &= \text{abbaaa}
@@ -414,7 +415,7 @@
     \section{Empirical Predictions}
     Under the broad term \deflab{prediction}[(empirical) prediction], we subsume each process that takes an input of predetermined shape and assigns it to an output (called \emph{label}) based on previously seen data and prior knowledge.
     In the following, we clarify some basic terms used throughout the thesis in conjunction with empirical predictions.
-    For more detailed elaborations in this field, refer to \Citet{Moh12,Dau17}.
+    For more detailed elaborations in this field, refer to \citet{Moh12} and \citet{Dau17}.
 
     \paragraph{Tasks, Models, and Learning.}
     We start with the broadest concepts in the field of machine learning.
@@ -629,7 +630,7 @@
     We implement the prediction of supertags using two architectures:
     \begin{enumerate}
         \item
-            The first one is pretty common in the \abrv{nlp} community for token-wise classification tasks and was used, e.g., by \citet{vaswani2016supertagging,StaSte20,Cor20}.
+            The first one is pretty common in the \abrv{nlp} community for token-wise classification tasks and was used, for instance, by \citet{vaswani2016supertagging},\citet{StaSte20} and \citet{Cor20}.
             It contains two modules for embedding, a static word embedding and character embeddings, which are followed by some layers of bidirectional recurrent modules utilizing \abrv{lstm}, and finally an \abrv{mlp}\todo{or linear?}; \cref{fig:architecture:supervised} shows an illustration.
             It does not rely on pre-trained modules and implements supervised learning to predict supertags.
         \item
