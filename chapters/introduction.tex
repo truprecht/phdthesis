@@ -7,7 +7,7 @@
     \begin{quote}
         \emph{``A computer would deserve to be called intelligent if it could deceive a human into believing it was human.''} \hfill ---Alan Mathison Turing
     \end{quote}
-    This quote can quickly be drawn in connection to the \emph{imitation game}, later renamed \emph{Turing Test} in their honor.
+    This quote can quickly be drawn in connection to the \emph{imitation game}, later renamed \emph{Turing Test} in honor of \citeauthor{Turing2009}'s pioneer work.
     The Turing Test is successful if a computer's answers to natural language questions cannot be distinguished from those of a human.
     It was the first attempt to measure the quality of a system that generates pieces of natural language.
     But the principle can also be applied to other tasks that are based on natural language data:
@@ -76,14 +76,14 @@
     There are \deflab{treebanks}, extensive collections of constituent trees created manually or semi-automatic, that give an impression of what frequency such phenomena occur in these languages \citep{Marcus94,EvaKal11,Skut98,Brants04,Noo13}.
 
     The theory of natural language syntax analysis was due to \citet{Cho56}.
-    They formalized a rule-based framework for the syntax-based definition of languages, called \deflab{grammars}, and their famous hierarchy of grammar formalisms.
-    They aimed to explain the syntax of natural languages using \deflab{context-free grammars}, the second out of four levels of grammars in the hierarchy.
+    \Citeauthor{Cho56} formalized a rule-based framework for the syntax-based definition of languages, called \deflab{grammars}, and the famous \emph{Chomsky hierarchy} of grammar formalisms.
+    \Citeauthor{Cho56} aimed to explain the syntax of natural languages using \deflab{context-free grammars}, the second out of four levels of grammars in the hierarchy.
     These grammars were defined with rules that directly model the parent-child relationship within constituent trees, such as \(\nt{S} \to \nt{NP}\,\nt{VP}\).
     However, context-free grammars cannot model the discontinuities that appear in natural language \citep{Shieber85}.
     The grammar formalism for the next higher level in the hierarchy, called \deflab{context-sensitive grammars}, was dismissed for the modeling and analysis of natural languages due to its complexity.
     As a consequence, there were multiple proposals for formalisms that aim to add just power to context-free grammars to be able to handle discontinuous constituents and still allow efficient analyses:
         tree-adjoining grammars \citep{JosLevTak75}, multiple context-free grammars \citep{SekMatFujKas91}, linear context-free rewriting systems \citep{VijWeiJos87} and combinatory categorial grammars \citep{Ste11} to name a few.
-    They were later brought under the umbrella term \deflab{mildly context-sensitive grammars}, a class that supersedes context-free and is strictly included in context-sensitive grammars.
+    These formalisms were later brought under the umbrella term \deflab{mildly context-sensitive grammars}, a class that supersedes context-free and is strictly included in context-sensitive grammars.
     Later chapters of this thesis deal with such mildly context-sensitive grammar formalisms, particularly linear context-free rewriting systems and an extension of them, called hybrid grammars \citep{Ned14}.
 
     \section*{Autonomous Parsing of Natural Languages Sentences}
@@ -136,7 +136,7 @@
     \end{compactitem}
     Over the years, the approach was transferred to other grammar formalisms, most notably combinatory categorial grammars \citep{Clark04}, refined to improve the rule prediction quality \citep{vaswani2016supertagging,Kad18,tian20}, and evaluated in different languages and corpora \citep{Bla18}.
     The published results for parsing with supertagging are promising.
-    Alas, they were primarily evaluated in the task of dependency parsing (or just the prediction of the grammar rules), or in some cases, the underlying grammar formalisms are restricted in allowing only discontinuity to a certain degree.
+    Alas, supertagging-based parsers were primarily evaluated in the task of dependency parsing (or just the prediction of the grammar rules), or in some cases, the underlying grammar formalisms are restricted in allowing only discontinuity to a certain degree.
     Moreover, extracting the grammar instance for this approach in the needed format often requires language-specific knowledge \citep{Kas17,Bla18} or they used hand-crafted grammar instances \citep{Hoc07}.
     We aimed to tackle these limitations in the research that led to this thesis.
     We published an extraction procedure for lexical linear context-free rewriting systems that is agnostic of the used constituent tree corpus. That is, it does not require any knowledge about the language and allows unbounded degrees of discontinuity \citep{MoeRup20}.
@@ -151,9 +151,9 @@
     \begin{compactitem}
         \item \Cref{sec:extraction:lcfrs} focuses on supertags in terms of linear context-free rewriting systems.
             The extraction procedure involves transporting lexical symbols within derivations read from constituent trees in a treebank with well-established strategies.
-            This strategy was introduced by \citet{RupMoe21}.
+            This strategy was introduced in one of our earlier publications \citep{RupMoe21}.
         \item The second approach deals with a generalization of the previous formulation of supertags and their extraction procedure.
-            We described this procedure in an earlier publication, but only informally and through examples \Citep{Rup22}.
+            We described this procedure in an earlier publication, but only informally and through examples \citep{Rup22}.
             \Cref{sec:extraction:guided} formalizes the approach using supertags based on the hybrid grammar formalism.
             It gives a modular extraction procedure that parametrizes the lexicalization and extraction of the grammar rules.
             In addition to the formalization, the section adds new options for the extraction parameters.

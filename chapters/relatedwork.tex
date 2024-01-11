@@ -86,7 +86,7 @@
 
     \subsubsection*{Data-Oriented Parsing}
     \Citet{Bod92} introduced the concept of data-oriented parsing (short: \abrv{dop}), which aims to extract fine-grained but highly ambiguous grammars from constituent treebanks.
-    At the heart of the approach, they extract a tree substitution grammar rule for each fragment (i.e.\@, a coherent set of nodes within a tree) in each constituent tree.
+    At the heart of the approach, \citeauthor{Bod92} extracts a tree substitution grammar rule for each fragment (i.e.\@, a coherent set of nodes within a tree) in each constituent tree.
     The number of these fragments is exponential to the size of the treebank, so there were multiple investigations to overcome the computational burden of the model's complexity:
     \begin{itemize}
         \item \citet{Bod01} investigated several restrictions for the extracted rules defined solely on each fragment's properties, such as its depth or the number of lexical leaves.
@@ -95,7 +95,7 @@
     \end{itemize}
     \Citet{San11} also investigate other parsing objectives, such as approximating the best-weighted constituent tree instead of the best-weighted derivation.
     \Citet{Cra11} and \cite{CraSchBod16} generalize these concepts to parsing discontinuous constituents.
-    They achieved the best results with their discontinuous double-dop model, which they implemented as a coarse-to-fine parser on multiple levels.
+    They achieved the best results with their discontinuous double-dop model, which is implemented as a coarse-to-fine parser on multiple levels.
 
     \subsubsection*{Grammars with Latent Annotations}
     \Citet{Mat05} introduced context-free grammars with latent annotations (short: \abrv{cfg-la}) by splitting nonterminals into two parts: an observable symbol (which takes the form of a constituent or \abrv{pos} symbol as in usual treebank grammars) and an unobservable \emph{latent annotation symbol}.
@@ -115,9 +115,9 @@
     The process is reversed by identifying the resulting derivations' split nodes (complemented by a special marker symbol).
     Their experiments find that the reversion procedure is unambiguous in their considered case of the \tiger{} treebank (in contrast to the previous approach).
     Both approaches were investigated by \citet{hsu2010comparing}.
-    They concluded that node raising is preferable as it maintains more of the constituent trees' structure.
+    \Citeauthor{hsu2010comparing} concluded that node raising is preferable as it maintains more of the constituent trees' structure.
     \Citet{Ver16} improved the node-raising strategy by introducing unary nodes that identify the moved subtrees in tandem with markers that indicate their current location concerning their origin.
-    They implemented a parser using the \abrv{pcfg-la} framework by \citet{Petrov06} and could achieve competitive results in their experiments with the \tiger{} treebank.
+    \citeauthor{Ver16} implemented a parser using the \abrv{pcfg-la} framework by \citet{Petrov06} and could achieve competitive results in their experiments with the \tiger{} treebank.
 
     % \subsection{Reranking}
     % The efficiency of parsing with grammar formalisms comes mostly from their locality assumptions; for instance, each derivation's weight is computed independently using its rules' assigned weights.
@@ -260,10 +260,10 @@
     As for constituent parsing, there are several different approaches for parsing dependencies.
     The following list shall only shortly summarize some techniques that share some aspects with the previously discussed styles of constituency parsing:
     \begin{itemize}
-        \item Several lexicalized grammar formalisms were considered for dependency parsing. Generally, each derivation in such a grammar formalism is interpreted as a dependency tree in the same shape by replacing each grammar rule with its contained terminal symbol. \citet{chiang2000statistical} propose lexicalized tree-adjoining grammars as a formalism to cover constituency and dependency parsing simultaneously. \citet{hockenmaier2002generative} argue that the quality of combinatory categorial grammar parsers should be compared using scores assessing the dependency structure rather than the parseval measure for constituents. This was adopted into the following publications involved in parsing with both formalisms, combinatory categorial grammars, and tree-adjoining grammars \citep{Kas17,Bla18}. \citet{Clark04} discussed the importance of supertagging in parsing with lexical(ized) grammars, specifically \abrv{ccg}. All recent publications in parsing with \abrv{ccg} or \abrv{tag} also follow this approach \citep{Kas17,LewisSteedman14}.
+        \item Several lexicalized grammar formalisms were considered for dependency parsing. Generally, each derivation in such a grammar formalism is interpreted as a dependency tree in the same shape by replacing each grammar rule with its contained terminal symbol. \citet{chiang2000statistical} proposes lexicalized tree-adjoining grammars as a formalism to cover constituency and dependency parsing simultaneously. \citet{hockenmaier2002generative} argue that the quality of combinatory categorial grammar parsers should be compared using scores assessing the dependency structure rather than the parseval measure for constituents. This was adopted into the following publications involved in parsing with both formalisms, combinatory categorial grammars, and tree-adjoining grammars \citep{Kas17,Bla18}. \citet{Clark04} discussed the importance of supertagging in parsing with lexical(ized) grammars, specifically \abrv{ccg}. All recent publications in parsing with \abrv{ccg} or \abrv{tag} also follow this approach \citep{Kas17,LewisSteedman14}.
         \Citet{kuhlmann2009treebank} proposed \abrv{lcfrs} extracted from (non-projective) dependency treebanks as grammar formalism for dependency parsing.
         \item \citet{eisner-1996-three} defined a bottom-up parsing algorithm for dependency structures and proposed a stochastic interpretation to weigh the (intermediate) results during parsing. However, their approach does not involve an explicit grammar instance. Recently, \citet{yang-tu-2022-headed} published a bottom-up dependency parser that applies an artificial neural network for scoring. However, both approaches are restricted to projective dependencies.
-        \item Several transition systems have been proposed for dependency parsing. \citet{nivre-2003-efficient} and \citet{yamada-matsumoto-2003-statistical} independently proposed transition systems based on the shift-reduce parsing algorithm for dependency parsing. \citet{attardi-2006-experiments} were the first to introduce a set of operations that extends the previous transition system and allows the prediction of non-projective dependency relations. \citet{Nivre09} proposed the \emph{swap} operation for the nonprojective case, which subsumes multiple operations that were distinguished by \citet{attardi-2006-experiments}. \citet{Goldberg12} introduced dynamic oracles that allow diverging from gold configurations during the training procedure for the projective case. \citet{gomez2014polynomial} presented their generalization of the dynamic oracle to the nonprojective case using the transition system by \citet{attardi-2006-experiments}.
+        \item Several transition systems have been proposed for dependency parsing. \citet{nivre-2003-efficient} and \citet{yamada-matsumoto-2003-statistical} independently proposed transition systems based on the shift-reduce parsing algorithm for dependency parsing. \citet{attardi-2006-experiments} was the first to introduce a set of operations that extends the previous transition system and allows the prediction of non-projective dependency relations. \citet{Nivre09} proposed the \emph{swap} operation for the nonprojective case, which subsumes multiple operations that were distinguished by \citet{attardi-2006-experiments}. \citet{Goldberg12} introduced dynamic oracles that allow diverging from gold configurations during the training procedure for the projective case. \citet{gomez2014polynomial} presented their generalization of the dynamic oracle to the nonprojective case using the transition system by \citet{attardi-2006-experiments}.
     \end{itemize}
     Some other approaches are not covered in this summary, for example, the reduction of dependency parsing to finding a maximum spanning tree in a graph by \citet{mcdonald-etal-2005-non}.
     All readers are encouraged to consult \citet{nivre2010dependency} for a broad overview of the field.
@@ -302,7 +302,7 @@
     \Citet{Clark04} recognized supertagging as an essential step in parsing with \abrv{ccg} due to the formalism's complex categories assigned to each lexical item in the input.
     Instead of the hidden Markov model that \citet{bangalore1999supertagging} used to predict supertags, they define a maximum-entropy model similarly utilizing a set of features as e.g.\@ contemporary reranking mechanisms used in constituent parsing (see \cref{sec:reranking}).
     \Citet{Auli12} described a general framework for parsers that involve supertagging.
-    Specifically, they propose an iterative algorithm that incrementally expands the set of used supertags during parsing until the process succeeds.
+    Specifically, \citeauthor{Auli12} proposes an iterative algorithm that incrementally expands the set of used supertags during parsing until the process succeeds.
     \Citet{kaeshammer2012german} and \citet{Kaeshammer2012GermanAE} presented semi-automatic conversions of German and English constituent treebanks into \abrv{ltag} derivations; \citet{Bla18} contribute a conversion for the \emph{French Treebank} \citep{abeille2003building} using similar methology.
     These conversions involve treatments for specific language phenomena that the authors identify in the treebanks.
     With the general availability of deep learning models, the prediction of supertags could pass on hand-crafted features and utilize context-sensitive embeddings computed by recurrent neural networks, most prominently bidirectional \abrv{lstm}s.

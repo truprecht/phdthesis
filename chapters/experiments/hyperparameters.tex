@@ -18,11 +18,11 @@
 
     \paragraph*{Grammar Formalism}
     Our experiments concern hybrid grammar and \abrv{dcp} supertags using the extraction procedure in \cref{sec:extraction:guided}.
-    We omit \abrv{lcfrs} supertags as they are a particular case of the hybrid grammar supertags that can be achieved with specific extraction parameters as described in \cref{sec:extraction:lcfrs}, namely the vanilla nonterminal constructor and the vanilla guide constructor.
+    We omit \abrv{lcfrs} supertags as they are an instance of the hybrid grammar supertags that can be achieved with specific extraction parameters as described in \cref{sec:extraction:lcfrs}, namely the vanilla nonterminal constructor and the vanilla guide constructor.
 
     \paragraph*{Rank Transformation}
     We consider rank transformations, e.g.\@, binarization, an integral part of the extraction process for supertag blueprints from constituent treebanks.
-    As they were described in \cref{sec:binarization}, they are specified by the following parameters:
+    As discussed in \cref{sec:binarization}, they are specified by the following parameters:
     \begin{itemize}
         \item A transformation strategy determines the target ranks occurring in the trees after applying the rank transformation and the order/direction in which artificial nodes are  introduced. We distinguish four strategies: left-branching binarization, right-branching binarization, head-outward binarization, and head-inward transformation.
         \item Markovization contexts determine the information used to construct artificial nodes during the rank transformation process. This information is distinguished in horizontal and vertical Markovization context, denoted by \(h\) and \(v\), respectively. Both options are assigned to natural values \(h \ge 0\) and \(v \ge 1\). Usually, in grammar-based parsing, one would investigate combinations of values in the intervals \(0 \le h \le 3\) and \(1 \le v \le 2\). We saw in preliminary investigations that the number of extracted supertag blueprints rapidly rises with values beyond the minimal \(h = 0\) and \(v = 1\), negatively impacting the supertag prediction accuracy \citep{Rup22}. We will restrict our experiments to the three least combinations \((h, v) \in \{(0,1), (1,1), (0,2)\}\).
