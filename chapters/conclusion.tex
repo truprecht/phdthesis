@@ -38,7 +38,7 @@
 
     We also want to underline the set of experiments with the head guide constructor added in this work.
     Despite that the sets of supertag blueprints tend to be (much) larger than with the strict guide constructor, they achieve similar parsing accuracy in the end; in the case of \abrv{dptb}, we even decide for the head guide constructor for the supervised model.
-    We suggest these experiments are worth mentioning because the extraction process utilizing the lexical head assignment is more akin to the strategy to extract tree-adjoining grammar supertags as done, for instance, by \citet{Kaeshammer2012GermanAE, Bla18}.
+    We suggest these experiments are worth mentioning because the extraction process utilizing the lexical head assignment is more akin to the strategy to extract tree-adjoining grammar supertags as done, for instance, by \citet{Kaeshammer2012GermanAE} and \citet{Bla18}.
     Further research could investigate the similarities and differences between these approaches to find improvements.
     We chose to abstain from those investigations to focus on treebank-independent approaches for the extraction.
 
@@ -53,7 +53,7 @@
     Even with exclusively supervised models, we achieve higher accuracy scores in less parse time than state-of-the-art parsers solely based on grammar formalisms.
     Supertagging also has the benefit of using pre-trained models utilizing knowledge that is not part of the treebanks used to extract the grammar rules.
     With said models, we can parse as accurately as other stat-of-the-art parsers for discontinuous constituents.
-    In recent years, some parts of the \abrv{nlp} community have written off parsing with grammar formalisms as being too inaccurate and slow (cf.\@ \citealp[Section~1]{StaSte20}; and \citealp[Section~10]{zhang2020survey}).
+    In recent years, some parts of the \abrv{nlp} community have written off parsing with grammar formalisms as being too inaccurate and slow (\citealp[Section~1]{StaSte20}; and \citealp[Section~10]{zhang2020survey}).
     We tend to agree regarding approaches that solely rely on grammar formalisms.
     But we suggest this work gives enough evidence that these formalisms can act as a solid foundation for parsers that combine them with strong machine learning models.
 \end{document}

@@ -93,16 +93,16 @@
         The formalism was extended with probabilistic weights to estimate the adequacy of constituent structures (\citealp{Sup72}; \citealp{Jur23}, Appendix C).
     Since the publication of treebanks, it has been possible to extract grammars from the constituent trees automatically \citep{Cha96}.
     The independence assumptions in the earlier formulations of context-free grammars were identified as a limitation for the accuracy when parsing with grammars extracted from treebanks \citep[e.g.\@][Section~1.1]{collins2001convolution}.
-    There was research in extending the grammars to overcome this limitation, such as history-based grammars by \citet{Black94} and data-oriented parsing by \citet{Bod92}; most of these extensions were subsumed under the formalism of context-free grammars with latent annotation by \citet{Mat05,Petrov06}.
+    There was research in extending the grammars to overcome this limitation, such as history-based grammars by \citet{Black94} and data-oriented parsing by \citet{Bod92}; most of these extensions were subsumed under the formalism of context-free grammars with latent annotation by \citet{Mat05} and \citet{Petrov06}.
     Others approached the ambiguity of context-free grammars by cherry-picking a convincing constituent tree among many derived ones \citep{Col00}.
 
     However, these developments only considered continuous constituent structures.
     The research on parsing with grammars that can model discontinuities was delayed by a few years and distributed across several concurrent formalisms.
-    Starting with \citet{MaierSogaard08,Kal10}, parsing procedures for natural languages with multiple context-free grammars have been studied.
+    Starting with \citet{MaierSogaard08} and \citet{Kal10}, parsing procedures for natural languages with multiple context-free grammars have been studied.
     Similar refinements were introduced to the formalism, such as latent annotations by \citet{Geb20} and discontinuous data-oriented parsing by \citet{Cra11}.
     Some of these extensions are criticized for undermining the interpretability of the underlying grammar instances \citep[Chapter 9]{Geb20}.
 
-    Other research involved parsers that do not rely on grammars; for instance, parsers modeled as transition systems by \citet{Verseley14,CoaCoh19}, or conditional random fields by \citet{Petrov08}.
+    Other research involved parsers that do not rely on grammars; for instance, parsers modeled as transition systems by \citet{Verseley14} or \citet{CoaCoh19}, or conditional random fields by \citet{Petrov08}.
     Most notably, since the advent of deep learning, such parsing models based on discriminative classifiers became state-of-the-art in terms of accuracy and parse time; parses solely based on grammar formalisms could not keep up with them.
     Although, there is one significant advantage of grammar formalisms that still convinces some people to put effort into parsing with grammar formalisms:
         Grammar instances are easily interpretable, as they explicitly describe the constituent structures; deep neural networks do not allow any straightforward interpretation of their computation.

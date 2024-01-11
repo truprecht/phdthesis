@@ -19,25 +19,25 @@
     \) where \(\hat{Y} = \{t_i \mid i \in [i]\}\) is the search space.
 
     Reranking has quite a history in parsing.
-    One track of research driven by \citet{collins2001convolution,shen2003svm,collins05,huang2008forest} i.a.\@ defined discriminative classifiers that predict assessment scores for constituent trees in the form described above.
+    One track of research driven by \citet{collins2001convolution}, \citet{shen2003svm}, \citet{collins05}, \citet{huang2008forest} i.a.\@ defined discriminative classifiers that predict assessment scores for constituent trees in the form described above.
     Their reranking models consist of two parts:
         A \emph{feature extraction} procedure maps each constituent tree into a vector and a function that maps each vector to a score.
-    The latter part was often realized as a support vector machine or perceptron, as they are computationally efficient in both learning and prediction and are interpretable.
+    The latter part was often realized as a support vector machine or perceptron, as these prediction models are computationally efficient in both learning and prediction and are interpretable.
     These reranking models are used to score the constituent trees obtained from a parser based on context-free grammars, which are known to be highly ambiguous when it comes to parsing natural languages.
-    \Citet{collins2001convolution, shen2003svm} define features from the training set of constituent trees by counting the occurring tree fragments.\footnote{
+    \Citet{collins2001convolution} and \citet{shen2003svm} define features from the training set of constituent trees by counting the occurring tree fragments.\footnote{
         A tree fragment is a coherent part that occurs in a constituent tree.
         Each subtree is a tree fragment, and beyond that, a fragment may also end at an inner node.
         E.g.\@ \(\cn{s} (\cn{vp} (\cn{vp} \tn{was}), \cn{np})\) is a fragment in our running example ``where the survey was carried out.''
         As there is a vast amount of such fragments in a whole treebank, \citet{collins2001convolution} define a kernel function that counts the tree fragments occurring commonly in two constituent trees.
         Using tree fragments relates this strategy to the approach of \emph{data-oriented parsing} \citep{Bod92}.
     }
-    \Citet{collins05,charniak2005coarse} define a hand-crafted set of feature patterns that are instantiated using the constituent trees in a training set.
+    \Citet{collins05} and \citet{charniak2005coarse} define a hand-crafted set of feature patterns that are instantiated using the constituent trees in a training set.
     These methods used their rerankers for a pick among a sequence of \(n\) best constituent trees.
     \Citet{huang2008forest} introduced an approach that applies the reranking mechanism to a parse chart, practically eliminating the restriction to a limited number of constituent trees.
     However, this is only an approximative solution.
     The general training procedure for the reranker is shared among the approaches:
         Parse charts or \(n\) best sequences of constituent trees are obtained from sentences in the training set with an off-the-shelf parser and context-free grammars that are obtained from the training set as well.
-        To simulate disjoint data used for obtaining the grammar instance and parsing the sentences (but both coming from the training set), they define hold-out data by the principle of cross-validation.
+        To simulate disjoint data used for obtaining the grammar instance and parsing the sentences (but both coming from the training set), \citeauthor{huang2008forest} defines hold-out data by the principle of cross-validation.
         This obtained data is used to extract the features and train a discriminative classifier for deciding among the candidate parse trees.
 
     Another track that fits into the concept of reranking is coarse-to-fine parsing approaches with grammar formalisms.
@@ -57,7 +57,7 @@
     The grammars consist of constituent tree fragments with substitution sites at leaves that carry nonterminal symbols.
     To accommodate the discontinuities, each tree fragment is complemented by an \abrv{lcfrs} composition that restricts the substitution in consideration of the terminal symbols occurring in the tree fragments.
     \Cref{ex:dop} shows an example of a disco-dop grammar.
-    Following \citet{San11,Cra11}, we use the \emph{double dop} extraction approach for discontinuous constituent trees.
+    Following \citet{San11}, \citet{Cra11}, we use the \emph{double dop} extraction approach for discontinuous constituent trees.
     It extracts rules for each constituent tree fragment in the training set that occurs at least twice.
     We restrict the fragments such that they do not include tokens from the constituent trees but end at the \abrv{pos} symbols.
     We estimate probabilistic weights for each rule by conditioning on the \abrv{lhs} nonterminal/root constituent symbol.
