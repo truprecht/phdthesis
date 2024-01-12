@@ -3,16 +3,17 @@
 \begin{document}
     \chapter{Related and Concurrent Work}\label{sec:literature}
     This chapter gives a prospect around several branches of research that touch on this thesis topic in a broad sense.
-    In \cref{sec:literature:constituency}, we will focus on other approaches for discontinuous constituent parsing.
+    In \cref{sec:literature:constituency}, we focus on other approaches for discontinuous constituent parsing.
     It is split into four subsections; the first three subsections cover general concepts established in the field of parsing; the last contains approaches that do not fit into these traditional parsing concepts.
-    \Cref{sec:literature:beyond} will open a window to discuss parsing approaches that do not consider the constituency but other relations worth analyzing in natural language.
+    \Cref{sec:literature:beyond} opens a window to discuss parsing approaches that do not consider the constituency but other relations worth analyzing in natural language.
     Specifically, it covers dependency parsing as another aspect in the analysis of syntax and some semantic analyses.
     Other approaches that rely on the supertagging framework are discussed in their own section, as they were not primarily used in constituent parsing in the past, and we want to underline their significance for this thesis.
 
     \section{Concurrent Work in Discontinuous Constiuent Parsing}\label{sec:literature:constituency}
     This section describes and compares different strategies to parse sentences into constituent structures.
-    We will highlight \emph{data-driven} parsers, i.e.\@ those that use a treebank to extract grammar rules without human intervention \citep[cf.\@][Section~1.1]{Kal10} in contrast to approaches that utilize \emph{hand-crafted} grammars.
-    It categorizes relevant publications in the field and categorizes them into general concepts that we consider as traditional or established for parsing.
+    We highlight \emph{data-driven} parsers; these parsers use a treebank to extract grammar rules without human intervention \citep[cf.\@][Section~1.1]{Kal10} in contrast to approaches that utilize \emph{hand-crafted} grammars.
+    We gather relevant publications in the field of discontinuous constituent parsing.
+    We categorize these publications into general concepts that we consider as traditional or established for parsing.
     Each category is dedicated to a subsection that is summarized in the following.
 
     The first, \cref{sec:literature:grammar}, is dedicated to parsing with grammar formalisms that encode natural language constituent structures.
@@ -27,18 +28,19 @@
     Specifically, we will cover three approaches that gained traction in the discontinuous parsing community.
     As the parsers discussed in the previous two subsections, they are all built around discriminative models (artificial neural networks, to be precise).
 
+            %%%% CONTINUE HERE
     \subsection{Grammar-based Parsing}\label{sec:literature:grammar}
     Grammar formalisms are closely tied to the concept of constituency analysis in natural language.
     \Citet{Cho56} laid the theoretical framework for the task and introduced grammar formalisms to explain the local relations within constituent trees.
-    Later, the constituency framework was extended to attribute discontinuous constituents, which appeared to be necessary to describe certain natural language phenomena \citep{Shieber85}.
+    Later, the constituency framework has been extended to attribute discontinuous constituents, which appear necessary to describe certain natural language phenomena \citep{Shieber85}.
     There are several grammar formalisms that are used for parsing discontinuous constituents.
     They are discussed under the following heading.
-    After that, we will focus on three specific strategies for the extraction of grammar instances from discontinuous constituent treebanks that achieved remarkable results, each below their own heading.
+    After that, we focus on three specific strategies for the extraction of grammar instances from discontinuous constituent treebanks that achieved remarkable results, each below their own heading.
 
     \subsubsection*{Grammar Formalisms}
     There is a whole range of grammar formalisms that are able to express discontinuous constituent structures and were also used for parsing in practice.
     \Citet{VijWeiJos87} and \citet{Weir88} formulated the class of \deflab{mildly context-sensitive grammar formalisms} that settles well between context-free and context-sensitive grammars.
-    The formalisms within the class combine the advantages of polynomial parsing complexity (in contrast to context-sensitive grammars) and the necessary expressive power for discontinuities (in comparison to context-free grammars).
+    The formalisms within the class combine the advantages of polynomial parsing complexity (in contrast to context-sensitive grammars) and the necessary expressive power for discontinuities (in contrast to context-free grammars).
     All of the grammar formalisms mentioned in this section are part of the class of mildly context-sensitive grammar formalisms.
 
     \defabrv{Tree-adjoining grammars}{\abrv{tag}}%
@@ -49,18 +51,18 @@
     \end{compactitem}
     Each rule of a \abrv{tag} is a tree where designated nodes indicate if one of the two operations can be applied.
     The adjunct operation contrasts \abrv{tag} from other tree grammar formalisms such as \emph{tree substitution grammars}.
-    There are hand-crafted \abrv{tag} for English \citep{xtag01} and Korean \citep{xtag02} published by the \abrv{Xtag} research group \citep{Doran99}, as well as data-driven procedures that extract grammars from treebanks, for instance by \citet{xia1999extracting} and \citet{Bla18}.
+    There are hand-crafted \abrv{tag} for English \citep{xtag01} and Korean \citep{xtag02} published by the \abrv{xtag} research group \citep{Doran99}, as well as data-driven procedures that extract grammars from treebanks, for instance by \citet{xia1999extracting} and \citet{Bla18}.
     The latter uses a heuristic approach to distinguish which operation introduces each constituent node in the tree.
-    Lexicalized \abrv{tag} was the formalism used for the introduction of supertagging \citep{bangalore1999supertagging}.
-    The approach was still investigated in recent years for dependency parsing in German and French treebanks by \citet{Kas17} and \citet{Bla18}.
+    Lexicalized \abrv{tag} is the formalism used for the introduction of supertagging \citep{bangalore1999supertagging}.
+    The approach has been investigated for dependency parsing in German and French treebanks by \citet{Kas17} and \citet{Bla18}.
     However, \abrv{tag} are limited in their ability to express certain language phenomena: \citet{Becker91} identified occurrences of \emph{long distance scrambling} in German that \abrv{tag} fail to recognize.
     An extension to the formalism called \emph{multi-component tree adjoining grammars} \citep{VijWeiJos87,Weir88}, can accommodate them but has yet to be seen in practice.
 
-    \emph{Linear context-free rewriting systems} (short: \abrv{lcfrs}) were described in detail in \cref{sec:grammar:lcfrs}.
+    \emph{Linear context-free rewriting systems} (short: \abrv{lcfrs}) are described in detail in \cref{sec:grammar:lcfrs}.
     \Citet{VijWeiJos87} and \citet{Weir88} introduced \abrv{lcfrs} as a unified formalism to capture the expressive power of mildly context-sensitive formalisms.
     As such, there is a range of formalisms whose capabilities are included in the class of \abrv{lcfrs} languages:
     \begin{compactitem}
-        \item \citet{VijWeiJos87} have shown that the string languages defined by the class of \abrv{lcfrs} include those of (multi-component) \abrv{tag} and head grammars.
+        \item \citet{VijWeiJos87} showed that the string languages defined by the class of \abrv{lcfrs} include those of (multi-component) \abrv{tag} and head grammars.
         \item \citet{vijay1994equivalence} proved the class also contains the string languages of combinatory categorial grammars and linear indexed grammars.
         \item \citet{SekMatFujKas91} mentioned that multiple context-free grammars are equivalent to string \abrv{lcfrs}.
         \item \citet{boullier1998proposal} showed the equivalence of simple range concatenation grammars (short \abrv{srcg}) and \abrv{lcfrs}.
@@ -87,37 +89,39 @@
     \subsubsection*{Data-Oriented Parsing}
     \Citet{Bod92} introduced the concept of data-oriented parsing (short: \abrv{dop}), which aims to extract fine-grained but highly ambiguous grammars from constituent treebanks.
     At the heart of the approach, \citeauthor{Bod92} extracts a tree substitution grammar rule for each fragment (i.e.\@, a coherent set of nodes within a tree) in each constituent tree.
-    The number of these fragments is exponential to the size of the treebank, so there were multiple investigations to overcome the computational burden of the model's complexity:
+    The number of these fragments is exponential to the size of the treebank
+    There were multiple investigations to overcome the computational burden of the model's complexity:
     \begin{itemize}
         \item \citet{Bod01} investigated several restrictions for the extracted rules defined solely on each fragment's properties, such as its depth or the number of lexical leaves.
-        \item \citet{Ban10} implement a coarse-to-fine parser. They first use a treebank grammar to compute a coarse parse chart, which is then used as a guiding mechanism for parsing with the finer (unrestricted) \abrv{dop} grammar.
+        \item \citet{Ban10} implemented a coarse-to-fine parser:
+            They first computed a coarse parse chart from a treebank grammar; this chart then acted as a guide during parsing with the finer (unrestricted) \abrv{dop} grammar.
         \item \citet{San11} introduced \emph{double-dop}, which restricts the rules to all fragments that appear at least twice in the treebank.
     \end{itemize}
-    \Citet{San11} also investigate other parsing objectives, such as approximating the best-weighted constituent tree instead of the best-weighted derivation.
-    \Citet{Cra11} and \cite{CraSchBod16} generalize these concepts to parsing discontinuous constituents.
-    They achieved the best results with their discontinuous double-dop model, which is implemented as a coarse-to-fine parser on multiple levels.
+    \Citet{San11} also investigated other parsing objectives, such as approximating the best-weighted constituent tree instead of the best-weighted derivation.
+    \Citet{Cra11} and \cite{CraSchBod16} generalized these concepts to parsing discontinuous constituents.
+    They achieved the best results with their discontinuous double-dop model, which was implemented as a coarse-to-fine parser on multiple levels.
 
     \subsubsection*{Grammars with Latent Annotations}
     \Citet{Mat05} introduced context-free grammars with latent annotations (short: \abrv{cfg-la}) by splitting nonterminals into two parts: an observable symbol (which takes the form of a constituent or \abrv{pos} symbol as in usual treebank grammars) and an unobservable \emph{latent annotation symbol}.
     They defined an EM algorithm to find a weight assignment that maximizes the likelihood of a treebank concerning a grammar instance with a fixed set of latent annotation symbols.
-    As these grammars are inherently ambiguous, the best-weighted derivation may not coincide with the best-weighted constituent tree; finding the latter is known to be intractable in practice \citep[they conclude that finding the best-weighted constituent tree is \emph{NP-hard} in Section~3]{Mat05}.
-    They give approximate solutions for the objective that works well enough, e.g.\@, by considering a fixed amount of \(n\)-best derivations.
-    \Citet{Petrov06} enhance the approach with an iterative extraction algorithm that automatically introduces new latent annotation symbols; in each iteration, some of the symbols are \emph{split} by adding new symbols and copying all rules replacing the split nonterminal symbol with the new latent annotation.
-    \Citet{Geb20} extends the approach to the discontinuous case with hybrid grammars as underlying formalism.
+    As these grammars are inherently ambiguous, the best-weighted derivation may not coincide with the best-weighted constituent tree; finding the latter is known to be intractable in practice \citep[they concluded that finding the best-weighted constituent tree is \emph{NP-hard} in Section~3]{Mat05}.
+    They gave approximate solutions for the objective, for instance, by considering a fixed amount of \(n\)-best derivations.
+    \Citet{Petrov06} enhanced the approach with an iterative extraction algorithm that automatically introduces new latent annotation symbols; in each iteration, some of the symbols are \emph{split} by adding new symbols and copying all rules replacing the split nonterminal symbol with the new latent annotation.
+    \Citet{Geb20} extended the approach to the discontinuous case with hybrid grammars as underlying formalism.
 
     \subsubsection*{Pseudocontinuous Parsing}
     Some authors decided to avoid discontinuous structures and their expensive parsing procedures altogether.
-    In pseudo-continuous parsing, the discontinuous treebanks are transformed into continuous ones to extract good enough context-free grammar for constituent parsing.
-    \Citet{DubKel03} derive a continuous variant of the \negra{} treebank by shifting subtrees of discontinuous nodes into their antecedents; this transformation is called \emph{node raising}, and unfortunately, it is not reversible in a straightforward manner.
+    In pseudo-continuous parsing, the discontinuous treebanks are transformed into continuous ones to extract good-enough context-free grammars for constituent parsing.
+    \Citet{DubKel03} derived a continuous variant of the \negra{} treebank by shifting subtrees of discontinuous nodes into their antecedents; this transformation is called \emph{node raising}, and unfortunately, it is not reversible in a straightforward manner.
     \Citet{levy-manning-2004-deep} contributed an algorithm that heuristically identifies the shifted nodes and can recover a discontinuous constituent tree.
-    However, they conjecture that this approach is not suited to processing languages with relatively free word order, such as German, as the context-free transformation seemed a poor approximation in their experiments.
-    \Citet{boyd-2007-discontinuity} proposes an alternative transformation that splits each discontinuous node into continuous siblings.
+    However, they concluded that this approach is not suited to processing languages with relatively free word order, such as German, as the context-free transformation seemed a poor approximation in their experiments.
+    \Citet{boyd-2007-discontinuity} proposed an alternative transformation that splits each discontinuous node into continuous siblings.
     The process is reversed by identifying the resulting derivations' split nodes (complemented by a special marker symbol).
-    Their experiments find that the reversion procedure is unambiguous in their considered case of the \tiger{} treebank (in contrast to the previous approach).
-    Both approaches were investigated by \citet{hsu2010comparing}.
+    Their experiments found that the reversion procedure is unambiguous in the case of the \tiger{} treebank (in contrast to the previous approach).
+    Both approaches were investigated and compared by \citet{hsu2010comparing}.
     \Citeauthor{hsu2010comparing} concluded that node raising is preferable as it maintains more of the constituent trees' structure.
     \Citet{Ver16} improved the node-raising strategy by introducing unary nodes that identify the moved subtrees in tandem with markers that indicate their current location concerning their origin.
-    \citeauthor{Ver16} implemented a parser using the \abrv{pcfg-la} framework by \citet{Petrov06} and could achieve competitive results in their experiments with the \tiger{} treebank.
+    \citeauthor{Ver16} implemented a parser using the \abrv{pcfg-la} framework by \citet{Petrov06} and achieved competitive results in their experiments with the \tiger{} treebank.
 
     % \subsection{Reranking}
     % The efficiency of parsing with grammar formalisms comes mostly from their locality assumptions; for instance, each derivation's weight is computed independently using its rules' assigned weights.
@@ -129,37 +133,41 @@
 
     \subsection{Bottom-up and Top-down Parsing with Discriminative Scoring}\label{sec:literature:chart}
     % parsing with CRF also falls into this category
-    The parsing procedures in this category first occurred in parsing with grammar formalisms but utilizing rich functions to compute the weight of derivations.
-    Similar to the introduction of reranking (c.f.\@ \cref{sec:reranking}), these functions are not limited to the locality assumptions of weighted grammars. They are interpreted as a \emph{score} that assesses each derivation.
-    \Citet{Johnson99} presented a framework for \emph{maximum-entropy} models, where score functions are built around \emph{features}, i.e.\@ specific patterns that are counted within the constituent trees, very similarly to the reranking mechanism described by \citet{collins2001convolution}.
+    The parsing procedures in this category first occurred in parsing with grammar formalisms but utilized rich functions to compute the weight of derivations.
+    Similar to reranking (c.f.\@ \cref{sec:reranking}), these functions are not limited to the locality restrictions of weighted grammars.
+    They are interpreted as a \emph{score} that assesses each derivation.
+    \Citet{Johnson99} presented a framework for \emph{maximum-entropy} models, where score functions are built around \emph{features}
+    Each features is specific pattern that is counted within the constituent tree, very similar to the reranking mechanism described by \citet{collins2001convolution}.
     The score is computed using a linear combination of the feature counts and interpreted as the probability of the derivation conditioned on the sequence of tokens.
     \Citet{Miyao02} extended the framework by a more efficient training procedure involving the computation of inside-outside-values.
-    However, it still requires computing all possible derivations for each sentence in the training set and their score, which was very demanding at the time.
+    However, it still required computing all possible derivations for each sentence in the training set and their score, which was very demanding at the time.
     \Citet{Toutanova02} and \citet{Clark04a} utilized the approach and implemented features that consider long-distance dependencies within their derivations of \emph{head-driven phrase structure grammars} (a formalism in the class of mildly context-sensitive grammars, weakly equivalent to \abrv{tag}) and \abrv{ccg} respectively.
     \Citet{Taskar04} criticized the maximum entropy models for their complex training procedure and proposed \emph{maximum-margin} training, which drops the probabilistic interpretation but only requires computing the best derivation.
     \Citet{Finkel08} proposed an interpretation of the scoring function as a \emph{conditional random field}, which defines factors for each rule in a context-free grammar derivation conditioned on the input sentence.
     Until now, all approaches complemented some grammar instances and scored their derivations.
     \Citet{Turian06} introduced an algorithm that does not require any underlying grammar.
     Starting with the sequence of \abrv{pos} symbols, it incrementally constructs a constituent tree from a sequence of hypothesis trees (in a bottom-up fashion) by choosing a subsequence to be combined with a new root node that maximizes the score for the new tree.
-    \Citet{Stern17} proposed the opposite direction: they presented a top-down parsing algorithm that starts with a root node and incrementally chooses a split index and two child constituent symbols for one within a list of hypothesis nodes.
-    In contrast to the previous approach, their algorithm is \emph{greedy}, i.e., it does not maintain an agenda and cannot backtrack from sub-optimal results.
+    \Citet{Stern17} proposed the opposite direction, a \emph{top-down} parsing algorithm.
+        Their algorithm maintains a sequence of hypothesis nodes, initially it is solely the root node.
+        Incrementally, it chooses a node from the sequence and predicts a split index (constructing two new nodes) and two child constituent symbols.
+    In contrast to the previous approach, their algorithm is \emph{greedy}; it does not maintain an agenda and cannot backtrack from sub-optimal results.
     Like existing approaches, it features maximum-margin training but drops the concept of explicitly defined features in favor of scores computed using artificial neural networks.
-    \Citet{Cor20} and \citet{StaSte20} (independently but simultaneously) proposed bottom-up procedures that can predict discontinuous constituent structures without underlying grammars.
+    \Citet{Cor20} and \citet{StaSte20} proposed bottom-up procedures that can predict discontinuous constituent structures without underlying grammars.
     Yet, these are restricted to a small degree in discontinuity, specifically to fanout 2 like \abrv{tag}.
 
     \subsection{Transition Systems}\label{sec:literature:transition}
-    Transition systems have a tradition in parsing, such \emph{shift-reduce parsers} for deterministic context-free languages such as programming languages \citep[Section~4.6]{aho2020compilers}.
+    Transition systems have a tradition in parsing, for example \emph{shift-reduce parsers} for deterministic context-free languages such as programming languages \citep[Section~4.6]{aho2020compilers}.
     They are built around operations that incrementally construct a tree using two data structures for intermediate results:
     \begin{compactitem}
-        \item a \emph{buffer} that initially contains the input sequence, which will be consumed from left to right using some operations and
-        \item a \emph{stack} that is initially empty and contains a sequence of trees constructed using some operations.
+        \item a \emph{buffer} that initially contains the input sequence, which are consumed from left to right during the parsing process and
+        \item a \emph{stack} that is initially empty and contains a sequence of trees constructed during the parsing process.
     \end{compactitem}
-    In the case of shift-reduce parsers, there are two operations
+    In the case of shift-reduce parsers, there are two operations:
     \begin{compactitem}
-        \item the \emph{shift} operation that removes the leftmost symbol on the buffer and pushes it to the rightmost position on the stack and
-        \item the \emph{reduce} operation that is parametrized with an alphabet symbol \(\sigma\) and a natural number \(k \ge 1\) and combines the rightmost \(k\) nodes on the stack to a new tree with root \(\sigma\).
+        \item the \emph{shift} operation removes the leftmost symbol on the buffer and pushes it to the rightmost position on the stack, and
+        \item the \emph{reduce} operation is parametrized with an alphabet symbol \(\sigma\) and a natural number \(k \ge 1\); it combines the rightmost \(k\) nodes on the stack to a new tree with root \(\sigma\).
     \end{compactitem}
-    To counter the inherent ambiguity in natural language, the transition systems used for constituent parsing are usually complemented using classifiers that predict the next operation conditioned on the current contents of both buffer and stack and previous operations.
+    To counter the inherent ambiguity in natural language, the transition systems used for constituent parsing are usually complemented using classifiers that predict the next operation conditioned on the current contents of both buffer and stack as well as previous operations.
     These conditions are usually implemented using features or artificial neural network embeddings extracted from those objects.
     \Citet{liu-zhang-2017-order} investigated variations of the operations that change the usual post-order semantics (the reduce operation introduces a node \emph{after} shifting or constructing its children) of the transition system to pre- or in-order.
     \Citet{kitaev-klein-2020-tetra} criticized the necessity for autoregressive classifiers in shift-reduce transition systems due to the uneven distribution of the two operations throughout each parsing sequence.
@@ -169,33 +177,33 @@
 
     \subsubsection*{Transition Operations for Discontinuous Constituents}
     Some approaches extend the usual shift-reduce parsing for discontinuous constituent parsing.
-    \Citet{Verseley14b} repurposed the \emph{swap} operation, which was introduced by \citet{Nivre09} for nonprojective dependency parsing in a transition system for constituent parsing.
+    \Citet{Verseley14b} repurposed the \emph{swap} operation, which was introduced by \citet{Nivre09} for non-projective dependency parsing in a transition system for constituent parsing.
     The operation transports the second rightmost element on the stack back to the buffer.
-    This creates a gap between the two last elements on the stack, which can then be reduced to form a discontinuous constituent.
+    This creates a gap between the two last elements on the stack, which can then form a discontinuous constituent with the reduce operation.
     This approach was extended by \citet{Maier15} such that a single swap action may bundle the transport of multiple stack elements, forming larger gaps.
-    \Citet{Maier16} also introduced an alternative transition system that utilizes a \emph{skip-shift} instead of the swap operation.
+    \Citet{Maier16} introduced an alternative transition system that utilizes a \emph{skip-shift} instead of the swap operation.
     The operation is parametrized with a natural number \(i \ge 1\). It shifts the \(i\)-th buffer element to the stack, directly forming a gap between the two last stack elements without the need to swap anything back.
-    \Citet{Coavoux17} formulate an alternative operation, called \emph{gap}, that moves a pointer on the stack to the left starting from the second rightmost element.
+    \Citet{Coavoux17} formulated an alternative operation, called \emph{gap}, that moves a pointer on the stack to the left starting from the second rightmost element.
     The pointer indicates the element to be combined with the rightmost stack element during the next reduce operation, forming a discontinuous constituent if a gap operation was applied before.
     After each shift or reduce operation the pointer is reset to the second rightmost element.
     \Citet{CoaCoh19} introduced a transition system that manages without a distinguished operation for discontinuities.
-    They parametrize their reduce operation with an additional index on the stack to indicate the element to be combined with the rightmost one during its application; this index is part of the prediction for the upcoming operation.
+    Their reduce operation is parametrized with an additional index on the stack to indicate the element to be combined with the rightmost one during its application; this index is part of the prediction for the upcoming operation.
 
     \subsubsection*{Dynamic Oracles and Training}
-    Before the classifier training for transition systems, each constituent tree in a treebank is translated into the operations to construct it.
+    Before a classifier for transition system is trained, each constituent tree in a treebank is translated into a sequence of operations to construct it.
     As mentioned earlier, the prediction of the following operation is usually conditioned on the current state of the transition system and the previous operations.
     As such, the operations must be predicted one after another while the operations are applied to use the current state to predict the next operation; such a prediction that depends on previous predictions is called \emph{autoregressive}.
     Generally, there are two opposite concepts dealing with prediction errors during the training of autoregressive machine learning models:
     \begin{compactitem}
-        \item \emph{teacher forcing} ignores the error and uses the gold operation sequence as input for the next prediction, and
-        \item \emph{online learning} considers the erroneous prediction as input for the next steps.
+        \item \emph{teacher forcing} ignores errors and uses the gold operation sequence as input for the next prediction, and
+        \item \emph{online learning} considers erroneous predictions as input for the next steps.
     \end{compactitem}
     The latter of the two can generalize unseen data better, as it exposes the classifier to examples that are not included in the training data.
     In transition systems, two specific training approaches are somewhat analogous to these two, referred to under the umbrella term \emph{oracles}.
     First, the \emph{static oracle} that supplies the classifier exclusively with the gold operation sequence during training.
-    Using this, the classifier will only see the features as they are extracted from the treebank during the training procedure.
-    \Citet{Goldberg12} proposed a \emph{dynamic oracle} that considers the errors in earlier predictions and recommends an optimal operation that is applicable to reach the best possible constituent tree from the current state.
-    Similarly to online learning, this leads to more configurations in the training procedure, specifically those not included in the original training data.
+    As such, the classifier is only trained with features obtained from the gold operation sequences.
+    \Citet{Goldberg12} proposed a \emph{dynamic oracle} that considers the errors in earlier predictions and recommends an operation to reach the best possible constituent tree from the current state.
+    Similarly to online learning, this can lead to more configurations in the training procedure, specifically those not included in the original training data.
     \Citet{Coavoux16} and \citet{Cross16} generalized the concept of training with dynamic oracles to continuous constituent parsing.
     \Citet{CoaCoh19} included a dynamic oracle with their transition system for discontinuous constituents.
 
@@ -204,109 +212,136 @@
     Nevertheless, we recognize some familiar trends among the parsers that allow us to compare them in the following.
 
     \subsubsection*{Continuous Parsing with Reordering}
-    One way to illustrate discontinuous constituent trees is to extend a continuous tree in tandem with an alignment or reordering of its leaves (e.g.\@, as we did in the definition of constituent trees in \cref{sec:preliminaries:ctrees}).
-    \Citet{FerGon21a} exploit this to reduce parsing discontinuous constituents in two steps
+    Discontinuous constituent trees cam be illustrated by means of a continuous constituent tree exteded by an alignment (or reordering) of its leaves.
+    \Citet{FerGon21a} exploited this concept and proposed to parse discontinuous constituents in two steps:
     \begin{inparaenum}[]
-        \item they first predict an alignment that re-arranges the sequence of input tokens, and then
-        \item they use two state-of-the-art parsers for continuous constituents to parse with the re-arranged sequence of tokens.
+        \item first, a classifier predicts an alignment that orders the sequence of input tokens; 
+        \item after that, a continuous constituent parser determines a constituent structure for the re-ordered sequence of tokens.
     \end{inparaenum}
-    Despite that, there are some errors in the prediction of the alignment (the precision and recall of the relocated tokens are around $0.8$ in \dptb{}, \negra{} and \tiger{}), they report competitive parsing scores with their final results.
-    \Citet{Sun22} extend this approach by introducing a re-arrangement algorithm that does not rely on predicting specific sentence positions.
-    They report more accurate alignment predictions and also more accurate overall results.
+    They reported erroneous alignment predictions; precision and recall of the re-located tokens in the prediction with respect to the gold alignment were around $0.8$ in \dptb{}, \negra{} and \tiger{}.
+    Nevertheless, they achieved competitive results regarding the parsing scores.
+    \Citet{Sun22} extended this approach by introducing a re-arrangement algorithm that does not rely on predicting specific sentence positions.
+    They achieved more accurate alignment predictions and also more accurate overall results.
 
     \subsubsection*{Transforming Dependency Parses into Constituent Trees}
-    \Citet{Hall08} were the first to recognize structural relations between nonprojective dependency trees and discontinuous constituent trees and proposed a parsing procedure that leverages a dependency parser by transforming the resulting dependency into a constituent tree.
-    Specifically, they formulate two transformations:
-    \begin{inparaenum}[]
-        \item one from (discontinuous) constituent trees into (nonprojective) dependency trees to convert a constituent treebank into a dependency treebank, and
-        \item those as mentioned earlier from (nonprojective) dependency trees into (discontinuous) constituent trees.
+    \Citet{Hall08} recognized structural relations between non-projective dependency trees and discontinuous constituent trees.
+    They proposed a parsing procedure that leverages a dependency parser by transforming its result into a constituent tree.
+    Specifically, they formulated two transformations:
+    \begin{inparaenum}
+        \item from (discontinuous) constituent trees into (non-projective) dependency trees to convert a constituent treebank into a dependency treebank, and
+        \item from (non-projective) dependency trees into (discontinuous) constituent trees to convert a dependency parse into a constituent parse.
     \end{inparaenum}
-    They conjecture that both transformations are lossless.
-    \Citet{Ferandez15} extended the approach by introducing lossy transformations from constituent trees into dependency trees, such that the dependency trees could be predicted more accurately.
-    They reported more accurate overall results using their new transformations.
+    They concluded that both transformations are lossless.
+    \Citet{Ferandez15} extended the approach with lossy transformations from constituent trees into dependency trees; they showed that these can be predicted more accurately.
+    They reported more accurate parasing results using their new transformations.
 
     \subsubsection*{Parsing as Sequence-to-Sequence Prediction}
     % also llm, where in-context learning is a special case
-    Sequence-to-sequence prediction is a very general category of machine learning task that involves predicting an output sequence for an input sequence of any possible length; intuitively, we can think of it as a translation.
-    \Citet{vinyals2015grammar} exploited a translation model to predict linearized constituent trees (i.e.\@ strings with nested levels parentheses) for input sentences.
+    Sequence-to-sequence prediction is a very general category of machine learning tasks.
+    It involves predicting an output sequence for an input sequence of any possible length; intuitively, we can think of it as a translation.
+    \Citet{vinyals2015grammar} exploited a translation model to predict linearized constituent trees (strings with nested parentheses) for input sentences.
     To their surprise, they achieved state-of-the-art results.
     \Citet{FerGon21b} extended the approach to the discontinuous case.
-    They investigated multiple techniques for the linearization of constituent trees, among them also shift-reduce action sequences analogously to parsers based on transition systems as suggested by \citet{Ma2017DeterministicAF} and \citet{liu-zhang-2017-encoder}.
-    A recent investigation by \citet{bai2023constituency} exploits pretrained large language models (short: \abrv{llm}s), such as \abrv{gpt4} \citep{openai2023gpt4}.
+    They investigated multiple techniques for the linearization of constituent trees, among them also shift-reduce action sequences analogously to parsers based on transition systems (cf.\@ \citealp{Ma2017DeterministicAF}; \citealp{liu-zhang-2017-encoder}).
+    A recent investigation by \citet{bai2023constituency} exploited pretrained large language models (short: \abrv{llm}s), such as \abrv{gpt4} \citep{openai2023gpt4}.
     These models were prompted to parse an input sentence, either without context or supplied with a few constituent trees as examples.
-    They conclude that \abrv{llm}s enhance the parsing quality for sequence-to-sequence models in case they are fine-tuned.
+    They concluded that \abrv{llm}s enhance the parsing quality for sequence-to-sequence models in case they are fine-tuned.
 
     \section{Parsing Beyond Consituency Relations}\label{sec:literature:beyond}
-    In our work, we exclusively investigated constituent trees as one representative for the syntactic analysis of natural language.
-    Besides that, \emph{dependency relations} are of great interest in the area of syntax analysis.
-    Multiple types of dependency relations were considered in the literature, some related to constituency analysis.
+    In our work, we exclusively investigate constituent trees for the syntactic analysis of natural language.
+    Besides that, \emph{dependency relations} are of significant interest in the area of syntax analysis.
+    Multiple types of dependency relations have been considered in the literature; some of them are related to constituency analysis.
     The following subsection gives an overview of the relations and shares some entry points for different approaches in parsing dependencies.
     After that, we dedicate a subsection to a different area, namely \emph{semantic representations}.
     It gives a small overview of some representations and points to recent work in the area.
-    \Citet[Sections~18 and 19]{Jur23} give great surveys for these two topics in their book.
+    \Citet[Sections~18 and 19]{Jur23} provided great surveys for these two topics in their book.
 
     \subsection{Dependency Parsing}
-    Dependencies form a school of analyses that recognize syntactic structure as relations between tokens.
-    Several different relations are distinguished in the literature \citep[Table~3 shows the list of dependency relations annotated in the Universal Dependencies treebanks]{de2021universal}, and their composition varies between specific treebanks and languages.
-    For instance, in the treebanks distributed with the CoNLL shared task in 2006, there are 82 dependency relations illustrated in the Chinese but only 7 in the Japanese treebank \citep[Table~1]{buchholz2006conll}.
-    The specific relations and annotation styles are also sometimes a subject of debate \citep{Gerdes2016DependencyAC,Rehbein2017UniversalDA,osborne2019status}.
+    Dependency parsing is a school of analyses that recognizes syntactic structure as relations between tokens.
+    Several different relations are distinguished in the literature \citep[Table~3 shows the list of dependency relations annotated in the Universal Dependencies treebanks]{de2021universal}, among of which each specific treebank (and thus language) composes a set of considered relations.
+    For instance, in the treebanks distributed with the CoNLL shared task in 2006, there are 82 dependency relations used in the Chinese treebank but only 7 in the Japanese treebank \citep[Table~1]{buchholz2006conll}.
+    The specific assortment relations and annotation styles have been a subject of debate \citep{Gerdes2016DependencyAC,Rehbein2017UniversalDA,osborne2019status}.
     The \emph{Universal Dependencies} project \citep{de2021universal} was established to build a multilingual set of treebanks with consistent relations and annotation schemes.
 
-    The dependency relations within a sentence can be illustrated as a tree, such that the tokens of the sentence are the inner nodes and leaves, and the relations are denoted as the directed relations between parent and child nodes.
-    The type of relations between parent and child are usually denoted at each arc.
-    Analogously to discontinuity in constituent trees, there is the concept of \emph{nonprojectivity} in dependency trees.
-    Such a tree is called nonprojective if there is a subtree whose nodes are not a coherent region in the sentence.
+    The dependency relations within a sentence can be illustrated as a tree, such that the tokens of the sentence are the inner nodes and leaves, and the relations are denoted as arrows between parent and child nodes.
+    The type of relations between parent and child are usually denoted at each arrow.
+    Analogously to discontinuity in constituent trees, there is the concept of \emph{non-projectivity} in dependency trees.
+    Such a dependency tree is called non-projective if one of its subtree's nodes do not form a consecutive substring in the sentence.
 
     As for constituent parsing, there are several different approaches for parsing dependencies.
-    The following list shall only shortly summarize some techniques that share some aspects with the previously discussed styles of constituency parsing:
+    The following list summarizes techniques that share some aspects with the previously discussed styles of constituency parsing:
     \begin{itemize}
-        \item Several lexicalized grammar formalisms were considered for dependency parsing. Generally, each derivation in such a grammar formalism is interpreted as a dependency tree in the same shape by replacing each grammar rule with its contained terminal symbol. \citet{chiang2000statistical} proposes lexicalized tree-adjoining grammars as a formalism to cover constituency and dependency parsing simultaneously. \citet{hockenmaier2002generative} argue that the quality of combinatory categorial grammar parsers should be compared using scores assessing the dependency structure rather than the parseval measure for constituents. This was adopted into the following publications involved in parsing with both formalisms, combinatory categorial grammars, and tree-adjoining grammars \citep{Kas17,Bla18}. \citet{Clark04} discussed the importance of supertagging in parsing with lexical(ized) grammars, specifically \abrv{ccg}. All recent publications in parsing with \abrv{ccg} or \abrv{tag} also follow this approach \citep{Kas17,LewisSteedman14}.
-        \Citet{kuhlmann2009treebank} proposed \abrv{lcfrs} extracted from (non-projective) dependency treebanks as grammar formalism for dependency parsing.
-        \item \citet{eisner-1996-three} defined a bottom-up parsing algorithm for dependency structures and proposed a stochastic interpretation to weigh the (intermediate) results during parsing. However, their approach does not involve an explicit grammar instance. Recently, \citet{yang-tu-2022-headed} published a bottom-up dependency parser that applies an artificial neural network for scoring. However, both approaches are restricted to projective dependencies.
-        \item Several transition systems have been proposed for dependency parsing. \citet{nivre-2003-efficient} and \citet{yamada-matsumoto-2003-statistical} independently proposed transition systems based on the shift-reduce parsing algorithm for dependency parsing. \citet{attardi-2006-experiments} was the first to introduce a set of operations that extends the previous transition system and allows the prediction of non-projective dependency relations. \citet{Nivre09} proposed the \emph{swap} operation for the nonprojective case, which subsumes multiple operations that were distinguished by \citet{attardi-2006-experiments}. \citet{Goldberg12} introduced dynamic oracles that allow diverging from gold configurations during the training procedure for the projective case. \citet{gomez2014polynomial} presented their generalization of the dynamic oracle to the nonprojective case using the transition system by \citet{attardi-2006-experiments}.
+        \item Several lexicalized grammar formalisms have been considered for dependency parsing.
+            Generally, each derivation in such a grammar formalism is interpreted as a dependency tree in the same shape by replacing each grammar rule with its terminal symbol.
+            \Citet{chiang2000statistical} proposed lexicalized tree-adjoining grammars to cover constituency and dependency parsing simultaneously.
+            \Citet{hockenmaier2002generative} argued that the quality of combinatory categorial grammar parsers should be compared using scores assessing the dependency structure rather than the parseval measure for constituents.
+            This was adopted into the following publications involved in parsing with both formalisms, combinatory categorial grammars and tree-adjoining grammars \citep{Kas17,Bla18}.
+            \Citet{Clark04} suggested supertagging as an essential step in parsing with lexical(ized) grammars, specifically \abrv{ccg}.
+            Recent publications in parsing with \abrv{ccg} and \abrv{tag} have followed their proposal \citep{Kas17,LewisSteedman14}.
+            \Citet{kuhlmann2009treebank} proposed \abrv{lcfrs} extracted from (non-projective) dependency treebanks as grammar formalism for dependency parsing.
+        \item \Citet{eisner-1996-three} defined a bottom-up parsing algorithm for dependency structures and proposed a stochastic interpretation to weigh the (intermediate) results during parsing.
+            Their approach does not involve an explicit grammar instance.
+            Recently, \citet{yang-tu-2022-headed} published a bottom-up dependency parser that applies an artificial neural network for scoring.
+            However, both approaches are restricted to projective dependencies.
+        \item Several transition systems have been proposed for dependency parsing.
+            \Citet{nivre-2003-efficient} and \citet{yamada-matsumoto-2003-statistical} independently published transition systems based on the shift-reduce parsing algorithm for projective dependency parsing.
+            \Citet{attardi-2006-experiments} extended the previous transition system with a set of six operations that allow the prediction of non-projective dependencies.
+            \Citet{Nivre09} proposed the \emph{swap} operation for the non-projective case, which subsumes all six operations that were distinguished by \citeauthor{attardi-2006-experiments}.
+            \Citet{Goldberg12} introduced dynamic oracles that allow diverging from gold configurations during the training procedure for the projective case.
+            \Citet{gomez2014polynomial} presented a generalization of the dynamic oracle to the non-projective case using \citeauthor{attardi-2006-experiments}'s transition system.
     \end{itemize}
-    Some other approaches are not covered in this summary, for example, the reduction of dependency parsing to finding a maximum spanning tree in a graph by \citet{mcdonald-etal-2005-non}.
+    Some other approaches are not covered in this summary, for example, the reduction of dependency parsing to finding a maximum spanning tree in a graph \citep{mcdonald-etal-2005-non}.
     All readers are encouraged to consult \citet{nivre2010dependency} for a broad overview of the field.
 
     \subsection{Parsing Semantic Representations}
       %  supertagging: https://arxiv.org/abs/2310.14124
-    Beyond syntactic analyses, several concurrent formalisms were introduced as general frameworks to capture the meaning of natural language.
-    The following two are frequently used and seem to have been established as standards to some extent:
+    Several concurrent formalisms have been introduced as general frameworks to capture the meaning of natural language.
+    The following two have been established as standards to some extent:
     \begin{itemize}
-        \item \citet{langkilde-knight-1998-generation} introduced \emph{abstract meaning representations} (short: \abrv{amr}) that illustrate concepts within an utterance as nodes and the relation between them as edges in a rooted, directed, and acyclic graph. They denote the graphs as strings that include parentheses for nesting and variables that allow referencing nodes as children of multiple parent nodes. \citet{knight2021abstract} published the \abrv{amr} bank, which is used as a benchmark to evaluate the recognition of semantic understanding in natural language.
-        \item \citet{reddy-etal-2016-transforming} propose logic formulas to represent the meaning of natural language. Their formulas conform to first-order predicate logic and are denoted as lambda-calculus terms. \citet{reddy-etal-2017-universal} introduce a project that transforms the universal dependency treebanks in their semantic formalism, providing a wide-coverage dataset in multiple languages.
+        \item \Citet{langkilde-knight-1998-generation} introduced \emph{abstract meaning representations} (short: \abrv{amr}).
+            An \abrv{amr} is a rooted, directed, and acyclic graph and illustrates concepts within an utterance as nodes and their relation as edges between them.
+            Thes graphs are usually denoted as strings that include parentheses for nesting and variables for co-referencing.
+            \Citet{knight2021abstract} published the \abrv{amr} bank, which is used as a benchmark to evaluate semantic understanding in natural language.
+        \item \Citet{reddy-etal-2016-transforming} proposed logic formulas to represent the meaning of natural language.
+            Their formulas conform to first-order predicate logic and are denoted as lambda-calculus terms.
+            \Citet{reddy-etal-2017-universal} introduced a project that transforms the Universal Dependency treebanks \citep{de2021universal} into their semantic formalism, providing a wide-coverage dataset in multiple languages.
     \end{itemize}
-    Besides these formalisms that act as general-purpose frameworks, some representations are tailored to specific tasks.
-    E.g.\@ the field of \emph{task-oriented semantic parsing} is concerned with recognizing commands in utterances for dialogue systems.
-    Publications involved in this task typically recognize an \emph{intent} and a fixed set of \emph{slots} filled with tokens from the utterance to identify the intention of a request in a dialogue.
-    \Citet{gupta-etal-2018-semantic-parsing} propose hierarchical representation to overcome one intent per utterance limitation.
+    Besides these two formalisms that act as general-purpose frameworks, some representations are tailored to specific tasks.
+    For instance, the field of \emph{task-oriented semantic parsing} is concerned with recognizing commands in utterances for dialogue systems.
+    Publications involved in this task typically recognize an \emph{intent} and a fixed set of \emph{slots} for an utterance; the intent and slots are filled with tokens from the utterance to identify a command expressed in a dialogue \citep{mesnil2013investigation}.
+    \Citet{gupta-etal-2018-semantic-parsing} proposed hierarchical representations to overcome the limitation of one intent per utterance.
 
     The approaches to semantic parsing are just as diverse as the proposed formalisms to represent meaning.
-    In the following, we  want to share a small glimpse into parsing approaches that relate to some extent to the previously discussed procedures for syntax analysis; c.f.\@ \citet{kamath2018survey} for a broad overview.
-    Representation formalisms that are based on graph structures, such as \abrv{amr}, may be approached using graph grammar or automata formalisms, for example, \emph{directed acyclic graph automata} (short: \abrv{dag} automata; \citealp{fancellu-etal-2019-semantic}) or \emph{hyperedge replacement grammars} \citep{drewes1997hyperedge}.
-    Grammar and transition-based parsing concepts well known in syntax analysis are also represented in parsing for semantic representations, albeit less prevalent; for instance, \citet{peng2015synchronous} propose a probabilistic synchronous grammar that recognizes a string with context-free grammar rules while generating an \abrv{amr}.
-    \Citet{peng2018amr} and \citet{vilares-gomez-rodriguez-2018-transition} define transition systems that are able to produce \abrv{amr}.
-    Sequence-to-sequence models are more common in the literature; they are used to generate a linearized semantic representation, e.g.\@, a logic formula \citep{dong-lapata-2016-language} or \abrv{amr} (\citep{zhang-etal-2019-amr}), from an input sentence using artificial neural networks.
-    \Citet{fancellu-etal-2019-semantic} propose to enhance the decoder of a sequence-to-sequence model using a \abrv{dag} automaton.
+    In the following, we share a small glimpse into semantic parsing approaches that relate to some extent to the previously discussed procedures for syntax analysis; consult \citet{kamath2018survey} for a broad overview over several more approaches.
+    Representation formalisms based on graph structures, such as \abrv{amr}, can be approached using graph grammar or automata formalisms, for example, \emph{directed acyclic graph automata} (short: \abrv{dag} automata; \citealp{fancellu-etal-2019-semantic}) or \emph{hyperedge replacement grammars} \citep{drewes1997hyperedge}.
+    Grammar and transition-based parsing concepts well known in syntax analysis are also represented in parsing for semantic representations, albeit less prevalent.
+    For instance, \citet{peng2015synchronous} proposed a probabilistic synchronous grammar that recognizes a string with context-free grammar rules while generating a graph conforming to the \abrv{amr} formalism.
+    \Citet{peng2018amr} and \citet{vilares-gomez-rodriguez-2018-transition} defined transition systems that are able to produce \abrv{amr}.
+    Sequence-to-sequence models are more common in the literature than these formalisms.
+    These models are used to generate a linearized semantic representation, for instance, a logic formula \citep{dong-lapata-2016-language} or \abrv{amr} (\citep{zhang-etal-2019-amr}), from an input sentence using artificial neural networks.
+    However, there also have been approaches that combine both concepts: \Citet{fancellu-etal-2019-semantic} proposed to enhance the decoder of a sequence-to-sequence model using a \abrv{dag} automaton.
 
     \section{Parsing with Supertagging}\label{sec:literature:supertagging}
-    \Citet{bangalore1999supertagging} propose the approach of \emph{supertagging} as a preliminary step in parsing with lexicalized tree-adjoining grammars.
+    \Citet{bangalore1999supertagging} proposed the approach of \emph{supertagging} in parsing with lexicalized tree-adjoining grammars.
     It consists of a preliminary step for parsing where a classifier predicts elementary trees for each lexical item in the input sentence using features extracted from the sentence.
-    This process somewhat resembles the prediction of \abrv{pos} tags. Still, the predicted elementary trees contain a significant share of grammatical information, including long-distance dependencies, so they call them \emph{supertags}.
-    They used the \abrv{xtag} grammar \citep{xtag01}, i.e.\@ a \emph{hand-crafted tree-adjoining grammar} for the English language, in their experiments.
-    They suggest this process to reduce the search space of the usual parser that then ``only'' needs to combine the supertags to form a derivation and propose to use it for other lexical(ized) grammar formalisms such as \abrv{ccg} and \abrv{hpsg}.
+    This process somewhat resembles the prediction of \abrv{pos} tags.
+    However, the predicted elementary trees contain a significant share of grammatical information, including long-distance dependencies; thus they are called \emph{supertags}.
+    This process intends to reduce the search space of the usual parser that then ``only'' needs to combine the supertags to form a derivation.
+    \Citeauthor{bangalore1999supertagging} proposed to use it for other lexical(ized) grammar formalisms such as \abrv{ccg} and \abrv{hpsg}.
+    In their experiments, they used the \abrv{xtag} grammar \citep{xtag01}; it is a hand-crafted tree-adjoining grammar for the English language.
     The remainder of the section gives an overview of the developments in supertagging after its inception.
 
     Shortly after, \citet{clark2002supertagging} reported experiments for supertagging with a combinatory categorial grammar.
-    They predicted lexical categories found in \emph{\abrv{ccg}-bank} \citep{Hoc07}, i.e.\@ a hand-crafted grammar.
+    They predicted lexical categories found in \emph{\abrv{ccg}-bank} \citep{Hoc07}; as such, they also used a hand-crafted grammar.
     \Citet{Clark04} recognized supertagging as an essential step in parsing with \abrv{ccg} due to the formalism's complex categories assigned to each lexical item in the input.
-    Instead of the hidden Markov model that \citet{bangalore1999supertagging} used to predict supertags, they define a maximum-entropy model similarly utilizing a set of features as e.g.\@ contemporary reranking mechanisms used in constituent parsing (see \cref{sec:reranking}).
-    \Citet{Auli12} described a general framework for parsers that involve supertagging.
-    Specifically, \citeauthor{Auli12} proposes an iterative algorithm that incrementally expands the set of used supertags during parsing until the process succeeds.
-    \Citet{kaeshammer2012german} and \citet{Kaeshammer2012GermanAE} presented semi-automatic conversions of German and English constituent treebanks into \abrv{ltag} derivations; \citet{Bla18} contribute a conversion for the \emph{French Treebank} \citep{abeille2003building} using similar methology.
+    Instead of the hidden Markov model that \citeauthor{bangalore1999supertagging} used to predict supertags, they defined a maximum-entropy model.
+    This model utilized features defined similarly to those in contemporary reranking mechanisms for constituent parsing (cf.\@ \cref{sec:reranking}).
+    \Citet{Auli12} formalized a general framework for parsers that involve supertagging.
+    Specifically, \citeauthor{Auli12} proposed an iterative algorithm that incrementally expands the set of used supertags during parsing until the process succeeds.
+    \Citet{kaeshammer2012german} and \citet{Kaeshammer2012GermanAE} presented semi-automatic conversions of German and English constituent treebanks into \abrv{ltag} derivations; \citet{Bla18} contributed a conversion for the \emph{French Treebank} \citep{abeille2003building} using similar methology.
     These conversions involve treatments for specific language phenomena that the authors identify in the treebanks.
-    With the general availability of deep learning models, the prediction of supertags could pass on hand-crafted features and utilize context-sensitive embeddings computed by recurrent neural networks, most prominently bidirectional \abrv{lstm}s.
-    \Citet{vaswani2016supertagging} proposed an architecture that combines such embeddings with an autoregressive language model for supertags to enhance the prediction; they show experimental results using \abrv{ccg}-bank.
+    With the general availability of deep learning models, the prediction of supertags does not rely hand-crafted features and utilizes context-sensitive embeddings computed by recurrent neural networks, such as bidirectional \abrv{lstm}s or transformer architectures.
+    \Citet{vaswani2016supertagging} proposed an architecture that combines \abrv{lstm} embeddings with an autoregressive language model for supertags to enhance the prediction; they showed experimental results using \abrv{ccg}-bank.
     \Citet{Kas17} and \citet{Bla18} used similar embeddings without this language model in their experiments with \abrv{ltag} supertags in English, French, and German treebanks.
     All referenced publications in this section report solely on supertag prediction or dependency parsing scores.
 
