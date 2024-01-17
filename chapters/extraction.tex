@@ -14,12 +14,12 @@
         \item Each \abrv{hg} supertag blueprint is a lexical hybrid grammar rule containing the terminal \wildcard{}.
     \end{compactenum}
     For each of the three underlying grammar formalisms \(F\), an \deflab{supertag}[\(F\) supertag] is of the same form as an \(F\) supertag blueprint except the terminal \wildcard{} in the grammar rule is replaced by a positive integer.
-    We call supertag that is obtained by replacing \wildcard{} in a supertag blueprint \(r\) with the integer \(i\) an \deflab{instance}[instance of \(r\)] and denote it by \(r[i]\).
+    We call the supertag that is obtained by replacing \wildcard{} in a supertag blueprint \(r\) with the integer \(i\) an \deflab{instance}[instance of \(r\)] and denote it by \(r[i]\).
 
     This chapter describes two approaches for the extraction of supertag blueprints from a constituent treebank:
     \begin{compactenum}
         \item
-            The process described in \cref{sec:extraction:lcfrs} first extracts a derivation \abrv{lcfrs} rules for each tree in a treebank.
+            The process described in \cref{sec:extraction:lcfrs} first extracts a derivation of \abrv{lcfrs} rules for each constituent tree in a treebank.
             After that, the rules within each derivation are lexicalized by transporting the terminal symbols occurring in the leaves into inner nodes.
             This transportation is reversible with the help of annotations that are added to the rules and nonterminals within the rules.
             This approach was the fruit of a collaboration with Richard Mörbitz \citep{MoeRup20,RupMoe21}.

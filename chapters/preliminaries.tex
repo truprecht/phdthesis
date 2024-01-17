@@ -14,11 +14,6 @@
     The sets of integers, naturals (including zero), positives, and rationals are denoted by $\DZ$, $\DN$, $\DN_+$, and $\DR$, respectively.
     The \deflab{range} of integers between the pair \(n, m \in \DZ\) with \(n \leq m\) is denoted by \([n,m] = \{i \in \DZ \mid n \leq i \leq m\}\).
     For any positive integer \(n\), the notion \([n]\) abbreviates \([1,n]\), and \([0]\) is the empty set \(\emptyset\).
-    % A \emph{\(\DN_+\) prefix} is a set \(I \subseteq \DN_+\) such that
-    % \begin{inparaitem}[]
-    %     \item \(1 \in I\), and
-    %     \item for each \(i > 1\), if \(i \in I\) then \(i-1 \in I\) as well.
-    % \end{inparaitem}
 
     \paragraph{Relations.}
     Let \(A\) and \(B\) be some sets.
@@ -84,7 +79,7 @@
     \(A^+\) denotes the set of all non-empty sequences \(\bigcup_{k \in \DN_+} A^k\).
     The length of a sequence \(w \in A^*\) is denoted by \(|w|\).
     For any pair of sequences \(u,v \in A^*\), the \deflab<sequence>{concatenation} \(u \cdot v\) is the sequence \(w\in A^{|u|+|v|}\) such that \(w_i=u_i\) for each \(i \in [|u|]\) and \(w_{|u|+j} = v_j\) for each \(j \in [|v|]\).
-    The concatenation is abbreviated by dropping the dot, and it takes advantage of its associativity to drop parenthesis in terms, so that e.g. \(w_1 w_2 w_3 w_4\) denotes \(((w_1 \cdot w_2) \cdot w_3) \cdot w_4\)
+    The concatenation is abbreviated by dropping the dot, and it takes advantage of its associativity to drop parenthesis in terms, so that e.g. \(w_1 w_2 w_3 w_4\) denotes \(((w_1 \cdot w_2) \cdot w_3) \cdot w_4\).
     The concatenation of a whole collection of sequences \((w_i \in A^* \mid i \in [k])\) in order of their indices is denoted with an ellipsis \(w_1 \ldots w_k\).
 
     A \deflab<sequence>{subsequence} \(v \in A^*\) in \(w\in A^*\) is a sequence of elements occurring consecutively within \(w\).

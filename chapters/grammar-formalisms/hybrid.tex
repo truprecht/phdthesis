@@ -8,7 +8,7 @@
         As \citet{Ned14} and all following publications, we use a syntactically restricted form of \abrv{dcp} that prevents circular argument passing. They call it \abrv{sdcp}.
         The definition given in \cref{sec:grammar:dcp} is even more restricted and does not allow to produce multiple noncontiguous tree sequences.
     } hybrid grammars for constituent parsing, and refer to them as hybrid grammars (or even shorter as \abrv{hg}).
-    Intuitively, the \abrv{lcfrs} compositions are in charge of processing string during parsing and defining the sets of derivations for given sentences.
+    Intuitively, the \abrv{lcfrs} compositions are in charge of processing input strings during parsing and defining the sets of derivations for given sentences.
     The \abrv{dcp} compositions induce constituent structures for the found derivations.
 
     The structure of hybrid grammars closely resembles a combination of the two previous formalisms.
@@ -53,7 +53,7 @@
         \hfill
         \begin{tikzpicture}[baseline=(v.base), level distance=6ex, font=\small, sibling distance=3.7cm, inner sep=2pt, level 2/.style={sibling distance=6em}, level 1/.style={sibling distance=12em}]
             \node (root) {\(\nt{root} \to (\cn{sbar} (\cn{s} (\cn{vp} (\x_1\, \tn{was})\,\x_2)))\,(\nt{v}_2, \nt{n})\)}
-            child {node (v) {\(\nt{v}_2 \to (\cn{vp}(\x_1 \, \tn{carried} \x_2))\,(\nt{a}, \nt{a})\)}
+            child {node (v) {\(\nt{v}_2 \to (\cn{vp}(\x_1 \, \tn{carried}\, \x_2))\,(\nt{a}, \nt{a})\)}
                 child {node {\( \nt{a} \to (\tn{where})\)}}
                 child {node {\( \nt{a} \to (\tn{out})\)}}}
             child {node {\(\nt{n} \to (\cn{np} (\x_1 \, \tn{survey}))\,(\nt{a})\)}
@@ -74,7 +74,7 @@
             \draw (np) -- (yields-1-5) (np) -- (yields-1-6);
             \draw (vp1) -- (yields-1-4);
             \draw (vp2) -- (yields-1-1) (vp2) -- (yields-1-2) (vp2) -- (yields-1-3);
-            \draw
+            \draw[gray,densely dashed]
                 (yields-1-1.south) -- (yields-2-1.north)
                 (yields-1-2.south) -- (yields-2-5.north)
                 (yields-1-3.south) -- (yields-2-6.north)
@@ -116,20 +116,21 @@
         \end{align*}
 
         \noindent
-        \begin{minipage}[t]{.65\linewidth}
+        \begin{minipage}[b]{.63\linewidth}
             The figure to the right illustrates a derivation \(d\) in \(G\).
             The two projections \(\pi_{\abrv{lcfrs}}(d)\) and \(\pi_{\abrv{dcp}}(d)\) are shown in \cref{fig:hybrid:derivation}.
             The yield of \(d\) combines both projections' yields with aligned leaf and string positions as shown in \cref{fig:hybrid:hybridtree}.
             The illustrated hybrid tree is equivalent to the constituent structure and token sequence shown in \cref{fig:pre:ctree}.
         \end{minipage}
         \hfill
-        \begin{tikzpicture}[baseline=(root.base), level distance=6ex, font=\small, inner sep=2pt, level 2/.style={sibling distance=4em}, level 1/.style={sibling distance=6em}]
+        \begin{tikzpicture}[baseline=(b.base), level distance=6ex, font=\small, inner sep=2pt, level 2/.style={sibling distance=4em}, level 1/.style={sibling distance=6em}]
             \node (root) {\(\nt{root} \to c_6\,(\nt{v}_2, \nt{n})\)}
             child {node {\(\nt{v}_2 \to c_5\,(\nt{a}, \nt{a})\)}
                 child {node {\( \nt{a} \to c_1\)}}
                 child {node {\( \nt{a} \to c_3\)}}}
             child {node {\(\nt{n} \to c_4\,(\nt{a})\)}
-                child {node {\(\nt{a} \to c_2\)}}};
+                child {node (bottom) {\(\nt{a} \to c_2\)}}};
+            \coordinate[below=2ex of bottom] (b);
         \end{tikzpicture}
     \end{example}
 
@@ -140,21 +141,19 @@
 
     \vspace{\baselineskip}
 
-    \noindent
-    \begin{minipage}{.4\linewidth}
-        \begin{example}
-            The figure to the right illustrates a position instance for the derivation \(d\) (cf.\@ \cref{ex:hg:derivation}) in the sequence of tokens ``where the survey was carried out''.
-            It is an admissible derivation, i.e.\@, the yield of the string projection is the sequence of consecutive positions from 1 to 6.
-            The constituent structure is one of our running examples, as seen in \cref{ex:dcp:comp}.
-        \end{example}
-    \end{minipage}
-        \hfill
-    \begin{tikzpicture}[baseline=(n.north),level distance=6ex, font=\small, inner sep=2pt, level 2/.style={sibling distance=6em}, level 1/.style={sibling distance=8em}]
+    \parexample
+    The figure below illustrates a position instance for the derivation \(d\) (cf.\@ \cref{ex:hg:derivation}) in the sequence of tokens ``where the survey was carried out''.
+    It is an admissible derivation, i.e.\@, the yield of the string projection is the sequence of consecutive positions from 1 to 6.
+    The constituent structure is one of our running examples, as seen in \cref{ex:dcp:comp}.
+
+    \null\hfill
+    \begin{tikzpicture}[baseline=(bottom.base),level distance=6ex, font=\small, inner sep=2pt, level 2/.style={sibling distance=6em}, level 1/.style={sibling distance=8em}]
         \node (root) {\(\nt{root} \to (\x_1^1\,\x_2^1\,\tn{4}\,\x_2^2)\;(\cn{sbar} (\cn{s} (\cn{vp} (\x_1\, \tn{4})\,\x_2)))\,(\nt{v}_2, \nt{n})\)}
         child {node (v) {\(\nt{v}_2 \to (\x_1^1, \tn{5}\,\x_2^1)\;(\cn{vp}(\x_1 \, \tn{5} \x_2)) \,(\nt{a}, \nt{a})\)}
             child {node {\( \nt{a} \to (\tn{1})\;(\tn{1})\)}}
             child {node {\( \nt{a} \to (\tn{6})\;(\tn{6})\)}}}
         child {node[yshift=-3ex, xshift=3ex] (n) {\(\nt{n} \to (\x_1^1\, \tn{3})\;(\cn{np} (\x_1 \, \tn{3}))\,(\nt{a})\)}
-            child {node {\(\nt{a} \to (\tn{2})\;(\tn{2})\)}}};
+            child {node (bottom) {\(\nt{a} \to (\tn{2})\;(\tn{2})\)}}};
     \end{tikzpicture}
+    \hfill\exampleqed
 \end{document}

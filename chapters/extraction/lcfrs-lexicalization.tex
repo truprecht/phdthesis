@@ -35,7 +35,7 @@
             During this step, the rules' nonterminals are annotated according to the transportation.
             Moreover, each node with rule \(r\) is replaced by a tuple \((r, s)\) where \(s\) is true if and only if the node was equipped with another lexical symbol before the step.
         \item\label{enum:lcfrs:step4}
-            At most, one rule in the derivation is equipped with two lexical symbols.
+            Now the derivation contains at most one rule equipped with two terminal symbols. Each other rule in the derivation is lexical.
             It is split by replacing one of the symbols with a variable and adding a new nullary rule.
         \item
             In the final step, the rules are collected as a sequence in order of the positions according to the instantiation.
@@ -58,7 +58,7 @@
         \begin{minipage}{.4\linewidth}
             \subcaption{
                 Result of step \ref{enum:lcfrs:step2}: A binary \abrv{lcfrs} derivation for the constituent structure above.
-                Gray dashed arrows indicate the transportation moves terminal symbols in step \ref{enum:lcfrs:step3}.
+                Gray dashed arrows indicate the transportation of terminal symbols in step \ref{enum:lcfrs:step3}.
             }
         \end{minipage}
         \hspace{.5cm}

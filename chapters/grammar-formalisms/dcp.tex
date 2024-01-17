@@ -21,17 +21,17 @@
 
     \begin{definition}[Composition]
         We fix the \(\DN\)-family of finite sets of variables \((\X_k = \{\x_i \mid i \in [k]\} \mid k \in \DN)\), and the singleton set \(\Y = \{\y\}\).
-        The identifier \(\X\) denotes the set of all variables \(\bigcup_{k \in \DN} \X_k = \{\x_i \mid i \in \DN\}\).
+        The identifier \(\X\) denotes the set of all variables \(\X = \{\x_i \mid i \in \DN\}\).
         Let \(\varSigma\) and \(\varGamma\) be alphabets disjoint from \(\X \cup \Y\).
         The \(\DN\)-family \((S_k = \{x(v) \mid x \in \X_k, v \in \T_\varGamma(\varSigma \cup Y)^*\} \mid k \in \DN)\) denotes substitution sites with variables up to subscript \(k\).
         The \(\DN\)-family of \abrv{dcp} \deflab<\dcp>[dcp:comp]{composition}[compositions] over \(\varSigma\) and \(\varGamma\) is \((\C^{\varGamma\varSigma}_k \mid k \in \DN)\) such that \(\C^{\varGamma\varSigma}_k\) contains each nonempty sequence \(c\) in \((\T_\varGamma(\varSigma \cup \Y \cup S_k))^+\) such that each variable in \(\X_k \cup \Y\) occurs exactly once in \(c\).
-        The identifier \(\C^{\varGamma\varSigma}\) debotes the set of all \abrv{dcp} compositions \(\bigcup_{k \in \DN} \C^{\varGamma\varSigma}_{k}\).
+        The identifier \(\C^{\varGamma\varSigma}\) denotes the set of all \abrv{dcp} compositions \(\bigcup_{k \in \DN} \C^{\varGamma\varSigma}_{k}\).
 
         Each composition \(c \in \C^{\varGamma\varSigma}_k\) is associated with a function \[
             \sem{c}\colon \big(\T_\varGamma(\varSigma \cup Y)^*\big)^k \to \T_\varGamma(\varSigma \cup Y)^*
         \] that is defined as follows:
             Let \((\x_i(w_i) \in S_k \mid i \in [k])\) be the family of substitution sites occurring in \(c\) and \((v_i \in \T_\varGamma(\varSigma \cup Y)^* \mid i \in [k])\) a family of arguments.
-            Then \(\sem{c}\) is defined as a second-order substitution of \(\X_k\) in \(c\) such that \(\sem{c}(\xi_1, \ldots, \xi_k) = c[\x_1(w_1)=\xi_1[\y=w_1], \ldots, \x_k(w_k)=\xi_k[\y=w_k]\).
+            Then \(\sem{c}\) is defined as a second-order substitution of \(\X_k\) in \(c\) such that \(\sem{c}(\xi_1, \ldots, \xi_k) = c\big[\x_1(w_1)=\xi_1[\y=w_1], \ldots, \x_k(w_k)=\xi_k[\y=w_k]\big]\).
     \end{definition}
 
     %    The occurrences of variables are abbreviated in the following two ways:
@@ -41,7 +41,7 @@
         %    \end{compactenum}
 
     \begin{example}\label{ex:dcp:comp}
-        Consider the following \abrv{dcp} compositions over the alphabets \(\varSigma = \{ \cn{sbar}, \cn{s}, \cn{vp}, \cn{np} \}\) and \(\varGamma = \{\tn{where}, \tn{the}, \tn{survey}, \tn{was}, \tn{carried}, \tn{out}\}\):
+        Consider the following \abrv{dcp} compositions over the alphabets \(\varGamma = \{ \cn{sbar}, \cn{s}, \cn{vp}, \cn{np} \}\) and \(\varSigma = \{\tn{where}, \tn{the}, \tn{survey}, \tn{was}, \tn{carried}, \tn{out}\}\):
         \begin{align*}
             c_1 &= \tn{where} \, \y,
             &c_2 &= \y \, \tn{out},
@@ -52,7 +52,7 @@
         \end{align*}
         The subscript in the family of \abrv{dcp} compositions \(\C^{\varGamma\varSigma}\) determines the number of arguments for the functions represented by the elements in \(\C\).
         E.g.\@ \(\sem{c_1}\) takes no arguments, and \(\sem{c_6}\) takes two arguments.
-        Evaluating any term of these compositions yields a sequence tree in \(\T_\varSigma(\varGamma \cup \Y)\) with exactly one occurrence of \(\y\), for example:
+        Evaluating any term of these compositions yields a sequence tree in \(\T_\varGamma(\varSigma \cup \Y)\) with exactly one occurrence of \(\y\), for example:
         \begin{align*}
             \sem{c_6} \big( \sem{c_1}(), \sem{c_2}() \big)
             &= \sem{c_6} \big( \: (\tn{where} \, \y), \: (\y \, \tn{out}) \: \big) \\
@@ -78,7 +78,7 @@
     For each derivation \(d\) in a position instantiated \abrv{dcp}, the constituent structure for \(d\) is the yield of \(d\).
 
     \begin{example}[Continues \cref{ex:dcp:comp}]
-        Consider a \abrv{dcp} \((N, \varGamma, [|w|], \nt{s}, R)\) that is a position instantiation for \(w = \text{''where the survey was carried out''}\), with the alphabets \(N = \{\nt{v}^\nt{L}, \nt{v}, \nt{n}, \nt{s} \}\) and \(\varGamma = \{\cn{vp}, \cn{sbar}, \cn{s}, \cn{np}\}\), and
+        Consider a \abrv{dcp} \((N, \varGamma, [|w|], \nt{s}, R)\) that is a position instantiation for \(w = \text{``where the survey was carried out''}\), with the alphabets \(N = \{\nt{v}^\nt{L}, \nt{v}, \nt{n}, \nt{s} \}\) and \(\varGamma = \{\cn{vp}, \cn{sbar}, \cn{s}, \cn{np}\}\), and
         \begin{align*}
             R = \Big\{ \quad
             \nt{v}^\nt{L} &\to (\tn{1} \, \y)\:(),
@@ -121,6 +121,10 @@
         \hfill\null
     \end{example}
 
+    The following definition is used for the extraction of \abrv{dcp} compositions from an indexed tree.
+    It identifies a coherent set of positions in the input tree using a sequence of parallel (bottom) positions and a common ancestor.
+    Each position is complemented with a set of leaves to accomodate missing elements that are represented by second-order substitution sites.
+
     \begin{definition}\label{def:dcp:comp}
         Consider an indexed tree \(\xi \in \itrees_{\varSigma}\) over any alphabet \(\varSigma\) together with
         \begin{itemize}
@@ -128,13 +132,14 @@
                 a collection of \(k \in \DN\) parallel positions \((\rho_i \in \pos(\xi) \mid i \in [k])\) and
                 a common ancestor position \(\rho_0 \in \bigcap_{i \in [k]} \ancestors(\rho_i)\), as well as
             \item
-                a set of leaves \((L_i \subseteq \yield(\xi|_{\rho_i}) \mid i \in [0, k])\) for each position such that
-                there is at most one leaf in each difference \( | \yield(\xi|_{\rho_i}) \setminus L_i | \leq 1 \) and \(\bigcup_{i \in [k]} \subseteq  L_0\).
+                a non-empty set of leaves \((L_i \subseteq \yield(\xi|_{\rho_i}) \mid i \in [0, k])\) for each such position such that
+                \(L_0\) subsumes all other sets: \(\bigcup_{i\in[k]} L_i \subseteq L_0\). Additionally, \(L_i\) must differ at most by one leaf from the set of leaves \(\yield(\xi|_{\rho_i})\) for each \(i \in [0,k]\).
         \end{itemize}
+
         The \abrv{dcp} composition \(c \in \C^\varSigma_k\) for \(\xi\) and \(((\rho_i, L_i) \mid i \in [0,k])\) is defined as follows:
         \begin{itemize}
             \item
-                the occurrences for second-order substitution are either of the form \(\omega_i = \ell_i\) if the set \(\yield(\xi|_{\rho_i}) \setminus L_i = \{\ell_i\}\) is a singleton and \(\omega_i = \varepsilon\) otherwise for each \(i \in [k]\),
+                the occurrences for second-order substitution are either of the form \(\omega_i = \ell_i\) if the set \(\yield(\xi|_{\rho_i}) \setminus L_i = \{\ell_i\}\) is a singleton and otherwise \(\omega_i = \varepsilon\) for each \(i \in [k]\),
             \item
                 \(c'\) is obtained from \(\xi|_{\rho_0}\) be replacing the subtree at position
                 \(\rho_i\) with \(\x_i(\omega_i)\) for each \(i \in [k]\), and
@@ -145,8 +150,13 @@
         We denote \(c\) by \(\mathrm{scomp}(\xi, (\rho_0, L_0), (\rho_1, L_1), \ldots, (\rho_k, L_k))\).
     \end{definition}
 
+    \todo[inline]{Beispiel hinzufügen}
+
     \begin{lemma}
-        Let \(\xi \in \itrees_{\varSigma}\), \(k \in \DN\) and \(((\rho_i, L_i) \in \pos(\xi) \times \power(N) \mid i \in [k])\) be an indexed tree, positions and sets of leaves as specified in \cref{def:dcp:comp}.
-        The composition \(c = \mathrm{scomp}(\xi, (\rho_0, L_0), (\rho_1, L_1), \ldots, (\rho_k, L_k))\) is defined such that \(\xi_0' = \sem{c}(\xi_1', \ldots, \xi_k')\) where each tree \(\xi_i'\) is \(\xi|_{\rho_i}\) but if \(\yield(\xi|_{\rho_i}) \neq L_i\) then the leaf in the difference \(\yield(\xi|_{\rho_i}) \setminus L_i\) is replaced by \(\y\).
+        Let \(\xi \in \itrees_{\varSigma}\), \(k \in \DN\) and \(((\rho_i, L_i) \in \pos(\xi) \times \power(\yield{\xi}) \mid i \in [0,k])\) be an indexed tree, positions and sets of leaves as specified in \cref{def:dcp:comp}.
+
+        Moreover, let \((\xi_i' \in \T_\varSigma(\DN_+ \cup \{\y\}) \mid i \in [0,k])\) be trees such that \(\xi_i'\) is obtained from \(\xi|_{\rho_i}\) by replacing each leaf in \(\yield(\xi|_{\rho_i}) \setminus L_i\) by the variable \(\y\) (there is at most one such occurrence) for each \(i \in [0,k]\).
+        Then \(\sem{\mathrm{scomp}(\xi, (\rho_0, L_0), (\rho_1, L_1), \ldots, (\rho_k, L_k))}(\xi_1', \ldots, \xi_k') = \xi_0'\).
+        % The composition \(c = \mathrm{scomp}(\xi, (\rho_0, L_0), (\rho_1, L_1), \ldots, (\rho_k, L_k))\) is defined such that \(\xi_0' = \sem{c}(\xi_1', \ldots, \xi_k')\) where each tree \(\xi_i'\) is \(\xi|_{\rho_i}\) but if \(\yield(\xi|_{\rho_i}) \neq L_i\) then the leaf in the difference \(\yield(\xi|_{\rho_i}) \setminus L_i\) is replaced by \(\y\).
     \end{lemma}
 \end{document}

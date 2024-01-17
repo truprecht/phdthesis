@@ -18,7 +18,7 @@
             \item for each pair \(i, j \in \DN_+\), if the variable \(\x_i^{j+1}\) occurs in the composition, then \(\x_i^j\) occurs to the left of it in \(u_1 \ldots u_s\),
             \item there is no pair \(i, j \in \DN_+\) such that \(\x^j_i\x^{j+1}_i\) is a subsequence in any of \(u_1, \ldots, u_s\).
         \end{compactenum}
-        For each \(k\in \DN\) and \(s, s_1, \ldots, s_k \in \DN_+\), the identifier \(\C^\varSigma_{(s_1\cdots s_k, s)}\) denotes the set of all \abrv{lcfrs} compositions over \(\varSigma\) of length \(s\) where each variable in \(\X_{s_1 \cdots s_k}\) but not other variable in \(\X \setminus \X_{s_1\cdots s_k}\) occurs.
+        For each \(k\in \DN\) and \(s, s_1, \ldots, s_k \in \DN_+\), the identifier \(\C^\varSigma_{(s_1\cdots s_k, s)}\) denotes the set of all \abrv{lcfrs} compositions over \(\varSigma\) of length \(s\) that contain variable in \(\X_{s_1 \cdots s_k}\) exactly once but no other variable in \(\X \setminus \X_{s_1\cdots s_k}\).
         \(\C^\varSigma\) denotes the set of all \abrv{lcfrs} compositions over \(\varSigma\) of any length.
 
         Consider such a composition \((u_1, \ldots, u_s) \in \C^\varSigma_{(s_1\cdots s_k s)}\) for some integers \(k \in \DN\) and \(s, s_1, \ldots, s_k \in \DN_+\).
@@ -40,8 +40,8 @@
         \end{align*}
 
         The subscript in the family of compositions \(\C^\Sigma\) determines the arity of the associated functions.
-        For instance, \(\sem{c_1} \in \C^\Sigma_{(\varepsilon, 1)}\) takes no arguments (it is constant) and yields a single string,
-        \(\sem{c_8} \in \C^\Sigma_{(2\,1, 2)}\) takes two arguments: a sequence of strings of length 2 and a singleton sequence of strings, and gives a sequence of length 2 as a result.
+        For instance, the function \(\sem{c_1}\) associated with \(c_1 \in \C^\Sigma_{(\varepsilon, 1)}\) takes no arguments (it is constant) and yields a single string,
+        the function for \(c_8 \in \C^\Sigma_{(2\,1, 2)}\) takes two arguments: a sequence of strings of length 2 and a singleton sequence of strings, and gives a sequence of length 2 as a result.
         The following equation shows an application of the function \(\sem{c_8}\) to two sequences of strings: 
         \begin{multline*}
             \sem{c_8}\Big( \; \big( \tn{A hearing}, \: \tn{on the issue} \big), \, \big( \tn{today} \big) \; \Big)
@@ -114,13 +114,13 @@
             \item Each inner node is a rule with the same amount of \abrv{rhs} nonterminals as children in the tree such that the \(i\)-th \abrv{rhs} nonterminal is the \(i\)th child's \abrv{lhs} nonterminal.
         \end{compactitem}
         The set of all \abrv{lcfrs} derivations is denoted by \(\derivs^R\).
-        We identify this set with the \(N\)-indexed partition of \(\derivs^R\) that assigns each nonterminal \(A\) to the derivations whose root is equipped with \abrv{lhs} \(A\).
+        We also consider the \(N\)-indexed partition \((\derivs^R_A \mid A \in N)\) such that \(\derivs^R_A\) contains exactly the set of derivations in \(\derivs^R\) whose root is equipped with the \abrv{lhs} nonterminal \(A\).
     \end{definition}
 
     \begin{definition}[Yield]
-        Consider a derivation \(d\) in \(\derivs^R_A\) of the form \(d = r\,(d_1, \ldots, d_k)\) where the root \(r\) is of the form \(A \to c\,(B_1, \ldots, B_k)\).
+        Consider a derivation \(d\) in \(\derivs^R\) of the form \(d = r\,(d_1, \ldots, d_k)\) where the root \(r\) is of the form \(A \to c\,(B_1, \ldots, B_k)\).
         The \deflab<\lcfrs!derivation>[lcfrs:yd]{yield} of \(d\) is defined recursively: \(\yield(d) = \sem{c}(\yield(d_1), \ldots, \yield(d_k))\).
-        For each set of derivations \(D \subseteq \derivs_G\), we denote the set of all derivations for a given string \(w \in \varSigma^*\) by \(D(w) = \{d\in D \mid \yield(d) = w\}\).
+        For each set of derivations \(D \subseteq \derivs^R\), we denote the set of all derivations for a given string \(w \in \varSigma^*\) by \(D(w) = \{d\in D \mid \yield(d) = w\}\).
     \end{definition}
 
 %    \vspace{.2cm}
@@ -231,7 +231,7 @@
         Let \(\pi \subset \DN_+\) be a finite and non-empty set.
         The \deflab{linearization} of \(\pi\) is the sequence of greatest contiguous sequences within \(\pi\), i.e.\@ the sequence \((w_j \in \pi^+ \mid j \in [s])\) such that
         \begin{compactitem}
-            \item \(s = |\{i \in \pi \mid i+1 \notin \pi\}|\) is the number of greatest contiguous sets in \(\pi\),
+            \item \(s = |\{i \in \pi \mid i+1 \notin \pi\}|\) is the number of greatest contiguous sets in \(\pi\),\todo{laut Luisa noch nicht ganz eindeutig formuliert}
             \item \(w_j\) is a sequence of increasing integers for each \(j \in [s]\),
             \item for each \(j \in [s-1]\), the last (and therefore greatest) element in \(w_j\) is less than the first (and therefore least) element in \(w_{j+1}\).
         \end{compactitem}
@@ -244,7 +244,7 @@
 
     \begin{definition}[Composition for Positions]
         Let \(k \in \DN\) be some natural, \((\pi_i \subset \DN_+ \mid i \in [k])\) a collection of mutually exclusive, finite and non-empty sets, and \(\pi_0 \supseteq \bigcup_{i \in [k]} \pi_i\) a finite and non-empty superset of their elements.
-        The families \((s_i \mid i \in [0,k])\) and \((w_i^j \mid i \in [0,k])\) are the fanouts and linearizations of the sets \(\pi_0, \ldots, p_k\), respectively, such that \((w_i^j \mid j \in [s_i])\) identifies the linearization for \(\pi_i\).
+        The families \((s_i \mid i \in [0,k])\) and \((w_i^j \mid i \in [0,k])\) are the fanouts and linearizations of the sets \(\pi_0, \ldots, \pi_k\), respectively, such that \((w_i^j \mid j \in [s_i])\) identifies the linearization for \(\pi_i\).
         We define the \emph{composition for \(\pi_0, \ldots, \pi_k\)}, denoted by \(\mathrm{comp}(\pi_0, \pi_1, \ldots, \pi_k)\), as the composition \((u_1, \ldots, u_{s_0}) \in \C^{\pi_0}_{(s_1\cdots s_k, s_0)}\) where each \(u_\ell\) is obtained from \(w_0^\ell\) by replacing each occurrence of a sequence \(w_i^j\) with the variable \(\x_i^j\).
     \end{definition}
 
@@ -258,16 +258,16 @@
     \end{example}
 
     When \abrv{lcfrs} are used for parsing, they are often extended by weight structures.
-    The following definition does not employ a general framework, e.g.\@, semirings, but assumes real values assigned to each rule and added within a derivation.
+    The following definition does not employ a general framework such as semirings, but assumes positive real values assigned to each rule and the sum operation to combine weight values within derivations.
     We interpret these values as scores or confidence values and understand higher values as better.
     This interpretation is equivalent to the usual probabilistic interpretation \citep[cf.][Viterbi semiring]{Goodman} with negative logarithmic values.
 
     \begin{definition}[Weighted \abrv{lcfrs}]
         Let \(G = (N, \varSigma, S, R)\) be an \abrv{lcfrs} and \(\weight \colon R \to \DR_{\ge 0}\) an assignment of a non-negative value to each rule in \(G\).
         We call \(\weight\) a \deflab{weight assignment} for \(G\) and the tuple \((G, \weight)\) a \deflab{weighted \abrv{lcfrs}}.
-        The weight of a derivation \(d \in \derivs_G\) is the sum over all positions' weights: \[ \weight(d) = \sum_{\rho \in \pos(d)} \weight(d(\rho))\text{.} \]
-        The set of \emph{best parses for \(w \in \varSigma^*\)} is \(\derivs^{\mathrm{max}}_G(w) = \{ d \in \derivs_G(w) \mid \forall d' \in \derivs_G(w)\colon \weight(d) \geq \weight(d') \}\).
+        The weight of a derivation \(d \in \derivs^R\) is the sum over all positions' weights: \[ \weight(d) = \sum_{\rho \in \pos(d)} \weight(d(\rho))\text{.} \]
+        The set of \emph{best parses for \(w \in \varSigma^*\)} is \(\derivs^R_{\mathrm{max}}(w) = \{ d \in \derivs^R(w) \mid \forall d' \in \derivs^R(w)\colon \weight(d) \geq \weight(d') \}\).
         For each \(n\in \DN_+\), we extend this concept to the sequences of \emph{\(n\)-best parses for \(w\)}.
-        Let \(\ell = \min(n, |\derivs_G(w)|)\), the set \(\derivs^{n,\max}_G(w)\) contains the sequence \(d_1 \ldots d_\ell \in \derivs_G(w)^\ell\) if and only if \(\weight(d_1) \geq \ldots \geq \weight(d_\ell)\) and there is no \(d' \in \derivs_G(w)\) with \(d_\ell < d'\).
+        Let \(\ell = \min(n, |\derivs^R(w)|)\), the set \(\derivs^R_{n,\max}(w)\) contains the sequence \(d_1 \ldots d_\ell \in \derivs^R(w)^\ell\) if and only if \(\weight(d_1) \geq \ldots \geq \weight(d_\ell)\) and there is no \(d' \in \derivs^R(w)\) with \(d_\ell < d'\).
     \end{definition}
 \end{document}
