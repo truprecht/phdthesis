@@ -2,27 +2,44 @@
 
 \begin{document}
     \section{Statistical Parsing with Predicted Supertags}\label{sec:parsing}
-    In this section, we will describe two approaches to combine predicted supertags into derivations, one for \abrv{lcfrs} and \abrv{hg} supertags and one for \abrv{dcp} supertags.
-    For the remainder of the section, consider we have a set \(B\) of supertag blueprints, an input sentence of length \(n\), an assignment of prediction confidence values \(\mu\colon B \times [n] \to \DR\) obtained from the prediction of blueprints (step \ref{parsing:item:1} of the parsing process outlined at the beginning of the chapter), and assume that we aim to find a collection of up to \(k \in \DN_+\) best derivations.
-    The three objects are used to construct a series of grammars in growing size, in the same fashion as described by \citet[Section~5.1]{Clark04} and \citet[Section~2.2.2]{Auli12}.
-    This strategy defines a sequence of decreasing thresholds \((\beta_i \in \DR \mid i \in I)\) where the set of indices \(I \subseteq \DN_+\) is a non-empty integer index set.
-    These values are used to define growing intervals of confidence values that are admitted in the constructed grammars, each starting from the best confidence value for each position and up to \(\beta_i^j = \max_{b \in B} \mu(b, j) + \beta_i\) for each \(i \in I\) and \(j \in [n]\).
-    For each index \(i \in I\) and position \(j \in [n]\), we define the set \(S_i^j = \{ b \in B \mid \mu(b, j) \ge \beta^j_i \}\) of supertag blueprints that were predicted with confidence that differs at most by \(\beta_i\) from the highest confident prediction at the same position \(j\).
-    Then the iterative process to find derivations is as follows:\todo{die Liste lieber als Alg.\@ darstellen?}
-    \begin{compactenum}
-        \item We start with \(i = 1\).
-        \item \label{item:parsing:2:2}
-            The weighted grammar \(G_i\) is constructed from the set of supertags \(S_i = \{b[j] \mid j \in [n], b \in S_i^j \}\) and the weight assignment \(\weight_{i}\colon S_i \to \DR\) with \(\weight_i(b[j]) = \mu(b, j)\) for each \(j \in [n]\) and \(b \in S_i^j\).
-        \item We search for admissible derivations in the constructed grammar as described in \cref{sec:parsing:lcfrs,sec:parsing:dcp}.
-        \item
-            If there is at least one admissible derivation in \(G_i\), the sequence of \(k\) best admissible derivations in \(G_i\) is reported as a result of this step.
-            If that is not the case and \(i+1 \in I\), then we let \(i := i+1\) and go back to step \ref{item:parsing:2:2}.
-            Otherwise, we report failure as we did not find any derivation.
-    \end{compactenum}
-    Finally, only the first grammar in the series \((G_i \mid i \in I)\) that contains an admissible derivation is used to compute a collection of \(k\) best derivations.
-    For each increment \(i > 1\), the parsing results with the previous grammar are re-used, as the set of rules in increment \(i-1\) is a subset of that in increment \(i\).
-    This approach differs from the one we used in previous versions of the parser, where we used a fixed amount of predicted blueprints per sentence position \citep{RupMoe21, Rup22}.
-    We used the values by \citet{Clark04} as orientation and chose a series of fixed values \((\beta_i = 0.1^i \mid i \in \DN_+)\) in our experiments.
+    In this section, we will describe two approaches to combine predicted supertag blueprints into derivations, one for \abrv{lcfrs} and \abrv{hg} supertags and one for \abrv{dcp} supertags.
+    Throughout this section, we will assume the following variables as inputs and hyperparameters:
+    \begin{itemize}
+        \item the input sentence \(w\) has the length \(\ell\),
+        \item the set of supertag blueprints is denoted by \(B\),
+        \item the previous step predicted \(k \in \DN_+\) supertag blueprints per position,
+        \item the family \((b^{(i)}_{\kappa} \in B \mid i \in [\ell], \kappa \in [k])\) of predicted supertags with confidence \((\varphi^{(i)}(w, b^{(i)}_{\kappa}) \mid i \in [\ell], \kappa \in [k])\) fom the previous step \ref{parsing:item:1},
+        \item a growing sequence of confidence interval sizes \((\beta_i \in \DR \mid i \in I)\) for some non-empty integer index set \(I\), and
+        \item we aim to find a collection of up to \(n \in \DN_+\) best derivations in this step.
+    \end{itemize}
+
+    \begin{algorithm}[t]
+        \caption{\label{alg:parsing:incremental}
+            Incremental parsing algorithm that uses increasing sets of predicted supertags with a sequence confidence intervals.
+            The least interval that contains an admissible derivation is used to determine an ordered sequence of \(n\) best admissible derivations.
+        }
+        \subfile{algorithms/incremental-parsing.tex}
+    \end{algorithm}
+
+    \Cref{alg:parsing:incremental} illustrates the incremental parsing algorithm as described by \citet[Section~5.1]{Clark04} and \citet[Section~2.2.2]{Auli12} and adjusted to our setting.
+    It works as follows:
+    \begin{itemize}
+        \item The algorihm iterates over the growing confidence interval sizes \(\beta_1, \beta_2, \ldots\) (line 2) and computes the least confidence within the interval \(\delta^{(i)}\) for each position in the input sentence (line 3).
+        \item Then, it collects the supertag blueprints predicted within this confidence interval and instantiates them for each sentence position (line 4).
+        \item The weight assignment \(\weight\) for the resulting set of rules is determined from the family \(\varphi\) of prediction confidences (line 5).
+        \item If there is any admissible derivation in the set of supertags \(S\), then it returns the an ordered sequence of (at most \(n\)) admissible derivations and ends (lines 6 and 7). Thus, only the supertags within the least possible prediction confidence interval are used to determine the derivations.
+        \item If there were no admissible derivations and the prediction confidences \(\delta^{(i)}\) are non-exhausting (not all predicted supertags were used), then it continues with the next confidence interval. Otherwise it aborts, since no admissible derivation can be found (lines 8 and 9).
+        \item If no derivations are found, it reports a failure (line 10).
+    \end{itemize}
+    In practice, we implement the confidence intervals as the sequence of all multiples of a base value \(\hat{\beta}\in \DR\) of the form \((\beta_i = i \cdot \hat{\beta} \mid i \in \DN_+)\).
+    In the following, we will call this base value \emph{parsing step range} and denote it as the symbol \(\beta\).
+    \Citet{Clark04} and \citet{Auli12} used a fixed sequences of values in their experiments.
+    This approach differs from the one we used in previous versions of the parser \citep{RupMoe21, Rup22}, where we used a fixed amount of predicted blueprints per sentence position.
+    
+    The following two subsection are concerned with lines 6 and 7 of the algorithm:
+        They explain the algorithms involved in determining the admissible derivations for the sequence of sentence positions and enumerating them according to their weight.
+    In the case of \abrv{lcfrs} and hybrid grammars supertags (\cref{sec:parsing:lcfrs}), we rely on algorithms that are well established in statistical parsing with weighted grammars.
+    Since \abrv{dcp} have not been used in such a setting before, we dedicate \cref{sec:parsing:dcp} to an adaption of well-established algorithms from \abrv{lcfrs} to the case of \abrv{dcp} supertags.
 
     \subsection{Parsing with \abrv{Lcfrs} and \abrv{Hg} Supertags}\label{sec:parsing:lcfrs}
     In the case of \abrv{lcfrs} and \abrv{hg} supertags, the sets of admissible derivations for an input sequence are defined using the nonterminals and the \abrv{lcfrs} compositions in the grammar rules.

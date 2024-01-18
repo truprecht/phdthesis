@@ -71,7 +71,7 @@
                 \staglist[2.2cm]{$V\text{-}B \xrightarrow{0.7} [\text{6}][\ldots]$}\\
             };
         \end{scope}
-        \node[gray, anchor=west, inner sep=0pt] (staglab) at (stag.west|-sentence) {supertags + confidence};
+        \node[gray, anchor=west, inner sep=0pt] (staglab) at (stag.west|-sentence) {supertags + weight};
         \node[boundingbox, fit=(stag) (staglab)] (stagbox) {};
 
         \node[right=.7cm of stagbox] (parser) {\rotatebox{90}{parsing}};

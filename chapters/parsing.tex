@@ -3,38 +3,44 @@
 
 \begin{document}
     \chapter{Parsing via Supertagging}\label{chp:parsing}
-    This chapter describes a unified framework of a supertagging-based parsing process based on the grammar formalisms explained in the previous chapter.
-    The parsing process is divided into three consecutive steps, plus one optional refinement procedure (reranking) as illustrated in \cref{fig:parsing:overview}:
+    This chapter describes a unified framework of a supertagging-based parsing process with on the grammar formalisms explained in \cref{sec:grammars}.
+    For this process, we assume an alphabet of tokens \(\varSigma\), an input sentence \(w = (w_i \in \varSigma \mid i \in [\ell])\) of length \(\ell \in \DN_+\) and a set of supertag blueprints \(B\).
+    The parsing process is divided into four consecutive steps; the last step is an optional refinement procedure (reranking) as illustrated in \cref{fig:parsing:overview}:
     \begin{enumerate}
         \item\label{parsing:item:1}
-            First, a set of blueprints is predicted for each token in the input sentence; the number of predicted blueprints per position is a hyperparameter.
-            Each blueprint is transformed into a supertag by replacing its wildcard symbol with the position in the sentence it was predicted for.
-            The confidence value for the prediction of each blueprint accompanies each supertag as weight.
+            First, a sequence of supertag blueprints is predicted for each token in the input sentence; the number of predicted blueprints per position \(k \in \DN_+\) is a hyperparameter.
+            This step requires a classifier that computes a score for each supertag blueprint at each position in the input sentence:
+                We assume a parallel tagging model \(\varphi\colon \big(\bigcup_{i\in \DN_+} \varSigma^i \times B^i \big) \to \DR\) that computes the score \(\varphi^{(i)}(w, b) \in \DR\) for the input sentence \(w\), each supertag blueprint \(b \in B\) and position \(i \in [\ell]\).
+            In our experiments, we use artificial neural networks to implement \(\varphi\); \cref{sec:preliminaries:nn} focuses on the concrete architectures used to realize the parallel tagging models.
+            For the coming step \ref{parsing:item:2}, we consider two objects from this step:
+            \begin{itemize}
+                \item the family of predicted supertag blueprints \((b^{(i)}_{\kappa} \in B \mid i \in [\ell], \kappa \in [k])\) such that \((b^{(i)}_{\kappa} \in B \mid \kappa \in [k])\) is a sequence of \(k\) best supertag blueprints in \(\argmax^{(k)}_{b \in B} \varphi^{(i)}(w, b)\) for each position \(i\in [\ell]\), and
+                \item the prediction confidence \((\varphi^{(i)}(w, b^{(i)}_{\kappa}) \mid i \in [\ell], \kappa \in [k])\) for each of these supertags.
+            \end{itemize}
         \item\label{parsing:item:2}
-            The supertags are combined into a weighted grammar.
-            A statistical parsing\todo{clearly distinguish statistical grammar parsing from the whole process} process for the grammar formalism is used to find derivations for the sequence of consecutive positions in the input sentence.
-            If reranking is used, then this step yields a collection of \(k\) best derivation trees, where \(k \in \DN_+\) is a hyperparameter and \emph{best} refers to an endorelation on the weights (e.g.\@ lowest cost or highest probability).
+            The predicted supertag blueprints are instantiated and combined into weighted grammars; the weight assignments are determined by the prediction confidence.
+            A statistical parsing process for the underlying grammar formalism is used to find derivations for the sequence of consecutive positions in the input sentence.
+            If reranking is used, then this step yields a sequence of \(n\) derivation trees, where \(n \in \DN_+\) is a hyperparameter and \emph{best} refers to an endorelation on the weights (e.g., highest score).
             Otherwise, it yields \emph{a best} derivation.
+            We follow \citet{Auli12} and implement this step as an incremental process that considers supertags in growing confidence intervals \(\beta_1, \beta_2, \ldots\); that assumes an additional hyperparameters \((\beta_i \in \DR \mid i \in I)\) for some non-empty integer index set \(I\).
+            This step is discussed in detail in \cref{sec:parsing}.
         \item\label{parsing:item:3}
-            The derivations are converted into constituent structures by evaluating the \abrv{dcp} compositions or (in the case of \abrv{lcfrs} supertags) assuming the nonterminals as inner nodes.
+            The derivations obtained in the previous step are converted into constituent structures by evaluating the \abrv{dcp} compositions or (in the case of \abrv{lcfrs} supertags) assuming the nonterminals as inner nodes.
             These constituent structures are extended to constituent trees by adding predicted \abrv{pos} symbols and the tokens from the input sentence.
         \item\label{parsing:item:4}
             Lastly, a reranking approach is used to (re-)score the constituent trees and pick the best as a result.
-            We use \emph{data-oriented parsing}, a precise statistical grammar formalism, as the final stage of a coarse to fine parsing approach \citep{CraSchBod16}.
+            We use \emph{discontinuous data-oriented parsing} \citep{CraSchBod16}, a precise statistical grammar formalism, to compute a (new) weight for each constituent tree obtained in the previous step; all previous weights are discarded during this step.
+            The result is \emph{a best} constituent tree according to the new weight.
+            This step is thouroughly investigated in \cref{sec:reranking}.
     \end{enumerate}
-    For step \ref{parsing:item:1}, we use a neural network to compute the prediction confidence for each blueprint at each position in the input sentence.
-    % The training of these models is described in \cref{chapter:training}.
-    The transformation from grammar derivations to constituent structures in step \ref{parsing:item:3} is part of the definitions in \cref{sec:grammar:lcfrs,sec:grammar:hybrid}.
-    The remaining steps \ref{parsing:item:2} and \ref{parsing:item:4} are described in more detail in the following two sections.
 
     \begin{figure}
         \subfile{figures/parsing-overview.tex}
         \caption{\label{fig:parsing:overview}
             Illustration of the supertagging-based parsing process.
-            Staggered gray boxes indicate sequences of objects, e.g.\@, the \emph{parsing} step yields a collection of derivation trees for the input sentence.
+            Staggered gray boxes indicate sequences of objects, e.g.\@, the \emph{parsing} step yields a sequence of \(n\) best derivation trees for the input sentence.
         }
     \end{figure}
-
 
     \subfile{parsing/dcp-parsing.tex}
     \subfile{parsing/reranking.tex}

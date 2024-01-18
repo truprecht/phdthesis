@@ -52,7 +52,7 @@
     For example, we write \(\min [k]\) instead of \(\min_{i \in [k]} i\).
     The minima and maxima are determined according to the usual numerical order.
     In case we encounter different objects or we use any other total ordering \(\unlhd\), we denote it as a superscript, for instance, \(\min^{\unlhd}\).
-    The symbol \(\argmin\) denotes the set of all indices with minimal value, for instance, \(\argmin_{i \in [k]} v_i\) is the subset \(M \subseteq [k]\) such that, for each \(\hat{i} \in M\), there is no \(j \in [k]\) with \(v_j \unlhd v_{\hat{i}}\).
+    The symbol \(\argmin\) denotes the set of all indices with minimal value, for instance, \(\argmin_{i \in [k]} v_i\) is the subset \(M \subseteq [k]\) such that each pair \((\hat{i}, j) \in M \times [k]\) satisfies \(\hat{i} \leq j\).
     Vice versa, \(\argmax\) yields the indices with maximal value.
 
     An \(A\)-indexed \deflab<family>{partition} of \(B\) is a \(A\)-indexed family \(p\) over subsets in \(\power(B)\) such that:
@@ -95,6 +95,11 @@
         \item \(w\cdot a\cdot u \rel^* w\cdot b\cdot v \) for each \(a,b \in A\) with \(a \rel b\) and each \(w,u,v \in A^*\).
     \end{compactenum}
     For example, \(\leq^*\) is the lexicographic order over sequences of numerical values where \(\varepsilon \leq^* 1\:1\:2\) and \(1\:1\:2\leq^*1\:2\).
+    
+    We extend the operators \(\argmax\) (and \(\argmin\)) to determine ordered seqences of \(k\) maximal (or minimal, respectively) elements, for each \(k \in \DN_+\).
+    In this case, we denote the length \(k\) of these sequences in parentheses as superscript of the operator.
+    In the case that there is also a specified (non-numeric) total order, we denote both as superscript in the form \(\argmax^{(k), \unlhd}\).
+    For instance, the expression \(\argmin^{(5)}_{i \in [n]} p_i\) is the set of all sequences over \([n]\) of length \(m = \min \{5, n\}\) where each is of the form \(i_1 i_2 \ldots i_m\) and determined such that \(p_{i_1} \leq p_{i_2} \leq \ldots \leq p_{i_m}\) and \(p_{i_m} \leq j\) for each \(j \in [n]\setminus\{i_1,\ldots,i_m\}\).
 
     \section{Strings and Trees}\label{sec:preliminaries:trees}
     \paragraph{Alphabets and Strings.}
@@ -423,7 +428,7 @@
     Let us denote the set of inputs by \(X\), the labels by \(Y\), and the domain of confidence values by \(\mathcal{C}\) with a total order \(\rel \subseteq \mathcal{C} \times \mathcal{C}\).
     We view each model as a parametrized function \(\varphi_\theta\colon X \times Y \to \mathcal{C}\) where \(\theta\) are some parameters (or variables) in an associated domain \(\Theta\).\todo{prelim: parametrized function}
     In our case, the domain of confidence values are real numbers, and the order \(\rel\) is \(\leq\), such that the confidence is interpreted as a score (i.e.\@ greater is better).
-    The prediction for an input \(x\) and a model \(f\) with parameters \(\theta\) is any value in \(\argmax^{\rel}_{y \in Y} \phi_\theta(x, y)\).
+    The prediction for an input \(x\) and a model \(f\) with parameters \(\theta\) is any value in \(\argmax^{\rel}_{y \in Y} \varphi_\theta(x, y)\).
 
     Generally, there are two types of models: \deflab<prediction!model>{generative models} and \deflab<prediction!model>{discriminative models}.
     While generative models define a joint probability distribution of inputs and labels, discriminative models define probabilities or scores for labels conditioned on the input.
@@ -434,6 +439,15 @@
     We differentiate between two major types of learning: \emph{supervised} and \emph{unsupervised}.
     In the first case, the data contains the inputs and labels; in the latter, it consists only of input.
     Some intermediate types exist between the two, including self-supervised and semi-supervised, where a large amount of unlabeled data is complemented with a small amount of labeled data.
+
+    \paragraph{Sequence Prediction and Tagging.}
+    \emph{Sequence prediction} is a coarse category of tasks where the set of inputs consists of sequences.
+    In such cases a model is a function of the form \(X^* \times Y \to C\), where \(X\) now denotes the set of individual elements in the input sequences.
+    \emph{Tagging}, on the other hand, is a category of tasks within sequence prediction where the set of outputs are sequences as well, and the outputs are of the same length as the input.
+    Such a model for tagging is a function of the form \(\big( \bigcup_{i \in \DN} X^i \times Y^i \big) \to C\), where now also \(Y\) is a set of individual elements in the output sequences; these elements of \(Y\) are called \emph{tags}.
+    In this thesis, we focus on \emph{parallel tagging models}.
+    In such models, the confidence values are computed independently for each output position.
+    For each parallel tagging model \(\varphi\), each input \(\vec{x} \in X^k\) of length \(k \in \DN_+\), each tag \(y\in Y\) and position \(i \in [k]\), we denote the score of the tag \(y\) at position \(i\) of the output in the form \(\varphi^{(i)}(\vec{x}, y)\).
 
     \paragraph{Parameters and Training.}
     We distinguish two essential sets of parameters: \deflab<prediction!model!parameters>{hyperparameters} and \deflab<prediction!model!parameters>{model parameters}.

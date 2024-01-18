@@ -1,0 +1,28 @@
+\documentclass[../../../document.tex]{subfiles}
+
+\begin{document}
+    \begin{algorithmic}[1]
+        \Require{length of the input sentence \(\ell \in \DN_+\)}
+        \Require{family of supertag blueprints \(b = (b^{(i)}_{\kappa} \in B \mid i \in [\ell], \kappa \in [k])\)}
+        \Require{family of prediction confidences \(\varphi = (\varphi^{(i)}(w, b^{(i)}_{\kappa}) \mid i \in [\ell], \kappa \in [k])\)}
+        \Require{sequence of increasing confidence interval sizes \(\beta = (\beta_i \in \DR \mid i \in I)\) for some nonempty integer index set \(I\)}
+        \Require{the number of derivations \(n \in \DN_+\) to determine}
+        \Ensure{outputs either an ordered sequence of admissible supertag derivations according to their sum of prediction confidence if there is any admissible derivation, otherwise reports fail}
+        \Procedure{incrementalParse}{$\ell$, $b$, $\varphi$, $\beta$}
+            \For{$t = 1, 2, \ldots$ such that \(t \in I\)}
+                \State{$(\delta^{(i)} := \varphi^{(i)}(w, b^{(i)}_{1}) - \beta_t \mid i \in [\ell])$}
+                \State{$S := \{ b^{(i)}_{\kappa}[i] \mid i \in [\ell], \kappa \in [k], \varphi^{(i)}(w, b^{(i)}_{\kappa}) \geq \delta^{(i)} \} $}
+                \State{$(\weight(b^{(i)}_{\kappa}[i]) := \varphi^{(i)}(w, b^{(i)}_{\kappa}) \mid i \in [\ell], \kappa \in [k])$}
+                \If{$\widehat{\derivs^S}(1\cdots\ell) \neq \emptyset$}
+                    \State{\Return one sequence of $\argmax^{(n)}_{d \in \widehat{\derivs^S}(1\cdots\ell)} \weight(d)$}
+                \EndIf
+                \If{$\delta^{(i)} \leq \varphi^{(i)}(w, b^{(i)}_{k})$ for each $i\in [\ell]$}
+                    \State{abort the loop execution}
+                \EndIf
+            \EndFor
+            \State{report parsing failed}
+        \EndProcedure
+    \end{algorithmic}
+\end{document}
+
+
