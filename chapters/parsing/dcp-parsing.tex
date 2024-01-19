@@ -1,17 +1,25 @@
 \documentclass[../../document.tex]{subfiles}
 
+
+% Throughout this section, we will assume the following variables as inputs and hyperparameters:
+% \begin{itemize}
+%     \item the input sentence \(w\) has the length \(\ell\),
+%     \item the set of supertag blueprints is denoted by \(B\),
+%     \item the previous step predicted \(k \in \DN_+\) supertag blueprints per position,
+%     \item the family \((b^{(i)}_{\kappa} \in B \mid i \in [\ell], \kappa \in [k])\) of predicted supertags with confidence \((\varphi^{(i)}(w, b^{(i)}_{\kappa}) \mid i \in [\ell], \kappa \in [k])\) fom the previous step \ref{parsing:item:1},
+%     \item a growing sequence of confidence interval sizes \((\beta_i \in \DR \mid i \in I)\) for some non-empty integer index set \(I\), and
+%     \item we aim to find a collection of up to \(n \in \DN_+\) best derivations in this step.
+% \end{itemize}
+
 \begin{document}
     \section{Statistical Parsing with Predicted Supertags}\label{sec:parsing}
-    In this section, we will describe two approaches to combine predicted supertag blueprints into derivations, one for \abrv{lcfrs} and \abrv{hg} supertags and one for \abrv{dcp} supertags.
-    Throughout this section, we will assume the following variables as inputs and hyperparameters:
-    \begin{itemize}
-        \item the input sentence \(w\) has the length \(\ell\),
-        \item the set of supertag blueprints is denoted by \(B\),
-        \item the previous step predicted \(k \in \DN_+\) supertag blueprints per position,
-        \item the family \((b^{(i)}_{\kappa} \in B \mid i \in [\ell], \kappa \in [k])\) of predicted supertags with confidence \((\varphi^{(i)}(w, b^{(i)}_{\kappa}) \mid i \in [\ell], \kappa \in [k])\) fom the previous step \ref{parsing:item:1},
-        \item a growing sequence of confidence interval sizes \((\beta_i \in \DR \mid i \in I)\) for some non-empty integer index set \(I\), and
-        \item we aim to find a collection of up to \(n \in \DN_+\) best derivations in this step.
-    \end{itemize}
+    This section describes the algorithms involved in combining the predicted supertag blueprints into derivations.
+    We destinguish two cases:
+    \begin{inparaenum}[]
+        \item In the case of \abrv{lcfrs} or hybrid grammars supertags, we rely on algorithms that are well established in statistical parsing with these two grammars formalisms to obtain derivations. \Cref{sec:parsing:lcfrs} elaborates on this subject and gives references to the literature.
+        \item Since \abrv{dcp} have not been used in such a setting before, we dedicate \cref{sec:parsing:dcp} to an adaption of well-established algorithms from \abrv{lcfrs} to the case of \abrv{dcp} supertags.
+    \end{inparaenum}
+    These algorithms are embedded in a shared framework that is discussed in the following.
 
     \begin{algorithm}[t]
         \caption{\label{alg:parsing:incremental}
@@ -35,11 +43,8 @@
     In the following, we will call this base value \emph{parsing step range} and denote it as the symbol \(\beta\).
     \Citet{Clark04} and \citet{Auli12} used a fixed sequences of values in their experiments.
     This approach differs from the one we used in previous versions of the parser \citep{RupMoe21, Rup22}, where we used a fixed amount of predicted blueprints per sentence position.
-    
     The following two subsection are concerned with lines 6 and 7 of the algorithm:
         They explain the algorithms involved in determining the admissible derivations for the sequence of sentence positions and enumerating them according to their weight.
-    In the case of \abrv{lcfrs} and hybrid grammars supertags (\cref{sec:parsing:lcfrs}), we rely on algorithms that are well established in statistical parsing with weighted grammars.
-    Since \abrv{dcp} have not been used in such a setting before, we dedicate \cref{sec:parsing:dcp} to an adaption of well-established algorithms from \abrv{lcfrs} to the case of \abrv{dcp} supertags.
 
     \subsection{Parsing with \abrv{Lcfrs} and \abrv{Hg} Supertags}\label{sec:parsing:lcfrs}
     In the case of \abrv{lcfrs} and \abrv{hg} supertags, the sets of admissible derivations for an input sequence are defined using the nonterminals and the \abrv{lcfrs} compositions in the grammar rules.

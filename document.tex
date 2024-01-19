@@ -23,6 +23,10 @@
   \oldalgorithmic}% Do what was always done with algorithmic environment
 \renewcommand{\theHALG@line}{ALG@line.\thealgorithmicH.\arabic{ALG@line}}
 \makeatother
+% input and output blocks
+\newcommand{\Inputs}{\noindent\hspace*{\algorithmicindent}\textbf{Input}}
+\newcommand{\Outputs}{\noindent\hspace*{\algorithmicindent}\textbf{Output}}
+\newcommand{\IOElem}[2]{\hspace*{\algorithmicindent}\hspace*{\algorithmicindent}\makebox[2em][l]{#1}#2}
 
 % tikz setup
 \usepackage{tikz}
