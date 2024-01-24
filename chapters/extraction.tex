@@ -9,7 +9,7 @@
             Each \abrv{lcfrs} supertag blueprint is a tuple \((r, b)\) where \(r\) is a lexical \abrv{lcfrs} rule containing the terminal \wildcard{} and \(b \in \{\text{True}, \text{False}\}\) is a boolean marker.
             The marker \(b\) stores information from the lexicalization process and is needed to reverse the process to transform a derivation into a constituent tree.
         \item
-            Each \abrv{dcp} supertag blueprint is a tuple \((r, f)\) where \(r\) is a lexical \abrv{dcp} rule containing the terminal \wildcard{} and \(f \in \DN_+\) is an integer.
+            Each \abrv{dcp} supertag blueprint is a tuple \((r, f)\) where \(r\) is a lexical \abrv{dcp} rule containing the terminal \wildcard{} and \(f \in \DN_+\) is a positive integer.
             During the parsing process, \(f\) acts as a restriction for the fanout of all derivations rooted by a supertag instantiated for \((r,f)\).
         \item Each \abrv{hg} supertag blueprint is a lexical hybrid grammar rule containing the terminal \wildcard{}.
     \end{compactenum}

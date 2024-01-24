@@ -1,48 +1,52 @@
 \documentclass[../../../document.tex]{subfiles}
 
 \begin{document}
+    \Inputs \\
+        \IOElem{$\ell$}{length of the input sentence}\\
+        \IOElem{$S$}{set of \abrv{dcp} supertags}\\
+        \IOElem{$\weight$}{a weight for each supertag \(\weight = (\weight(s) \in \DR \mid s \in S)\)}\\
+        \IOElem{$X$}{one artificial nonterminal for each sentence position $X = \{ X_i \notin N \mid i \in [\ell] \}$}
+    \Outputs \\
+        \IOElem{$C$}{family of backtraces \(C = (C_{(A, L)} \subseteq \mathcal{P}(S \times \mathcal{P}([\ell])^*) \mid A \in N, L \subseteq [\ell] )\)}\\
+        \IOElem{$W$}{family of best weights \(W = (W_{(A, L)} \in \DR \cup \{-\infty\} \mid A \in N, L \subseteq [\ell] )\)}
     \begin{algorithmic}[1]
-        \Require{A sentence of length $n \in \DN_+$}
-        \Require{A set of \abrv{dcp} supertags for each sentence position $S = (S_i \mid i \in [n])$}
-        \Require{A prediction score for each supertag $(\weight(s) \mid s \in \bigcup_{i \in [n] S_i})$}
-        \Require{An artificial nonterminal for each sentence position $X = \{ X_i \notin N \mid i \in [n] \}$}
-        \Procedure{fillChart}{$S$}
+        \Procedure{fillChart}{$\ell$, $S$, $\weight$, $X$}
+            \State{$C := (C_{(A,L)} := \emptyset \mid A \in N, L \subset [\ell])$}
+            \State{$W := (W_{(A,L)} := -\infty \mid A \in N, L \subset [\ell])$}
             \State{$Q := \emptyset$}
-            \State{$C := (C_{(A,L)} := \emptyset \mid A \in N \cup X, L \subset [n])$}
-            \State{$W := (W_{(A,L)} := -\inf \mid A \in N \cup X, L \subset [n])$}
             \State{$I := (I_{A} := \emptyset \mid A \in N)$}
 
-            \For{$i$ in $[n]$ and $s := (A \to c\,(B_1,\ldots,B_k), f)$ in $S_i$}
+            \For{$s := (A \to c\,(B_1,\ldots,B_k), f)$ in $S$ with lexical symbol $i \in [\ell]$ in \(c\)}
                 \State{$B_1' \ldots B_{k+1}' :=$ order $B_1, \ldots, B_k, X_i$ according to the occurrences in $c$}
                 \State{$\mathit{item} := (A, f, B_1' \ldots B_{k+1}', \emptyset))$}
                 \State{add $(\mathit{item}, s, \weight(s))$ to $Q$}
             \EndFor
 
             \While{$Q \neq \emptyset$}
-                \State{pop $((A, f, B_1 \ldots B_{k-1} B_k, L), \mathit{bt}, \mathit{wt})$ from $Q$ s.t.\@ $\mathit{wt}$ is minimal}
+                \State{pop $((A, f, B_1 \ldots B_{k-1} B_k, L), \mathit{bt}, \mathit{wt}) \in \argmax_{(i, b, w) \in Q} w$ from $Q$}
                 \If{$k = 0$ and $\fanout(L) = f$}
                     \State{add $\mathit{bt}$ to $C_{(A, L)}$}
                     \State{update $W_{(A, L)} := \max(W_{(A, L)}, \mathit{wt})$}
                     \For{$\mathit{activeItem}$ in $I_A$}
-                        \State{\Call{addSuccessor}{$\mathit{activeItem}$, $L$}}
+                        \State{\Call{addSuccessor}{$Q$, $W$, $\mathit{activeItem}$, $L$}}
                     \EndFor
-                \ElsIf{$k > 0$ and $B_k$ is of the form $X_i$ and $i < \min L$}
+                \ElsIf{$k > 0$ and $B_k$ is some $X_i \in X$ and $i < \min L$}
                     \State{$\mathit{item} := (A, B_1\ldots B_{k-1}, L \cup \{i\})$}
                     \State{add $(\mathit{item}, \mathit{bt}, \mathit{wt})$ to Q}
                 \ElsIf{$k > 0$}
                     \State{add $((A, B_1 \ldots B_{k-1} B_k, L), \mathit{bt}, \mathit{wt})$ to $I_{B_k}$}
                     \For{$L' \in [n]$ with $C_{B_k, L'} \neq \emptyset$}
-                        \State{\Call{addSuccessor}{$((A, B_1 \ldots B_{k-1} B_k, L), \mathit{bt}, \mathit{wt})$, $L'$}}
+                        \State{\Call{addSuccessor}{$Q$, $W$, $((A, B_1 \ldots B_{k-1} B_k, L), \mathit{bt}, \mathit{wt})$, $L'$}}
                     \EndFor
                 \EndIf
             \EndWhile
         \EndProcedure
 
-        \Procedure{addSuccessor}{$Q$, $W$, $((A, f, B_1 \ldots B_{k-1} B_k, L), \mathit{bt}, \mathit{wt})$, $L'$}
+        \Procedure{addSuccessor}{$Q$, $W$, $((A, f, B_1 \ldots B_{k-1} B_k, L), (s, \vec{L}), \mathit{wt})$, $L'$}
             \If{$L \cap L' = \emptyset$ and $\min L' < \min L$}
                 \State{$\mathit{item'} := (A, f, B_1 \ldots B_{k-1}, L' \cup L)$}
                 \State{$\mathit{wt'} := \mathit{wt} + W_{(B_k, L')}$}
-                \State{$\mathit{bt'} := \mathit{bt} \cdot L'$}
+                \State{$\mathit{bt'} := (s, L' \cdot \vec{L})$}
                 \State{add $(\mathit{item'}, \mathit{bt'}, \mathit{wt'})$ to Q}
             \EndIf
         \EndProcedure

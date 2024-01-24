@@ -1,62 +1,63 @@
 \documentclass[../../../document.tex]{subfiles}
 
 \begin{document}
-    \begin{algorithmic}[1]
-        \Require{A sentence of length $n \in \DN_+$}
-        \Require{A weight assignment for supertags $\mu\colon S \to \DR$}
-        \Require{A chart $C$ as computed by \Call{fillChart}{$\ldots$}}
-        \Require{A weight assignment $W$ as computed by \Call{fillChart}{$\ldots$}}
-        \Require{A set of root nonterminals $S$}
+    \Inputs \\
+        \IOElem{$\ell \in\DN_+$}{length of the input sentence}\\
+        \IOElem{$S$}{set of \abrv{dcp} supertags with nonterminals \(N\) and initial nonterminal \(I \in N\)}\\
+        \IOElem{$\weight$}{a weight for each supertag \(\weight = (\weight(s) \in \DR \mid s \in S)\)}\\
+        \IOElem{$n \in \DN_+$}{maximum number of derivations to enumerate}\\
+        \IOElem{$C, W$}{parse chart from the previous step}\\
+    \Outputs \\
+        \IOElem{$n'$}{number of enumerated derivations}\\ %\(n' = \min(|\widehat{\derivs}^S([\ell])|, n)\)} \\
+        \IOElem{    }{\(n' = \max \big( \{0\} \cup \{m \in [n] \mid \Call{LazyKthBest}{I, [\ell], m} = \text{True} \} \big)\)}\\
+        \IOElem{$\vec{d}$}{\(n'\) best derivations \(\vec{d} = (d_i = \Call{readDerivation}{I, [\ell], m} \mid m \in [n'])\)}
 
-        \State{$H := (H_{(A, L)} := \mathbf{undefined} \mid A \in N, L \subseteq [n])$}
-        \State{$E := (E_{(A, L)} := \emptyset \mid A \in N, L \subseteq [n])$}
+    \begin{algorithmic}[1]
         \State{$D := (D_{(A, L, i)} := \mathbf{undefined} \mid A \in N, L \subseteq [n], i \in [k])$}
+        \State{$H := (H_{(A, L)} := \emptyset \mid A \in N, L \subseteq [n])$}
         \State{$W' := (W'_{(A, L, i)} := \text{$W_{(A, L)}$ if $i>1$ else $\infty$} \mid A \in N, L \subseteq [n], i \in [k])$}
 
-        \Function{weight}{$(A \to c\,(B_1, \ldots, B_\ell), f)$, $L_1 \ldots L_\ell$, $k_1 \ldots k_\ell$}
-            \State{\Return $\mu(r) + \sum_{i = 1}^{\ell} W'_{(B_i, L_i, k_i)}$}
+        \Function{weight}{$s = (A \to c\,(B_1, \ldots, B_k), f)$, $L_1 \ldots L_k$, $m_1 \ldots m_k$}
+            \State{\Return $\weight(s) + \sum_{i = 1}^{k} W'_{(B_i, L_i, k_i)}$}
         \EndFunction
 
-        \Function{successors}{$k_1 \ldots k_\ell$}
-            \State{\(K := \emptyset\)}
-            \For{$i \in 1, \ldots, \ell$}
-                \State{$k'_j := k_j$ for each $j$ in $1, \ldots, \ell$}
-                \State{$k'_i := k_i+1$}
-                \State{add $(k_1', \ldots, k_\ell')$ to $K$}
-            \EndFor
-            \State{\Return $K$}
-        \EndFunction
-
-        \Function{chkEdge}{$(A \to c\,(B_1, \ldots, B_\ell), f), L_1 \ldots L_\ell, k_1 \ldots k_\ell$}
-            \For{$i$ in $1, \ldots, \ell$}
-                \If{$\Call{exploreKthBestNode}{B_i, L_i, k_i}$ is False}
-                    \State{\Return False}
+        \Procedure{LazyNext}{$Q$, $(s, L_1\ldots L_k, m_1 \ldots m_k)$}
+            \State{let $(A \to c\,(B_1, \ldots, B_k), f) = s$}
+            \For{$i \in 1, \ldots, k$}
+                \State{$\vec{m}' := m_1, \ldots, m_{i-1}, m_i+1, m_{i+1}, \ldots,  m_k$}
+                \If{\((s, L_1\ldots L_k, \vec{m}') \notin Q\) and $\Call{LazyKthBest}{A, L_i, m_i+1}$}
+                    \State{add $(s, L_1\ldots L_k, \vec{m}')$ to \(Q\)}
                 \EndIf
             \EndFor
-            \State{\Return True}
-        \EndFunction
+        \EndProcedure
 
-        \Procedure{chkNode}{$A, L, k$}
-            \If{$H_{(A, L)}$ is \textbf{undefined}}
-                \State{$H_{(A, L)} := \{(r, \vec{L}, 1^{|\vec{L}|}) \mid (r, \vec{L}) \in C_{(A,L)}\}$}
+        \Function{LazyKthBest}{$A, L, m$}
+            \State{$m' := \max\,\big(\{0\} \cup \{i \in [m] \mid D_{(A, L, i)} \neq \mathbf{undefined} \}\big)$}
+            \If{$H_{(A, L)} = \emptyset$ and $m' = 0$}
+                \State{$H_{(A, L)} := \{(r, \vec{L}, \mathbf{1}^{|\vec{L}|}) \mid (r, \vec{L}) \in C_{(A,L)}\}$}
             \EndIf
-            \While{$|D_{(A, L)}| < k$}
-                \If{$|D_{(A, L)}| > 0$}
-                    \State{$(r, \vec{L}, \vec{k}) :=$ the last element in the sequence $D_{(A, L)}$}
-                    \For{$\vec{k}'$ in $\Call{successors}{\vec{k}}$ such that \((r, \vec{L}, \vec{k}') \notin E_{(A, L)}\) and $\Call{chkEdge}{r, \vec{L}, \vec{k}'}$}
-                    \State{add $(r, \vec{L}, \vec{k}')$ to $E_{(A, L)}$ and to \(H_{(A, L)}\)}
-                \EndFor
+            \While{$m' < m$}
+                \If{$m' > 0$}
+                    \State{$\Call{LazyNext}{H_{(A, L)}, D_{(A, L, m')}}$}
                 \EndIf
                 \If{$H_{(A, L)} = \emptyset$}
                     \State{\Return False}
                 \EndIf
-                \State{$(r, \vec{L}, \vec{k}) = \argmin_{(\hat{r}, \hat{\vec{L}}, \hat{\vec{k}}) \in H_{(A, L)}} \Call{weight}{\hat{r}, \hat{\vec{L}}, \hat{\vec{k}}}$}
-                \State{add $(r, \vec{L}, \vec{k})$ to \(D_{(A, L)}\)}
-                \State{update $W_{(A, L, k)}' := \Call{weight}{r, \vec{L}, \vec{k}}$}
+                \State{pop $(s, \vec{L}, \vec{m}) \in \argmax_{(\hat{s}, \hat{\vec{L}}, \hat{\vec{m}}) \in H_{(A, L)}} \Call{weight}{\hat{s}, \hat{\vec{L}}, \hat{\vec{m}}}$ from \(H_{(A, L)}\)}
+                \State{$m' := m' + 1$}
+                \State{$D_{(A, L, m')} := (s, \vec{L}, \vec{m})$}
+                \State{$W_{(A, L, m')}' := \Call{weight}{s, \vec{L}, \vec{m}}$}
             \EndWhile
             \State{\Return True}
-        \EndProcedure
-        \ifSubfilesClassLoaded{}{\algstore{alg:kbest}}
+        \EndFunction
+
+        \Function{readDerivation}{$A$, $L$, $m$}
+            \State{let \(((A \to c\,(B,\ldots,B_k), f), L_1 \ldots L_k, m_1 \ldots m_k) = D_{(A, L, m)}\)}
+            \For{$i$ in $1, \ldots, k$}
+                \State{$d_i := \Call{readDerivation}{B_i, L_i, m_i}$}
+            \EndFor
+            \State{\Return $(A \to c\,(B_1, \ldots, B_k), f) \; \big(d_1, \ldots, d_k \big)$}
+        \EndFunction
     \end{algorithmic}
 \end{document}
 
