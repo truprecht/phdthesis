@@ -2,66 +2,34 @@
 
 \begin{document}
     \section{Reranking}\label{sec:reranking}
-    This section focuses on a refinement procedure to pick one final constituent tree among a sequence of \(k\) parses.
-    A \deflab{reranking} process is an empirical prediction that assesses a previous empirical prediction by assigning confidence values to each label in conjunction with its prior confidence value.
-    In the case of reranking in the field of parsing, it takes the predicted sequence of \(k\) best parses, each complemented with the score of the parse, and computes a new score for each parse tree; we use the best among these scores to pick the final parse tree.
+    This section focuses on a refinement procedure to pick one final constituent tree among a sequence of \(n \in \DN_+\) parses.
+    A \deflab{reranking} process is an empirical prediction that assesses a previous empirical prediction by assigning a new confidence value to each label in conjunction with its prior confidence value.
+    In the case of reranking in the field of parsing, it takes the predicted sequence of \(n\) best parses, each complemented with the score of the parse, and computes a new score for each parse tree; we use the best among these scores to pick the final parse tree.
     The concept of reranking has its tradition in information retrieval and recommender systems. Both are disciplines in machine learning that focus on finding matching information resources for queries or suggestions for individuals, respectively.
     Reranking is used in this context to refine matches obtained in a query by a prior prediction model \citep{carbonell1998use,adomavicius2009toward}.
 
-    Formally, we define a \emph{reranking} process as follows:
-        Let \(Y\) be a set of labels, \(\mathcal{C}\) a set of confidence values.
-        A reranker is a function \(\psi \colon Y \times \mathcal{C} \to \mathcal{C}\) that assigns a confidence value to each pair of a label and \emph{prior} confidence value.
+    Formally, we define a \emph{reranking process} as follows:
+        Let \(Y\) be a set of labels and \(\mathcal{C}\) a set of confidence values.
+        A reranker is a function \(\psi \colon Y \times \mathcal{C} \to \mathcal{C}\) that assigns a confidence value to each pair of a label and \emph{prior confidence value}.
     Often, only a tiny fraction \(\hat{Y} \subseteq Y\) of the set of labels, called \emph{search space}, is considered for the reranking process.
-    In the case of reranking in parsing, the search space is the collection of constituent trees in a \(k\) best sequence, and the reranking process is used to find the highest scoring among those.
-    Let \((t_1, \ldots, t_k) \in Y^k\) be such a sequence of \(k\) labels and \(\phi \colon Y \to C\) an assignment of prior confidence values.
-    We call the \(\psi\)-\deflab{pick} among \(t_1 \ldots t_k\) the tree that maximizes the reranker \(\psi\)'s confidence value, i.e. \(
-        \hat{t} = \argmax_{t \in \hat{Y}} \psi(t, \phi(t))
-    \) where \(\hat{Y} = \{t_i \mid i \in [i]\}\) is the search space.
+    In the case of reranking in parsing, the search space is the collection of constituent trees within an \(n\) best sequence, and the reranking process is used to find the highest scoring among those.
+    Consider a sequence of \(n\) labels \((t_1, \ldots, t_n) \in Y^n\) and \(\phi \colon Y \to C\) an assignment of prior confidence values.
+    We call a \deflab{\(\psi\)-pick among \(t_1 \ldots t_n\)} the label that maximizes the reranker \(\psi\)'s confidence value, that is, \(
+        t \in \argmax_{\hat{t} \in \hat{Y}} \psi(\hat{t}, \phi(\hat{t}))
+    \) where \(\hat{Y} = \{t_i \mid i \in [n]\}\) is the search space.
+    \Cref{sec:references:reranking} gives a summary of the literature for reranking procedures applied in the field of parsing constiutent trees.
 
-    Reranking has quite a history in parsing.
-    One track of research driven by \citet{collins2001convolution}, \citet{shen2003svm}, \citet{collins05}, \citet{huang2008forest} i.a.\@ defined discriminative classifiers that predict assessment scores for constituent trees in the form described above.
-    Their reranking models consist of two parts:
-        A \emph{feature extraction} procedure maps each constituent tree into a vector and a function that maps each vector to a score.
-    The latter part was often realized as a support vector machine or perceptron, as these prediction models are computationally efficient in both learning and prediction and are interpretable.
-    These reranking models are used to score the constituent trees obtained from a parser based on context-free grammars, which are known to be highly ambiguous when it comes to parsing natural languages.
-    \Citet{collins2001convolution} and \citet{shen2003svm} define features from the training set of constituent trees by counting the occurring tree fragments.\footnote{
-        A tree fragment is a coherent part that occurs in a constituent tree.
-        Each subtree is a tree fragment, and beyond that, a fragment may also end at an inner node.
-        E.g.\@ \(\cn{s} (\cn{vp} (\cn{vp} \tn{was}), \cn{np})\) is a fragment in our running example ``where the survey was carried out.''
-        As there is a vast amount of such fragments in a whole treebank, \citet{collins2001convolution} define a kernel function that counts the tree fragments occurring commonly in two constituent trees.
-        Using tree fragments relates this strategy to the approach of \emph{data-oriented parsing} \citep{Bod92}.
-    }
-    \Citet{collins05} and \citet{charniak2005coarse} define a hand-crafted set of feature patterns that are instantiated using the constituent trees in a training set.
-    These methods used their rerankers for a pick among a sequence of \(n\) best constituent trees.
-    \Citet{huang2008forest} introduced an approach that applies the reranking mechanism to a parse chart, practically eliminating the restriction to a limited number of constituent trees.
-    However, this is only an approximative solution.
-    The general training procedure for the reranker is shared among the approaches:
-        Parse charts or \(n\) best sequences of constituent trees are obtained from sentences in the training set with an off-the-shelf parser and context-free grammars that are obtained from the training set as well.
-        To simulate disjoint data used for obtaining the grammar instance and parsing the sentences (but both coming from the training set), \citeauthor{huang2008forest} defines hold-out data by the principle of cross-validation.
-        This obtained data is used to extract the features and train a discriminative classifier for deciding among the candidate parse trees.
-
-    Another track that fits into the concept of reranking is coarse-to-fine parsing approaches with grammar formalisms.
-    These approaches define pipelines with multiple parsing stages and a coarser/finer relation on the used grammar formalism or instances, respectively.
-    Comparing two stages, the earlier uses a coarser and the later a finer formalism/instance; the latter stage uses the results of its predecessors to filter unviable items during its parsing process; we consider each stage after the first a reranking process that refines the result of the previous one.
-    \Citet{Cha06} use probabilistic context-free grammars for parsing.
-    They define the coarser/finer relation over the nonterminal symbols.
-    They start with defining a usual (binarized and Markovized) treebank grammar at the finest level and construct a coarser grammar by replacing nonterminal symbols with equivalence classes.
-    This is repeated three times in total; there are four stages. The coarsest stage uses merely one nonterminal (next to an artificial root nonterminal).
-    \Citet{CraSchBod16} uses three different probabilistic grammar formalisms for parsing: context-free grammars, \abrv{lcfrs}, and data-oriented parsing, which are considered in that order from coarse to fine.
-    Both approaches describe a filtering mechanism by relating nonterminals (and thus parse items) between stages and testing in the finer stage if the related parse item exists or is better than some threshold weight.
-    \Citet{Denkinger17} used similar techniques to mimic the coarse-to-fine parsing approach in automata formalisms instead of grammar formalisms.
-    Together, we implemented a coarse-to-fine parser that utilizes an automata characterization for \abrv{lcfrs} in two stages, one with a context-free approximation and another refining the results by rejecting inappropriate derivations \citep{RupDen19}.
-
-    In this work, we rerank constituent trees using the \defabrv{discontinuous data-oriented parsing}{disco-dop} formalism, which was characterized as an instance of \abrv{lcfrs} with latent annotations \citep[Section~4]{Cra11} and hence hybrid grammars \citep[Section~8.5.1]{Geb20}.
-    The formalism was introduced by \citet{Cra11} as a generalization of data-oriented parsing \citep{Bod92} to the case of discontinuous constituent structures, as its name suggests.
-    The grammars consist of constituent tree fragments with substitution sites at leaves that carry nonterminal symbols.
-    To accommodate the discontinuities, each tree fragment is complemented by an \abrv{lcfrs} composition that restricts the substitution in consideration of the terminal symbols occurring in the tree fragments.
+    In this work, we rerank constituent trees using the \defabrv{discontinuous data-oriented parsing}{disco-dop} formalism.
+    Disco-dop has been characterized as an instance of \abrv{lcfrs} with latent annotations \citep[Section~4]{Cra11} and hence also hybrid grammars \citep[Section~8.5.1]{Geb20}.
+    The formalism was introduced by \citet{Cra11} as a generalization of data-oriented parsing \citep{Bod92} to the case of discontinuous constituent structures.
+    Such a grammars consist of constituent tree fragments with substitution sites at leaves that carry nonterminal symbols.
+    To accommodate discontinuities, each tree fragment is complemented by an \abrv{lcfrs} composition that restricts the substitution in consideration of the terminal symbols occurring in the tree fragments.
     \Cref{ex:dop} shows an example of a disco-dop grammar.
     Following \citet{San11}, \citet{Cra11}, we use the \emph{double dop} extraction approach for discontinuous constituent trees.
     It extracts rules for each constituent tree fragment in the training set that occurs at least twice.
     We restrict the fragments such that they do not include tokens from the constituent trees but end at the \abrv{pos} symbols.
     We estimate probabilistic weights for each rule by conditioning on the \abrv{lhs} nonterminal/root constituent symbol.
-    However, in contrast to the coarse-to-fine approach described by \citet{Cra11}, we do not define a filtering mechanism based on the parse chart from the previous part of the parsing pipeline but view the disco-dop reranking as a completely separate process for weighting each single constituent tree in a \(k\) best parsing sequence.
+    However, in contrast to the coarse-to-fine approach described by \citet{Cra11}, we do not define a filtering mechanism based on the parse chart from the previous part of the parsing pipeline but view the disco-dop reranking as a completely separate process for weighting each single constituent tree in an \(n\) best parsing sequence.
     Therefore, we augment the usual parsing procedure for \abrv{lcfrs} (which can be used for disco-dop) to only produce derivations for the input constituent tree by matching its nodes.
     Moreover, we slightly diverge from the weight structure that we use for parsing with the supertags:
         In this case, we do not use the Viterbi-equivalent sum and maximum operations with logarithms of probabilistic values but the probabilistic product and sum operations.

@@ -28,7 +28,6 @@
     Specifically, we will cover three approaches that gained traction in the discontinuous parsing community.
     As the parsers discussed in the previous two subsections, they are all built around discriminative models (artificial neural networks, to be precise).
 
-            %%%% CONTINUE HERE
     \subsection{Grammar-based Parsing}\label{sec:literature:grammar}
     Grammar formalisms are closely tied to the concept of constituency analysis in natural language.
     \Citet{Cho56} laid the theoretical framework for the task and introduced grammar formalisms to explain the local relations within constituent trees.
@@ -129,6 +128,48 @@
     % They introduced the \emph{reranking} mechanism that assesses each constituent tree in a \(k\)-best sequence found using a probabilistic context-free grammar.
     % During this procedure, they compute a score based on extracted \emph{features} for each tree.
     % Their set of features includes very local properties, such as the grammar rules occurring in a tree, but also
+
+    \subsection{Parsing with Reranking}\label{sec:references:reranking}
+    Reranking has traditionally been used in information retrieval and recommender systems.
+    Both are disciplines in machine learning that focus on finding matching information resources for queries or suggestions for individuals, respectively.
+    The approach aims at refining matches obtained in a query by a prior prediction model \citep{carbonell1998use,adomavicius2009toward}.
+    This section, however, focuses on its use in the field of constituent parsing.
+
+    \Citet{collins2001convolution,shen2003svm,collins05} transferred the concept of reranking to parsing natural languages.
+    They proposed \emph{reranking models} that assess candidate constituent trees in conjunction with prior scores to refine inaccurate parsing results.
+    Their reranking models consist of two parts:
+        A \emph{feature extraction} procedure that maps each constituent tree into a vector, and a \emph{scoring function} that maps each such vector to a confidence value.
+    In contrast to the grammar formalisms that were used in parsing at that point, the feature extraction procedures could access the structure of the whole constituent tree to model linguistically motivated properties.
+    The latter part has been realized either as a support vector machine or as a perceptron, because these prediction models are computationally efficient in both learning and prediction, and they are interpretable.
+    \Citet{collins2001convolution} and \citet{shen2003svm} defined features from the training set of constituent trees by counting the occurring tree fragments.\footnote{
+        A tree fragment is a coherent part that occurs in a constituent tree.
+        Each subtree is a tree fragment, and beyond that, a fragment may also end at an inner node.
+        E.g.\@ \(\cn{s} (\cn{vp} (\cn{vp}\, \tn{was}), \cn{np})\) is a fragment in our running example ``where the survey was carried out.''
+        As there is a vast amount of such fragments in a whole treebank, \citet{collins2001convolution} define a kernel function that counts the tree fragments occurring commonly in two constituent trees.
+        Using tree fragments relates this strategy to the approach of \emph{data-oriented parsing} \citep{Bod92}.
+    }
+    \Citet{collins05} and \citet{charniak2005coarse} defined a hand-crafted set of feature patterns that they instantiated using the constituent trees in a training set.
+    They used these reranking models to pick a constiutent tree among a sequence of \(n \in \DN_+\) best parses; this sequence was obtained using a weighted context-free grammar.
+    \Citet{huang2008forest} introduced an approach that applies the reranking mechanism to a parse chart, practically eliminating the restriction to a limited number of \(n\) candidate constituent trees.
+    However, they only presented an approximative solution.
+    The general training procedure for the reranker is shared among the approaches:
+        Parse charts or \(n\) best sequences of constituent trees are obtained from sentences in the training set with an off-the-shelf parser and context-free grammars that are obtained from the training set as well.
+        To simulate disjoint data used for obtaining the grammar instance and parsing the sentences (but both coming from the training set), \citeauthor{huang2008forest} defines hold-out data by the principle of cross-validation.
+        This obtained data is used to extract the features and train a discriminative classifier for deciding among the candidate parse trees.
+
+    Another track that fits into the concept of reranking involves coarse-to-fine parsing approaches with grammar formalisms.
+    These approaches define pipelines with multiple parsing stages and a coarser/finer relation on a set of grammar instances that they used for parsing.
+    Comparing two stages, the earlier uses a coarser and the later a finer grammar intance; the latter stage uses the results of its predecessors to filter unviable items during its parsing process.
+    We consider each stage after the first a reranking process that refines the result of the previous one.
+    \Citet{Cha06} used probabilistic context-free grammars for parsing and defined the coarser/finer relation over the nonterminal symbols.
+    They started with defining a usual (binarized and Markovized) treebank grammar at the finest level and construct a coarser grammar by replacing nonterminal symbols with equivalence classes.
+    The construction was repeated three times in total; there were four stages.
+    The coarsest stage had merely one nonterminal (next to an artificial root nonterminal).
+    \Citet{CraSchBod16} used three different probabilistic grammar formalisms for parsing: context-free grammars, \abrv{lcfrs}, and data-oriented parsing, which are considered in that order from coarse to fine.
+    Both approaches describe a filtering mechanism by relating nonterminals (and thus parse items) between stages and testing in the finer stage if the related parse item exists or is better than some threshold weight.
+    \Citet{Denkinger17} used similar techniques to mimic the coarse-to-fine parsing approach in automata formalisms instead of grammar formalisms.
+    Together, we implemented a coarse-to-fine parser that utilizes an automata characterization for \abrv{lcfrs} in two stages, one with a context-free approximation and another refining the results by rejecting inappropriate derivations \citep{RupDen19}.
+    These approaches share that they use reranking (or coarse-to-fine pipelines, respectively) primarily with the aim for efficiencient parsing, as opposed to the aim to increase accuracy in the first set of approaches.
 
 
     \subsection{Bottom-up and Top-down Parsing with Discriminative Scoring}\label{sec:literature:chart}
