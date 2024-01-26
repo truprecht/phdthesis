@@ -12,22 +12,23 @@
 
     \subsection{Supertag Extraction Parameters}
     The following are parameters that must be specified to extract supertag blueprints.
-    Some of them can be associated with the structure of the grammar rules contained in the extracted blueprints, such as the grammar formalism, rank transformation strategy, and guide constructor, and others with the granularity (cf.\@ \cref{sec:reranking}) of the extracted supertag blueprints, such as the Markovization parameters as well as the nonterminal constructors.
+    Some of them can be associated with the structure of the grammar rules contained in the extracted blueprints, such as the grammar formalism, rank transformation strategy, and guide constructor, and others with the granularity of the extracted supertag blueprints, such as the Markovization parameters as well as the nonterminal constructors.
     The following list of hyperparameters gives a short description and viable values for each option involved in extracting supertag blueprints.
-    Generally, we will investigate configurations for all of these parameters by experimenting with each combination of parameter values. This is called grid search and is further explained in \cref{sec:gridsearch}.
+    Generally, we will investigate configurations for all of these parameters by experimenting with each combination of parameter values.
+    This is called grid search and is further explained in \cref{sec:gridsearch}.
 
     \paragraph*{Grammar Formalism}
     Our experiments concern hybrid grammar and \abrv{dcp} supertags using the extraction procedure in \cref{sec:extraction:guided}.
     We omit \abrv{lcfrs} supertags as they are an instance of the hybrid grammar supertags that can be achieved with specific extraction parameters as described in \cref{sec:extraction:lcfrs}, namely the vanilla nonterminal constructor and the vanilla guide constructor.
 
     \paragraph*{Rank Transformation}
-    We consider rank transformations, e.g.\@, binarization, an integral part of the extraction process for supertag blueprints from constituent treebanks.
+    We consider rank transformations as an integral part of the extraction process for supertag blueprints from constituent treebanks.
     As discussed in \cref{sec:binarization}, they are specified by the following parameters:
     \begin{itemize}
         \item A transformation strategy determines the target ranks occurring in the trees after applying the rank transformation and the order/direction in which artificial nodes are  introduced. We distinguish four strategies: left-branching binarization, right-branching binarization, head-outward binarization, and head-inward transformation.
         \item Markovization contexts determine the information used to construct artificial nodes during the rank transformation process. This information is distinguished in horizontal and vertical Markovization context, denoted by \(h\) and \(v\), respectively. Both options are assigned to natural values \(h \ge 0\) and \(v \ge 1\). Usually, in grammar-based parsing, one would investigate combinations of values in the intervals \(0 \le h \le 3\) and \(1 \le v \le 2\). We saw in preliminary investigations that the number of extracted supertag blueprints rapidly rises with values beyond the minimal \(h = 0\) and \(v = 1\), negatively impacting the supertag prediction accuracy \citep{Rup22}. We will restrict our experiments to the three least combinations \((h, v) \in \{(0,1), (1,1), (0,2)\}\).
-        \item Direction markers are an extension for the artificial nodes constructed during a rank transformation to illustrate the direction/order in which they were introduced. This extension has no effect when using a left- or right-branching binarization strategy, as markers would be fixed in those cases. That is not the case for the other two strategies, where such markers denote if a sub-derivation was extracted from a constituent to the left or to the right of a lexical head. In the case of the head-outward binarization strategy, this can be seen as a state that switches at a certain point during the derivation, where the bottom part is marked to be right-branching and the top part to be left-branching. This parameter's value is binary: whether the markers are present or not. We will investigate both values in tandem with the dependent and head guides.
-        \item A second extension for the rank transformations introduces a trailing unary node above the child that is processed last during the transformation at a node. E.g.\@ in right-branching binarization, this adds a trailing right-most binarization node. With all but the head guide constructor, this would be counter-productive as we expect constituent trees without unary nodes during the extraction of supertag blueprints. As in the previous case, this is a binary parameter, whether or not the trailing nodes are present. We will investigate both values in the experiments with the head guide constructor.
+        % \item Direction markers are an extension for the artificial nodes constructed during a rank transformation to illustrate the direction/order in which they were introduced. This extension has no effect when using a left- or right-branching binarization strategy, as markers would be fixed in those cases. That is not the case for the other two strategies, where such markers denote if a sub-derivation was extracted from a constituent to the left or to the right of a lexical head. In the case of the head-outward binarization strategy, this can be seen as a state that switches at a certain point during the derivation, where the bottom part is marked to be right-branching and the top part to be left-branching. This parameter's value is binary: whether the markers are present or not. We will investigate both values in tandem with the dependent and head guides.
+        % \item A second extension for the rank transformations introduces a trailing unary node above the child that is processed last during the transformation at a node. E.g.\@ in right-branching binarization, this adds a trailing right-most binarization node. With all but the head guide constructor, this would be counter-productive as we expect constituent trees without unary nodes during the extraction of supertag blueprints. As in the previous case, this is a binary parameter, whether or not the trailing nodes are present. We will investigate both values in the experiments with the head guide constructor.
     \end{itemize}
 
     \paragraph*{Guide Constructors}
@@ -37,7 +38,7 @@
 
     \paragraph*{Nonterminal Constructors}
     We conduct experiments using each of the three nonterminal constructors defined in \cref{sec:ntconstructors}, namely the vanilla, classic, and coarse nonterminal constructors.
-    An extension for the latter uses a table to partition a set of constituent symbols for the construction of coarse nonterminals.
+    An extension for the latter uses a table to partition the set of constituent symbols for the construction of coarse nonterminals.
     As in the previous case, we will separate the experiments with that extension into their own section to underline that such a table must be supplied as additional information to the constituent treebank.
 
     \subsection{Classifiers and Training Parameters}
@@ -52,10 +53,10 @@
         Therefore, the latter requires data in the language of the used constituent tree corpus as well as people (or architecture, more realistically) willing to train models and share them.
         One might also consider that the performance of such obtained classifiers critically depends on the data that is collected, investigated, and preprocessed by some corporations, as well as the availability and licensing agreements for the shared models.
 
-    Generally, when training classifiers with \abrv{ann}, there are numerous hyperparameters for several aspects of the architectures themselves and some parameters and extensions for the gradient descent algorithm.
-    For most of our experiments, we will use fixed values for them to ensure we can conduct and evaluate them in a reasonable time.
-    Integrating these hyperparameters into the grid search described for the values in the extraction procedure would result in a vast search space.
-    We rather use the following sources to fix the values for the training parameters:
+    Generally, when training classifiers with \abrv{ann}, there are numerous hyperparameters for several aspects in the architectures as well as parameters and extensions for the gradient descent algorithm.
+    Integrating these parameters into the grid search for the values in the extraction procedure would result in a vast search space.
+    For most of our experiments, we will use fixed values to ensure we can conduct the experiments reasonable time.
+    We use the following sources to fix the values for the training parameters:
     \begin{compactitem}
         \item There are recommended values for the training in some cases, such as the learning rate, batch size, and optimizer in fine-tuning pre-trained transformer encoders \citep{Devlin2019}.
         \item There are mechanisms integrated into the training procedure that tune some hyperparameters on the fly, such as \texttt{AnnealOnPlateau} that adapts the learning rate while observing the prediction accuracy on the development set during the training. In most cases, the parameters should initialized with good enough values, but we do not need to find a perfect fit to reach a satisfactory outcome.
@@ -82,7 +83,7 @@
     \paragraph*{Training.}
     We consider training parameters as all options and configurations for the gradient-descent algorithm  used to tune the model parameters of the \abrv{ann} models.
     \Cref{sec:preliminaries:nn} expands on them with short elaborations on their effect on the training.
-    We encounter the following list of parameters in our experiments; each is given with its value:
+    We use the following parameters for the training the \abrv{ann} models:
     \begin{itemize}
         \item we use \texttt{AdamW} as optimizer with default configuration ($\beta_1 = 0.99$ and $\beta_2 = 0.999$),
         \item we use \texttt{AnnealOnPlateau} as learning rate scheduler with patience 1,
@@ -92,9 +93,7 @@
         \item we use cross entropy loss.
     \end{itemize}
     All values are chosen as follows:
-    There are advised values for the parameters used in fine-tuning the pre-trained model by \citet{Devlin2019}.
-    We adopt them in our grid search and training of the final model and the same specific values used in prior experiments \citep[cf.\@][]{Rup22}.
-    We use the same values for the supervised model as in these prior experiments.
-    They originate from those reported by \citet{Cor20} and \citet{StaSte20} who used the same model in their experiments.
-
+    Most parameters involved in fine-tuning the pretrained model (optimizer, learning rate, number of epochs, weight decay) are filled with advised values by \citet{Devlin2019}.
+    For the supervised model, we orientate towards the parameter values in the experiments by \citet{Cor20} and \citet{StaSte20}, as they used the same architecture.
+    Generally, we use the same parameter values as in earlier experiments \citep{Rup22}.
 \end{document}

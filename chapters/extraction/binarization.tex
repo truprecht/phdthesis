@@ -31,12 +31,13 @@
     \end{inparaenum}
     The merged symbols must not occur in the original alphabets of constituent and \abrv{pos} symbols and must be unique for each sequence of merged constituent/\abrv{pos} symbols.
     Here, the merged nodes are denoted by concatenating the symbols interleaved by \cn{+}.
-    E.g.\@ a chain of unary nodes ``\cn{root}'', ``\cn{s}'' that is merged with the \abrv{pos} symbol ``\cn{\$.}'' is the new symbol ``\cn{root+s+\$.}''.
+    For instance, a chain of unary nodes ``\cn{root}'', ``\cn{s}'' that is merged with the \abrv{pos} symbol ``\cn{\$.}'' is the new symbol ``\cn{root+s+\$.}''.
     This approach of handling nodes with one successor is done after dealing with nodes with more than two successors.
     Because this is common among all binarization strategies, we view only the other case as part of the strategies.
 
     Each node carrying \( n > 2 \) successors is split into \( n-1 \) binary nodes that are connected in some parent-child constellation.
-    The topmost of these nodes will carry the label of the original node. Each following is a new symbol (i.e., the symbol must not be a constituent symbol in the original tree) determined by the binarization strategy.
+    The topmost of these nodes will carry the label of the original node.
+    Each following is a new symbol (i.e., the symbol must not be a constituent symbol in the original tree) determined by the binarization strategy.
     The strategy also dictates how each node is split and how the new nodes are connected.
     Because all binarization strategies are defined per node, we will formalize each binarization strategy as a function that replaces the root node in a constituent tree (if it has more than two successors) with a collection of binary nodes.
     The function is then called recursively to handle each subtree.
@@ -47,18 +48,6 @@
         \item Each node originating from a merge of unary nodes is expanded by replacing it with the chain of unary nodes.
         \item Each \abrv{pos} symbol originating from a merge is replaced by the trailing pos symbol, and the sequence of unary nodes is inserted atop the corresponding leaf in the constituent structure.
     \end{compactenum}
-
-    %    \begin{definition}
-        %        Let \(\varSigma, \varPi\) and \(\varGamma\) be some alphabets.
-        %        A binarization strategy \(b\) for \(\CT_{\varGamma \varPi \varSigma}\) defines
-        %        \begin{compactenum}
-            %            \item an alphabet of constituent symbols \(b(\varGamma)\),
-            %            \item an alphabet of \abrv{pos} symbols \(b(\varPi)\),
-            %            \item a function \(f\colon \CT_{\varGamma \varPi \varSigma} \to \CT_{b(\varGamma) b(\varPi) \varSigma}\) that transforms a constituent tree into a constituent tree with a binary root, and
-            %            \item a partial function \(f^{-1} \colon \CT_{b(\varGamma) b(\varPi) \varSigma} \parto \CT_{\varGamma \varPi \varSigma}\) that reverses the transformation \(f\).
-            %        \end{compactenum}
-        %        The binarization operation, denoted just by \(b\), extends the function \(f\) such that \todo{formal definition is complicated, as we deal with constituent trees}
-        %    \end{definition}
 
     \paragraph{Left- or Right-Branching Binarization.}
     These strategies replace each node with \( n>2 \) successors with a series of \( n-1 \) binary nodes.
@@ -84,7 +73,7 @@
     In bottom-up parsing processes, the bottom-most nodes are explored first, and the constituent symbol is determined.
     This binarization strategy can be advantageous in such settings, as the first explored node contains the lexical head.
     We use distinct symbols for the introduced top left-branching nodes and the bottom right-branching nodes to avoid ambiguities during parsing with the extracted grammar instances.
-    In these symbols, the left symbol \(\langle\) is doubled in left-branching nodes, and the right symbol \(\rangle\) is doubled in right-branching nodes.
+    In these constituent symbols, the left symbol ``\scalebox{.4}[.8]{\textless{}}'' is doubled in left-branching nodes, and the right symbol ``\scalebox{.4}[.8]{\textgreater{}}'' is doubled in right-branching nodes.
     We call these \emph{directive indicators} for artificial nodes; \cref{fig:ex:markovization} shows an example involving these indicators.
     For each constituent tree that is binarized using the head-outward strategy, there is a canonical head assignment that is obtained by additionally assigning each artificial node to its origin's head; the first and last tree in \cref{fig:ex:pilot} illustrate an example.
     The head-outward strategy is the only investigated rank transformation that obtains binary trees complemented with a head assignment.
@@ -222,7 +211,7 @@
     These artificial nodes and the \(i\)th child are attached to \(\rho\), composing a node with at most three non-leaf successors.
     For the resulting tree, there is a canonical head assignment that preserves the head for each non-artificial node; each artificial node is assigned to the head of the left successor in case of nodes constructed using the right-branching strategy and vice versa.
     The process is extended with Markovization and directive indicators for the artificial nodes in the same manner as the binarization strategies.
-    Moreover, we add an artificial (unary) node concluding each sequence of right-branching artificial nodes as a parent of the \(i-1\)th and \(n\)-th successor.
+    Moreover, we add an artificial (unary) nodes concluding each sequence of right-branching artificial nodes as a parent of the \(i-1\)th and \(n\)-th successor.
     \Cref{fig:ex:head-inward} shows an example of a constituent structure obtained by this rank transformation.
 %    \begin{itemize}
 %        \item with Markovization annotations at each node,

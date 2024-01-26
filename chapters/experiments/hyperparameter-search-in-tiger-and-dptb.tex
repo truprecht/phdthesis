@@ -22,7 +22,7 @@
 
     \begin{table}
         \caption{\label{tbl:experiments:dptb:size}
-        The number of extracted supertag blueprints from the training portion ($N$) and the number of extracted supertag blueprints in the dev portion that do not appear in the training portion ($\overline{N}$) using the \dptb{} treebank.
+        The number of extracted hybrid grammar supertag blueprints from the training portion ($N$) and the number of extracted supertag blueprints in the dev portion that do not appear in the training portion ($\overline{N}$) using the \dptb{} treebank.
         }
         \centering
         \setlength{\tabcolsep}{4pt}
@@ -41,7 +41,7 @@
 
     \begin{table}
         \caption{\label{tbl:experiments:dptb}
-        The parsing f1 score, the accuracy of predicted supertag blueprints, parse time ($t$), and number of parse fails ($\lightning$) in \abrv{dptb}'s development set for both prediction models (Mod.), combinations of guide and nonterminal constructors as well as vertical Markovization context ($v$) for the used rank transformation.
+        The parsing f1 score, the accuracy of predicted hybrid grammar supertag blueprints, parse time ($t$), and number of parse fails ($\lightning$) in \abrv{dptb}'s development set for both prediction models (Mod.), combinations of guide and nonterminal constructors as well as vertical Markovization context ($v$) for the used rank transformation.
         }
         \centering
         \setlength{\tabcolsep}{4pt}
@@ -72,7 +72,7 @@ sup. & coarse  & \(2\)  & 89.97 & 0.82 & 15.01 & 5 & 88.87 & 0.80 & 15.95 & 38 &
     However, we see two combinations that stand out from the remainder:
     \begin{compactitem}
         \item the strict guide and coarse nonterminal constructors with $v=2$, and
-        \item the head guide and coarse guide constructor with $v=1$.
+        \item the head guide and coarse nonterminal constructor with $v=1$.
     \end{compactitem}
     These two achieve the best parsing qualities with the pre-trained model; with the supervised model, the first case also reports the best parsing quality.
     While the number of parse failures is relatively high in the first case using the supervised model, the second gives a good compromise between parsing and prediction quality and a low number of parse failures with both prediction models.

@@ -21,7 +21,7 @@
         \item A supervised model as specified in \cref{sec:models} is trained for $10$ epochs and with \texttt{AdamW} as optimizer as well.
     \end{compactitem}
 
-    In the following experiment of this section, we will compare the experiments for each combination of hyperparameter values in multiple dimensions:
+    In this section, we compare experiments with each combination of hyperparameter values in the following dimensions:
     \begin{enumerate}
         \item The number of supertag blueprints extracted from the training portion of \negra{} (denoted by \(N\)) and the number of \emph{unseen} supertag blueprints, i.e.\@ blueprints that occur in the development portion but not in the training portion (denoted by \(\overline{N}\), smaller values are considered better).
         \item The \emph{perplexity of the unigram distribution} of supertag blueprints in the training and development portions of \negra{} (denoted by \(\mathit{UP}\), smaller values are considered better). We consider this value as a measure of diversity in the extracted supertag blueprints and, hence, the complexity of the supertag prediction in the given data. It does not only consider the number of occurring blueprints but also how often they occurred in the data. Higher values hint that there are supertag blueprints that appear rarely and, therefore, are harder to predict.
@@ -35,20 +35,18 @@
     The results of the experiments are presented in tables that contain the above values as assessment.
 
     \subsection{Guides, Nonterminals, and Binarization}\label{sec:gridsearch:nts-guides}
-    For the first steps in our search for values for our hyperparameters, we consider two chunks of parameters in succession: the first chunks are the nonterminal and guide constructors, and the second are nonterminal and guide constructors as well as the rank transformation parameters (i.e.\@ the binarization strategy and Markovization parameters).
-    At first glance, the first chunk seems redundant because it is included in the second.
-    But we use it to dismiss some guide constructors in the following, which considerably restricts the number of combinations for hyperparameter values.
-    In this section, we do not list the parse time for the development set in the results of each experiment, as they are all quite similar, between 4 and 6 seconds, and we do not consider it as a value we want to base our decisions on.
+    For the first steps in our search for values for our hyperparameters, we consider two chunks of parameters in succession: the first chunks are the nonterminal and guide constructors, and the second are guide and nonterminal constructors as well as the rank transformation parameters (i.e., the binarization strategy and Markovization parameters).
+    We use the results of the first chunk to dismiss some some guide constructors in the following, which considerably restricts the number of combinations for hyperparameter values.
+    In this section, we do not list the parse time for the development set in the results of each experiment, as they are all quite similar, between 4 and 6 seconds; we do not consider it as a value we want to base our decisions on.
 
     In the first set of experiments, we conduct a grid search for the following hyperparameter values:
     \begin{compactitem}
-        \item the vanilla, strict, least, near, and dependent guide constructors, and
+        \item the vanilla, strict, least, and near guide constructors, and
         \item the vanilla, classic, and coarse nonterminal constructors.
     \end{compactitem}
     The rest of the parameters are fixed as follows:
     \begin{compactitem}
         \item the constituent trees are binarized with Markovization \(h=0\) and \(v=1\) (i.e.\@ no binarization context) with the right-branching strategy in the case of the vanilla, strict, least and near guide constructors,
-        \item the constituent trees are binarized with Markovization \(h=0\) and \(v=1\) (i.e.\@ no binarization context) with head-outward strategy in the case of the dependent constructor,
         \item the extraction produces hybrid grammar supertags and
         \item coarse nonterminals are produced using the first character of constituent symbols (there is no coarse table).
     \end{compactitem}
@@ -77,7 +75,7 @@
     That was expected as the sets of constructed nonterminals are coarser in the same order.
     The number of unseen blueprints and the perplexity follow the same trend as we expected.
     For the guide constructors, we generally see the least set of extracted blueprints using the strict guide,  closely followed by the vanilla guide.
-    The largest set of supertag blueprints was extracted using the dependent guide.
+    The largest set of supertag blueprints was extracted using the least guide constructor.
 
     \begin{table}
         \caption{\label{tbl:gridsearch:1:2}
@@ -120,7 +118,6 @@
     \begin{compactenum}
         \item Experiments with the near and least guides seem to involve less accurate predictions as well as less accurate parsers than with the other three guides.
         \item We observe slightly but also consistently better results using the strict guide constructor over the vanilla one.
-        \item We observe similar results for the dependent guide and the vanilla guide constructors. The scores with the dependent guide constructor seem to improve considerably with coarser nonterminals.
     \end{compactenum}
 
     Due to (i), we will dismiss the near and least guide constructors entirely for the remainder of the experiments since they have been shown to produce relatively large sets of supertag blueprints, and we suppose the supertags are more challenging to predict than the ones produced with the other constructors.
@@ -132,13 +129,12 @@
     The second chunk of hyperparameters adds binarization parameters to the grid.
     We consider the following hyperparameter values:
     \begin{compactitem}
-        \item the strict and dependent guide constructors,
         \item the classic and coarse nonterminal constructors,
-        \item binarization with the left-branching, right-branching, or head-outward strategy, respectively, with Markovization parameters \(h \in \{0,1\}\) and \(v \in \{1,2\}\) in the case of the strict guide constructor, and
-        \item binarization with the head-outward strategy and the same Markovization parameters \(h \in \{0,1\}\) and \(v \in \{1,2\}\) in the case of the dependent guide constructor.
+        \item binarization with the left-branching, right-branching, or head-outward strategy, each with the usual Markovization parameters \((h,v) \in \{(0,1), (1,1), (0,2)\}\).
     \end{compactitem}
     The rest of the parameters are fixed as follows:
     \begin{compactitem}
+        \item we use the strict guide constructor,
         \item the extraction produces hybrid grammar supertags and
         \item coarse nonterminals are produced using the first character of constituent symbols (there is no coarse table).
     \end{compactitem}
@@ -169,9 +165,7 @@ coarse  & \(1\) & \(1\)    & 3234 & 48 & 255.45 & 3939 & 65 & 307.16 & 4085 & 71
     Considering the Markovization parameters, we observe an apparent (and expectable) growth of the set of extracted blueprints with greater values.
     This growth is considerably less dramatic in the case of coarse terminals.
     The trends we encountered in the earlier set of experiments seem to continue:
-        With configurations with greater sets of extracted supertags, there are also more unseen supertags in the development portion, and the perplexity is noticeably greater.
-        The sets of supertags extracted with dependent guides are consistently larger than with the strict guide.
-    The latter observation even holds in the case of head-outward binarization.
+    In configurations with greater sets of extracted supertags, there are also more unseen supertags in the development portion, and the perplexity is noticeably greater.
 
 
     \begin{table}
@@ -217,16 +211,13 @@ coarse  & \(1\) & \(1\) & 89.82 & 0.88 &  8 & 88.98 & 0.87 & 23 & 89.29 & 0.87 &
     \end{table}
 
     With both nonterminal constructors, we observe decreasing supertag prediction and parsing accuracy as well as more parse fails with greater Markovization values in both \cref{tbl:gridsearch:2:2,tbl:gridsearch:2:3}.
-    With the strict guide, there are only minor differences in the results for left- and right-branching and head-outward binarization.
+    However, there are only minor differences in the results for left- and right-branching and head-outward binarization.
     They seem slightly but consistently worse with binarization strategies other than right-branching, and we suppose there is no significant benefit in any of them.
 
     Concluding the observations, we consider classic and coarse nonterminals only in conjunction with Markovization \(h=0\) and \(v=1\) in the following.
     We will restrict ourselves to the right-branching strategy for binarization due to slightly better results and smaller sets of extracted supertag blueprints.
-    This leaves us with the following \(4\) configurations that we use in the remaining sections:
-    \begin{itemize}
-        \item the dependent guide and head-outward strategy for binarization, or the strict guide and right-branching strategy for binarization, each with either
-        \item classic or coarse nonterminals and Markovization parameters \(h=0\) and \(v=1\).
-    \end{itemize}
+    This leaves us with the following \(2\) configurations that we use in the following:
+    We continue with the strict guide and right-branching binarization strategy, with either classic or coarse nonterminals and Markovization parameters \(h=0\) and \(v=1\).
 
     \subsection{Experiments with Head and Dependent Guides}\label{sec:gridsearch:head}
     This section describes a series of experiments involving the two guide constructors that utilize the lexical head assignment for constituent trees.
@@ -241,7 +232,7 @@ coarse  & \(1\) & \(1\) & 89.82 & 0.88 &  8 & 88.98 & 0.87 & 23 & 89.29 & 0.87 &
     We conduct a grid search with the following chunk of hyperparameters and values:
     \begin{itemize}
         \item We use the dependent and head guide constructor.
-        \item In the case of the head guide constructor, we either do not apply any rank transformation or transform constituent trees head-inward with Markovization parameters ($h \in \{0,1\}$ and $v \in \{1,2\}$).
+        \item In the case of the head guide constructor, we either do not apply any rank transformation or transform constituent trees head-inward with Markovization parameters $(h,v) \in \{(0,1), (1,1), (0,2)\}$.
         \item In the case of the dependent guide constructor, the trees are binarized head-outwards with the same Markovization parameters.
         \item We use the classic and coarse nonterminal constructors.
     \end{itemize}
@@ -357,6 +348,8 @@ dependent & 1 & 1                      & 79.40 & 0.84 & 4.57 & 154 & 86.67 & 0.8
     \end{itemize}
     \Crefrange{tbl:gridsearch:coarse:1}{tbl:gridsearch:coarse:3} illustrate the results in terms of statistics for the extracted supertag blueprints as well as supertag prediction and parsing accuracies in the same dimensions as before.
     The values are compared to the ones from the previous section's experiments.
+    As expected, the sets of extracted blueprints are significantly smaller with the coarse nonterminals provided by the table compared to naively constructed coarse nonterminals.
+    However, with added context by Markovization, these quickly grow to the size of the sets extracted with classic nonterminals.
 
     \begin{table}
         \caption{\label{tbl:gridsearch:coarse:1}
@@ -376,9 +369,6 @@ coarse (table) & 1 & 1 & 4463 & 77 & 333.43 & 7947 & 159 & 434.02 & 11806 & 321 
 \bottomrule
         \end{tabular}
     \end{table}
-
-    As expected, the sets of extracted blueprints are significantly smaller with the coarse nonterminals provided by the table compared to naively constructed coarse nonterminals.
-    However, with added context by Markovization, these quickly grow to the size of the sets extracted with classic nonterminals.
 
     \begin{table}
         \caption{\label{tbl:gridsearch:coarse:2}
@@ -420,15 +410,14 @@ coarse (table) & 1 & 1 & 86.97 & 0.88 & 11.90 & 7 & 85.33 & 0.86 & 13.16 & 73 & 
         \end{tabular}
     \end{table}
 
-    \Cref{tbl:gridsearch:2:2,tbl:gridsearch:2:3} suggest that the current set of experiments could not improve upon the parsing accuracy achieved by those shown in the previous section.
-    Interestingly, the parsing accuracy with predicted supertags without added Markovization context is lower than that with horizontal Markovization window \(h=1\) in the case of the strict guide constructor. The supertag prediction accuracy tends to the opposite direction and the number of parse fails is lower.
+    \Cref{tbl:gridsearch:coarse:2,tbl:gridsearch:coarse:3} suggest that the current set of experiments could not improve upon the parsing accuracy achieved by those shown in the previous section.
+    Interestingly, the parsing accuracy without added vertical Markovization context is lower than that with vertical Markovization window \(v=2\) in the case of the strict guide constructor. The supertag prediction accuracy tends to the opposite direction and the number of parse fails is lower.
     We propose the reason for this result as follows:
         With coarser sets of nonterminals, we tend to obtain more ambiguous results during the parsing process.
         In these cases, we might achieve more cases where we find any parse tree with the given set of supertag blueprints, but then the quality can suffer.
         With the nonterminals in the current set of experiments, we might have overstepped a viable degree of coarse nonterminals.
-        When we add the horizontal Markovization context, then we add back information and obtain finer nonterminals.
-        In the case of the dependent guide, the set of nonterminals is usually finer than with a strict guide, as we use a direction marker by default.
-        In both of these cases, the effect seems to disappear.
+        When we add the vertical Markovization context, then we add back information and obtain finer nonterminals.
+        In the case of the head and dependent guides, the set of nonterminals is usually finer than with a strict guide, as we use a direction marker by default.
     In the case of the dependent guide, however, the parse time without Markovization context is significantly higher than with supertags using the strict guide or with added Markovization context.
     We blame the higher ambiguity for this result as well.
 
@@ -486,7 +475,7 @@ coarse-nof   & 1181 & 9  & 97.19  & 1991 & 27 & 131.15 & 2766 & 45 & 79.70 \\
     \Cref{tbl:gridsearch:dcp:1} shows the size of the extracted sets of supertag blueprints.
     The lines marked with (hg) above the results for each nonterminal constructor show the previous experiments with hybrid grammar supertag blueprints for comparison.
     Each experiment in the three following lines can be seen as an experiment with coarser supertag blueprints than the one before:
-        First, with \abrv{dcp} instead of hybrid grammar as underlying formalism, which essentially removes the \abrv{lcfrs} composition, and then with two incrementally coarser sets of nonterminals.
+        First, we use \abrv{dcp} instead of hybrid grammar as underlying formalism, which essentially removes the \abrv{lcfrs} composition, and then with two incrementally coarser sets of nonterminals.
     The most significant change in the size of the extracted sets of blueprints comes with removing the fanout annotations (nof extension).
 
     \begin{table}
