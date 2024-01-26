@@ -1,0 +1,33 @@
+\documentclass[../../../document.tex]{subfiles}
+
+\begin{document}
+    \begin{tikzpicture}[
+            level distance=7mm,
+            font=\small,
+            sibling distance=10mm,
+            anchor=center,
+            every node/.style={text height=2.5mm},
+        ]
+
+        \begin{scope}[level distance=7.5mm]
+            \node(sbar) {\(\cn{sbar} \to (\x^1_1)\;(\cn{s})\)}
+            child {node (s) {\(\cn{s} \to (\x^1_1\,\x^2_1\,\x^1_2)\;(\cn{vp}, \cn{np})\)}
+            [sibling distance=30mm]
+                child {node (tvp) {\(\cn{vp} \to (\x_1^1, \cn{vbd}\,\x^2_1)\;(\cn{vp})\)}
+                    child {node (bvp) {\(\cn{vp} \to (\x^1_1, \cn{vbn}\, \x_2^1)\;(\cn{wh}, \cn{prt})\)}
+                    [sibling distance=23mm]
+                        child {node  (wh) {\(\cn{wh} \to (\cn{wrb})\)}}
+                        child {node (prt) {\(\cn{prt} \to (\cn{rp})\)}}}}
+                child {node (np) {\(\cn{np} \to (\cn{pt}\,\cn{nn})\)}}};
+        \end{scope}
+        \begin{scope}[font=\tiny, gray, node distance=1ex]
+            \node [right=of prt] {$w_{1\,1\,1\,2}^{(4)} = 1$};
+            \node [left=of wh] {$w_{1\,1\,1\,1}^{(4)} = 1$};
+            \node [left=of bvp] {$w_{1\,1\,1}^{(1)} = \weight(\zeta_3)$};
+            \node [left=of tvp] {$w_{1\,1}^{(1)} = \weight(\zeta_3) \cdot \weight(\zeta_5)$};
+            \node [right=of np, align=left] {$w_{1\,2}^{(1)} = \weight(\zeta_2)$ \\[1ex] $w_{1\,2}^{(5)} = 1$};
+            \node [left=of s, align=right] {$w_{1}^{(2)} = \weight(\zeta_2) \cdot \weight(\zeta_3) \cdot \weight(\zeta_5)$ \\[1ex] $w_{1}^{(5)} = \weight(\zeta_3) \cdot \weight(\zeta_5)$};
+            \node [right=of sbar, align=left] {$w_{\varepsilon}^{(1)} = \weight(\zeta_1) \cdot \weight(\zeta_2) \cdot \weight(\zeta_3) \cdot \weight(\zeta_5)$\\[1ex] \qquad\qquad \(+  \weight(\zeta_3) \cdot \weight(\zeta_4) \cdot  \weight(\zeta_5)$};
+        \end{scope}
+    \end{tikzpicture}
+\end{document}
