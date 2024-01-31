@@ -49,13 +49,13 @@
             \vectortwo{above=0ex of we-\i}{ceb-\i}
             \vectortwo{above=0px of ceb-\i}{cef-\i}
 
-            \vectortwo{above=3ex of cef-\i}{llb-1-\i}
+            \vectortwo{above=5ex of cef-\i}{llb-1-\i}
             \vectortwo{above=0px of llb-1-\i}{llf-1-\i}
 
-            \vectortwo{above=3ex of llf-1-\i}{llb-2-\i}
+            \vectortwo{above=2ex of llf-1-\i}{llb-2-\i}
             \vectortwo{above=0px of llb-2-\i}{llf-2-\i}
 
-            \vectorfive{above=3ex of llf-2-\i}{fin-\i}
+            \vectorfive{above=5ex of llf-2-\i}{fin-\i}
 
             \draw
                 (input-1-\i) edge[->] (we-\i)
@@ -79,7 +79,13 @@
         \node[left=2em of ll-1-1,font=\footnotesize] {bi-\abrv{lstm} layer};
         \node[inner sep=0, outer sep=0, fit=(llf-2-1) (llb-2-1)] (ll-2-1) {};
         \node[left=2em of ll-2-1,font=\footnotesize] {bi-\abrv{lstm} layer};
-        \node[left=2em of fin-1,font=\footnotesize] {linear layer};
+        \node[left=2em of fin-1,font=\footnotesize] {\abrv{mlp} + softmax};
+
+        \node[above left=1ex and 2em of ce-1, gray, font=\footnotesize] (do-1) {dropout};
+        \draw[dotted, gray] (do-1) -- ($(do-1-|cef-6)+(1em,0)$);
+
+        \node[above left=.7ex and 2em of ll-2-1, gray, font=\footnotesize] (do-2) {dropout};
+        \draw[dotted, gray] (do-2) -- ($(do-2-|cef-6)+(1em,0)$);
 
 
         \matrix[right=4em of input] (cinput) [matrix of nodes, outer sep=0pt, inner sep=0pt, row sep=0pt, column sep=12pt] {

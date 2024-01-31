@@ -1,17 +1,8 @@
 \documentclass[../../document.tex]{subfiles}
 
 \begin{document}
-    \section{Hyperparameters}\label{sec:hyperparameters}
-    This section describes the set of parameters that steer the procedures for the extraction of supertag blueprints as well as the training procedure for the classifier involved in the supertag prediction.
-    We will enumerate the considered hyperparameters and ranges of appropriate sets of values for them and describe how they are tuned in general.
-    The following two subsections are dedicated to two disjoint subsets of hyperparameters that we consider:
-    \begin{itemize}
-        \item Supertag extraction parameters constitute all the options for rank transformations and supertag blueprint extracion as described in \cref{sec:extraction}.
-        \item Training parameters are all options for learning a classifier for the supertag prediction for a fixed set of supertag blueprints.
-    \end{itemize}
-
-    \subsection{Supertag Extraction Parameters}
-    The following are parameters that must be specified to extract supertag blueprints.
+    \section{Extraction Hyperparameters}\label{sec:hyperparameters}
+    This section describes the set of parameters that steer the procedures for the extraction of supertag blueprints.
     Some of them can be associated with the structure of the grammar rules contained in the extracted blueprints, such as the grammar formalism, rank transformation strategy, and guide constructor, and others with the granularity of the extracted supertag blueprints, such as the Markovization parameters as well as the nonterminal constructors.
     The following list of hyperparameters gives a short description and viable values for each option involved in extracting supertag blueprints.
     Generally, we will investigate configurations for all of these parameters by experimenting with each combination of parameter values.
@@ -40,60 +31,5 @@
     We conduct experiments using each of the three nonterminal constructors defined in \cref{sec:ntconstructors}, namely the vanilla, classic, and coarse nonterminal constructors.
     An extension for the latter uses a table to partition the set of constituent symbols for the construction of coarse nonterminals.
     As in the previous case, we will separate the experiments with that extension into their own section to underline that such a table must be supplied as additional information to the constituent treebank.
-
-    \subsection{Classifiers and Training Parameters}
-    For the prediction of supertags, we use two architectures of artificial neural networks:
-    \begin{compactitem}
-        \item The \emph{supervised} architecture consists of word and character-level embeddings that are first fed into a bidirectional \abrv{lstm} and then a feed-forward layer to obtain a score for each supertag blueprint at each sentence position.
-        \item The \emph{pretrained} architecture exploits a pretrained transformer encoder (e.g.\@ \abrv{bert}) to obtain embeddings that are fed into a single feed-forward layer to compute a score for each supertag at each sentence position.
-    \end{compactitem}
-    Both architectures' concepts and origins are explained in \cref{sec:preliminaries:nn}.
-    We will generally conduct each experiment with both architectures as they come with different prerequisites:
-        While the supervised architecture is trained exclusively with information from the training portion of an input constituent treebank, the pre-trained architecture relies on models that are shared within the \abrv{nlp} community, which were already trained using large corpora of natural language sentences.
-        Therefore, the latter requires data in the language of the used constituent tree corpus as well as people (or architecture, more realistically) willing to train models and share them.
-        One might also consider that the performance of such obtained classifiers critically depends on the data that is collected, investigated, and preprocessed by some corporations, as well as the availability and licensing agreements for the shared models.
-
-    Generally, when training classifiers with \abrv{ann}, there are numerous hyperparameters for several aspects in the architectures as well as parameters and extensions for the gradient descent algorithm.
-    Integrating these parameters into the grid search for the values in the extraction procedure would result in a vast search space.
-    For most of our experiments, we will use fixed values to ensure we can conduct the experiments reasonable time.
-    We use the following sources to fix the values for the training parameters:
-    \begin{compactitem}
-        \item There are recommended values for the training in some cases, such as the learning rate, batch size, and optimizer in fine-tuning pre-trained transformer encoders \citep{Devlin2019}.
-        \item There are mechanisms integrated into the training procedure that tune some hyperparameters on the fly, such as \texttt{AnnealOnPlateau} that adapts the learning rate while observing the prediction accuracy on the development set during the training. In most cases, the parameters should initialized with good enough values, but we do not need to find a perfect fit to reach a satisfactory outcome.
-        \item Some hyperparameters, such as the supervised architecture, are fixed to values that coincide (or are close to) with those used in related work.
-        \item The remainder of hyperparameters was tuned using a sample of a data set with supertag blueprints that were extracted using an arbitrary configuration of extraction parameters.
-    \end{compactitem}
-    The following list gives the considered hyperparameters and how we determine a reasonable value for training.
-
-    \paragraph*{Architecture.}
-    The architecture for the pre-trained model was proposed by \citet{Devlin2019}.
-    The more significant part of the model is a pre-trained module that we can only use as is, and the number of supertag blueprints determines the size of the topmost feed-forward layer.
-    Hence, no undetermined hyperparameters for the architecture are left in this case.
-    The  supervised model is based on a \abrv{bilstm} encoding architecture and was introduced by \citet{kiperwasser2016simple}.
-    It has been used for parsing, in particular for discontinuous constituents \citep{kiperwasser2016simple,CoaCoh19,StaSte20,Cor20}.
-    We consider the following hyperparameters to the modules and their assigned values as fixed in our experiments:
-    \begin{itemize}
-        \item the size of the word and character-level embeddings are 256 and 128, respectively,
-        \item the minimal required number of token occurrences to constitute an own word embedding (otherwise it is replaced by a collective unknown word embedding) is 3,
-        \item there are 2 \abrv{bilstm} layers on top of each other,
-        \item dropout probability between the modules is 0.3.
-    \end{itemize}
-    All values were chosen close to those used by \citet{Cor20} and those used by our prior experiments \citep{Rup22}.
-
-    \paragraph*{Training.}
-    We consider training parameters as all options and configurations for the gradient-descent algorithm  used to tune the model parameters of the \abrv{ann} models.
-    \Cref{sec:preliminaries:nn} expands on them with short elaborations on their effect on the training.
-    We use the following parameters for the training the \abrv{ann} models:
-    \begin{itemize}
-        \item we use \texttt{AdamW} as optimizer with default configuration ($\beta_1 = 0.99$ and $\beta_2 = 0.999$),
-        \item we use \texttt{AnnealOnPlateau} as learning rate scheduler with patience 1,
-        \item the base learning rate is $5\cdot 10^{-5}$ for the pre-trained model and $10^{-3}$ for the supervised model,
-        \item the maximum number of epochs is ten during hyperparameter search and also for the final pre-trained model, in the case of the final supervised model, it is 32,
-        \item the weight decay is 0.01 for the pre-trained model and 0.1 for the supervised model, and
-        \item we use cross entropy loss.
-    \end{itemize}
-    All values are chosen as follows:
-    Most parameters involved in fine-tuning the pretrained model (optimizer, learning rate, number of epochs, weight decay) are filled with advised values by \citet{Devlin2019}.
-    For the supervised model, we orientate towards the parameter values in the experiments by \citet{Cor20} and \citet{StaSte20}, as they used the same architecture.
-    Generally, we use the same parameter values as in earlier experiments \citep{Rup22}.
+    Moreover, in the case of \abrv{dcp} supertag, we investigate the nof and disc extensions for the nonterminal constructors that remove or change the fanout substript of constructred nonterminals, respectively.
 \end{document}

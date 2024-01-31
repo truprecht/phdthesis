@@ -13,13 +13,12 @@
     Our modification for grid search is that we do not consider the whole set of hyperparameters at the same time during grid search, but we determine chunks of hyperparameters and conduct the usual procedure for each chunk; the union over all chunks is the set of all hyperparameters.
     As we investigate one chunk after another, we use preliminary results to restrict the sets of hyperparameter values in the experiments for the following chunks.
     We introduce these modifications because the whole set of hyperparameter value combinations is so large that we cannot conduct and evaluate the experiments in a reasonable time, and the number of hyperparameters would hardly allow us to present the results appropriately.
-    In each experiment, we train two models for the supertag prediction with a set of fixed training hyperparameters:
+    In each experiment, we train two following models for the supertag prediction with a set of fixed training hyperparameters as explained in \cref{sec:models}:
     \begin{compactitem}
-        \item A pre-trained architecture model utilizing a \abrv{bert} model as embedding \footnote{
-            Specifically, we use \texttt{bert-based-cased-german} for the German \negra{} treebank during the hyperparameter search.
-        } is trained using the usual suggested values for the learning rate ($5\cdot 10^{-5}$), number of epochs ($10$), dropout probability at \(10^{-2}\), and \texttt{AdamW} as optimizer.
-        \item A supervised model as specified in \cref{sec:models} is trained for $10$ epochs and with \texttt{AdamW} as optimizer as well.
+        \item A \emph{pre-trained model} utilizing a \emph{bert-base} model as embedding. (Specifically, we use \emph{bert-base-cased-german} for the German \negra{} treebank during the hyperparameter search.)
+        \item A \emph{supervised model} without any pretrained modules.
     \end{compactitem}
+    During this grid search, both models are trained for 10 epochs; we chose this rather small amount of training iterations to conduct the experiments in reasonable time.
 
     In this section, we compare experiments with each combination of hyperparameter values in the following dimensions:
     \begin{enumerate}

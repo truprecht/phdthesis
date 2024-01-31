@@ -1,19 +1,14 @@
 \documentclass[../../document.tex]{subfiles}
 
 \begin{document}
-    \newcommand{\staglist}[2][4cm]{\tikz[every node/.style={text width=#1, draw, rounded corners, line width=.3mm}]{%
+    \newcommand{\staglist}[2][4cm]{\tikz[every node/.style={text width=#1, draw, rounded corners, line width=.3mm, align=left}]{%
             \node[fill=black!40] (stag1) {\vphantom{\strut $V^L\xrightarrow{0.2}$}};
             \node[fill=black!20, below right=.1cm of stag1.north west, anchor=north west] (stag2) {\vphantom{\strut $V^L\xrightarrow{0.2}$}};
-            \node[fill=black!5, below right=.1cm of stag2.north west, anchor=north west, align=center] {\strut #2};}}
-    \tikzset{
-        process/.style={draw, rectangle, inner xsep=3pt, inner ysep=0pt},
-        boundingbox/.style={inner sep=0pt, outer sep=0pt},
-        olabel/.style={gray, inner sep=0pt},
-        obox/.style={draw, rectangle, rounded corners, line width=.3mm, align=left}
-    }
+            \node[fill=black!5, below right=.1cm of stag2.north west, anchor=north west] {\strut\  #2};}}
+    
     \begin{tikzpicture}[font=\small, node distance=1em, remember picture]
-        \begin{scope}[every node/.style={anchor=west, inner sep=0pt, outer sep=0pt}]
-            \matrix[xshift=-2cm] (term) [matrix of math nodes,nodes in empty cells, row sep=5pt] {
+        \begin{scope}[every node/.style={anchor=east, inner sep=0pt, outer sep=0pt}]
+            \matrix (term) [matrix of math nodes,nodes in empty cells, row sep=5pt] {
                 \strut \text{where}        \\
                 \strut \text{the}  \\
                 \strut \text{survey}       \\
@@ -22,68 +17,55 @@
                 \strut \text{out}      \\
             };
         \end{scope}
-        \node[gray, inner sep=0pt, above=.4cm of term.north west, anchor=west] (sentence) {sentence};
-        \node[fit=(term) (sentence), inner sep=0pt] (sentencebox) {};
 
-        \node[right=1cm of sentencebox] (tagger) {\rotatebox{90}{supertagging}};
-        \coordinate (taggerboxn) at (sentencebox.north -| tagger);
-        \coordinate (taggerboxs) at (sentencebox.south -| tagger);
-        \node[process, fit=(tagger) (taggerboxn) (taggerboxs)] (taggerbox) {};
 
         \begin{scope}[every node/.style={anchor=west, inner sep=0pt, outer sep=0pt, font=\tiny}]
-            \matrix[above=1cm of sentence.north west, anchor=south west, fill=black!5, draw, rounded corners, line width=.3mm, inner sep=2pt] (blueprints) [matrix of nodes,nodes in empty cells,row sep=3pt] {
-                $\mathit{S} \to [x_1\,\wildcard{}\,y_1\,x_2][\ldots] (V_2, N)$\\
-                $N \to [\wildcard{}] [\ldots]$\\
-                $V_2 \to [x_1, \wildcard{}\, x_2] [\ldots] (V_2)$\\
-                $V_2 \to [x_1, \wildcard{}\, y_1] [\ldots](\mathrm{arg}(V), V\binsym{})$\\
-                $\mathrm{arg}(V) \to [\wildcard{}][\ldots]$ \\
-                $V\binsym{} \to [\wildcard{}][\ldots]$\\
+            \matrix[right=1.5cm of term.north east, anchor=north west, fill=black!5, draw, rounded corners, line width=.3mm, inner sep=2pt] (blueprints) [matrix of nodes,nodes in empty cells,row sep=3pt] {
+                $\nt{S} \to (\cn{sbar}(\cn{s} (\x_1, \x_2(\tn{*}))))\;(\nt{V}_2, \nt{N})$\\
+                $\nt{N} \to (\cn{np}(y, \tn{*}))$\\
+                $\nt{V}_2 \to (\cn{vp}(\x_1, \tn{*}))\;(\nt{V}_2)$\\
+                $\nt{V}_2 \to (\cn{vp}(\x_1, \x_2(\tn{*}))) (\mathrm{arg}(\nt{V}), \nt{V\binsym{}})$\\
+                $\mathrm{arg}(\nt{V}) \to (\cn{wh}(\tn{*}))$ \\
+                $\nt{V\binsym{}} \to (\cn{prt}(\tn{*}))$\\
             };
-            \matrix[right=2.5cm of term] (stag) [matrix of nodes,nodes in empty cells,row sep=3pt] {
-                \staglist[2.5cm]{$\mathrm{arg}(V) \xrightarrow{0.6}[\text{1}][\ldots]$} \\
-                \staglist[3.9cm]{$\mathit{S} \xrightarrow{0.57} [x_1\,\text{2}\,y_1\,x_2][\ldots] (V_2, N)$}\\
-                \staglist[1.9cm]{$N \xrightarrow{0.8} [\text{3}] [\ldots]$}\\
-                \staglist[3.4cm]{$V_2 \xrightarrow{0.55} [x_1, \text{4}\, x_2] [\ldots] (V_2)$}\\
-                \staglist[4.3cm]{$V_2 \xrightarrow{0.6} [x_1, \text{5}\, y_1] [\ldots](\mathrm{arg}(V), V\binsym{})$}\\
-                \staglist[2.2cm]{$V\binsym{} \xrightarrow{0.7} [\text{6}][\ldots]$}\\
+            \matrix[below right=2cm and 1.25cm of term] (stag) [matrix of nodes,nodes in empty cells,row sep=3pt] {
+                \staglist{$\mathrm{arg}(\nt{V})\xrightarrow{0.6} (\cn{wh}(\tn{1}))$} \\
+                \staglist{$\nt{S} \xrightarrow{0.57} (\cn{sbar}(\cn{s} (\x_1, \x_2(\tn{2}))))\;(\nt{V}_2, \nt{N})$}\\
+                \staglist{$\nt{N} \xrightarrow{0.8} (\cn{np}(y, \tn{3}))$}\\
+                \staglist{$\nt{V}_2 \xrightarrow{0.55} (\cn{vp}(\x_1, \tn{4}))\;(\nt{V}_2)$}\\
+                \staglist{$\nt{V}_2 \xrightarrow{0.6} (\cn{vp}(\x_1, \x_2(\tn{5}))) (\mathrm{arg}(\nt{V}), \nt{V\binsym{}})$}\\
+                \staglist{$\nt{V\binsym{}} \xrightarrow{0.7} (\cn{prt}(\tn{6}))$}\\
             };
         \end{scope}
-        \node[gray, anchor=west, inner sep=0pt] (staglab) at (stag.west|-sentence) {supertags + confidence};
-        \node[boundingbox, fit=(stag) (staglab)] (stagbox) {};
-        \node[gray, above=.4cm of blueprints.north west, anchor=west, inner sep=0pt] {supertag blueprints};
 
-        \node[right=.7cm of stagbox] (parser) {\rotatebox{90}{grammar parsing}};
-        \coordinate (parserboxn) at (sentencebox.north -| parser);
-        \coordinate (parserboxs) at (sentencebox.south -| parser);
-        \node[process, fit=(parser) (parserboxn) (parserboxs)] (parserbox) {};
+        \begin{scope}[every node/.style={draw, inner ysep=6pt, text width=3cm, align=center}]
+            \node[below right=.5cm and -.5cm of term] (tagger) {\strut{}supertagging};
+            \node[right=1.5cm of tagger] (parser) {\strut{}grammar parsing};
+            \node[right=1.5cm of parser] (trans) {\strut{}eval.\@ + token subst.};   
+        \end{scope}
 
-
-        \node[scale=0.6, right=.5cm of parserbox,yshift=-2ex] (derivation) {\subfile{example-derivation.tex}};
-        \node[gray, inner sep=0pt] (derivlab) at (derivation|-sentence) {grammar derivation};
-        \node[fit=(derivlab) (derivation), inner sep=0pt, outer sep=0pt] (derivationbox) {};
-
-
-        \node[right=.7cm of derivationbox] (trans) {\rotatebox{90}{eval.\@ + token subst.}};
-        \coordinate (transboxn) at (sentencebox.north -| trans);
-        \coordinate (transboxs) at (sentencebox.south -| trans);
-        \node[process, fit=(trans) (transboxn) (transboxs)] (transbox) {};
-
-        \node[right=.7cm of transbox, scale=0.7, yshift=-2ex] (parse) {
-            \subfile{example-constituents.tex}
-        };
-        \node[gray, inner sep=0pt] (parselab) at (parse|-sentence) {constituent tree};
+        \node[scale=0.8,right=6cm of term.north east, anchor=north west] (derivation) {\subfile{example-derivation-dcp.tex}};
+        \node[scale=0.85, anchor=south] (parse) at (stag.south-|trans) {\subfile{example-constituents.tex}};
+        
+        \begin{scope}[gray, inner sep=0pt, node distance=0.4cm]
+            \node[above=of term] {\strut{}sentence};
+            \node[above=of blueprints] {\strut{}supertag blueprints};
+            \node[below=of stag]  {\strut{}supertags + confidence};
+            \node[above=of derivation.north] {\strut{}grammar derivation};
+            \node[below=of parse] {\strut{}constituent tree};
+        \end{scope}
 
 
-        \begin{scope}[->, dashed, gray, >=stealth]
+        \begin{scope}[->, dashed, gray, >=stealth, rounded corners=5pt]
             \foreach \i in {1, ..., 6} {
-                \draw (term-\i-1) -- (term-\i-1 -| taggerbox.west);
-                \draw (stag-\i-1 -| taggerbox.east)-- (stag-\i-1);
-                \draw (stag-\i-1)-- (stag-\i-1-|parserbox.west);
+                \draw (term-\i-1) -| ($(tagger.north)+(-\i*5+ 5pt,0)$);
+                \draw ($(tagger.south)+(-\i*5pt,0)$) |- (stag-\i-1.west);
+                \draw (stag-\i-1) -| ($(parser.south)+(\i*5-15pt,0)$);
             }
-            \draw (blueprints.south -| taggerbox) -- (taggerbox);
-            \draw (parserbox.east) -- (derivation.west |- parserbox);
-            \draw (derivation.east|-parserbox) -- (transbox.west);
-            \draw (transbox.east) -- (parse.west|-transbox);
+            \draw (blueprints.west) -| ($(tagger.north)+(5pt,0)$);
+            \draw (parser.20) -- (parser.20|-derivation.south);
+            \draw ($(trans.50|-derivation.south)+(0,5ex)$) -- (trans.50);
+            \draw (trans) -- ($(parse.north)-(0,5ex)$);
         \end{scope}
     \end{tikzpicture}
 \end{document}

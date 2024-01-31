@@ -4,7 +4,8 @@
     \chapter{Experiments}\label{sec:experiments}
     This chapter describes the experiments we conducted for extracting and parsing with supertags in three discontinuous constituent treebanks.
     First, \cref{sec:implementation} gives a short overview of the software we used to conduct the experiments.
-    \Cref{sec:hyperparameters} describes the options available to steer the supertag extraction and the training process for the classifiers used for supertagging.
+    \Cref{sec:models} explains the two neural network architectures that we use for the prediction of supertags and how they are trained.
+    \Cref{sec:hyperparameters} describes the options available to steer the supertag extraction.
     \Cref{sec:treebanks} glances at the three treebanks we use to investigate the implementation.
     The meat of this chapter's content is an evaluation that shall determine which supertag extraction options work best in the treebanks.
     This search extends an earlier set of published experiments \citep{Rup22}, particularly with the newly added options for the extraction procedure.
@@ -21,6 +22,7 @@
     Our reported parse times are all sequential executions; the implementation is not parallelized but could easily be modified, as the sentences are parsed independently.
 
     \subfile{experiments/implementation.tex}
+    \subfile{experiments/prediction-models.tex}
     \subfile{experiments/hyperparameters.tex}
     \subfile{experiments/treebanks.tex}
     \subfile{experiments/hyperparameter-search-in-negra.tex}
