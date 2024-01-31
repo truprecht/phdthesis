@@ -3,20 +3,8 @@
 \begin{document}
     \chapter{Extraction of Lexical Grammars from Treebanks}\label{sec:extraction}
     This chapter deals with the extraction of supertag blueprints from treebanks.
-    We will consider the following forms of supertag blueprints depending on the underlying grammar formalism:
-    \begin{compactenum}
-        \item
-            Each \abrv{lcfrs} supertag blueprint is a tuple \((r, b)\) where \(r\) is a lexical \abrv{lcfrs} rule containing the terminal \wildcard{} and \(b \in \{\text{True}, \text{False}\}\) is a boolean marker.
-            The marker \(b\) stores information from the lexicalization process and is needed to reverse the process to transform a derivation into a constituent tree.
-        \item
-            Each \abrv{dcp} supertag blueprint is a tuple \((r, f)\) where \(r\) is a lexical \abrv{dcp} rule containing the terminal \wildcard{} and \(f \in \DN_+\) is a positive integer.
-            During the parsing process, \(f\) acts as a restriction for the fanout of all derivations rooted by a supertag instantiated for \((r,f)\).
-        \item Each \abrv{hg} supertag blueprint is a lexical hybrid grammar rule containing the terminal \wildcard{}.
-    \end{compactenum}
-    For each of the three underlying grammar formalisms \(F\), an \deflab{supertag}[\(F\) supertag] is of the same form as an \(F\) supertag blueprint except the terminal \wildcard{} in the grammar rule is replaced by a positive integer.
-    We call the supertag that is obtained by replacing \wildcard{} in a supertag blueprint \(r\) with the integer \(i\) an \deflab{instance}[instance of \(r\)] and denote it by \(r[i]\).
-
-    This chapter describes two approaches for the extraction of supertag blueprints from a constituent treebank:
+    First, \cref{sec:supertags} investigate the form of supertags and supertag blueprints with the three grammar formalisms covered in \cref{sec:grammar}.
+    The remainder of the chapter describes two approaches for the extraction of supertag blueprints from a constituent treebank:
     \begin{compactenum}
         \item
             The process described in \cref{sec:extraction:lcfrs} first extracts a derivation of \abrv{lcfrs} rules for each constituent tree in a treebank.
@@ -33,7 +21,7 @@
     One of the transformations described in the section is binarization, a standard tool for parsing constituent trees.
     The other \emph{head-inward transformation} was not published before.
 
-
+    \subfile{extraction/supertags.tex}
     \subfile{extraction/binarization.tex}
     \subfile{extraction/lcfrs-lexicalization.tex}
     \subfile{extraction/guided-extraction.tex}

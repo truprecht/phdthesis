@@ -1,0 +1,50 @@
+\documentclass[../../document.tex]{subfiles}
+
+\begin{document}
+    \section{Supertags and Supertag Blueprints}\label{sec:supertags}
+    We will consider the following three forms of supertag blueprints depending on the underlying grammar formalism:
+    \begin{compactenum}
+        \item
+            Each \abrv{lcfrs} supertag blueprint is a tuple \((r, b)\) where \(r\) is a nullary, unary or binary lexical \abrv{lcfrs} rule containing the terminal \wildcard{} and \(b \in \{\text{True}, \text{False}\}\) is a boolean marker.
+            The marker \(b\) stores information from the lexicalization process and is needed to reverse the process to transform a derivation into a constituent tree; it is only \(\text{True}\), if \(r\) is a unary rule.
+        \item
+            Each \abrv{dcp} supertag blueprint is a tuple \((r, f)\) where \(r\) is a lexical \abrv{dcp} rule containing the terminal \wildcard{} and \(f \in \DN_+\) is a positive integer.
+            During the parsing process, \(f\) acts as a restriction for the fanout of all derivations rooted by a supertag instantiated for \((r,f)\).
+        \item Each hybrid grammar supertag blueprint is a lexical hybrid grammar rule containing the terminal \wildcard{}.
+    \end{compactenum}
+    For each of the three underlying grammar formalisms \(F\), an \deflab{supertag}[\(F\) supertag] is of the same form as an \(F\) supertag blueprint except the terminal \wildcard{} in the grammar rule is replaced by a positive integer.
+    We call the supertag that is obtained by replacing \wildcard{} in a supertag blueprint \(r\) with the integer \(i\) an \deflab{instance}[instance of \(r\)] and denote it by \(r[i]\).
+    In the following, we consider derivations with \abrv{lcfrs} and \abrv{dcp} supertags.
+
+    \subsection*{\abrv{Lcfrs} Supertag Derivations}
+    The concept behind derivations with \abrv{lcfrs} supertags is a trivial adaption of \abrv{lcfrs} derivations, because the second component is solely used to reverse the lexicalization process that was used for the extraction.
+    Consider a set of \abrv{lcfrs} supertags \(S\).
+    We consider the \emph{set of derivations in \(S\)}, denoted by \(\derivs^S\), that contains the tree \(d \in \T_S\) if and only if the \abrv{lcfrs} rules within \(d\) (i.e., the first components) form a derivation.
+    Analogously, the derivation \(d\in \derivs^S\) is called \emph{admissible}, if the derivation of \abrv{lcfrs} rules within \(d\) is an admissible derivation.
+    For each derivation \(d \in \derivs^S\), we obtain the \emph{constituent tree for \(d\)} by first reversing the extraction process described in \cref{sec:extraction:lcfrs} (by applying the steps \ref{enum:lcfrs:step4}--\ref{enum:lcfrs:step1} in reverse).
+    We omit a detailed discussion, the process is straight-forward.
+
+    \subsection*{\abrv{Dcp} Supertag Dervations}
+    By itself, the \abrv{dcp} compositions do not impose any restrictions to the lexical symbols in the defined sets of derivations; as opposed to \abrv{lcfrs}, which precisely specify which parts of the spans may occur next to each other.
+    Our early implementations of parsers for \abrv{dcp} supertags struggled with the sheer amount of derivations that can be found in contrast to \abrv{lcfrs}.
+    Therefore, we impose restrictions for the case of parsing with \abrv{dcp} supertags by extending each rules with a positive integer \(f\in \DN_+\) as described above; for each \abrv{dcp} supertag or \abrv{dcp} supertag blueprint of the form \((r,f)\), the component \(f\) is called the \emph{fanout restriction}.
+    Consider a set of \abrv{dcp} supertags \(S\).
+    Analogously to \abrv{lcfrs} supertag derivations, the \emph{set of derivations in \(S\)}, denoted by \(\derivs^S\), contains each tree \(d \in \T_S\) if and only if the \abrv{dcp} rules within  \(d\) form a \abrv{dcp} rule derivation.
+    For each such derivation \(d \in \derivs^S\), we denote the set of all lexical symbols within \(d\) by \(\mathrm{lex}(d)\).
+    We call a \abrv{dcp} supertag derivation \(d \in \derivs^S\) \emph{admissible} if the following three properties are satisfied for each of its subtrees $d'$:
+    \begin{enumerate}
+        \item 
+            Consider the \abrv{dcp} supertag derivation is $d'$ rooted in \((r,f)\).
+            The fanout of the set \(\mathrm{lex}(d)\) must be exactly \(f\).
+        \item
+            Each lexical symbol within \(d'\) must occur at most once.
+        \item\label{prop:dcp:admissible:order}
+            Consider the supertag derivation $d'$ is of the form \((r,f)\;\big( d_1, \ldots, d_k \big)\).
+            Then the child derivations \(d_1, \ldots, d_k\) must be ordered such that \(\min \mathrm{lex}(d_1) < \min \mathrm{lex}(d_2) < \ldots < \min \mathrm{lex}(d_k)\). 
+    \end{enumerate}
+    The identifyer \(\widehat{\derivs}^S\) denotes the \emph{set of admissible derivations in \(S\)}.
+    Consider a finite set of positive integers \(\pi \subset \DN_+\) that we consider possible lexical symbols within a \abrv{dcp} supertag derivation.
+    The \emph{set of admissible derivations with the lexical symbols \(\pi\)} is \(\widehat{\derivs}^S(\pi) = \{d\in \widehat{\derivs}^S \mid \mathrm{lex}(d) = \pi\}\).
+    For each \abrv{dcp} supertag derivation \(d\), we define the \emph{constituent structure for \(d\)} as the constituent structure for the derivation of \abrv{dcp} rules (i.e., the first components) within \(d\).
+\end{document}
+

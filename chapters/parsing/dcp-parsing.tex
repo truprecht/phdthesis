@@ -64,14 +64,6 @@
 
     \subsection{Fanout-Restricted Parsing with \abrv{Dcp} Supertags}\label{sec:parsing:dcp}
     To our knowledge, using grammars that solely consist of \abrv{dcp} rules was not considered before in the field of discontinuous constituent parsing.
-    By itself, the \abrv{dcp} compositions do not impose any restrictions to the lexical symbols in the defined sets of derivations, compared to \abrv{lcfrs}, which precisely specify which parts of the spans may occur next to each other.
-    Our early implementations of parsers for \abrv{dcp} supertags struggled with the sheer amount of derivations that can be found in contrast to \abrv{lcfrs}.
-    Therefore, we impose restrictions for the case of parsing with \abrv{dcp} supertags; we call a \abrv{dcp} supertag derivation \emph{admissible} if the following two properties are satisfied for each of its subtrees $d$:
-    \begin{enumerate}
-        \item We extend the rules by a fanout restriction to limit the sets of derivations; each \abrv{dcp} supertag is a tuple \((r, f)\) where the positive integer \(f \in \DN_+\) is called the \emph{fanout restriction}. Consider the \abrv{dcp} supertag derivation $d$ rooted in \((r,f)\). The fanout of the set of all lexical symbols within \(d\) must be exactly \(f\).
-        \item\label{prop:dcp:admissible:order}  Consider the supertag derivation $d$ is of the form \((r,f)\;\big( d_1, \ldots, d_k \big)\). Then the child derivations \(d_1, \ldots, d_k\) must be ordered with respect to the least occurring lexical symbol. 
-    \end{enumerate}\todo{move to beginning of extraction chapter}
-
     We adapt a statistical parsing algorithm for \abrv{lcfrs} (cf.\@ \citealp{Burden05}, Section~3; and \citealp{Kal10}, Section 7.1.2) to the case of \abrv{dcp} supertags.
     In the following, the parsing algorithm is considered in two consecutive steps that we first outline and then discuss in detail:
     \begin{enumerate}
