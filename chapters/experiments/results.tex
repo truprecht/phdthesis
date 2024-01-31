@@ -5,6 +5,7 @@
     This section presents the assessment results with the test portion of the three investigated treebanks.
     We extract supertag blueprints and parse each treebank using the hyperparameters found in the previous two sections; \cref{tbl:hyperparameters} gives an overview of the final configurations.
     We repeat the training process for each model and treebank multiple times because the training process of the supertag classifiers depends on pseudo-random initialization, and the outcomes vary slightly.
+    For this set of final results, we use a longer training process for each classifier; each model is trained until the AnnealOnPlateau scheduler reduces the learning rate a third time, but at most 32 epochs.
     \Cref{tbl:averages} shows the result of five runs for the supervised and pre-trained models that utilize language-specific \emph{bert-base} embeddings.
     We also report three runs for pre-trained models with large transformer embeddings.
     Specifically, we use \emph{gbert-large} \citep{Cha20} in conjunction with \negra{} and \tiger{}, and \emph{roberta-large} \citep{roberta} for \dptb{}.

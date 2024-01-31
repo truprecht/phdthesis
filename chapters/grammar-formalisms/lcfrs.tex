@@ -232,9 +232,9 @@
         Let \(\pi \subset \DN_+\) be a finite and non-empty set.
         The \deflab{linearization} of \(\pi\) is the sequence of greatest contiguous sequences within \(\pi\), i.e.\@ the sequence \((w_j \in \pi^+ \mid j \in [s])\) such that
         \begin{compactitem}
-            \item \(s = |\{i \in \pi \mid i+1 \notin \pi\}|\) is the number of greatest contiguous sets in \(\pi\),\todo{laut Luisa noch nicht ganz eindeutig formuliert}
-            \item \(w_j\) is a sequence of increasing integers for each \(j \in [s]\),
-            \item for each \(j \in [s-1]\), the last (and therefore greatest) element in \(w_j\) is less than the first (and therefore least) element in \(w_{j+1}\).
+            \item \(s = |\{i \in \pi \mid i+1 \notin \pi\}|\) is the number of greatest contiguous sets in \(\pi\),
+            \item \(w_j\) is a contiguous sequence of positive integers for each \(j \in [s]\),
+            \item for each \(j \in [s-1]\), the last (and therefore greatest) element in \(w_j\) is at least two less than the first (and therefore least) element in \(w_{j+1}\).
         \end{compactitem}
         The positive integer \(s\) is called \deflab{fanout of the set \(\pi\)}.
     \end{definition}

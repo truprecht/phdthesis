@@ -42,27 +42,27 @@
     \end{figure}
 
     To compute the weight that such a disco-dop grammar assigns to a constituent tree, we follow the interpretation as weighted \abrv{lcfrs} with latent annotation.
-    Consider that we extract the disco-dop grammar from a treebank with the set of consituent symbols \(\varGamma\) and \abrv{pos} symbols \(\varPi\).
+    Consider that we extract the disco-dop grammar from a treebank with the set of consituent symbols \(\varGamma\), \abrv{pos} symbols \(\varPi\) and the set of tokens \(\varSigma\).
     Then such an interpretation is an \abrv{lcfrs} of the form \(G = (\varGamma \times L, \varPi, R, S)\) and weight function \(\weight\colon R \to \DR\)  where \(L\) is a non-empty set of latent symbols (e.g.\@ a non-empty integer index set that depends on the number of extracted tree fragments), \(R\) is the set of rules for the extracted tree fragments, and \(S \in \varGamma\) is a common root constituent symbol.
     The rules in \(R\) are of the same form as the usual treebank \abrv{lcfrs} (cf.\@ \cref{sec:sec:extraction:lcfrs}, Step \ref{enum:lcfrs:step2}) except that \abrv{pos} symbols occur as lexical symbols in the rules, and the nonterminal symbols are extended using the latent symbols to accomodate the tree fragments that are split into multiple rules.
     The latent symbol \(1 \in L\) occurs at each nonterminal for the root and leaves of such a tree fragment; we denote the noterminal \((A, \lambda)\) with \(A\in \varGamma\) and \(\lambda \in L\) in the form \(A^{(\lambda)}\).
     \Cref{ex:dop} shows examples of such tree fragments in a disco-dop grammar and an interpretation as \abrv{lcfrs} rules with latent anotations.
-    The process to determine the weight of a constituent tree \(\xi\) assigned by the disco-dop grammar \(G\) is as follows:
+    The process to determine the weight of a constituent tree \(\xi \in \Xi_{\varGamma, \varPi, \varSigma}\) assigned by the disco-dop grammar \(G\) is as follows:
     \begin{enumerate}
-        \item First, the constituent structure of \(\xi\) is transformed into a treebank \abrv{lcfrs} derivation \(d\), and the lexical symbols are replaced by the corresponding \abrv{pos} symbols of the constituent tree. The rules in \(d\) have nonterminals in \(\varGamma\) and terminals in \(\varPi\).
+        \item First, the constituent structure of \(\xi\) is transformed into a \abrv{lcfrs} derivation \(d\) (as in Step \ref{enum:lcfrs:step2} of the extraction in \cref{sec:extraction:lcfrs}), and the lexical symbols are replaced by the corresponding \abrv{pos} symbols of the constituent tree \(\xi\). The rules in \(d\) have nonterminals in \(\varGamma\) and terminals in \(\varPi\).
         \item For each position \(\rho\) in \(d\) (in the direction from bottom to the top) and each latent symbol \(\lambda \in L\), we compute the weight \(w_\rho^{(\lambda)} \in \DR\). Let the subtree \(d|_\rho\) be of the form \(A \to c\,(B_1, \ldots, B_k)\;\big(d_1, \ldots, d_k)\), then the weight is as follows:
             \[
                 w_\rho^{(\lambda)} = \sum_{A^{(\lambda)} \to c\,(B_1^{(\lambda_1)}, \ldots, B_k^{(\lambda_k)}) \in R} \weight(A^{(\lambda)} \to c\,(B_1^{(\lambda_1)}, \ldots, B_k^{(\lambda_k)})) \cdot \prod_{i \in [k]} w_{\rho\cdot i}^{(\lambda_i)} \text{.}
             \]
-        \item The weight of the constituent tree is defined as \(\weight(\xi) = w_\varepsilon^{(1)}\).
+        \item The weight of the constituent tree \(\xi\) is defined as \(\weight(\xi) = w_\varepsilon^{(1)}\).
     \end{enumerate}
     This process is equivalent to the weight computation in a probabilistic bottom-up tree automaton with treebank \abrv{lcfrs} rules as terminal symbols and latent symbols in \(L\) as states.
     
     We implement the disco-dop grammar into our parsing process as follows:
     \begin{itemize}
         \item The weighted disco-dop grammar \((G,\weight)\) is extracted from training portion of the treebank (the same trees that are used top extract the supertag blueprints).
-        \item We define the reranker \(\varPsi\colon C \times \DR \to \DR\) as \(\varPsi(\xi, v) = \weight(\xi)\) where \(C\) denotes the set of constituent trees and \(\DR\) is the domain of our confidence values. It does not use any prior scores and solely relies on the probability assigned by the grammar.\todo{set of constituent trees}
-        \item Let \(\xi_1 \ldots \xi_n \in C^n\) be a sequence of constituent trees of length \(n\in \DN_+\) and the input to the reranking process.
+        \item We define the reranker \(\varPsi\colon \Xi_{\varGamma, \varPi, \varSigma} \times \DR \to \DR\) as \(\varPsi(\xi, v) = \weight(\xi)\) where \(\DR\) is the domain of our confidence values. It does not use any prior scores and solely relies on the probability assigned by the grammar.
+        \item Let \(\xi_1 \ldots \xi_n \in {(\Xi_{\varGamma, \varPi, \varSigma})}^n\) be a sequence of constituent trees of length \(n\in \DN_+\) and the input to the reranking process.
         The \(\varPsi\)-pick among \(\xi_1 \ldots \xi_n\) is the constituent tree with greatest probability assigned by the weighted disco-dop grammar.
         It is the result of the reranking process and thus the result of our parsing process.
     \end{itemize}
