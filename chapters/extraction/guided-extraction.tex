@@ -187,7 +187,7 @@
         Item (ii) is (again trivially) satisfied since each assigned value is a leaf below the argument.
     \end{proof}
 
-    \begin{example}[Strict Guide]
+    \begin{example}
         The values assigned by the strict guide are independent of each other.
         E.g.\@ we may determine the values \(\mathrm{strict}(\xi)(2) = \min\;\yield(\xi|_{2\,2}) = \min\;\{3\} = 3\) or \(\mathrm{strict}(\xi)(1\,1) = \min\;\yield(\xi|_{1\,1\,2}) = \mid\;\{5,6\}\) without computing any other values beforehand.
     \end{example}
@@ -267,7 +267,7 @@
     Next, for the node at \(1\,1\), the set \(L_{1\,1}\) contains each leaf that was assigned to an inner child, i.e.\@ it is \(\{5\}\), and the assigned value is \(\mathrm{least}(\xi)(1\,1) = 1\).
     \exampleqed
 
-    \begin{example}[Near Guide]
+    \begin{example}
         The construction for the near guide starts from the topmost node.
         The value \(\mathrm{near}(\xi)(\varepsilon)\) is \(2\) because it is the leftmost leaf with the shortest distance.
         For the child at position \(2\), the set \(L_{2} = \{2\}\) contains the leaves that were assigned to its ancestors.
@@ -375,7 +375,7 @@
     The concept of nonterminal constructors resembles the nonterminal labeling strategies introduced by \citet[Section~6.2]{Geb20}.
 
     \begin{definition}[Nonterminal Constructor]
-        Consider an alphabet \(\varGamma\) (of constituent symbols), a nonempty set \(N\) (of nonterminal symbols), and an \(\DN_+\)-indexed partition of \(N\) \((\mathit{fo}_i \subseteq N \mid i \in \DN_+)\) (that partitions the nonterminals by fanout).
+        Consider an alphabet of constituent symbols \(\varGamma\), a nonempty set of nonterminal symbols \(N\), and an \(\DN_+\)-indexed partition of \(N\) that groups the nonterminals by fanout \((\mathit{fo}_i \subseteq N \mid i \in \DN_+)\).
         A \deflab{nonterminal constructor} is a partial function \(\psi\colon \itrees_\varGamma \times \DN^* \times \power(\DN_+) \parto N\) such that \(\psi(\xi, \rho, L) \in \mathit{fo}_{\fanout(L)}\) is well-defined for each pair of an indexed tree \(\xi \in \itrees_\varGamma\), a position \(\rho \in \pos(\xi)\), and subset of leaves \(L \subseteq \yield(\xi|_\rho)\) below \(\rho\).
     \end{definition}
 
@@ -420,7 +420,7 @@
     The set of \emph{classic nonterminals} is \(N = \{ A_n \mid A \in \varGamma', n \in \DN_+ \}\) and the partition \(\mathit{fo}_n = \{A_n \mid A \in \varGamma'\}\).
     The \deflab{classic nonterminal constructor} is the function \(\psi\) with \(\psi(\xi, \rho, L) = f(\xi(\rho))_{\fanout(L)}\) for each indexed tree \(\xi\), position \(\rho \in \pos(\xi)\) and set of leaves \(L \subseteq \yield(\xi|_\rho)\).
 
-    \begin{example}[Classic Nonterminals]
+    \begin{example}
     For the classic nonterminal constructed for the root in the example indexed tree above, we determine the set \(L = \yield(\xi) = \{1,\ldots,6\}\).
     The nonterminal consists of the symbol \(\cn{sbar}\) and the fanout \(\fanout(L) = 1\) and is illustrated as \(\cn{sbar}_1\).
     \end{example}
@@ -435,7 +435,7 @@
     The coarse nonterminal constructor mimics the nonterminals in coarse-to-fine parsing \citep{Cha06,Tei17}.
 %    For our examples, the nonterminals are \(\text{S}\) and \(\text{V}\).
 
-    \begin{example}[Coarse Nonterminals]
+    \begin{example}
         \Cref{tab:coarse-nonterminals} shows an example of a clustering of constituent symbols in grammars extracted from the English Penn Treebank provided by \citet{Cha06}.
         Creating such a table requires domain-specific knowledge about the corpus and the underlying language.
         \Citet{Doran99} give a coarse tagset used in the english \abrv{xtag} grammar.

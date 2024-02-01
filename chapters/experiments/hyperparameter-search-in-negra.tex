@@ -161,7 +161,7 @@ coarse  & \(1\) & \(1\)    & 3234 & 48 & 255.45 & 3939 & 65 & 307.16 & 4085 & 71
     \end{table}
 
     \Cref{tbl:gridsearch:2:1} shows the statistics for the extracted supertag blueprints.
-    Considering the Markovization parameters, we observe an apparent (and expectable) growth of the set of extracted blueprints with greater values.
+    Regarding the Markovization parameters, we observe an apparent (and expectable) growth in the number of extracted blueprints with greater values.
     This growth is considerably less dramatic in the case of coarse terminals.
     The trends we encountered in the earlier set of experiments seem to continue:
     In configurations with greater sets of extracted supertags, there are also more unseen supertags in the development portion, and the perplexity is noticeably greater.
@@ -345,7 +345,7 @@ dependent & 1 & 1                      & 79.40 & 0.84 & 4.57 & 154 & 86.67 & 0.8
         \item we use coarse nonterminal constructors with substitutions as defined in \cref{tab:coarse-nonterminals}, and
         \item right-branching and head-outward binarization strategies in the case of strict and dependent guides, respectively.
     \end{itemize}
-    \Crefrange{tbl:gridsearch:coarse:1}{tbl:gridsearch:coarse:3} illustrate the results in terms of statistics for the extracted supertag blueprints as well as supertag prediction and parsing accuracies in the same dimensions as before.
+    \Crefrange{tbl:gridsearch:coarse:1}{tbl:gridsearch:coarse:3} show the results in terms of statistics for the extracted supertag blueprints as well as supertag prediction and parsing accuracies in the same dimensions as before.
     The values are compared to the ones from the previous section's experiments.
     As expected, the sets of extracted blueprints are significantly smaller with the coarse nonterminals provided by the table compared to naively constructed coarse nonterminals.
     However, with added context by Markovization, these quickly grow to the size of the sets extracted with classic nonterminals.
@@ -355,10 +355,11 @@ dependent & 1 & 1                      & 79.40 & 0.84 & 4.57 & 154 & 86.67 & 0.8
         Number of extracted supertag blueprints from \negra{}'s training portion, number of blueprints that occur in the development but not in the training portion, and blueprint perplexity for configurations involving the coarse constituent symbols from \cref{tab:coarse-nonterminals}.
         }
         \centering
+        \setlength{\tabcolsep}{5pt}
         \vspace{.2cm}
         \begin{tabular}{lcc|rrr|rrr|rrr}
             \toprule
-& \multicolumn{2}{c|}{Markov.}         & \multicolumn{3}{c|}{strict guide} &  \multicolumn{3}{c|}{dependent guide} &  \multicolumn{3}{c|}{head guide} \\
+& \multicolumn{2}{c|}{Markov.}         & \multicolumn{3}{c|}{strict guide} &  \multicolumn{3}{c|}{dependent guide} &  \multicolumn{3}{c}{head guide} \\
 nont.           & \(h\) & \(v\) & $N$ & $\overline{N}$ & $\mathit{UP}$ & $N$ & $\overline{N}$ & $\mathit{UP}$  \\ \hline \rowcolor{black!10}
 classic        & 0 & 1 & 2214 & 23 & 110.22 & 3923 & 56 & 174.64 & 3840 & 68 & 96.13 \\\rowcolor{black!10}
 coarse (naive) & 0 & 1 & 1682 & 15 & 102.89 & 2975 & 42 & 143.58 & 3686 & 65 & 87.10 \\\hline

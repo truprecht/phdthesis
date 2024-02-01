@@ -14,7 +14,7 @@
             In our experiments, we use artificial neural networks to implement \(\varphi\); \cref{sec:preliminaries:nn} focuses on the concrete architectures used to realize the parallel tagging models.
             For the coming step \ref{parsing:item:2}, we consider two objects from this step:
             \begin{itemize}
-                \item the family of predicted supertag blueprints \((b^{(i)}_{\kappa} \in B \mid i \in [\ell], \kappa \in [k])\) such that \((b^{(i)}_{\kappa} \in B \mid \kappa \in [k])\) is a sequence of \(k\) best supertag blueprints in \(\argmax^{(k)}_{b \in B} \varphi^{(i)}(w, b)\) for each position \(i\in [\ell]\), and
+                \item the family of predicted supertag blueprints \((b^{(i)}_{\kappa} \in B \mid i \in [\ell], \kappa \in [k])\) such that, for each position \(i\in [\ell]\), the sequence \((b^{(i)}_{\kappa} \in B \mid \kappa \in [k])\) is a collection of \(k\) best supertag blueprints in \(\argmax^{(k)}_{b \in B} \varphi^{(i)}(w, b)\) , and
                 \item the prediction confidence \((\varphi^{(i)}(w, b^{(i)}_{\kappa}) \mid i \in [\ell], \kappa \in [k])\) for each of these supertags.
             \end{itemize}
         \item\label{parsing:item:2}

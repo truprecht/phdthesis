@@ -11,7 +11,7 @@
         \item procedures for the extraction of supertags from the common formats used to distribute discontinuous constituent treebanks, namely \negra{}'s \texttt{.export} format as well as \tiger{}'s \texttt{.xml} format, in a submodule called \texttt{grammar.extraction},
         \item a polymorphic (i.e., it can take on the shape of different architectures depending on the passed options) artificial neural network model used for a combined prediction of supertags and \abrv{pos} tags, as well as its training procedures in a submodule called \texttt{tagging},
         \item a unified parsing procedure for predicted supertags using the hybrid grammar and \abrv{dcp} formalisms in a submodule called \texttt{grammar.parsing},
-        \item extraction and parsing procedures for the discontinuous data-oriented parsing approach; and functions for reranking predicted constituent trees in a submodule called \texttt{grammar.dop},
+        \item extraction procedures for discontinuous data-oriented parsing as well as functions for reranking predicted constituent trees in a submodule called \texttt{grammar.dop},
         \item a subcommand \texttt{grid} that runs every combination in a set of specified options for the extraction and training procedures.
     \end{itemize}
 

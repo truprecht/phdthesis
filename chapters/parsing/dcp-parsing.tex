@@ -243,7 +243,7 @@
             Each follow-up indexed backtrace is inserted into the priority queue \(Q\) (line 11) if there is the necessary \((m_i+1)\)th derivation for the \(i\)th successor.
             This existence is determined with the function \textsc{LazyKthBest} (line 10).
             This procedure works in the same manner as the procedure of the same name introduced by \abrv{hc}.
-        \item The function \textsc{LazyKthBest} determines if a derivation for an indexed parse item \((A, L, m)\) exists and computes the necessary intermediate results to store the indexed backtrace that reproduces this derivation in \(D_{(A, L, m)}\) as well as its weight in \(W_{((A, L, m))}\).
+        \item The function \textsc{LazyKthBest} determines if there is a derivation for the indexed parse item \((A, L, m)\) and computes the necessary intermediate results to store the indexed backtrace that reproduces this derivation in \(D_{(A, L, m)}\) as well as its weight in \(W_{((A, L, m))}\).
             The function computes the number of derivations \(m'\) that are already stored as indexed backtraces within the family \(D\) for the root nonterminal \(A\) and the sentence positions \(L\) (line 13).
             It initializes a queue \(H_{(A, L)}\) of indexed backtraces (with all indices set to 1) for each backtrace in the parse chart \(C\) (lines 14--15) if it has not been initialized before.
             The loop starting at line 16 determines one derivation in each iteration and stores the corresponding indexed backtrace until the \(m\)th is found.

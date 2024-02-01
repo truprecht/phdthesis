@@ -21,12 +21,12 @@
         For each \(k\in \DN\) and \(s, s_1, \ldots, s_k \in \DN_+\), the identifier \(\C^\varSigma_{(s_1\cdots s_k, s)}\) denotes the set of all \abrv{lcfrs} compositions over \(\varSigma\) of length \(s\) that contain variable in \(\X_{s_1 \cdots s_k}\) exactly once but no other variable in \(\X \setminus \X_{s_1\cdots s_k}\).
         \(\C^\varSigma\) denotes the set of all \abrv{lcfrs} compositions over \(\varSigma\) of any length.
 
-        Consider such a composition \((u_1, \ldots, u_s) \in \C^\varSigma_{(s_1\cdots s_k s)}\) for some integers \(k \in \DN\) and \(s, s_1, \ldots, s_k \in \DN_+\).
+        Consider such a composition \((u_1, \ldots, u_s) \in \C^\varSigma_{(s_1\cdots s_k s)}\) for some naturals \(k \in \DN\), \(s\in \DN_+\) as well as \(s_1, \ldots, s_k \in \DN_+\).
         We associate a function, denoted by \(\sem{(u_1, \ldots, u_s)}\), from \(k\) string tuples, where the \(i\)-th tuple is of length \(s_i\), to a string tuple of length \(s\) with \((u_1, \ldots, u_s)\).
-        Given the arguments \(\big(v_i = (v_i^j \mid j \in [s_i]) \mid i \in [k]\big)\), the result is the string tuple \(
+        For a sequence of arguments arguments \(\big(v_i = (v_i^j \in \varSigma^* \mid j \in [s_i]) \mid i \in [k]\big)\), the result is the string tuple \(
         \sem{(u_1, \ldots, u_s)}(v_1, \ldots, v_k) = (u_1[\phi], \ldots, u_s[\phi])
         \) where \(\phi\) is the \(\X_{s_1 \cdots s_k}\)-indexed family with \(\phi_{x_i^j} = v_i^j\).
-        In easy terms, this function replaces each occurring variable of the form \(\x_i^j\) in \(u_1, \ldots, u_s\) with the \(j\)-th component of the \(i\)-th argument.
+        In simple terms, this function replaces each occurring variable of the form \(\x_i^j\) in \(u_1, \ldots, u_s\) with the \(j\)-th component of the \(i\)-th argument.
     \end{definition}
 
     \begin{example}\label{ex:lcfrs:comp}
@@ -90,7 +90,7 @@
         \end{compactitem}
     \end{definition}
 
-    \begin{example}[Lexical \abrv{Lcfrs}, Continues \cref{ex:lcfrs:comp}]\label{ex:lcfrs:rules}
+    \begin{example}[Continues \cref{ex:lcfrs:comp}]\label{ex:lcfrs:rules}
         Consider the alphabet of nonterminal symbols \(\mathrm{N} = \{\nt{v}, \nt{v}_2, \nt{n}, \nt{n}_2, \nt{p}, \arg(\nt{n})\}\) and the \abrv{lcfrs} \(\mathrm{G} = (\mathrm{N}, \Sigma, \{\nt{vp}\}, \mathrm{R})\) with
         \begin{align*}
             \mathrm{R} = \big\{\;
@@ -249,7 +249,7 @@
         We define the \emph{composition for \(\pi_0, \ldots, \pi_k\)}, denoted by \(\mathrm{comp}(\pi_0, \pi_1, \ldots, \pi_k)\), as the composition \((u_1, \ldots, u_{s_0}) \in \C^{\pi_0}_{(s_1\cdots s_k, s_0)}\) where each \(u_\ell\) is obtained from \(w_0^\ell\) by replacing each occurrence of a sequence \(w_i^j\) with the variable \(\x_i^j\).
     \end{definition}
 
-    \begin{example}[Linearizations and Compositions, Continues \Cref{ex:lcfrs:instance}]
+    \begin{example}[Continues \Cref{ex:lcfrs:instance}]
         The top three inner nodes in the constituent structure that was shown in the previous example have the yields \(\pi_0 = \{1,2,5,6,7\}\) (at the root), \(\pi_1 = \{1,2\}\) (at position 1) and \(\pi_2 = \{6,7\}\) (at position 2).
         The linearization of \(\pi_0\) consists of the two sequences \(w_0^1 = 1\,2\) and \(w_0^2 = 5\,6\,7\), its fanout is 2.
         For the successor nodes the linearizations are \(w_1^1 = 1\,2\) and \(w_2^1 = 5\,6\), respectively, and their fanout is 1.
