@@ -14,7 +14,7 @@
     Often, only a tiny fraction \(\hat{Y} \subseteq Y\) of the set of labels, called \emph{search space}, is considered for the reranking process.
     In the case of reranking in parsing, the search space is the collection of constituent trees within an \(n\) best sequence, and the reranking process is used to find the highest scoring among those.
     Consider a sequence of \(n\) labels \((t_1, \ldots, t_n) \in Y^n\) and \(\phi \colon Y \to C\) an assignment of prior confidence values.
-    We call a \deflab{\(\psi\)-pick among \(t_1 \ldots t_n\)} the label that maximizes the reranker \(\psi\)'s confidence value, that is, \(
+    We call a \deflab{pick among a sequence}[\(\psi\)-pick among \(t_1 \ldots t_n\)] the label that maximizes the reranker \(\psi\)'s confidence value, that is, \(
         t \in \argmax_{\hat{t} \in \hat{Y}} \psi(\hat{t}, \phi(\hat{t}))
     \) where \(\hat{Y} = \{t_i \mid i \in [n]\}\) is the search space.
     \Cref{sec:references:reranking} gives a summary of the literature for reranking procedures applied in the field of parsing constiutent trees.

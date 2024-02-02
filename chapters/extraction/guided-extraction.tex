@@ -52,14 +52,14 @@
 
     \begin{definition}[Guide]\label{def:guide}
         Let \(\xi\) be an indexed tree.
-        A \deflab{guide} for \(\xi\) is a function \(\varphi\colon \pos(\xi) \to \yield(\xi)\) such that for each position \(\rho \in \pos(\xi)\), the assigned leaf is in the yield at or below the position \(\varphi(\rho) \in \yield(\xi|_\rho)\).
+        A \deflab{guide}[guide for \(\xi\)] is a function \(\varphi\colon \pos(\xi) \to \yield(\xi)\) such that for each position \(\rho \in \pos(\xi)\), the assigned leaf is in the yield at or below the position \(\varphi(\rho) \in \yield(\xi|_\rho)\).
         \begin{itemize}
-            \item \(\varphi\) is called \deflab<guide>{admissible} if for each position \(\rho \in \pos(\xi)\)
+            \item \(\varphi\) is called \deflab<admissible>{admissible guide}[admissible] if for each position \(\rho \in \pos(\xi)\)
             \begin{compactenum}
                 \item there is at most one other leaf \(i\) below \(\rho\) besides \(\varphi(\rho)\) such that an ancestor of \(\rho\) is assigned to \(i\), i.e. \(|\{ i \in \yield(\xi|_\rho) \setminus \{\varphi(\rho)\} \mid \varphi^{-1}(i) \cap \ancestors(\rho) \neq \emptyset\}| \leq 1\), and
                 \item if there is any inner descendant position \(\rho'\) of \(\rho\) with \(\varphi(\rho) = \varphi(\rho')\), then each position \(\omega \in \descendants_\xi(\rho) \cap \ancestors(\rho')\) between \(\rho\) and \(\rho'\) has the same value \(\varphi(\rho) = \varphi(\omega) = \varphi(\rho')\).
             \end{compactenum}%
-            \item \(\varphi\) is called \deflab<guide>{unitary} if, for each leaf \(i\), there is at most one inner node position that is assigned to \(i\), i.e., \(|\varphi^{-1}(i) \cap \npos(\xi)| \leq 1\).
+            \item \(\varphi\) is called \deflab{unitary guide}[unitary] if, for each leaf \(i\), there is at most one inner node position that is assigned to \(i\), i.e., \(|\varphi^{-1}(i) \cap \npos(\xi)| \leq 1\).
         \end{itemize}
 %        \(\guide(\xi)\) denotes the set of all guides for the indexed tree \(\xi\).
     \end{definition}
@@ -87,15 +87,15 @@
 
     \begin{definition}[Guide Constructor]
         Let \(\varSigma\) be an alphabet of constituent symbols.
-        A \deflab<guide>[gconst]{guide constructor} is a function \(\varPhi\colon \itrees^\varSigma \parto (\DN^* \parto \DN)\) such that for each indexed tree \(\xi\) in the domain \(\dom(\varPhi)\), the partial function \(\varPhi(\xi)\) is a guide for \(\xi\).
+        A \deflab{guide constructor} is a function \(\varPhi\colon \itrees^\varSigma \parto (\DN^* \parto \DN)\) such that for each indexed tree \(\xi\) in the domain \(\dom(\varPhi)\), the partial function \(\varPhi(\xi)\) is a guide for \(\xi\).
     \end{definition}
 
     Guide constructors are defined as partial functions because some of our examples can only be reasonably defined for binary constituent structures.
-    In the following, we will give the instances for guide constructors that were investigated by \citet{Rup22} plus one additional instance (\emph{headed guide constructor}).
+    In the following, we will give the instances for guide constructors that were investigated by \citet{Rup22} plus one additional instance (\emph{head guide constructor}).
     Each instance \(\varPhi\) will carry a name of the form \emph{\(x\) guide constructor}.
     For each \(\xi \in \dom(\varPhi)\), the guide \(\varPhi(\xi)\) will analogously be called \emph{\(x\) guide for \(\xi\)}.
 
-    \paragraph{Vanilla Guide Constructor.}\deflab<guide>[vguide]{vanilla guide (constructor)}[]
+    \paragraph{Vanilla Guide Constructor.}\deflab{vanilla guide constructor}[]
     This guide constructor aims to formalize the assignment of lexical items to inner nodes achieved by the transportation in the extraction of lexical \abrv{lcfrs} rules described in the previous section.
     Similar to the prerequisites in that section, the guide is defined for binary constituent structures.
     A guide produced by this constructor maps each node position either to the rightmost\footnote{
@@ -159,7 +159,7 @@
     As we continue with the nodes to the bottom, the second set in the term for \(L_\rho\) grows with the values that we assigned to the positions on the path from the root to \(\rho\) and may thus exclude considered leaves in the yield below \(\rho\).
     \exampleqed
 
-    \paragraph{Strict Guide Constructor.}\deflab<guide>[sguide]{strict guide (constructor)}[]
+    \paragraph{Strict Guide Constructor.}\deflab{strict guide constructor}[]
     This is a slight adjustment of the vanilla guide constructor that removes the special case where an inner node is assigned to a leaf below it.
     As mentioned previously, this constructor is defined for binary constituent structures.
     A guide constructed by it maps each inner node to the least leaf of the second successor.
@@ -192,11 +192,11 @@
         E.g.\@ we may determine the values \(\mathrm{strict}(\xi)(2) = \min\;\yield(\xi|_{2\,2}) = \min\;\{3\} = 3\) or \(\mathrm{strict}(\xi)(1\,1) = \min\;\yield(\xi|_{1\,1\,2}) = \mid\;\{5,6\}\) without computing any other values beforehand.
     \end{example}
 
-    \paragraph{Least and Near Guide Constructors.}\deflab<guide>[lguide]{least guide (constructor)}[]\deflab<guide>[nguide]{near guide (constructor)}[]
-    These two guides were developed to
+    \paragraph{Least and Near Guide Constructors.}
+    These two guide constructors were developed to
     \begin{inparaenum}
-        \item assign as many nodes as possible to direct children (\emph{least guide constructor}), and
-        \item assign each node to a leaf that is as close as possible (\emph{near guide constructor}).
+        \item assign as many nodes as possible to direct children (\deflab{least guide constructor}), and
+        \item assign each node to a leaf that is as close as possible (\deflab{near guide constructor}).
     \end{inparaenum}
     Both intentions are similar, but the heuristic solutions used in these constructors' definitions are sometimes different.
     \Cref{fig:guides:diff} shows an example.
@@ -278,12 +278,12 @@
     This also requires special treatment concerning binarization, which is applied to the constituent structures for the two following guide constructors.
     This is explained further in the following paragraphs.
 
-    \paragraph{Head Guide Constructor.}\deflab<guide>[hguide]{head guide (constructor)}[]
+    \paragraph{Head Guide Constructor.}
     As the name suggests, these guides assign the lexical head to each inner node of the constituent structure.
     This implements an intuitive approach to deal with the relation between the inner nodes and their assigned lexical head: For each lexical symbol, there will be a lexical rule that contains the information to produce precisely the inner nodes it is head of.
     Naturally, this requires that the constituent structure is equipped with the necessary lexical head assignment.
     Formally, consider the lexical head assignment \(\head_{(\xi,p,w)}\) for the constituent tree \((\xi, p, w)\).
-    The head guide constructor is defined as follows: \(\mathrm{hguide}(\xi)(\rho) = \head_{(\xi,p,w)}(\rho)\).
+    The \deflab{head guide constructor} is defined as follows: \(\mathrm{hguide}(\xi)(\rho) = \head_{(\xi,p,w)}(\rho)\).
 
     With this guide, our grammar extraction procedure aims to mimic the strategies established in dependency parsing \citep{kuhlmann2009treebank} as follows:
     \begin{itemize}
@@ -311,12 +311,12 @@
         If \(\head(\xi|_\rho) = \head(\xi|_{\rho'})\), we see again quickly the property as mentioned earlier that this leaf must also be the head at all positions between \(\rho\) and \(\rho'\).
     \end{proof}
 
-    \paragraph{Dependent Guide Constructor.}\deflab<guide>[dguide]{dependent guide (constructor)}[]
+    \paragraph{Dependent Guide Constructor.}
     Dependent guides aim to offer assignments that complement head-outward binarized constituent structures.
     They assign the head of a dependent to each inner node in the constituent structure.
     We consider these guides only for head-outward binarized constituent structures, as each inner node has precisely one dependent.
     Formally, consider the lexical head assignment \(\head_{(\xi,p,w)}\) for the constituent tree \((\xi, p, w)\).
-    The dependent guide constructor is defined as follows:
+    The \deflab{dependent guide constructor} is defined as follows:
     \[
         \mathrm{dguide}(\xi)(\rho) = \begin{cases}
             \head_{(\xi,p,w)}(\rho\cdot2) & \text{if $\rho \in \npos{\xi}$ and $\head_{(\xi,p,w)}(\rho) \in \yield(\xi|_{\rho\cdot 1})$} \\
@@ -394,7 +394,7 @@
     Similar to the guide constructors, each instance will carry a name of the form \emph{\(x\) nonterminal constructor}.
     The nonterminal symbols constructed by \(\psi\) are called \emph{\(x\) nonterminals}.
 
-    \paragraph{Vanilla Nonterminal Constructor.}\deflab<nonterminal constructor>[vnont]{vanilla nonterminal (constructor)}[]
+    \paragraph{Vanilla Nonterminal Constructor.}
     This resembles the nonterminals in the extraction in \cref{sec:extraction:lcfrs}.
     Each nonterminal is of the form \(A_{n}^{d}\) where \(A \in \varGamma\) is a constituent symbol, \(n \in \DN_+\) is a fanout of a discontinuous span in the constituent tree \(\xi\), and \(d \in \{-1,0,+1\}\) is the difference between the fanout of the extracted rule and \(f\).
     This set of \emph{vanilla nonterminals} \(N\) is partitioned such that \(\mathit{fo}_{\hat{n}} = \{ A^d_{\hat{n}-d} \in N \mid A \in \varGamma, d \in [-1,1], \hat{n}-d > 0 \}\).
@@ -412,7 +412,7 @@
     It is denoted in the form \(\cn{vp}^0_2\).
     \exampleqed
 
-    \paragraph{Classic Nonterminal Constructor.}\deflab<nonterminal constructor>[cnont]{classic nonterminal (constructor)}[]
+    \paragraph{Classic Nonterminal Constructor.}
     This constructor intends to produce nonterminals akin to usual strategies in LCFRS extraction \citep{MaierSogaard08}.
     It combines the superscript and subscript of the vanilla nonterminals and annotates constituent symbols with their sum.
     Moreover, each occurrence of a constituent symbol that is the product of a merge during a rank transformation (cf.\@ merging a chain of unary nodes in \cref{sec:binarization}) is replaced by the topmost constituent symbol of such chain.
@@ -425,14 +425,14 @@
     The nonterminal consists of the symbol \(\cn{sbar}\) and the fanout \(\fanout(L) = 1\) and is illustrated as \(\cn{sbar}_1\).
     \end{example}
 
-    \paragraph{Coarse Nonterminal Constructors.}\deflab<nonterminal constructor>[coarsenont]{coarse nonterminal (constructor)}[]
+    \paragraph{Coarse Nonterminal Constructors.}
     This constructor equals the classic nonterminal constructor for the most part, but it replaces the constituent symbol \(\xi(\rho)\) either by
     \begin{inparaenum}
         \item a symbol that subsumes multiple constituent symbols given in a separate table or
         \item its first letter.
     \end{inparaenum}
     The latter case roughly approximates the first one when such a table is unavailable.
-    The coarse nonterminal constructor mimics the nonterminals in coarse-to-fine parsing \citep{Cha06,Tei17}.
+    The \deflab{coarse nonterminal constructor} mimics the nonterminals in coarse-to-fine parsing \citep{Cha06,Tei17}.
 %    For our examples, the nonterminals are \(\text{S}\) and \(\text{V}\).
 
     \begin{example}
@@ -468,8 +468,8 @@
     Since \abrv{dcp} supertags do not contain \abrv{lcfrs} compositions, the nonterminals occurring in them do not need to be consistent with any fanout.
     We use two additional \emph{extensions} for the classic and coarse nonterminal constructor in the case of dcp supertags:
     \begin{itemize}
-        \item The \emph{nof extension} completely removes the fanout subscripts in all constructed nonterminal symbols.
-        \item The \emph{disc extension} removes the fanout subscript if it is 1 and replaces it by the marker ``$_{\text{disc}}$'' if it is greater than 1; i.e.\@ it distinguishes nonterminals for continuous and discontinuous derivations.
+        \item The \deflab{nof extension} completely removes the fanout subscripts in all constructed nonterminal symbols.
+        \item The \deflab{disc extension} removes the fanout subscript if it is 1 and replaces it by the marker ``$_{\text{disc}}$'' if it is greater than 1; i.e.\@ it distinguishes nonterminals for continuous and discontinuous derivations.
     \end{itemize}
     In \cref{sec:experiments}, we refer to the nonterminal constructors extended by adding the name as a suffix, for instance, \emph{coarse-disc} for the coarse nonterminal constructor with the disc extension.
 

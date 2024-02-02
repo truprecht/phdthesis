@@ -44,7 +44,7 @@
     \end{figure}
 
     \section*{Analyzing the Syntax of Natural Language Sentences}
-    Two major forms express the syntax of natural language sentences: \deflab{dependency trees} (\citealp[Section~2.1]{Kue09}; and \citealp[Section~18.1]{Jur23}) and \deflab{constituent trees} \citep[Section~3]{Cho56}.
+    Two major forms express the syntax of natural language sentences: \deflabs{dependency tree} (\citealp[Section~2.1]{Kue09}; and \citealp[Section~18.1]{Jur23}) and \deflabs{constituent tree} \citep[Section~3]{Cho56}.
     Analyzing and illustrating a natural language phrase in such an expression is called \deflab{parsing}.
     Dependency trees describe relations between the words of a sentence, such as the \emph{lexical head-dependent relation} that identifies the central word of each (sub-)phrase as \emph{lexical head} and connects its subphases as \emph{dependents}.
     \Cref{fig:dependency} shows two examples of dependency trees.
@@ -73,17 +73,17 @@
     }
     The example shows a well-known phenomenon in the syntax of the English language, called \cn{wh}-movement that occurs in phrases with interrogative words.
     European languages such as Dutch, German, and Swiss-German are infamous for their discontinuous syntax \citep{Shieber85,Becker91}.
-    There are \deflab{treebanks}, extensive collections of constituent trees created manually or semi-automatic, that give an impression of what frequency such phenomena occur in these languages \citep{Marcus94,EvaKal11,Skut98,Brants04,Noo13}.
+    There are \deflabs{treebank}, extensive collections of constituent trees created manually or semi-automatic, that give an impression of what frequency such phenomena occur in these languages \citep{Marcus94,EvaKal11,Skut98,Brants04,Noo13}.
 
     The theory of natural language syntax analysis is due to \citet{Cho56}.
-    \Citeauthor{Cho56} formalized a rule-based framework for the syntax-based definition of languages, called \deflab{grammars}, and the famous \emph{Chomsky hierarchy} of grammar formalisms.
-    \Citeauthor{Cho56} aimed to explain the syntax of natural languages using \deflab{context-free grammars}, the second out of four levels of grammars in the hierarchy.
+    \Citeauthor{Cho56} formalized a rule-based framework for the syntax-based definition of languages, called \deflabs{grammar}, and the famous \emph{Chomsky hierarchy} of grammar formalisms.
+    \Citeauthor{Cho56} aimed to explain the syntax of natural languages using \deflabs{context-free grammar}, the second out of four levels of grammars in the hierarchy.
     These grammars were defined with rules that directly model the parent-child relationship within constituent trees, such as \(\nt{S} \to \nt{NP}\,\nt{VP}\).
     However, context-free grammars cannot model the discontinuities that appear in natural language \citep{Shieber85}.
-    The grammar formalism for the next higher level in the hierarchy, called \deflab{context-sensitive grammars}, was dismissed for the modeling and analysis of natural languages due to its complexity.
+    The grammar formalism for the next higher level in the hierarchy, called \deflabs{context-sensitive grammar}, was dismissed for the modeling and analysis of natural languages due to its complexity.
     As a consequence, there have been multiple proposals for formalisms that aim to add just enough power to context-free grammars to be able to handle discontinuous constituents and still allow efficient analyses:
         tree-adjoining grammars \citep{JosLevTak75}, multiple context-free grammars \citep{SekMatFujKas91}, linear context-free rewriting systems \citep{VijWeiJos87} and combinatory categorial grammars \citep{Ste11} to name a few.
-    These formalisms were later brought under the umbrella term \deflab{mildly context-sensitive grammars}, a class that supersedes context-free and is strictly included in context-sensitive grammars.
+    These formalisms were later brought under the umbrella term \deflabs{mildly context-sensitive grammar}, a class that supersedes context-free and is strictly included in context-sensitive grammars.
     Later chapters of this thesis deal with such mildly context-sensitive grammar formalisms, particularly linear context-free rewriting systems and an extension of them, called hybrid grammars \citep{Ned14}.
 
     \section*{Autonomous Parsing of Natural Languages Sentences}
@@ -120,8 +120,8 @@
 
     \section*{Parsing via Supertagging}
     Supertagging was introduced by \citet{bangalore1999supertagging} for tree-adjoining grammars.
-    It assumes an underlying \deflab{lexical} grammar formalism, i.e.\@, that contains precisely one lexical symbol in each rule.
-    The grammar rules used for supertagging contain a singular lexical symbol that acts as a wildcard; we call these rules \deflab{supertag blueprints}.
+    It assumes an underlying \deflab{lexical grammar}[lexical grammar formalism], i.e., that contains precisely one lexical symbol in each rule.
+    The grammar rules used for supertagging contain a singular lexical symbol that acts as a wildcard; we call these rules \deflabs<supertag>{supertag blueprint}.
     Supertagging refers to predicting a small sample of supertag blueprints for each lexical symbol in the input.
     After prediction, each blueprint's wildcard symbol is replaced with the sentence position it was predicted for; the obtained object is called a \deflab{supertag}.
     The union of all supertags for an input sentence is then used to parse the sentence.

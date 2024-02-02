@@ -2,7 +2,7 @@
 
 \begin{document}
     \section{Definite Clause Programs}\label{sec:grammar:dcp}
-    Definite clause programs (short \abrv{dcp}) were introduced as a formalism to characterize the derivation trees in attribute grammars \citep{Der85}.
+    \deflab{\dcp}[Definite clause programs]  \defabrv{\dcp}{\abrv{dcp}} were introduced as a formalism to characterize the derivation trees in attribute grammars \citep{Der85}.
     In contrast to \abrv{lcfrs}, it is a formalism where each rule produces trees instead of plain strings.
     The most striking difference to the previous formalism, however, lies in the composition expressions contained in each rule:
     They not only allow substitution with parameters produced by successors in a derivation (first-order substitution), but each single parameter may also contain variables that are substituted in the same step (second-order substitution).
@@ -24,7 +24,7 @@
         The identifier \(\X\) denotes the set of all variables \(\X = \{\x_i \mid i \in \DN\}\).
         Let \(\varSigma\) and \(\varGamma\) be alphabets disjoint from \(\X \cup \Y\).
         The \(\DN\)-family \((S_k = \{x(v) \mid x \in \X_k, v \in \T_\varGamma(\varSigma \cup Y)^*\} \mid k \in \DN)\) denotes substitution sites with variables up to subscript \(k\).
-        The \(\DN\)-family of \abrv{dcp} \deflab<\dcp>[dcp:comp]{composition}[compositions] over \(\varSigma\) and \(\varGamma\) is \((\C^{\varGamma\varSigma}_k \mid k \in \DN)\) such that \(\C^{\varGamma\varSigma}_k\) contains each nonempty sequence \(c\) in \((\T_\varGamma(\varSigma \cup \Y \cup S_k))^+\) such that each variable in \(\X_k \cup \Y\) occurs exactly once in \(c\).
+        The \(\DN\)-family of \abrv{dcp} \deflab<composition>{\abrv{dcp} composition}[compositions] over \(\varSigma\) and \(\varGamma\) is \((\C^{\varGamma\varSigma}_k \mid k \in \DN)\) such that \(\C^{\varGamma\varSigma}_k\) contains each nonempty sequence \(c\) in \((\T_\varGamma(\varSigma \cup \Y \cup S_k))^+\) such that each variable in \(\X_k \cup \Y\) occurs exactly once in \(c\).
         The identifier \(\C^{\varGamma\varSigma}\) denotes the set of all \abrv{dcp} compositions \(\bigcup_{k \in \DN} \C^{\varGamma\varSigma}_{k}\).
 
         Each composition \(c \in \C^{\varGamma\varSigma}_k\) is associated with a function \[
@@ -61,19 +61,19 @@
         \end{align*}
     \end{example}
 
-    Aside from the form of the compositions (and therefore also the concept of fanout), \abrv{dcp} grammars, derivations, and most of the concepts of rule and grammar forms are defined analogously to \abrv{lcfrs} grammars, and we will refrain from repeating them completely but focus on the differences to \abrv{lcfrs} grammars.
+    Aside from the form of the compositions (and therefore also the concept of fanout), \abrv{dcp} grammars, \deflab<derivation>{\abrv{dcp} derivation}[derivations], and most of the concepts of rule and grammar forms are defined analogously to \abrv{lcfrs} grammars, and we will refrain from repeating them completely but focus on the differences to \abrv{lcfrs} grammars.
     As we have seen, \abrv{dcp} compositions contain elements from two alphabets, \(\varGamma\) for inner nodes (which we will assume to be constituent symbols) and  \(\varSigma\) for leaf nodes (tokens or sentence positions, respectively), only the symbols in \(\varSigma\) are considered lexical symbols.
     The tuple for a \abrv{dcp} grammar is hence extended by the additional alphabet and assumes the form \((N, \varGamma, \varSigma, S, R)\).
     There is no fanout in \abrv{dcp} because the sequences of trees produced by compositions are not meant to be separated.
     To avoid that a complete derivation produces more than one tree, we require that the composition in each non-nullary rule whose \abrv{lhs} nonterminal is an initial nonterminal in \(S\) is of the form \(\gamma ( \omega )\) for some \(\gamma \in \varGamma\) and \(\omega \in \C^{\varGamma \varSigma}\), i.e.\@ there is at least one inner node that assembles the results of all successor rules.
     As in other grammar formalisms, the yield for a derivation recursively computes the composition functions.
     This recursive evaluation will leave exactly one superfluous variable symbol \(\y\) that originates from the root's composition; it is removed from the result.
-    In contrast to string grammars, like \abrv{lcfrs}, the yield of a complete derivation is a tree in \(\T_\varGamma(\varGamma)\).
+    In contrast to string grammars, like \abrv{lcfrs}, the \deflab<yield>{yield of a \abrv{dcp} derivation}[yield] of a complete derivation is a tree in \(\T_\varGamma(\varGamma)\).
 
     As \abrv{lcfrs}, we deal with \abrv{dcp} grammars that are instantiated with sentence positions as lexical symbols during the rule extraction as well as parsing.
-    The formalism does not restrict the composition functions with respect to the lexical symbols of assembled trees; each derivation is inherently \emph{admissible}.\footnote{
+    The formalism does not restrict the composition functions with respect to the lexical symbols of assembled trees; each derivation is inherently \deflab<admissible>{admissible \abrv{dcp} derivation}[admissible].\footnote{
         Such ``unrestricted \abrv{dcp}'' showed to be infeasible for parsing during our experiments, so we equipped each rule with a fanout (which does not need to be consistent among all rules for a \abrv{lhs} nonterminal).
-        This is discussed in more detail in \cref{sec:parsing}.
+        This is discussed in more detail in \cref{sec:supertags,sec:parsing:dcp}.
     }
     For each derivation \(d\) in a position instantiated \abrv{dcp}, the constituent structure for \(d\) is the yield of \(d\).
 

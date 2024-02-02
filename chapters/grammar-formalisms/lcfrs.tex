@@ -11,7 +11,7 @@
     \begin{definition}[Compositions]\label{def:lcfrs:comp}
         We fix a set of variables \(\X = \big\{ \x_i^j \mid i, j \in \DN_+ \big\}\) and the \({\DN_+}^*\)-indexed family of finite subsets \(\X_{s_1\cdots s_k} = \big\{ \x_i^j \mid i \in [k], j \in [s_i] \big\}\) for each \(k \in \DN\), and \(s_1, \ldots, s_k \in \DN_+\).
         Let \(\varSigma\) be a set that is disjoint from \(\X\) and \(s \in \DN_+\).
-        An \abrv{lcfrs} \deflab<\lcfrs>[lcfrs:comp]{composition} over \(\varSigma\) of length \(s\) is a sequence \((u_1, \ldots, u_s)\) where the elements \(u_1, \dots, u_s \in (\varSigma \cup \X)^+\) are non-empty sequences over variables in \(X\) and symbols in \(\varSigma\) such that
+        An \deflab<composition>{\abrv{lcfrs} composition} over \(\varSigma\) of length \(s\) is a sequence \((u_1, \ldots, u_s)\) where the elements \(u_1, \dots, u_s \in (\varSigma \cup \X)^+\) are non-empty sequences over variables in \(X\) and symbols in \(\varSigma\) such that
         \begin{compactenum}
             \item each variable in \(\X\) occurs at most once in \(u_1 \cdots u_s\),
             \item for each \(i \in \DN_+\), if the variable \(\x_{i+1}^1\) occurs in the composition, then \(\x_i^1\) occurs to the left of it in \(u_1 \ldots u_s\),
@@ -59,19 +59,17 @@
 
     \begin{definition}[\abrv{Lcfrs} Rules and Grammars]
         Let \(\varSigma\) and \(N\) be a sets and \(\mathit{fo}\colon N \to \DN_+\) a function.
-        An \abrv{lcfrs} \deflab<\lcfrs>{rule} (with terminals in \(\varSigma\), nonterminals in \(N\), and fanout \(\mathit{fo}\)) is of the form \(A \to c\,(B_1, \ldots, B_k)\) where \(k \in \DN\), \(A, B_1, \ldots, B_k \in N\) and \(c \in \C^\varSigma_{(\mathit{fo}(B_1) \cdots \mathit{fo}(B_k), \mathit{fo}(A))}\) is a composition.
+        An \deflab<rule>{\abrv{lcfrs} rule} (with terminals in \(\varSigma\), nonterminals in \(N\), and fanout \(\mathit{fo}\)) is of the form \(A \to c\,(B_1, \ldots, B_k)\) where \(k \in \DN\), \(A, B_1, \ldots, B_k \in N\) and \(c \in \C^\varSigma_{(\mathit{fo}(B_1) \cdots \mathit{fo}(B_k), \mathit{fo}(A))}\) is a composition.
         \(A\) is called the left-hand side (\abrv{lhs}) nonterminal and \(B_1, \ldots B_k\) are the right-hand side (\abrv{rhs}) nonterminals, \(c\) is the composition of the rule.
-        The natural \(k\) is the \deflab<\lcfrs!rule>[lcfrs:rk]{rank} of the rule.
+        The natural \(k\) is the \deflab<rank>{rank of an \abrv{lcfrs} rule}[rank] of the rule.
         The set of all such \abrv{lcfrs} rules is denoted by \(\Rules^{\varSigma, N, \mathit{fo}}\).
 
-        A \deflab[lcfrs]{\lcfrs} (\abrv{lcfrs})%
-        \defabrv{\lcfrs}{\abrv{lcfrs}}
-        is a tuple \(G=(N, \varSigma, S, R)\) where
+        A \deflab{\lcfrs} \defabrv{\lcfrs}{\abrv{lcfrs}} is a tuple \(G=(N, \varSigma, S, R)\) where
         \begin{compactenum}
             \item \(N\) is a set (\emph{nonterminals}),
             \item \(\varSigma\) is a set (\emph{terminals}),
             \item \(S \subseteq N\) (initial non-terminals),
-            \item \(R\) is a finite subset of \(\R^{\varSigma, N, \fanout_G}\) where \(\fanout_G\) is an implicit function that maps each nonterminal to a positive integer matching the above requirement. For each \(A \in N\), the value \(\fanout_G(A)\) is called \deflab<\lcfrs>{fanout} of \(A\).
+            \item \(R\) is a finite subset of \(\R^{\varSigma, N, \fanout_G}\) where \(\fanout_G\) is an implicit function that maps each nonterminal to a positive integer matching the above requirement. For each \(A \in N\), the value \(\fanout_G(A)\) is called \deflab<fanout>{fanout of a nonterminal}[fanout of \(A\)].
         \end{compactenum}
     \end{definition}
 
@@ -80,11 +78,11 @@
 
     \begin{definition}[\abrv{Lcfrs} Grammar Forms]We distinguish rules and grammar instances of the following form:
         \begin{compactitem}
-            \item A rule of rank zero, one and two is called \deflab<\lcfrs!rule>{nullary}, \deflab<\lcfrs!rule>{unary} and \deflab<\lcfrs!rule>{binary}, respectively.
-            \item An \abrv{lcfrs} containing only nullary, unary, and binary rules is called \deflab<\lcfrs>[lcfrs:bin]{binary}.
-            \item A rule whose composition contains exactly one terminal in \(\varSigma\) is called \deflab<\lcfrs!rule>[lcfrs:lex]{lexical}.
-            \item An \abrv{lcfrs} containing only lexical rules is called \deflab<\lcfrs>{lexical}.
-            \item A rule whose composition contains no terminal at all is called \deflab<\lcfrs!rule>{non-lexical}.
+            \item A rule of rank zero, one and two is called \deflab{nullary}, \deflab<unary>{unary grammar rule}[unary] and \deflab<binary>{binary grammar rule}[binary], respectively.
+            \item An \abrv{lcfrs} containing only nullary, unary, and binary rules is called \deflab<binary>{binary grammar}[binary].
+            \item A rule whose composition contains exactly one terminal in \(\varSigma\) is called \deflab<lexical>{lexical grammar rule}[lexical].
+            \item An \abrv{lcfrs} containing only lexical rules is called \deflab<lexical>{lexical grammar}[lexical].
+            \item A rule whose composition contains no terminal at all is called \deflab{non-lexical grammar rule}[non-lexical].
 %            \item
 %                An \abrv{lcfrs} that contains only lexical nullary rules and non-lexical rules of rank \(\ge 1\) and whose initial nonterminals do not occur in any rule's \abrv{rhs} is called \deflab<\lcfrs>[lcfrs:simple]{simple}.
         \end{compactitem}
@@ -108,7 +106,7 @@
 
     \begin{definition}[Derivation]
         Let us consider an lcfrs \(G = (N, \varSigma, S, R)\).
-        An \abrv{lcfrs} \deflab<\lcfrs>[lcfrs:deriv]{derivation} is a tree over rules in \(\T_R\) that suffices the following conditions:
+        An \abrv{lcfrs} \deflab<derivation>{\abrv{lcfrs} derivation} is a tree over rules in \(\T_R\) that suffices the following conditions:
         \begin{compactitem}
             \item Each leaf is equipped with a nullary rule as a symbol.
             \item Each inner node is a rule with the same amount of \abrv{rhs} nonterminals as children in the tree such that the \(i\)-th \abrv{rhs} nonterminal is the \(i\)th child's \abrv{lhs} nonterminal.
@@ -119,7 +117,7 @@
 
     \begin{definition}[Yield]
         Consider a derivation \(d\) in \(\derivs^R\) of the form \(d = r\,(d_1, \ldots, d_k)\) where the root \(r\) is of the form \(A \to c\,(B_1, \ldots, B_k)\).
-        The \deflab<\lcfrs!derivation>[lcfrs:yd]{yield} of \(d\) is defined recursively: \(\yield(d) = \sem{c}(\yield(d_1), \ldots, \yield(d_k))\).
+        The \deflab<yield>{yield of an \abrv{lcfrs} derivation}[yield of \(d\)] is defined recursively: \(\yield(d) = \sem{c}(\yield(d_1), \ldots, \yield(d_k))\).
         For each set of derivations \(D \subseteq \derivs^R\), we denote the set of all derivations for a given string \(w \in \varSigma^*\) by \(D(w) = \{d\in D \mid \yield(d) = w\}\).
     \end{definition}
 
@@ -170,9 +168,9 @@
     \begin{definition}[Position Instantiation]
         Let \(G = (N, \varSigma, S, R)\) be an \abrv{lcfrs}, and \(w = \sigma_1 \ldots \sigma_n\) a word of length \(n \in \DN_+\) over the same alphabet with \((\sigma_i \in \varSigma \mid i \in [n])\).
         Consider a rule \(r\in R\) of the form \(A \to c (B_1, \ldots, B_k)\); a rule \(r' \in \Rules^{[n],N,\fanout_G}\) that is equipped with positions in \(w\) as lexical symbols is called a \deflab{position instantiation} of \(r\) in \(w\) if it is obtained from \(r\) by replacing each lexical symbol \(\sigma\) in \(c\) with a position \(i \in [n]\) such that \(\sigma_i = \sigma\).
-        The \abrv{lcfrs} \(G' = (N, [n], S, R')\) is called the \deflab[\lcfrs]{position instantiation} of \(G\) in \(w\) if, for each \(r \in R\), the set of rules \(R'\) contains each position instantiation of \(r\) in \(w\).
+        The \abrv{lcfrs} \(G' = (N, [n], S, R')\) is called the \deflab{position instantiation} of \(G\) in \(w\) if, for each \(r \in R\), the set of rules \(R'\) contains each position instantiation of \(r\) in \(w\).
 
-        A derivation \(d \in \derivs^{R'}\) is called \deflab[\lcfrs]{admissible}, if the yield \(\yield(d)\) of the form \((s_1, \ldots, s_k)\) contains contiguous sequences of positions in \(w\) and the last position in \(s_i\) is at least by 2 smaller than the first position in \(s_{i+1}\) for each \(i \in [k-1]\).
+        A derivation \(d \in \derivs^{R'}\) is called \deflab<admissible>{admissible \abrv{lcfrs} derivation}[admissible], if the yield \(\yield(d)\) of the form \((s_1, \ldots, s_k)\) contains contiguous sequences of positions in \(w\) and the last position in \(s_i\) is at least by 2 smaller than the first position in \(s_{i+1}\) for each \(i \in [k-1]\).
         The \emph{set of admissible derivations in $R'$} is denoted as \(\widehat{\derivs^{R'}}\).
     \end{definition}
 
@@ -184,7 +182,7 @@
                 \item for each \(i \in \{2, \ldots, k\}\), \(w_i\) is the sequence of terminal symbols occurring between the variables \(\x_{i-1}^1\) and \(\x_i^1\) in \(c\), and
                 \item \(w_{k+1}\) is the sequence of terminal symbols occurring after the variable \(\x_k^1\) in \(c\).
             \end{compactitem}
-        Then the \deflab<\lcfrs!derivation>[lcfrs:parse]{constituent structure} for \(d\) is the tree \[
+        Then the \deflab<constituent structure>{constituent structure for an \abrv{lcfrs} derivation}[constituent structure for \(d\)] is the tree \[
             \parse(d) = A(w_1, \parse(d_1), w_2, \parse(d_2), \ldots, w_k, \parse(d_k), w_{k+1}) \text{.}
         \]
     \end{definition}
@@ -236,7 +234,7 @@
             \item \(w_j\) is a contiguous sequence of positive integers for each \(j \in [s]\),
             \item for each \(j \in [s-1]\), the last (and therefore greatest) element in \(w_j\) is at least two less than the first (and therefore least) element in \(w_{j+1}\).
         \end{compactitem}
-        The positive integer \(s\) is called \deflab{fanout of the set \(\pi\)}.
+        The positive integer \(s\) is called \deflab<fanout>{fanout of a set}[fanout of the set \(\pi\)].
     \end{definition}
 
     In the following definition, these sequences of continuous positions are used to define \abrv{lcfrs} compositions.
@@ -265,7 +263,7 @@
 
     \begin{definition}[Weighted \abrv{lcfrs}]
         Let \(G = (N, \varSigma, S, R)\) be an \abrv{lcfrs} and \(\weight \colon R \to \DR_{\ge 0}\) an assignment of a non-negative value to each rule in \(G\).
-        We call \(\weight\) a \deflab{weight assignment} for \(G\) and the tuple \((G, \weight)\) a \deflab{weighted \abrv{lcfrs}}.
+        We call \(\weight\) a \deflab{weight assignment} for \(G\) and the tuple \((G, \weight)\) a \deflab{weighted grammar}[weighted \abrv{lcfrs}].
         The weight of a derivation \(d \in \derivs^R\) is the sum over all positions' weights: \[ \weight(d) = \sum_{\rho \in \pos(d)} \weight(d(\rho))\text{.} \]
         The set of \emph{best parses for \(w \in \varSigma^*\)} is \(\derivs^R_{\mathrm{max}}(w) = \{ d \in \derivs^R(w) \mid \forall d' \in \derivs^R(w)\colon \weight(d) \geq \weight(d') \}\).
         For each \(n\in \DN_+\), we extend this concept to the sequences of \emph{\(n\)-best parses for \(w\)}.

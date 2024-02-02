@@ -38,12 +38,11 @@
 
     \subsubsection*{Grammar Formalisms}
     There is a whole range of grammar formalisms that are able to express discontinuous constituent structures and were also used for parsing in practice.
-    \Citet{VijWeiJos87} and \citet{Weir88} formulated the class of \deflab{mildly context-sensitive grammar formalisms} that settles well between context-free and context-sensitive grammars.
+    \Citet{VijWeiJos87} and \citet{Weir88} formulated the class of \deflabs{mildly context-sensitive grammar formalism} that settles well between context-free and context-sensitive grammars.
     The formalisms within the class combine the advantages of polynomial parsing complexity (in contrast to context-sensitive grammars) and the necessary expressive power for discontinuities (in contrast to context-free grammars).
     All of the grammar formalisms mentioned in this section are part of the class of mildly context-sensitive grammar formalisms.
 
-    \defabrv{Tree-adjoining grammars}{\abrv{tag}}%
-    \emph{Tree-adjoining grammars} (short: \abrv{tag}; \citealp{JosLevTak75}) are are built around two operations to combine trees:
+    \deflab{tree-adjoining grammar}[Tree-adjoining grammars] (short: \defabrv*{tree-adjoining grammar}{\abrv{tag}}; \citealp{JosLevTak75}) are are built around two operations to combine trees:
     \begin{compactitem}
         \item a substitution operation that replaces a distinct leaf with an operand tree (as usual) and
         \item an adjunct operation that expands a distinct inner node with an operand tree such that its children are appended to a designated \emph{foot node} in the operand.
@@ -57,14 +56,14 @@
     However, \abrv{tag} are limited in their ability to express certain language phenomena: \citet{Becker91} identified occurrences of \emph{long distance scrambling} in German that \abrv{tag} fail to recognize.
     An extension to the formalism called \emph{multi-component tree adjoining grammars} \citep{VijWeiJos87,Weir88}, can accommodate them but has yet to be seen in practice.
 
-    \emph{Linear context-free rewriting systems} (short: \abrv{lcfrs}) are described in detail in \cref{sec:grammar:lcfrs}.
+    \deflab{linear context-free rewriting system}{Linear context-free rewriting systems} \defabrv{linear context-free rewriting system}{\abrv{lcfrs}} are described in detail in \cref{sec:grammar:lcfrs}.
     \Citet{VijWeiJos87} and \citet{Weir88} introduced \abrv{lcfrs} as a unified formalism to capture the expressive power of mildly context-sensitive formalisms.
     As such, there is a range of formalisms whose capabilities are included in the class of \abrv{lcfrs} languages:
     \begin{compactitem}
         \item \citet{VijWeiJos87} showed that the string languages defined by the class of \abrv{lcfrs} include those of (multi-component) \abrv{tag} and head grammars.
         \item \citet{vijay1994equivalence} proved the class also contains the string languages of combinatory categorial grammars and linear indexed grammars.
         \item \citet{SekMatFujKas91} mentioned that multiple context-free grammars are equivalent to string \abrv{lcfrs}.
-        \item \citet{boullier1998proposal} showed the equivalence of simple range concatenation grammars (short \abrv{srcg}) and \abrv{lcfrs}.
+        \item \citet{boullier1998proposal} showed the equivalence of simple range concatenation grammars (short: \abrv{srcg}) and \abrv{lcfrs}.
     \end{compactitem}
     From the latter two, there are two variants for the notation of compositions within the rules of \abrv{lcfrs}, one that matches the notation of multiple context-free grammars and one that is equal to range concatenation grammars.
     \Citet{MaierSogaard08} and \citet{MailKal10} investigated probabilistic \abrv{srcg} and \abrv{lcfrs} as formalisms for data-driven parsing discontinuous constituents.
@@ -75,8 +74,7 @@
     \Citet{Cra11} introduced their parsing model with \abrv{lcfrs} as ``backbone'', suggesting that \abrv{dtsg} resemble \abrv{lcfrs} with latent annotations as it was also pointed out by \citet[Section~8.5.1]{Geb20}.
     Their data-oriented parser is described in more detail below the next heading.
 
-    \defabrv{Combinatory categorial grammars}{\abrv{ccg}}%
-    \emph{Combinatory categorial grammars} (short: \abrv{ccg}) were introduced by \citet{Ste11} as an extension to categorial grammars (which are in turn equivalent to context-free grammars).
+    \deflab{combinatory categorial grammar}[Combinatory categorial grammars] \defabrv{combinatory categorial grammar}{\abrv{ccg}} were introduced by \citet{Ste11} as an extension to categorial grammars (which are in turn equivalent to context-free grammars).
     Both formalisms are distinguished from the remainder mentioned in this section by their peculiar derivation relation based on combinatory logic.
     The meat of each categorial grammar is a lexicon that assigns lexical items to terms over constituent symbols and operators; each such term is called a category.
     The structure of each category indicates how it can be combined with other categories.
@@ -86,7 +84,7 @@
     Supertagging with \abrv{ccg} lexicons was thouroughly investigated \citep{clark2002supertagging, LewisSteedman14, vaswani2016supertagging, Kad18, StaSte20}.
 
     \subsubsection*{Data-Oriented Parsing}
-    \Citet{Bod92} introduced the concept of data-oriented parsing (short: \abrv{dop}), which aims to extract fine-grained but highly ambiguous grammars from constituent treebanks.
+    \Citet{Bod92} introduced the concept of \deflab{data-oriented parsing} \defabrv{data-oriented parsing}{\abrv{dop}}, which aims to extract fine-grained but highly ambiguous grammars from constituent treebanks.
     At the heart of the approach, \citeauthor{Bod92} extracts a tree substitution grammar rule for each fragment (i.e.\@, a coherent set of nodes within a tree) in each constituent tree.
     The number of these fragments is exponential to the size of the treebank
     There were multiple investigations to overcome the computational burden of the model's complexity:
@@ -130,7 +128,7 @@
     % Their set of features includes very local properties, such as the grammar rules occurring in a tree, but also
 
     \subsection{Parsing with Reranking}\label{sec:references:reranking}
-    Reranking has traditionally been used in information retrieval and recommender systems.
+    \deflab{reranking}[Reranking] has traditionally been used in information retrieval and recommender systems.
     Both are disciplines in machine learning that focus on finding matching information resources for queries or suggestions for individuals, respectively.
     The approach aims at refining matches obtained in a query by a prior prediction model \citep{carbonell1998use,adomavicius2009toward}.
     This section, however, focuses on its use in the field of constituent parsing.
@@ -177,13 +175,13 @@
     The parsing procedures in this category first occurred in parsing with grammar formalisms but utilized rich functions to compute the weight of derivations.
     Similar to reranking (c.f.\@ \cref{sec:reranking}), these functions are not limited to the locality restrictions of weighted grammars.
     They are interpreted as a \emph{score} that assesses each derivation.
-    \Citet{Johnson99} presented a framework for \emph{maximum-entropy} models, where score functions are built around \emph{features}
+    \Citet{Johnson99} presented a framework for \emph{maximum-entropy models}, where score functions are built around \emph{features}
     Each features is specific pattern that is counted within the constituent tree, very similar to the reranking mechanism described by \citet{collins2001convolution}.
     The score is computed using a linear combination of the feature counts and interpreted as the probability of the derivation conditioned on the sequence of tokens.
     \Citet{Miyao02} extended the framework by a more efficient training procedure involving the computation of inside-outside-values.
     However, it still required computing all possible derivations for each sentence in the training set and their score, which was very demanding at the time.
     \Citet{Toutanova02} and \citet{Clark04a} utilized the approach and implemented features that consider long-distance dependencies within their derivations of \emph{head-driven phrase structure grammars} (a formalism in the class of mildly context-sensitive grammars, weakly equivalent to \abrv{tag}) and \abrv{ccg} respectively.
-    \Citet{Taskar04} criticized the maximum entropy models for their complex training procedure and proposed \emph{maximum-margin} training, which drops the probabilistic interpretation but only requires computing the best derivation.
+    \Citet{Taskar04} criticized the maximum entropy models for their complex training procedure and proposed \emph{maximum-margin training}, which drops the probabilistic interpretation but only requires computing the best derivation.
     \Citet{Finkel08} proposed an interpretation of the scoring function as a \emph{conditional random field}, which defines factors for each rule in a context-free grammar derivation conditioned on the input sentence.
     Until now, all approaches complemented some grammar instances and scored their derivations.
     \Citet{Turian06} introduced an algorithm that does not require any underlying grammar.
@@ -284,7 +282,7 @@
     To their surprise, they achieved state-of-the-art results.
     \Citet{FerGon21b} extended the approach to the discontinuous case.
     They investigated multiple techniques for the linearization of constituent trees, among them also shift-reduce action sequences analogously to parsers based on transition systems (cf.\@ \citealp{Ma2017DeterministicAF}; \citealp{liu-zhang-2017-encoder}).
-    A recent investigation by \citet{bai2023constituency} exploited pretrained large language models (short: \abrv{llm}s), such as \abrv{gpt4} \citep{openai2023gpt4}.
+    A recent investigation by \citet{bai2023constituency} exploited pretrained large language models (short: \abrv{llm}), such as \abrv{gpt4} \citep{openai2023gpt4}.
     These models were prompted to parse an input sentence, either without context or supplied with a few constituent trees as examples.
     They concluded that \abrv{llm}s enhance the parsing quality for sequence-to-sequence models in case they are fine-tuned.
 
@@ -386,8 +384,8 @@
     \Citet{Kas17} and \citet{Bla18} used similar embeddings without this language model in their experiments with \abrv{ltag} supertags in English, French, and German treebanks.
     All referenced publications in this section report solely on supertag prediction or dependency parsing scores.
 
-    \ifSubfilesClassLoaded{%
-        \printindex
-        \bibliography{../references}%
-    }{}
+    % \ifSubfilesClassLoaded{%
+    %     \printindex
+    %     \bibliography{../references}%
+    % }{}
 \end{document}

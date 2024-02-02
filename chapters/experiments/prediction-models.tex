@@ -6,7 +6,7 @@
     \begin{enumerate}
         \item
             The first one is pretty common in the \abrv{nlp} community for token-wise classification tasks and was used, for instance, by \citet{vaswani2016supertagging}, \citet{StaSte20} and \citet{Cor20}.
-            It contains two modules for embedding, a static word embedding and character-wise embeddings, which are followed by two layers of bidirectional recurrent modules utilizing \abrv{lstm}, and finally a three-layered \abrv{mlp}.
+            It contains two modules for embedding, a static word embedding and character-wise embeddings, which are followed by two layers of bidirectional recurrent modules utilizing \abrv{lstm}, and finally a three-layered \abrv{mlp} with ReLU activations.
             Two instances of dropout are set-up between the embeddings and the \abrv{lstm} layers, and between the \abrv{lstm} layers and the \abrv{mlp}.
             \Cref{fig:architecture:supervised} shows the architecture in an illustration.
             It does not rely on pre-trained modules and implements supervised learning to predict supertags and \abrv{pos} tags; we will refer to this architecture as \emph{supervised model} in the following.
