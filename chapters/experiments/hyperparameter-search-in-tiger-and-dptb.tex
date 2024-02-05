@@ -187,7 +187,7 @@ sup. &   5  & 90.71 & 2.6 & 9 & 90.55 & 5.4 & 13 & 90.56 & 7.0 & 14 \\
     The supervised model also reproduces this trend, except for one instance (cf.\@ f1 score using the dependent guide and classic nonterminal constructor, $v=1$, but with significantly more parse fails).
     We pick the following combination for each model:
     \begin{compactitem}
-        \item strict guide and coarse nonterminal constructors, no added vertival Markovization context ($v=1$) and hybrid grammar supertags for the pretrained model, and
+        \item strict guide and coarse nonterminal constructors, no added vertival Markovization context ($v=1$) and hybrid grammar supertags for the pre-trained model, and
         \item strict guide and classic nonterminal constructors, no added vertival Markovization context ($v=1$) and hybrid grammar supertags for the supervised model.
     \end{compactitem}
 
@@ -241,5 +241,5 @@ sup. &   5  & 87.49 & 5.5 & 4 & 87.46 & 3.3 & 6 & 87.42 & 5.0 & 7 \\
     Lastly, we train supertag prediction models using these sets of parameters and conduct a small grid search over the parameters for the parsing procedure, $k$ and $\beta$.
     \cref{tbl:experiments:tiger:k} lists the results for each tested combination and both models.
     The values are distributed in relatively small ranges for each model.
-    We decide to pick simply via the greatest f1-scores and least values for \(k\) and \(\beta\) and end up with \(k=20\) and \(\beta=0.1\) for the pretrained model, and \(k=20\) and \(\beta=0.5\) for the supervised model.
+    We decide to pick simply via the greatest f1-scores and least values for \(k\) and \(\beta\) and end up with \(k=20\) and \(\beta=0.1\) for the pre-trained model, and \(k=20\) and \(\beta=0.5\) for the supervised model.
 \end{document}

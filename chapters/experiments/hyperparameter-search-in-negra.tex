@@ -16,7 +16,7 @@
     In each experiment, we train two following models for the supertag prediction with a set of fixed training hyperparameters as explained in \cref{sec:models}:
     \begin{compactitem}
         \item A \emph{pre-trained model} utilizing a \emph{bert-base} model as embedding. (Specifically, we use \emph{bert-base-cased-german} for the German \negra{} treebank during the hyperparameter search.)
-        \item A \emph{supervised model} without any pretrained modules.
+        \item A \emph{supervised model} without any pre-trained modules.
     \end{compactitem}
     During this grid search, both models are trained for 10 epochs; we chose this rather small amount of training iterations to conduct the experiments in reasonable time.
 
@@ -534,7 +534,7 @@ coarse-nof  & 90.97 & 0.90 & 9.43 & 0 & 90.42 & 0.88 & 16.05 &  6 &   --- &  ---
     Generally, the supertag prediction accuracies are about equal in all cases per model.
     However, in the case of the \abrv{dcp} supertags, we recorded massive increases in parse time in the columns for the head and dependent guide constructors and nonterminal constructors with the two extensions.
     Among the groups with the same nonterminal and guide constructors, the f1 scores tend to be higher with some configuration of \abrv{dcp} supertags.
-    Specifically, in the case of the pretrained model, \abrv{dcp} supertags with nof extension performed consistently better in the four groups, and \abrv{dcp} supertags with disc extension performed better in five out of six groups.
+    Specifically, in the case of the pre-trained model, \abrv{dcp} supertags with nof extension performed consistently better in the four groups, and \abrv{dcp} supertags with disc extension performed better in five out of six groups.
     The table for the supervised model does not show clear trends regarding the parsing scores.
 
     In conclusion, this section shows some, to our mind, significant results that suggest that the \abrv{lcfrs} compositions do not seem that important for the parsing accuracy with supertags.
@@ -633,11 +633,11 @@ coarse-nof  & 90.97 & 0.90 & 9.43 & 0 & 90.42 & 0.88 & 16.05 &  6 &   --- &  ---
     \end{itemize}
     Generally, for both tables, we do not see any consistent improvements beyond \(k=20\), but small advantages of \(k=20\) as opposed to \(k=10\).
     Beyond values of \(\beta = 2\), the results seem to degenerate.
-    Interestingly, while we could achieve higher scores with \abrv{dcp} supertags using the supervised model, the trend is opposite with the pretrained one.
+    Interestingly, while we could achieve higher scores with \abrv{dcp} supertags using the supervised model, the trend is opposite with the pre-trained one.
     We pick a few configurations for each model in advance of the experiments with reranking:
     \begin{compactitem}
         \item for the supervised model, we fix \abrv{dcp} supertags with \(k = 20\) and \(\beta \in \{0.1,0.5,2\}\),
-        \item for the pretrained model, we fix \abrv{hg} supertags with \(k = 20\) and \(\beta \in \{0.1,0.5,2,5\}\).
+        \item for the pre-trained model, we fix \abrv{hg} supertags with \(k = 20\) and \(\beta \in \{0.1,0.5,2,5\}\).
     \end{compactitem}
 
     \begin{table}
@@ -660,7 +660,7 @@ coarse-nof  & 90.97 & 0.90 & 9.43 & 0 & 90.42 & 0.88 & 16.05 &  6 &   --- &  ---
 
     \begin{table}
         \caption{\label{tbl:grid:reranking:pretrained}
-        F1 score for the best constituent trees obtained using the supertag score (n-f1), the best constituent trees obtained using reranking (r-f1), and the best f1 score among the top $n$ constituent trees predicted by the parser (o-f1) in the development portion of \negra{} using different combinations of the parsing parameter $\beta$ and number of considered constituent trees $n$. The pretrained model predicts the supertag blueprints.
+        F1 score for the best constituent trees obtained using the supertag score (n-f1), the best constituent trees obtained using reranking (r-f1), and the best f1 score among the top $n$ constituent trees predicted by the parser (o-f1) in the development portion of \negra{} using different combinations of the parsing parameter $\beta$ and number of considered constituent trees $n$. The pre-trained model predicts the supertag blueprints.
         }
         \centering
         \vspace{.2cm}
@@ -688,6 +688,6 @@ coarse-nof  & 90.97 & 0.90 & 9.43 & 0 & 90.42 & 0.88 & 16.05 &  6 &   --- &  ---
     For the remainder, we will omit the reranking extension and pick the final configurations for each model:
     \begin{itemize}
         \item we fix the supervised model to \abrv{dcp} supertags with parsing parameters \(k=20\) and \(\beta=0.1\), and
-        \item the pretrained model to \abrv{hg} supertags with parsing parameters \(k=20\) and \(\beta=0.1\).
+        \item the pre-trained model to \abrv{hg} supertags with parsing parameters \(k=20\) and \(\beta=0.1\).
     \end{itemize}
 \end{document}

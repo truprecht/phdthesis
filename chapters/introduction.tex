@@ -17,7 +17,7 @@
     The latter constitutes the application of the methods presented and discussed in this thesis.
 
     Naturally, a syntactic analysis can hardly be seen as valuable information to gather from a piece of language, besides its beauty as a task in academia.
-    It has been part of more sophisticated tasks in the field of natural language processing, such as the translation of sentence between natural languages \citep{Zhang19,Yang22}, relation extraction \citep{Ngu19} and summarization \citep{Bal21}.
+    It has been part of more sophisticated tasks in the field of natural language processing, such as the translation of sentences between natural languages \citep{Zhang19,Yang22}, relation extraction \citep{Ngu19} and summarization \citep{Bal21}.
     Moreover, it has been shown that syntactic analyses can be used to improve the performance of neural models in a wide range of tasks settled in the field of natural language understanding, such as semantic role labeling and natural language inference \citep{Liu19, Wang19, Fei20}.
     Of course, this requires high-quality syntactic analyses.
 
@@ -51,14 +51,14 @@
     Each dependency tree consists of the analyzed sentence and an arrow for each word in the sentence.
     The arrow from above indicates the root of the dependency tree.
     Each arrow between two words depicts a lexical head-dependent relation; the arrow's base is at the lexical head, and the tip is at the dependent.
-    E.g.\@ ``was'' is the root, and ``survey'' is a dependent of ``was'' in both trees.
+    For instance, ``was'' is the root, and ``survey'' is a dependent of ``was'' in both trees.
 
     A constituent tree illustrates a hierarchy of (sub-)phrases in a sentence; each phrase is labeled with a common category that denotes its function within the sentence or in a superseded phrase.
     \Cref{fig:constituent} shows two examples of constituent trees.
     In each constituent tree, the analyzed sentence is illustrated at the bottom.
     At the next higher level, there are part-of-speech tags, which constitute the most simple syntactic structures in natural language and classify the role of each single word.
     Each symbol beyond that denotes a constituent with connections drawn to all words or subphases that are part of the constituent.
-    E.g.\@ in the first tree, ``survey'' is a word in the sentence, ``\cn{nn}'' is its assigned part-of-speech tag \emph{noun}, and the symbol ``\cn{np}'' above it denotes a \emph{noun phrase} that consists of ``the survey''.
+    For example, in the first tree, ``survey'' is a word in the sentence, ``\cn{nn}'' is its assigned part-of-speech tag \emph{noun}, and the symbol ``\cn{np}'' above it denotes a \emph{noun phrase} that consists of ``the survey''.
     These two expressions for the syntax are not mutually exclusive, and we will later consider the lexical head as an extension, but for now, we focus on constituent trees.
 %    We will sometimes consider constituent trees where each constituent is extended by a head assignment, including a head-dependent relation.
 %    In that case, the constituent trees are illustrated using double-struck edges that indicate the word in the sentence that acts as the head of the phrase.
@@ -104,7 +104,7 @@
 
     Other research involves parsers that do not rely on grammars; for instance, parsers modeled as transition systems by \citet{Verseley14} or \citet{CoaCoh19}, or conditional random fields by \citet{Petrov08}.
     Most notably, since the advent of deep learning, such parsing models based on discriminative classifiers became state-of-the-art in terms of accuracy and parse time; parses solely based on grammar formalisms could not keep up with them.
-    Although, there is one significant advantage of grammar formalisms that still convinces some people to put effort into parsing with grammar formalisms:
+    Although, there is one significant advantage of grammar formalisms that still convinces some people to put effort into parsing with them:
         Grammar instances are easily interpretable, as they explicitly describe the constituent structures; deep neural networks do not allow any straightforward interpretation of their computation.
     Some approaches combine grammar-based parsers with discriminative classifiers to merge the advantages of both techniques, thus implementing interpretable, accurate, and fast parsing procedures.
     One of them is the topic of this thesis: \deflab{supertagging}.
@@ -120,8 +120,8 @@
 
     \section*{Parsing via Supertagging}
     Supertagging was introduced by \citet{bangalore1999supertagging} for tree-adjoining grammars.
-    It assumes an underlying \deflab{lexical grammar}[lexical grammar formalism], i.e., that contains precisely one lexical symbol in each rule.
-    The grammar rules used for supertagging contain a singular lexical symbol that acts as a wildcard; we call these rules \deflabs<supertag>{supertag blueprint}.
+    It assumes an underlying \deflab{lexical grammar}[lexical grammar formalism]; that is, each grammar rule contains precisely one lexical symbol.
+    Each of these grammar rules used for supertagging contains a singular lexical symbol that acts as a wildcard; we call these rules \deflabs<supertag>{supertag blueprints}.
     Supertagging refers to predicting a small sample of supertag blueprints for each lexical symbol in the input.
     After prediction, each blueprint's wildcard symbol is replaced with the sentence position it was predicted for; the obtained object is called a \deflab{supertag}.
     The union of all supertags for an input sentence is then used to parse the sentence.
@@ -135,7 +135,7 @@
     \end{compactitem}
     Over the years, the approach has been transferred to other grammar formalisms, most notably combinatory categorial grammars \citep{Clark04}, refined to improve the rule prediction quality \citep{vaswani2016supertagging,Kad18,tian20}, and evaluated in different languages and corpora \citep{Bla18}.
     The published results for parsing with supertagging are promising.
-    Alas, supertagging-based parsers were primarily evaluated in the task of dependency parsing (or just the prediction of the grammar rules), or in some cases, the underlying grammar formalisms are restricted in allowing only discontinuity to a certain degree.
+    Alas, supertagging-based parsers were primarily evaluated in the task of dependency parsing (or just the prediction of the supertags), or in some cases, the underlying grammar formalisms are restricted in allowing only discontinuity up to a certain degree.
     Moreover, extracting the grammar instance for this approach in the needed format often requires language-specific knowledge \citep{Kas17,Bla18} or they used hand-crafted grammar instances \citep{Hoc07}.
     We aimed to tackle these limitations in the research that led to this thesis.
     We published an extraction procedure for lexical linear context-free rewriting systems that is agnostic of the used constituent tree corpus. That is, it does not require any knowledge about the language and allows unbounded degrees of discontinuity \citep{MoeRup20}.
@@ -144,9 +144,9 @@
 
     \section*{Outline}
     This thesis includes the procedures for extracting and parsing with supertags based on linear context-free rewriting systems.
-    These are also extended to the formalisms of hybrid grammars that subsume linear context-free rewriting systems and definite clause programs.
-    We start in \cref{sec:preliminaries} with basic notation and definitions used throughout the document; \cref{sec:grammars} recapitulates the involved grammar formalisms.
-    \Cref{sec:extraction} defines two formalisms for supertags and extraction procedures:
+    These are also extended to the formalisms of hybrid grammars that subsume linear context-free rewriting systems, as well as definite clause programs.
+    We start in \cref{sec:preliminaries} with basic notation and definitions used throughout the whole thesis; \cref{sec:grammars} recapitulates the involved grammar formalisms.
+    \Cref{sec:extraction} defines three formalisms for supertags and two extraction procedures:
     \begin{compactitem}
         \item \Cref{sec:extraction:lcfrs} focuses on supertags in terms of linear context-free rewriting systems.
             The extraction procedure involves transporting lexical symbols within derivations read from constituent trees in a treebank with well-established strategies.

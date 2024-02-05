@@ -12,9 +12,9 @@
             It does not rely on pre-trained modules and implements supervised learning to predict supertags and \abrv{pos} tags; we will refer to this architecture as \emph{supervised model} in the following.
         \item
             The second architecture consists of a pre-trained \abrv{llm} that is topped by one linear layer for the predicted tags; this design is recommended for classification predictions using \abrv{llm} embeddings, for instance by \citet{Devlin2019}.
-            If we consider the \abrv{llm} as a black box, it is conceptually extremely simple yet effective, but its strength relies upon the complex design and pretraining of the \abrv{llm}.
+            If we consider the \abrv{llm} as a black box, it is conceptually extremely simple yet effective, but its strength relies upon the complex design and pre-training of the \abrv{llm}.
             Using such a pre-trained model is considered semi-supervised learning for predicting supertags.
-            In our experiments, we use four language-specific pretrained \abrv{llm}s:
+            In our experiments, we use four language-specific pre-trained \abrv{llm}s:
             \begin{itemize}
                 \item \emph{bert-base-cased} for English and \emph{bert-base-german-cased} \citep{Devlin2019} for German treebanks, and
                 \item \emph{roberta-large} \citep{roberta} for English and \emph{gbert-large} \citep{Cha20} for German treebanks.
