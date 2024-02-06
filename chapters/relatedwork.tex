@@ -221,7 +221,7 @@
     This creates a gap between the two last elements on the stack, which can then form a discontinuous constituent with the reduce operation.
     This approach was extended by \citet{Maier15} such that a single swap action may bundle the transport of multiple stack elements, forming larger gaps.
     \Citet{Maier16} introduced an alternative transition system that utilizes a \emph{skip-shift} instead of the swap operation.
-    The operation is parametrized with a natural number \(i \ge 1\). It shifts the \(i\)-th buffer element to the stack, directly forming a gap between the two last stack elements without the need to swap anything back.
+    The operation is parametrized with a natural number \(i \ge 1\). It shifts the \(i\)th buffer element to the stack, directly forming a gap between the two last stack elements without the need to swap anything back.
     \Citet{Coavoux17} formulated an alternative operation, called \emph{gap}, that moves a pointer on the stack to the left starting from the second rightmost element.
     The pointer indicates the element to be combined with the rightmost stack element during the next reduce operation, forming a discontinuous constituent if a gap operation was applied before.
     After each shift or reduce operation the pointer is reset to the second rightmost element.

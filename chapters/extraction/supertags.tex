@@ -21,8 +21,8 @@
     The concept behind derivations with \abrv{lcfrs} supertags is a trivial adaption of \abrv{lcfrs} derivations, because the second component is solely used to reverse the lexicalization process that was used for the extraction.
     Consider a set of \abrv{lcfrs} supertags \(S\).
     We consider the \emph{set of derivations in \(S\)}, denoted by \(\derivs^S\), that contains the tree \(d \in \T_S\) if and only if the \abrv{lcfrs} rules within \(d\) (i.e., the first components) form a derivation.
-    Analogously, the derivation \(d\in \derivs^S\) is called \deflab<admissible>{admissible \abrv{lcfrs} supertag derivation}[admissible], if the derivation of \abrv{lcfrs} rules within \(d\) is an admissible derivation.
-    For each derivation \(d \in \derivs^S\), we obtain the \emph{constituent tree for \(d\)} by first reversing the extraction process described in \cref{sec:extraction:lcfrs} (by applying the steps \ref{enum:lcfrs:step4}--\ref{enum:lcfrs:step1} in reverse).
+    Analogously, the derivation \(d\in \derivs^S\) is called \deflab<admissible>{admissible \abrv{lcfrs} supertag derivation}[admissible], if the derivation of \abrv{lcfrs} rules within \(d\) is an admissible derivation; the identifier \(\aderivs^S\) denotes the set of all admissible derivations in \(S\).
+    For each derivation \(d \in \aderivs^S\), we obtain the \emph{constituent tree for \(d\)} by first reversing the extraction process described in \cref{sec:extraction:lcfrs} (by applying the steps \ref{enum:lcfrs:step4}--\ref{enum:lcfrs:step1} in reverse).
     We omit a detailed discussion, the process is straight-forward.
 
     \subsection*{\abrv{Dcp} Supertag Dervations}
@@ -44,7 +44,7 @@
             Consider the supertag derivation $d'$ is of the form \((r,f)\;\big( d_1, \ldots, d_k \big)\).
             Then the child derivations \(d_1, \ldots, d_k\) must be ordered such that \(\min \mathrm{lex}(d_1) < \min \mathrm{lex}(d_2) < \ldots < \min \mathrm{lex}(d_k)\). 
     \end{enumerate}
-    The identifyer \(\widehat{\derivs}^S\) denotes the \emph{set of admissible derivations in \(S\)}.
+    The identifier \(\aderivs^S\) denotes the \emph{set of admissible derivations in \(S\)}.
     Consider a finite set of positive integers \(\pi \subset \DN_+\) that we consider possible lexical symbols within a \abrv{dcp} supertag derivation.
     The \emph{set of admissible derivations with the lexical symbols \(\pi\)} is \(\widehat{\derivs}^S(\pi) = \{d\in \widehat{\derivs}^S \mid \mathrm{lex}(d) = \pi\}\).
     For each \abrv{dcp} supertag derivation \(d\), we define the \emph{constituent structure for \(d\)} as the constituent structure for the derivation of \abrv{dcp} rules (i.e., the first components) within \(d\).

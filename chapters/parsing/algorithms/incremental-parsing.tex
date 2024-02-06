@@ -18,8 +18,8 @@
                 \State{$(\delta^{(i)} := \varphi^{(i)}(w, b^{(i)}_{1}) - \beta_t \mid i \in [\ell])$}
                 \State{$S := \{ b^{(i)}_{\kappa}[i] \mid i \in [\ell], \kappa \in [k], \varphi^{(i)}(w, b^{(i)}_{\kappa}) \geq \delta^{(i)} \} $}
                 \State{$(\weight(b^{(i)}_{\kappa}[i]) := \varphi^{(i)}(w, b^{(i)}_{\kappa}) \mid i \in [\ell], \kappa \in [k])$}
-                \If{$\widehat{\derivs^S}(1\cdots\ell) \neq \emptyset$}
-                    \State{\Return one sequence of $\argmax^{(n)}_{d \in \widehat{\derivs^S}(1\cdots\ell)} \weight(d)$}
+                \If{$\aderivs^S(1\cdots\ell) \neq \emptyset$}
+                    \State{\Return one sequence of $\argmax^{(n)}_{d \in \aderivs^S(1\cdots\ell)} \weight(d)$}
                 \EndIf
                 \If{$\delta^{(i)} \leq \varphi^{(i)}(w, b^{(i)}_{k})$ for each $i\in [\ell]$}
                     \State{abort the loop execution}

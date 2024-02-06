@@ -1,3 +1,4 @@
+% LTeX: enabled=false
 \usepackage{amsmath}
 \usepackage{amsfonts}
 \usepackage{amssymb}
@@ -64,9 +65,10 @@
 \DeclareMathOperator{\fanout}{fo}
 \DeclareMathOperator{\yield}{yd}
 \DeclareMathOperator{\parse}{ctree}
-\DeclareMathOperator{\weight}{wt}
+\newcommand{\weight}{\ensuremath{\mathit{wt}}}
 \DeclareMathOperator{\lang}{L}
 \DeclareMathOperator{\derivs}{D}
+\DeclareMathOperator{\aderivs}{\mathbb{D}}
 \DeclareMathOperator{\maxrk}{maxrk}
 \DeclareMathOperator\lhs{lhs}
 \newcommand{\nullaries}[1]{#1^{(\mathrm{T})}}

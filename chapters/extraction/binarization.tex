@@ -56,7 +56,7 @@
     \begin{itemize}
         \item The first (and topmost) node has the same symbol as the original node.
         \item For each \(2 \leq i \leq n-1\), the \(i\)th node's symbol consists of the original node's symbol and the symbols of its rightmost \(n-i+1\) successors. Those symbols are denoted in the form \(A\binsym{B_i,B_{i+1},\ldots,B_n}\) where \(A\) is the root node and \(B_1, \ldots, B_n\) are its children.
-        \item For each \(1 \leq i \leq n-2\), the left successor of the \(i\)-th node is the \(i\)-th successor of the original node, and its right successor is the \((i+1)\)-th constructed node.
+        \item For each \(1 \leq i \leq n-2\), the left successor of the \(i\)th node is the \(i\)th successor of the original node, and its right successor is the \((i+1)\)th constructed node.
         \item The successors of the last (bottom-most) node are the two rightmost successors of the original node.
     \end{itemize}
     The \deflab{left-branching binarization}[left-branching strategy] \defabrv{left-branching binarization}{\abrv{lb}} mirrors the right-branching strategy: It constructs a series of binary nodes connected via their left successors in the opposite direction.
@@ -65,7 +65,7 @@
 
     \paragraph{Head-Outward Binarization.}
     The \deflab{head-outward binarization}[head-outward strategy] \defabrv{head-outward binarization}{\abrv{ho}} mixes the left- and right-branching strategies at each higher-ranked node depending on the successor that contains its lexical head.
-    If the node is of rank \(k\) and its lexical head is at or below its \(n\)-th successor, then
+    If the node is of rank \(k\) and its lexical head is at or below its \(n\)th successor, then
     \begin{enumerate}
         \item the trailing \(k-n\) successors are split according to the left-branching binarization strategy forming \(k-n-1\) artificial nodes, and
         \item the first \(n-1\) successors are split according to the right-branching binarization strategy, forming another \(n-1\) artificial nodes.
@@ -208,11 +208,11 @@
     As we omit removing unary nodes in this transformation, the results may appear different even in said cases.
 
 %    This strategy uses the head assignment for each inner node in the constituent tree, much like the head-outward binarization strategy.
-    More formally: For each inner node \(\rho\) with \(n > 2\) successors whose head is located in the \(i\)-th child (for \(i \in [n]\)), it introduces artificial binary nodes for the successors \(1, \ldots, i-1\) and \(i+1, \ldots, n\) as usual with the right-branching strategy, respectively.
+    More formally: For each inner node \(\rho\) with \(n > 2\) successors whose head is located in the \(i\)th child (for \(i \in [n]\)), it introduces artificial binary nodes for the successors \(1, \ldots, i-1\) and \(i+1, \ldots, n\) as usual with the right-branching strategy, respectively.
     These artificial nodes and the \(i\)th child are attached to \(\rho\), composing a node with at most three non-leaf successors.
     For the resulting tree, there is a canonical head assignment that preserves the head for each non-artificial node; each artificial node is assigned to the head of the left successor in case of nodes constructed using the right-branching strategy and vice versa.
     The process is extended with Markovization and directive indicators for the artificial nodes in the same manner as the binarization strategies.
-    Moreover, we add an artificial (unary) nodes concluding each sequence of right-branching artificial nodes as a parent of the \(i-1\)th and \(n\)-th successor.
+    Moreover, we add an artificial (unary) nodes concluding each sequence of right-branching artificial nodes as a parent of the \(i-1\)th and \(n\)th successor.
     \Cref{fig:ex:head-inward} shows an example of a constituent structure obtained by this rank transformation.
 %    \begin{itemize}
 %        \item with Markovization annotations at each node,

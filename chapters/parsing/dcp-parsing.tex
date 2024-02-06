@@ -35,15 +35,15 @@
         \item The algorihm iterates over the growing confidence interval sizes \(\beta_1, \beta_2, \ldots\) (line 2) and computes the least confidence within the interval \(\delta^{(i)}\) for each position in the input sentence (line 3).
         \item Then, it collects the supertag blueprints predicted within this confidence interval and instantiates them for each sentence position (line 4).
         \item The weight assignment \(\weight\) for the resulting set of rules is determined from the family \(\varphi\) of prediction confidences (line 5).
-        \item If there is any admissible derivation in the set of supertags \(S\), then it returns the an ordered sequence of (at most \(n\)) admissible derivations and ends (lines 6 and 7). Thus, only the supertags within the least possible prediction confidence interval are used to determine the derivations.
-        \item If there were no admissible derivations and the prediction confidences \(\delta^{(i)}\) are non-exhausting (not all predicted supertags were used), then it continues with the next confidence interval. Otherwise it aborts, since no admissible derivation can be found (lines 8 and 9).
+        \item If there is any admissible derivation in the set of supertags \(S\), then it returns an ordered sequence of (at most \(n\)) admissible derivations and ends (lines 6 and 7). Thus, only the supertags within the least possible prediction confidence interval are used to determine the derivations.
+        \item If there were no admissible derivations and the prediction confidences \(\delta^{(i)}\) are non-exhausting (not all predicted supertags were used), then it continues with the next confidence interval. Otherwise, it aborts since no admissible derivation can be found (lines 8 and 9).
         \item If no derivations are found, it reports a failure (line 10).
     \end{itemize}
     In practice, we implement the confidence intervals as the sequence of all multiples of a base value \(\hat{\beta}\in \DR\) of the form \((\beta_i = i \cdot \hat{\beta} \mid i \in \DN_+)\).
     In the following, we will call this base value \emph{parsing step range} and denote it as the symbol \(\beta\).
-    \Citet{Clark04} and \citet{Auli12} used a fixed sequences of values in their experiments.
+    \Citet{Clark04} and \citet{Auli12} used a fixed sequence of values in their experiments.
     This approach differs from the one we used in previous versions of the parser \citep{RupMoe21, Rup22}, where we used a fixed amount of predicted blueprints per sentence position.
-    The following two subsection are concerned with lines 6 and 7 of the algorithm:
+    The following two subsections are concerned with lines 6 and 7 of the algorithm:
         They explain the algorithms involved in determining the admissible derivations for the sequence of sentence positions and enumerating them according to their weight.
 
     \subsection{Parsing with \abrv{Lcfrs} and \abrv{Hg} Supertags}\label{sec:parsing:lcfrs}
@@ -172,9 +172,9 @@
 
     \paragraph{Properties of the Output.} After executing the procedure \textsc{fillChart}, the objects \(W\) and \(C\) are as follows:
     \begin{itemize}
-        \item For each admissible derivation \(d \in \widehat{\derivs}^S\) rooted in \(s = (A \to c\,(B_1, \ldots, B_k), f)\) that contains the lexical symbols \(L\), there is a backtrace \((s, L_1 \cdots L_k) \in C_{(A, L)}\) such that \(L_1, \ldots, L_k \subseteq L\) are the sets of lexical symbols in the successors of \(d\).
+        \item For each admissible derivation \(d \in \aderivs^S\) rooted in \(s = (A \to c\,(B_1, \ldots, B_k), f)\) that contains the lexical symbols \(L\), there is a backtrace \((s, L_1 \cdots L_k) \in C_{(A, L)}\) such that \(L_1, \ldots, L_k \subseteq L\) are the sets of lexical symbols in the successors of \(d\).
         For each \(A\in N\) and \(L \subseteq [\ell]\), there are no other elements in \(C_{(A,L)}\). Specifically, if there is no such derivation starting with a supertag with the \abrv{lhs} nonterminal \(A\) and that contains the lexical symbols \(L\), then \(C_{(A,L)} = \emptyset\).
-        \item For each \(A \in N\) and \(L \subseteq [\ell]\), the value \(W_{(A, L)} = \max_{d \in \widehat{\derivs}^S_A(L)} \weight(d)\) is the best weight of any derivation rooted in a supertag with the \abrv{lhs} nonterminal \(A\) and the lexical symbols \(L\). If there is no such derivation, then \(W_{(A, L)} = -\infty\).
+        \item For each \(A \in N\) and \(L \subseteq [\ell]\), the value \(W_{(A, L)} = \max_{d \in \aderivs^S_A}(L) \weight(d)\) is the best weight of any derivation rooted in a supertag with the \abrv{lhs} nonterminal \(A\) and the lexical symbols \(L\). If there is no such derivation, then \(W_{(A, L)} = -\infty\).
     \end{itemize}
 
     \begin{algorithm}
@@ -259,12 +259,12 @@
     \end{itemize}
 
     \paragraph{Properties of the functions and output.}
-    The two outputs of \cref{alg:parsing:deriv} consider the set of \(n\)-best sequences of admissible \abrv{dcp} supertag derivations \(\mathcal{D} = \argmax^{(n)}_{\hat{d} \in \widehat{\derivs}^S([\ell])} \weight(\hat{d})\).
-    The integer \(n' \in \DN\) is the number derivations \(|\vec{d}'| = \min(n, |\widehat{\derivs}^S([\ell])|)\) in each sequence \(\vec{d}' \in \mathcal{D}\) that is either limited by the input \(n \in \DN_+\) for the algorithm or by the actual size of the set of admissible derivations.
+    The two outputs of \cref{alg:parsing:deriv} consider the set of \(n\)-best sequences of admissible \abrv{dcp} supertag derivations \(\mathcal{D} = \argmax^{(n)}_{\hat{d} \aderivs^S}([\ell]) \weight(\hat{d})\).
+    The integer \(n' \in \DN\) is the number derivations \(|\vec{d}'| = \min(n, |\aderivs^S([\ell])|)\) in each sequence \(\vec{d}' \in \mathcal{D}\) that is either limited by the input \(n \in \DN_+\) for the algorithm or by the actual size of the set of admissible derivations.
     The sequence \(\vec{d}\) is of the length \(n'\) and such that the following properties are satisfied:
     \begin{compactitem}
-        \item Each element in the sequence is an admissible derivation in \(\widehat{\derivs}^S\), beacause the function \textsc{readDerivation} exclusively constructs admissible derivations.
-        \item For each \(A\in N\) and \(L \subseteq [\ell]\), function calls of the form \(\Call{readDerivation}{A, L, i}\) construct derivations with descreasing weight assigned by \(\weight\) in the order of rising values for \(i\); thus, the elements in $\vec{d}$ are ordered with decreasing weight assigned by \(\weight\). That is, or the sequence \(\vec{d} = d_1 d_2 \ldots d_{n'}\), the elements are ordered by \(d_1 \geq d_2 \geq \ldots \geq d_{n'}\). Moreover, each other derivation \(\hat{d} \in  \widehat{\derivs}^S([\ell]) \setminus \{d_1, \ldots, d_{n'}\}\) has a smaller or equal weight \(d_{n'} \geq \hat{d}\).
+        \item Each element in the sequence is an admissible derivation in \(\aderivs^S\), because the function \textsc{readDerivation} exclusively constructs admissible derivations.
+        \item For each \(A\in N\) and \(L \subseteq [\ell]\), function calls of the form \(\Call{readDerivation}{A, L, i}\) construct derivations with decreasing weight assigned by \(\weight\) in the order of rising values for \(i\); thus, the elements in $\vec{d}$ are ordered with decreasing weight assigned by \(\weight\). That is, or the sequence \(\vec{d} = d_1 d_2 \ldots d_{n'}\), the elements are ordered by \(d_1 \geq d_2 \geq \ldots \geq d_{n'}\). Moreover, each other derivation \(\hat{d} \in \aderivs^S([\ell]) \setminus \{d_1, \ldots, d_{n'}\}\) has a smaller or equal weight \(d_{n'} \geq \hat{d}\).
     \end{compactitem}
     Thus, the sequence \(\vec{d}\) is an element of \(\mathcal{D}\).
 

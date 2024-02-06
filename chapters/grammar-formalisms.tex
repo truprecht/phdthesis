@@ -5,21 +5,21 @@
     This chapter describes three grammar formalisms that we use for parsing natural language sentences.
     For the subject of this thesis, let us consider a grammar as a collection of rules that are capable of deriving strings (or trees).
     All considered grammar formalisms share the same fundamental structure of their rules:
-        Each consists of a sequence of nonterminal symbols, one of which is called the left-hand side (\abrv{lhs}) nonterminal and the rest the right-hand side (\abrv{rhs}) nonterminals, and an expression that computes strings or trees based on an argument for each \abrv{rhs} nonterminal.
+        Each rule contains a sequence of nonterminal symbols, one of which is called the left-hand side (\abrv{lhs}) nonterminal and the rest the right-hand side (\abrv{rhs}) nonterminals, and an expression that computes strings or trees based on an argument for each \abrv{rhs} nonterminal.
         All non-variable symbols occurring in these expressions are called terminal symbols.
     The nonterminals already hint at the recursive structure of grammar derivations: the arguments used to compute the result are computed by successor rules whose \abrv{lhs} nonterminal match the \abrv{rhs} nonterminals.
 
     Within the scope of this thesis, however, grammars are not used to compute strings, but the opposite:
-        We analyze strings in consideration of which collection of grammar rules may be used to derive it; this is called \emph{parsing}.
+        We analyze strings in consideration of which collection of grammar rules may be used to derive them; this is called \emph{parsing}.
     Typically, the result of this process is not a collection of grammar rules but a digest of it, called \emph{parse}, and resembles a constituent structure.
-    Grammars for natural languages are usually highly ambiguous; that is, many different combinations of rules derive a given string.
-    One approach to handle such ambiguities is a weight assignment, which is used to rank parses and choose the supposed best among them.
-    In \emph{weighted grammars} such weights are defined via an assignment for each rule, and operations to accumulate the assigned weights for each parse.
-    These weight assignments per rule are usually integrated into parsing algorithms so that intermediate results already take the ranking into account.
+    Grammars for natural languages are usually highly ambiguous; that is, many combinations of rules can derive a given string.
+    One approach to handle such ambiguities are weight assignments that rank parses and choose the supposed best among them.
+    \emph{Weighted grammar formalisms} couple such assignments for each rule and operations to accumulate the assigned weights for each parse.
+    These weight assignments per rule are usually integrated into parsing algorithms so that intermediate results already take them into account and rank them accordingly.
     In the literature, there is a lot of theoretical work about general frameworks for weight structures in parsing with grammars.
-    For instance, \citet{Goodman} gives an overview of weighted parsing with weights within the semiring framework.
-    However, in practice, it often boils down to numerical values interpreted as probabilities or additive costs.
-    We will focus on the latter one and equip grammar rules with non-negative cost values.
+    For instance, \citet{Goodman} gives an overview of weighted parsing within the semiring framework.
+    However, in practice, it often boils down to numerical values interpreted as probabilities or cumulative costs.
+    We will focus on the latter one and equip grammar rules with real-valued scores.
     These values are added when considering a collection of rules deriving a parse and wrapped to the supremum value when considering multiple different collections of rules that derive the same parse.
 
     \Cref{sec:grammar:lcfrs} focuses on linear context-free rewriting systems (\abrv{lcfrs}), an extension of context-free grammars introduced by \citet{VijWeiJos87} and extensively studied by \citet{SekMatFujKas91}.
@@ -33,7 +33,7 @@
     Here, a subset of \abrv{dcp} is considered, whose rules may only produce consecutive parts in trees.
     Parsing with \abrv{dcp} finds a derivation that produces a tree with the input sentence in its leaves and assumes the tree as a constituency structure.
 
-    Lastly, \cref{sec:grammar:hybrid} considers \abrv{lcfrs}/\abrv{dcp} hybrid grammars as introduced by \citet{Ned14} (see also \citealp{Geb17}; and \citep{Geb20}).
+    Lastly, \cref{sec:grammar:hybrid} considers \abrv{lcfrs}/\abrv{dcp} hybrid grammars as introduced by \citet{Ned14} (see also \citealp{Geb17}; and \citealp{Geb20}).
     They combine the two aforementioned grammar formalisms:
         Besides the nonterminals, each rule contains the expression of an \abrv{lcfrs} as well as the expression of a \abrv{dcp}.
     During parsing, we find a derivation such that the \abrv{lcfrs} expressions produce the input sentence, and the \abrv{dcp} expressions yield the constituency structure.
@@ -42,7 +42,7 @@
     \begin{inparaenum}
         \item Each section starts with the expressions contained in each rule that compose strings or trees.
         \item After that, each section expresses the rules and the other components in a grammar.
-        \item Finally, the derivations in such a grammar is explained in tandem with their computed objects.
+        \item Finally, the derivations in such a grammar are explained in tandem with their computed objects.
     \end{inparaenum}
     Each of these subsections is accompanied by examples that give intuitions for the described structures.
 
