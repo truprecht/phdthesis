@@ -25,6 +25,7 @@
             A guide constructor selects a sentence position for each constituent node.
         \item\label{extraction:hg:alg}
             An admissible derivation of lexical hybrid grammar rules is constructed using the constituent tree, the guide from the previous step, and a nonterminal constructor.
+            The \abrv{lhs} nonterminal at the root of the derivation is collected as an initial nonterminal.
         \item
             In the final step, the rules are collected as a sequence in the order of their lexical symbols.
             All lexical symbols are replaced by a wildcard symbol ``\tn{*}''.

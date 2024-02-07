@@ -3,26 +3,26 @@
 
 \begin{document}
     \chapter{Parsing via Supertagging}\label{chp:parsing}
-    This chapter describes a unified framework of a supertagging-based parsing process with on the grammar formalisms explained in \cref{sec:grammars}.
-    For this process, we assume an alphabet of tokens \(\varSigma\), an input sentence \(w = (w_i \in \varSigma \mid i \in [\ell])\) of length \(\ell \in \DN_+\) and a set of supertag blueprints \(B\).
-    The parsing process is divided into four consecutive steps; the last step is an optional refinement procedure (reranking) as illustrated in \cref{fig:parsing:overview}:
+    This chapter describes a unified framework of a supertagging-based parsing process with the grammar formalisms explained in \cref{sec:grammars}.
+    For this process, we assume an alphabet of tokens \(\varSigma\), an input sentence \(w = (w_i \in \varSigma \mid i \in [\ell])\) of length \(\ell \in \DN_+\), a set of supertag blueprints \(B\) and a set of initial nonterminals \(N_0\)
+    The parsing process is divided into four consecutive steps as illustrated in \cref{fig:parsing:overview}; the last step is an optional refinement procedure (reranking):
     \begin{enumerate}
         \item\label{parsing:item:1}
             First, a sequence of supertag blueprints is predicted for each token in the input sentence; the number of predicted blueprints per position \(k \in \DN_+\) is a hyperparameter.
             This step requires a classifier that computes a score for each supertag blueprint at each position in the input sentence:
                 We assume a parallel tagging model \(\varphi\colon \big(\bigcup_{i\in \DN_+} \varSigma^i \times B^i \big) \to \DR\) that computes the score \(\varphi^{(i)}(w, b) \in \DR\) for the input sentence \(w\), each supertag blueprint \(b \in B\) and position \(i \in [\ell]\).
-            In our experiments, we use artificial neural networks to implement \(\varphi\); \cref{sec:preliminaries:nn} focuses on the concrete architectures used to realize the parallel tagging models.
+            In our experiments, we use artificial neural networks to implement \(\varphi\); \cref{sec:models} focuses on the concrete architectures that we use to realize such parallel tagging models.
             For the coming step \ref{parsing:item:2}, we consider two objects from this step:
             \begin{itemize}
-                \item the family of predicted supertag blueprints \((b^{(i)}_{\kappa} \in B \mid i \in [\ell], \kappa \in [k])\) such that, for each position \(i\in [\ell]\), the sequence \((b^{(i)}_{\kappa} \in B \mid \kappa \in [k])\) is a collection of \(k\) best supertag blueprints in \(\argmax^{(k)}_{b \in B} \varphi^{(i)}(w, b)\) , and
-                \item the prediction confidence \((\varphi^{(i)}(w, b^{(i)}_{\kappa}) \mid i \in [\ell], \kappa \in [k])\) for each of these supertags.
+                \item the family of predicted supertag blueprints \((b^{(i)}_{\kappa} \in B \mid i \in [\ell], \kappa \in [k])\) such that, for each position \(i\in [\ell]\), the sequence \((b^{(i)}_{\kappa} \in B \mid \kappa \in [k])\) is a collection of \(k\) best supertag blueprints in \(\argmax^{(k)}_{b \in B} \varphi^{(i)}(w, b)\), and
+                \item the confidence \((\varphi^{(i)}(w, b^{(i)}_{\kappa}) \mid i \in [\ell], \kappa \in [k])\) for each of these predictions.
             \end{itemize}
         \item\label{parsing:item:2}
             The predicted supertag blueprints are instantiated and combined into weighted grammars; the weight assignments are determined by the prediction confidence.
             A statistical parsing process for the underlying grammar formalism is used to find derivations for the sequence of consecutive positions in the input sentence.
-            If reranking is used, then this step yields a sequence of \(n\) derivation trees, where \(n \in \DN_+\) is a hyperparameter and \emph{best} refers to an endorelation on the weights (e.g., highest score).
+            If reranking is used, then this step yields a sequence of \(n\) derivation trees, where \(n \in \DN_+\) is a hyperparameter and \emph{best} refers to an endorelation on the weights (e.g., the usual \(\leq\) relation for real scores where greater is better).
             Otherwise, it yields \emph{a best} derivation.
-            We follow \citet{Auli12} and implement this step as an incremental process that considers supertags in growing confidence intervals \(\beta_1, \beta_2, \ldots\); that assumes an additional hyperparameters \((\beta_i \in \DR \mid i \in I)\) for some non-empty integer index set \(I\).
+            We follow \citet{Auli12} and implement this step as an incremental process that considers supertags in growing confidence intervals \(\beta_1, \beta_2, \ldots\); that assumes additional hyperparameters \((\beta_i \in \DR \mid i \in I)\) for some non-empty integer index set \(I\).
             This step is discussed in detail in \cref{sec:parsing}.
         \item\label{parsing:item:3}
             The derivations obtained in the previous step are converted into constituent structures by evaluating the \abrv{dcp} compositions or (in the case of \abrv{lcfrs} supertags) assuming the nonterminals as inner nodes.
@@ -38,7 +38,7 @@
         \subfile{figures/parsing-overview.tex}
         \caption{\label{fig:parsing:overview}
             Illustration of the supertagging-based parsing process.
-            Staggered gray boxes indicate sequences of objects, e.g.\@, the \emph{parsing} step yields a sequence of \(n\) best derivation trees for the input sentence.
+            Staggered gray boxes indicate sequences of objects, e.g.\@, the \emph{parsing} step yields an \(n\)-best sequence of derivation trees for the input sentence.
         }
     \end{figure}
 

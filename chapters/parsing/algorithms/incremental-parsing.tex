@@ -3,10 +3,11 @@
 \begin{document}
     \Inputs \\
     \IOElem{$\ell$}{length of the input sentence}\\
-    \IOElem{$b$}{family of supertag blueprints \((b^{(i)}_{\kappa} \in B \mid i \in [\ell], \kappa \in [k])\)}\\
+    \IOElem{$b$}{family of predicted supertag blueprints \((b^{(i)}_{\kappa} \in B \mid i \in [\ell], \kappa \in [k])\)}\\
     \IOElem{$\varphi$}{family of prediction confidences \((\varphi^{(i)}(w, b^{(i)}_{\kappa}) \in \DR \mid i \in [\ell], \kappa \in [k])\)}\\
     \IOElem{$\beta$}{increasing interval sizes \((\beta_i \in \DR \mid i \in I)\) for a nonempty integer index set \(I\)}\\
     \IOElem{$n$}{the maximum number of derivations to determine}\\
+    \IOElem{$N_0$}{set of initial nonterminals}\\
     \Outputs \\
     \IOElem{$\vec{D}$}{%
         non-empty sequence of admissible supertag derivations}\\%
@@ -18,8 +19,9 @@
                 \State{$(\delta^{(i)} := \varphi^{(i)}(w, b^{(i)}_{1}) - \beta_t \mid i \in [\ell])$}
                 \State{$S := \{ b^{(i)}_{\kappa}[i] \mid i \in [\ell], \kappa \in [k], \varphi^{(i)}(w, b^{(i)}_{\kappa}) \geq \delta^{(i)} \} $}
                 \State{$(\weight(b^{(i)}_{\kappa}[i]) := \varphi^{(i)}(w, b^{(i)}_{\kappa}) \mid i \in [\ell], \kappa \in [k])$}
-                \If{$\aderivs^S(1\cdots\ell) \neq \emptyset$}
-                    \State{\Return one sequence of $\argmax^{(n)}_{d \in \aderivs^S(1\cdots\ell)} \weight(d)$}
+                \If{$\aderivs^S_A(1\cdots\ell) \neq \emptyset$ for any \(A \in N_0\)}
+                    \State{\(D = \bigcup_{A \in N_0} \aderivs^S_A(1\cdots\ell)\)}
+                    \State{\Return a sequence \(\vec{D}\) with $\vec{D} \in \argmax^{(n)}_{d \in D} \weight(d)$}
                 \EndIf
                 \If{$\delta^{(i)} \leq \varphi^{(i)}(w, b^{(i)}_{k})$ for each $i\in [\ell]$}
                     \State{abort the loop execution}

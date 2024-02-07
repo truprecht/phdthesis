@@ -302,9 +302,9 @@
     They are assembled by linguists for texts collected from news articles, written speeches, etc., and annotated with their constituent structure.
     In the scope of this thesis, treebanks form data sets used for learning models that can predict constituent structures for input sentences.
     The process of predicting a constituent structure for a given input sentence is called \deflab{parsing}, and a used model is called \emph{parser}.
-    In \emph{\(k\) best parsing}, a sequence of (at most) \(k \in \DN_+\) constituent trees is predicted and each is complemented with a confidence value.
+    In \emph{\(n\)-best parsing}, a sequence of (at most) \(n \in \DN_+\) constituent trees is predicted and each is complemented with a confidence value.
     \deflab{reranking}[Reranking] is a process that uses such a collection of potential constituent trees for a sentence and produces new confidence values.
-    It is used as a refinement for a set of candidate constituent trees and often involves more ambitious or orthogonal methods to the underlying \(k\) best parser.
+    It is used as a refinement for a set of candidate constituent trees and often involves more ambitious or orthogonal methods to the underlying \(n\)-best parser.
 
     Besides constituent trees, there are also \deflabs{dependency tree} that express a syntactic analysis of natural language.
     They present grammatical relations between phrases within a sentence, such as arguments, adjuncts, complements, and sometimes even more fine-grained ones, like distinctions between subjects and objects.

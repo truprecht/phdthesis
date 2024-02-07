@@ -3,14 +3,12 @@
 \begin{document}
     \Inputs \\
         \IOElem{$\ell \in\DN_+$}{length of the input sentence}\\
-        \IOElem{$S$}{set of \abrv{dcp} supertags with nonterminals \(N\) and initial nonterminal \(I \in N\)}\\
+        \IOElem{$S$}{set of \abrv{dcp} supertags with nonterminals \(N\) and initial nonterminals \(N_0\)}\\
         \IOElem{$\weight$}{a weight for each supertag \(\weight = (\weight(s) \in \DR \mid s \in S)\)}\\
         \IOElem{$n \in \DN_+$}{maximum number of derivations to enumerate}\\
         \IOElem{$C, W$}{parse chart from the previous step}\\
     \Outputs \\
-        \IOElem{$n'$}{number of enumerated derivations}\\ %\(n' = \min(|\widehat{\derivs}^S([\ell])|, n)\)} \\
-        \IOElem{    }{\(n' = \max \big( \{0\} \cup \{m \in [n] \mid \Call{LazyKthBest}{I, [\ell], m} = \text{True} \} \big)\)}\\
-        \IOElem{$\vec{d}$}{\(n'\) best derivations \(\vec{d} = (d_i = \Call{readDerivation}{I, [\ell], m} \mid m \in [n'])\)}
+        \IOElem{$\vec{d}$}{\(n\)-best sequence of derivations with \(\vec{d} = \Call{derivations}{N_0, n}\)}
 
     \begin{algorithmic}[1]
         \State{$D := (D_{(A, L, i)} := \mathbf{undefined} \mid A \in N, L \subseteq [n], i \in [k])$}
@@ -50,14 +48,7 @@
             \EndWhile
             \State{\Return True}
         \EndFunction
-
-        \Function{readDerivation}{$A$, $L$, $m$}
-            \State{let \(((A \to c\,(B,\ldots,B_k), f), L_1 \ldots L_k, m_1 \ldots m_k) = D_{(A, L, m)}\)}
-            \For{$i$ in $1, \ldots, k$}
-                \State{$d_i := \Call{readDerivation}{B_i, L_i, m_i}$}
-            \EndFor
-            \State{\Return $(A \to c\,(B_1, \ldots, B_k), f) \; \big(d_1, \ldots, d_k \big)$}
-        \EndFunction
+        \ifSubfilesClassLoaded{}{\algstore{alg:kbest}}
     \end{algorithmic}
 \end{document}
 

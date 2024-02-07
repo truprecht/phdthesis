@@ -1,0 +1,46 @@
+\documentclass[../../../document.tex]{subfiles}
+
+\begin{document}
+    % \Inputs \\
+    %     \IOElem{$\ell \in\DN_+$}{length of the input sentence}\\
+    %     \IOElem{$S$}{set of \abrv{dcp} supertags with nonterminals \(N\) and initial nonterminals \(N_0\)}\\
+    %     \IOElem{$\weight$}{a weight for each supertag \(\weight = (\weight(s) \in \DR \mid s \in S)\)}\\
+    %     \IOElem{$n \in \DN_+$}{maximum number of derivations to enumerate}\\
+    %     \IOElem{$C, W$}{parse chart from the previous step}\\
+    % \Outputs \\
+    %     \IOElem{$n'$}{number of enumerated derivations}\\ %\(n' = \min(|\widehat{\derivs}^S([\ell])|, n)\)} \\
+    %     \IOElem{    }{\(n' = \max \big( \{0\} \cup \{m \in [n] \mid \Call{LazyKthBest}{I, [\ell], m} = \text{True} \} \big)\)}\\
+    %     \IOElem{$\vec{d}$}{\(n'\) best derivations \(\vec{d} = (d_i = \Call{readDerivation}{I, [\ell], m} \mid m \in [n'])\)}
+
+    \begin{algorithmic}[1]
+        \ifSubfilesClassLoaded{\State{}\Comment{The line numbers will be fixed when the whole document is compiled.}}{\algrestore{alg:kbest}}
+        \Function{readDerivation}{$A$, $L$, $m$}
+            \State{let \(((A \to c\,(B,\ldots,B_k), f), L_1 \ldots L_k, m_1 \ldots m_k) = D_{(A, L, m)}\)}
+            \For{$i$ in $1, \ldots, k$}
+                \State{$d_i := \Call{readDerivation}{B_i, L_i, m_i}$}
+            \EndFor
+            \State{\Return $(A \to c\,(B_1, \ldots, B_k), f) \; \big(d_1, \ldots, d_k \big)$}
+        \EndFunction
+
+        \Procedure{derivations}{$N_0$, $n$}
+            \State{$\hat{H} := \{(A, 1) \mid A \in N_0\colon \Call{LazyKthBest}{A, [\ell], 1} = \text{True} \}$}
+            \State{$m := 0$}
+            \State{$(\hat{D}_i := \mathbf{undefined} \mid i \in [n])$}
+            \While{$m < n$}
+                \If{$m \geq 1$}
+                    \State{let $(A, m') = \hat{D}_m$}
+                    \State{add $(A, m'+1)$ to $\hat{H}$ if $\Call{LazyKthBest}{A, [\ell], m'+1} = \text{True}$}
+                \EndIf
+                \If{\(\hat{H} = \emptyset\)}
+                    \State{abort the loop execution}
+                \EndIf
+                \State{pop $(A, m') \in \argmax_{(\hat{A}, \hat{m}) \in H_0} W'_{(\hat{A}, [\ell], \hat{m})}$ from \(\hat{H}\)}
+                \State{$m := m+1$}
+                \State{$\hat{D}_m := (A, m')$}
+                \State{\textbf{yield} $\vec{d}_i := \Call{readDerivation}{A, [\ell], m'}$}
+            \EndWhile
+        \EndProcedure
+    \end{algorithmic}
+\end{document}
+
+

@@ -4,7 +4,7 @@
     \section{Reranking}\label{sec:reranking}
     This section focuses on a refinement procedure to pick one final constituent tree among a sequence of \(n \in \DN_+\) parses.
     A \deflab{reranking} process is an empirical prediction that assesses a previous empirical prediction by assigning a new confidence value to each label in conjunction with its prior confidence value.
-    In the case of reranking in the field of parsing, it takes the predicted sequence of \(n\) best parses, each complemented with the score of the parse, and computes a new score for each parse tree; we use the best among these scores to pick the final parse tree.
+    In the case of reranking in the field of parsing, it takes the predicted \(n\)-best sequence of parses, each complemented with the score of the parse, and computes a new score for each parse tree; we use the best among these scores to pick the final parse tree.
     The concept of reranking has its tradition in information retrieval and recommender systems. Both are disciplines in machine learning that focus on finding matching information resources for queries or suggestions for individuals, respectively.
     Reranking is used in this context to refine matches obtained in a query by a prior prediction model \citep{carbonell1998use,adomavicius2009toward}.
 
@@ -12,14 +12,14 @@
         Let \(Y\) be a set of labels and \(\mathcal{C}\) a set of confidence values.
         A reranker is a function \(\psi \colon Y \times \mathcal{C} \to \mathcal{C}\) that assigns a confidence value to each pair of a label and \emph{prior confidence value}.
     Often, only a tiny fraction \(\hat{Y} \subseteq Y\) of the set of labels, called \emph{search space}, is considered for the reranking process.
-    In the case of reranking in parsing, the search space is the collection of constituent trees within an \(n\) best sequence, and the reranking process is used to find the highest scoring among those.
-    Consider a sequence of \(n\) labels \((t_1, \ldots, t_n) \in Y^n\) and \(\phi \colon Y \to C\) an assignment of prior confidence values.
-    We call a \deflab{pick among a sequence}[\(\psi\)-pick among \(t_1 \ldots t_n\)] the label that maximizes the reranker \(\psi\)'s confidence value, that is, \(
+    In the case of reranking in parsing, the search space is the collection of constituent trees within an \(n\)-best sequence, and the reranking process is used to find the highest scoring among those.
+    Consider a sequence of \(n\) labels \((t_1, \ldots, t_n) \in Y^n\) and an assignment of prior confidence values \(\phi \colon Y \to C\).
+    We call a label \(t\) that maximizes the reranker \(\psi\)'s confidence value a \deflab{pick among a sequence}[\(\psi\)-pick among \(t_1 \ldots t_n\)], that is, \(
         t \in \argmax_{\hat{t} \in \hat{Y}} \psi(\hat{t}, \phi(\hat{t}))
     \) where \(\hat{Y} = \{t_i \mid i \in [n]\}\) is the search space.
     \Cref{sec:references:reranking} gives a summary of the literature for reranking procedures applied in the field of parsing constiutent trees.
 
-    In this work, we rerank constituent trees using the \defabrv{discontinuous data-oriented parsing}{disco-dop} formalism.
+    In this work, we rerank constituent trees using the \deflab{discontinuous data-oriented parsing} \defabrv{discontinuous data-oriented parsing}{disco-dop} formalism.
     Disco-dop has been characterized as an instance of \abrv{lcfrs} with latent annotations \citep[Section~4]{Cra11} as well as hybrid grammars \citep[Section~8.5.1]{Geb20}.
     The formalism was introduced by \citet{Cra11} as a generalization of data-oriented parsing \citep{Bod92} to the case of discontinuous constituent structures.
     Such grammars consist of constituent tree fragments with substitution sites at leaves that carry nonterminal symbols.
@@ -42,8 +42,13 @@
     \end{figure}
 
     To compute the weight that such a disco-dop grammar assigns to a constituent tree, we follow the interpretation as weighted \abrv{lcfrs} with latent annotation.
-    Consider that we extract the disco-dop grammar from a treebank with the set of consituent symbols \(\varGamma\), \abrv{pos} symbols \(\varPi\) and the set of tokens \(\varSigma\).
-    Then such an interpretation is an \abrv{lcfrs} of the form \(G = (\varGamma \times L, \varPi, R, S)\) and weight function \(\weight\colon R \to \DR\)  where \(L\) is a non-empty set of latent symbols (e.g.\@ a non-empty integer index set that depends on the number of extracted tree fragments), \(R\) is the set of rules for the extracted tree fragments, and \(S \in \varGamma\) is a common root constituent symbol.
+    Consider that we extract a disco-dop grammar from a treebank with the set of consituent symbols \(\varGamma\), \abrv{pos} symbols \(\varPi\) and the set of tokens \(\varSigma\).
+    Then such an interpretation is an \abrv{lcfrs} of the form \(G = (\varGamma \times L, \varPi, R, N_0)\) and weight function \(\weight\colon R \to \DR\)  where
+    \begin{itemize}
+        \item  \(L\) is a non-empty and finite set of latent symbols (e.g., we use a non-empty integer index set \(L \subset \DN_+\), its size depends on the number of extracted tree fragments),
+        \item \(R\) is the set of rules for the extracted tree fragments, and
+        \item \(N_0 \subset \varGamma \times \{l_0\}\) is a set of constituent symbols appearing at the root supplied with a distinct latent symbol \(l_0\) (in our case \(l_0 = 1\)).
+    \end{itemize}
     The rules in \(R\) are of the same form as the usual treebank \abrv{lcfrs} (cf.\@ \cref{sec:extraction:lcfrs}, Step \ref{enum:lcfrs:step2}) except that \abrv{pos} symbols occur as lexical symbols in the rules, and the nonterminal symbols are extended using the latent symbols to accomodate the tree fragments that are split into multiple rules.
     The latent symbol \(1 \in L\) occurs at each nonterminal for the root and leaves of such a tree fragment; we denote the noterminal \((A, \lambda)\) with \(A\in \varGamma\) and \(\lambda \in L\) in the form \(A^{(\lambda)}\).
     \Cref{ex:dop} shows examples of such tree fragments in a disco-dop grammar and an interpretation as \abrv{lcfrs} rules with latent anotations.
@@ -61,7 +66,7 @@
     We implement the disco-dop grammar into our parsing process as follows:
     \begin{itemize}
         \item The weighted disco-dop grammar \((G,\weight)\) is extracted from training portion of the treebank (the same trees that are used top extract the supertag blueprints).
-        \item We define the reranker \(\varPsi\colon \Xi_{\varGamma, \varPi, \varSigma} \times \DR \to \DR\) as \(\varPsi(\xi, v) = \weight(\xi)\) where \(\DR\) is the domain of our confidence values. It does not use any prior scores and solely relies on the probability assigned by the grammar.
+        \item We define the reranker \(\varPsi\colon \Xi_{\varGamma, \varPi, \varSigma} \times \DR \to \DR\) as \(\varPsi(\xi, v) = \weight(\xi)\) where \(\DR\) is the domain of our confidence values. It does not use any prior scores and solely relies on the probability assigned by the disco-dop grammar.
         \item Let \(\xi_1 \ldots \xi_n \in {(\Xi_{\varGamma, \varPi, \varSigma})}^n\) be a sequence of constituent trees of length \(n\in \DN_+\) and the input to the reranking process.
         The \(\varPsi\)-pick among \(\xi_1 \ldots \xi_n\) is the constituent tree with greatest probability assigned by the weighted disco-dop grammar.
         It is the result of the reranking process and thus the result of our parsing process.
@@ -94,7 +99,7 @@
             &\cn{vp}^{(1)} \to (\x^1_1\,\cn{vbd}\,\x_1^2)\;(\cn{vp}^{(1)})\text{.} \tag{$\zeta_5$}
         \end{align*}
 
-        The five fragments in \cref{fig:ex:dop} are supplied with some probabilitic weights \((\weight(\zeta_i) \in \DR \mid i \in [5])\).
+        Consider that the five fragments in \cref{fig:ex:dop} are supplied with some probabilitic weights \((\weight(\zeta_i) \in \DR \mid i \in [5])\).
         These weights are assigned to the \abrv{lcfrs} rules for the root of each fragment, such that:
         \begin{align*}
             \weight(\cn{sbar}^{(1)} \to (\x^1_1)\;(\cn{s}^{(2)})) &= \weight(\zeta_1), \\[.2cm]
