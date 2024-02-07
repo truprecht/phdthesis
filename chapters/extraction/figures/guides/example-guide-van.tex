@@ -28,16 +28,16 @@
         \coordinate[fit=(pos-1-1)(pos-1-6)] (pos) {};
 
         \begin{scope}[every node/.style={font=\small, inner sep=1pt}]
-            \node[above=14ex of pos, xshift=-3em] (sbar) {\cn{sbar}+\cn{s}}
-            child { node[xshift=3em] (vp1) {\cn{vp}}
+            \node[above=14ex of pos, xshift=-2em] (sbar) {\cn{sbar}+\cn{s}}
+            child { node[xshift=2.5em] (vp1) {\cn{vp}}
                 child { node[xshift=2em] (vp2) {\cn{vp}}
                     child { node[above= of pos-1-1] {1} }
-                    child { node[xshift=13.5ex] (vpbin) {\cn{vp}\binsym{}}
+                    child { node[xshift=12ex] (vpbin) {\cn{vp}\binsym{}}
                         child { node[above=of pos-1-5] (term4) {5} }
                         child { node[above=of pos-1-6] (prt) {6}   }}}
                 child {
                     node[above=of pos-1-4] (term3) {4}}}
-            child { node[yshift=-7ex, xshift=-2.5em] (np) {\cn{np}}
+            child { node[yshift=-7ex, xshift=-3.5em] (np) {\cn{np}}
                 child { node[above=of pos-1-2] (term1) {2} }
                 child {
                     node[above=of pos-1-3] (term2) {3}}};

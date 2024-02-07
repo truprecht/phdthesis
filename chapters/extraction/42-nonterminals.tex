@@ -1,0 +1,113 @@
+\documentclass[../../document.tex]{subfiles}
+
+\begin{document}
+    \subsection{Nonterminal Constructors}\label{sec:ntconstructors}
+    A \emph{nonterminal constructor} computes \abrv{lhs} and \abrv{rhs} nonterminals for each grammar rule.
+    Our extraction algorithm constructs rules at inner nodes in a constituent structure; so each nonterminal constructor is supplied with the constituent structure as well as a position in it to determine a nonterminal symbol.
+    The concept of nonterminal constructors resembles the nonterminal labeling strategies introduced by \citet[Section~6.2]{Geb20}.
+
+    \begin{definition}[Nonterminal Constructor]
+        Consider an alphabet of constituent symbols \(\varGamma\), a nonempty set of nonterminal symbols \(N\), and an \(\DN_+\)-indexed partition of \(N\) that groups the nonterminals by fanout \((\mathit{fo}_i \subseteq N \mid i \in \DN_+)\).
+        A \deflab{nonterminal constructor} is a partial function \(\psi\colon \itrees_\varGamma \times \DN^* \times \power(\DN_+) \parto N\) such that \(\psi(\xi, \rho, L) \in \mathit{fo}_{\fanout(L)}\) is well-defined for each pair of an indexed tree \(\xi \in \itrees_\varGamma\), a position \(\rho \in \pos(\xi)\), and subset of leaves \(L \subseteq \yield(\xi|_\rho)\) below \(\rho\).
+    \end{definition}
+
+    During the extraction procedure, the third argument \(L\) for a constructor assumes the set of leaves that are either
+    \begin{inparaenum}
+        \item assigned by the guide to nodes at or below \(\rho\), or
+        \item below \(\rho\) and not in the image of the guide.
+    \end{inparaenum}
+    It is the set of leaves occurring in the (sub-)derivation of rules extracted at and below \(\rho\).
+    The partition \(\mathit{fo}\) and its connection to the definition of each nonterminal constructor assure that the constructed nonterminals are considered with consistent fanouts.
+    In the following, we will define some instances of nonterminal constructors.
+    Similar to the guide constructors, each instance will carry a name of the form \emph{\(x\) nonterminal constructor}.
+    The nonterminal symbols constructed by \(\psi\) are called \emph{\(x\) nonterminals}.
+
+    \paragraph{Vanilla Nonterminal Constructor.}
+    This resembles the nonterminals in the extraction in \cref{sec:extraction:lcfrs}.
+    Each nonterminal is of the form \(A_{n}^{d}\) where \(A \in \varGamma\) is a constituent symbol, \(n \in \DN_+\) is a fanout in the yield of the constituent tree, and \(d \in \{-1,0,+1\}\) is the difference between the fanout of the extracted rule and \(n\).
+    The set of \emph{vanilla nonterminals} \(N\) is partitioned such that \(\mathit{fo}_{\hat{n}} = \{ A^d_{\hat{n}-d} \in N \mid A \in \varGamma, d \in [-1,1], \hat{n}-d > 0 \}\) for each \(\hat{n} \in \DN_+\).
+    The \deflab{vanilla nonterminal constructor} is a function \(\psi\) such that \(\psi(\xi, \rho, L) = \xi(\rho)_{n}^{d}\) where \(n = \fanout(\yield(\xi|_\rho))\) and \(d = \fanout(L) - n\) for each indexed tree \(\xi \in \itrees_\varGamma\), position \(\rho \in \pos(\xi)\) and \(L \subseteq \yield(\xi|_\rho)\).
+    As usual, we will abbreviate the nonterminal symbols by omitting the subscript if it is \(1\).
+
+    \begin{wrapfigure}[6]{r}{0pt}
+        \subfile{figures/guides/example-guide-dep.tex}
+    \end{wrapfigure}
+    \parexample[Vanilla Nonterminals]
+    Let us consider the indexed tree in our running example and its dependent guide illustrated to the right.
+    We focus on the lower \(\cn{vp}\) node at position \(1\,1\).
+    The set \(L= \{1,5\}\) is the set leaves below the node minus the leaf \(6\), which is assigned to the parent at position \(1\).
+    The nonterminal is a combination of the symbol \(\xi(1\,1) = \cn{vp}\), the fanout \(\fanout(\yield(\xi|_{1\,1})) = \fanout(\{1,5,6\}) = 2\), and \(\fanout(L) - 2 = \fanout(\{1,5\})-2=0\).
+    It is denoted in the form \(\cn{vp}^0_2\).
+    \exampleqed
+
+    \paragraph{Classic Nonterminal Constructor.}
+    This constructor intends to produce nonterminals akin to usual strategies in \abrv{lcrrs} extraction \citep{MaierSogaard08}.
+    It combines the superscript and subscript of the vanilla nonterminals and annotates constituent symbols with their sum.
+    Moreover, each occurrence of a constituent symbol that is the product of a merge during a rank transformation (cf.\@ merging a chain of unary nodes in \cref{sec:binarization}) is replaced by the topmost constituent symbol of such chain.
+    We define a modified set of constituent symbols \(\varGamma' = \{ f(\gamma) \mid \gamma \in \varGamma \}\) where \(f(\gamma)\) is the symbol obtained by replacing each occurrence of the form \(\nt{A$_1$+A$_2$+...+A$_k$}\) in \(\gamma\) by \(\nt{A$_1$}\).
+    The set of \emph{classic nonterminals} is \(N = \{ A_n \mid A \in \varGamma', n \in \DN_+ \}\) and the partition \(\mathit{fo}_n = \{A_n \mid A \in \varGamma'\}\) for each \(n \in \DN_+\).
+    The \deflab{classic nonterminal constructor} is the function \(\psi\) with \(\psi(\xi, \rho, L) = f(\xi(\rho))_{\fanout(L)}\) for each indexed tree \(\xi\), position \(\rho \in \pos(\xi)\) and set of leaves \(L \subseteq \yield(\xi|_\rho)\).
+
+    \begin{example}[Classic Nonterminals]
+        For the classic nonterminal constructed for the root in the example indexed tree above, we determine the set \(L = \yield(\xi) = \{1,\ldots,6\}\).
+        The nonterminal consists of the symbol \(\cn{sbar}\) and the fanout \(\fanout(L) = 1\) and is illustrated as \(\cn{sbar}_1\).
+    \end{example}
+
+    \paragraph{Coarse Nonterminal Constructors.}
+    This constructor equals the classic nonterminal constructor for the most part, but it replaces the constituent symbol \(\xi(\rho)\) either by
+    \begin{inparaenum}
+        \item a symbol that subsumes multiple constituent symbols given in a separate table or
+        \item its first letter.
+    \end{inparaenum}
+    The latter case roughly approximates the first one when such a table is unavailable; later in \cref{sec:experiments}, we will refer to it as \emph{naive coarse nonterminal constructor}.
+    The \deflab{coarse nonterminal constructor} mimics the nonterminals in coarse-to-fine parsing \citep{Cha06,Tei17}.
+
+    \begin{wrapfigure}[6]{r}{0pt}
+        \subfile{figures/guides/example-guide-dep.tex}
+    \end{wrapfigure}
+    \parexample[Coarse Nonterminals via Table]
+    \Cref{tab:coarse-nonterminals} shows an example of a clustering of constituent symbols in grammars extracted from the English Penn Treebank provided by \citet{Cha06}.
+    Creating such a table requires domain-specific knowledge about the corpus and the underlying language.
+    \Citet{Doran99} give a coarse tagset used in the english \abrv{xtag} grammar.
+    \Citet{SchiTeuSt99} give a standardized set of \abrv{pos} symbols in tandem with a coarse categorization used in German corpora.
+    These categories can substitute the \abrv{pos} symbols in the constituent symbols that were constructed during a binarization with a horizontal Markovization window \(h>0\).
+    Consider our running example to the right and the upper \cn{vp} node at position \(1\).
+    The table contains the constituent symbol \cn{vp} in the cluster with the symbol \cn{s}.
+    The nonterminals subscript is determined in the same manner as with the classic nonterminal constructor, it is \(\fanout(\{1,4,5,6\}) = 2\); hence the constructed coarse nonterminal is \(\nt{s}_2\).
+    \exampleqed
+
+    \begin{example}[Naive Coarse Nonterminals]
+        Consider the same tree and node as in the above example.
+        The naive coarse nonterminal constructor replaces the constituent symbol \cn{vp} with its first letter \cn{v}; hence the nonterminal symbol is \(\nt{v}_2\).
+    \end{example}
+    
+
+    \begin{table}
+        \caption{\label{tab:coarse-nonterminals}
+            Clusters of constituent symbols are used in a coarse-to-fine parsing approach \citep{Cha06}.
+            The authors extract coarse grammar rules using cluster names instead of constituent symbols as nonterminals.
+            These grammar rules are used to find candidate parses, which aid in a parsing process with a finer grammar defined over the original constituent symbols.
+        }
+        \medskip
+        \centering
+        \begin{tabular}{ll}
+            \toprule
+            cluster & constituent and \abrv{pos} symbols \\
+            \midrule
+            \nt{S} & \cn{s}, \cn{vp}, \cn{ucp}, \cn{sq}, \cn{sbar}, \cn{sbarq}, \cn{sinv} \\
+            \nt{N} & \cn{np}, \cn{nac}, \cn{nx}, \cn{lst}, \cn{x}, \cn{frag} \\
+            \nt{A} & \cn{adjp}, \cn{qp}, \cn{conjp}, \cn{advp}, \cn{intj}, \cn{prn}, \cn{prt} \\
+            \nt{P} & \cn{pp}, \cn{prt}, \cn{rrv}, \cn{whadjp}, \cn{whadvp}, \cn{whnp}, \cn{whpp} \\
+            \bottomrule
+        \end{tabular}
+    \end{table}
+
+    \paragraph{Nonterminal Constructors for \abrv{Dcp} Supertags.}
+    Since \abrv{dcp} supertags do not contain \abrv{lcfrs} compositions, their nonterminals do not need to be consistent with any fanout.
+    We use two additional \emph{extensions} for the classic and coarse nonterminal constructor in the case of dcp supertags:
+    \begin{itemize}
+        \item The \deflab{nof extension} completely removes the fanout subscripts in all constructed nonterminal symbols.
+        \item The \deflab{disc extension} removes the fanout subscript if it is 1 and replaces it by the marker ``$_{\text{disc}}$'' if it is greater than 1; hence, it distinguishes nonterminals for continuous and discontinuous derivations.
+    \end{itemize}
+    In \cref{sec:experiments}, we refer to the extended nonterminal constructors by adding the extension name as a suffix, for instance, \emph{coarse-disc} for the coarse nonterminal constructor with the disc extension.
+\end{document}

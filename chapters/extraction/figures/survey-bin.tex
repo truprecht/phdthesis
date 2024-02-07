@@ -21,11 +21,11 @@
         \coordinate[fit=(pos-1-1) (pos-1-6)] (pos);
 
         \begin{scope}[every node/.style={font=\small, inner sep=1pt}]
-            \node[above=14ex of pos, xshift=-3.5em] (sbar) {\cn{sbar}+\cn{s}}
+            \node[above=14ex of pos, xshift=-2.5em] (sbar) {\cn{sbar}+\cn{s}}
             child { node[xshift=3em] (vp1) {\cn{vp}}
                 child { node[xshift=2em] (vp2) {\cn{vp}}
                     child { node[above= of pos-1-1] {1} }
-                    child { node[xshift=16.5ex] (vpbin) {\cn{vp}\binsym{}}
+                    child { node[xshift=13.5ex] (vpbin) {\cn{vp}\binsym{}}
                         child { node[above=of pos-1-5] (term4) {5} }
                         child { node[above=of pos-1-6] (prt) {6}   }}}
                 child {

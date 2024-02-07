@@ -1,0 +1,339 @@
+\documentclass[../../document.tex]{subfiles}
+
+\begin{document}
+    \subsection{Guides and Guide Constructors}\label{sec:guides}
+    We introduced the concept of guides for the extraction in our latest publication \citep{Rup22}.
+    In that publication, a guide is a function \(\varphi\) that assigns a sentence position to each inner node position \(\rho\) of a binary constituent structure \(\xi\) such that
+    \begin{inparaenum}
+        \item \(\varphi(\rho)\) is a leaf below the position \(\rho\), and
+        \item \(\varphi\) is an injective function; that is, each sentence position is assigned to at most one inner node position.
+    \end{inparaenum}
+    As \(\xi\) is binary, there is exactly one sentence position that is not assigned to any inner node.
+    During the grammar extraction process, which constructs a rule for each inner node position in the constituent structure, the guide is used to determine the lexical symbol in the rule.
+    Intuitively, it can be seen to assign a ``responsibility'' for each inner node by a sentence position.
+    The remaining sentence position is handled by a special rule that produces no constituent node.
+
+    In this thesis, we generalize the concept of guides by relaxing the second condition: each sentence position may be mapped to multiple inner node positions in the constituent structure.
+    This allows us to define rules that produce multiple constituent nodes.
+    We will use this at the end of this section to derive lexical grammars for constituent structures that are inspired by those extracted for dependency parsing.
+    They are extracted such that the rule for each lexical symbol \(i\) is defined in tandem with each inner node of the constituent structure that \(i\) is the lexical head of.
+
+    \begin{definition}[Guide]\label{def:guide}
+        Let \(\xi\) be an indexed tree.
+        A \deflab{guide}[guide for \(\xi\)] is a function \(\varphi\colon \pos(\xi) \to \yield(\xi)\) such that for each position \(\rho \in \pos(\xi)\), the assigned leaf is in the yield at or below the position \(\varphi(\rho) \in \yield(\xi|_\rho)\).
+        \begin{itemize}
+            \item \(\varphi\) is called \deflab<admissible>{admissible guide}[admissible] if for each position \(\rho \in \pos(\xi)\)
+            \begin{compactenum}
+                \item there is at most one other leaf \(i\) below \(\rho\) besides \(\varphi(\rho)\) such that an ancestor of \(\rho\) is assigned to \(i\), that is, \(\{ i \in \yield(\xi|_\rho) \setminus \{\varphi(\rho)\} \mid \varphi^{-1}(i) \cap \ancestors(\rho) \neq \emptyset\}\) is an empty or singleton set, and
+                \item if there is any inner descendant position \(\rho'\) of \(\rho\) with \(\varphi(\rho) = \varphi(\rho')\), then each position \(\omega \in \descendants_\xi(\rho) \cap \ancestors(\rho')\) between \(\rho\) and \(\rho'\) has the same value \(\varphi(\rho) = \varphi(\omega) = \varphi(\rho')\).
+            \end{compactenum}%
+            \item \(\varphi\) is called \deflab{unitary guide}[unitary] if, for each leaf \(i\), there is at most one inner node position that is assigned to \(i\), that is, \(|\varphi^{-1}(i) \cap \npos(\xi)| \leq 1\).
+        \end{itemize}
+%        \(\guide(\xi)\) denotes the set of all guides for the indexed tree \(\xi\).
+    \end{definition}
+
+    The admissible property ensures that the guide may only assign the same leaf to contiguous regions of inner node positions (plus the leaf position itself).
+    Each unitary guide for a binary tree is also admissible because
+    \begin{inparaenum}
+        \item for each subtree with \(n\) leaves, there are \(n-1\) inner nodes; if each inner node is mapped to a different leaf, there is exactly one that is not assigned to one of those inner nodes and may be assigned to an ancestor position; and
+        \item there are no two different positions mapped to the same leaf.
+    \end{inparaenum}
+
+    \bigskip
+
+    \begin{wrapfigure}[6]{r}{.3\linewidth}
+        \subfile{figures/guides/example-constituents.tex}
+    \end{wrapfigure}
+    \parexample*
+    Consider the constituent structure \(\xi\) illustrated in the right figure.
+    Each gray encircled integer shown next to an inner node is the value of a guide \(\varphi\) for the position.
+    For example \(\varphi(\varepsilon) = \varphi(1) = \varphi(1\,1) = 4\).
+    Each leaf position is assigned to its symbol.
+    The guide is not unitary because three positions are mapped to the leaf $4$.
+    But it is admissible; the three positions that are mapped to 4 form a chain of direct descendants.
+    \hfill\exampleqed
+
+    \begin{definition}[Guide Constructor]
+        Let \(\varGamma\) be an alphabet of constituent symbols.
+        A \deflab{guide constructor} is a function \(\varPhi\colon \itrees_\varGamma \parto (\DN^* \parto \DN)\) such that for each indexed tree \(\xi\) in the domain \(\dom(\varPhi)\), the partial function \(\varPhi(\xi)\) is a guide for \(\xi\).
+    \end{definition}
+
+    Guide constructors are defined as partial functions because some of our examples can only be reasonably defined for binary constituent structures.
+    In the following, we will give the instances for guide constructors that we investigated in our earlier publication \citep{Rup22} plus one additional instance, the \emph{head guide constructor}.
+    Each instance \(\varPhi\) will carry a name of the form \emph{\(x\) guide constructor}.
+    For each \(\xi \in \dom(\varPhi)\), the guide \(\varPhi(\xi)\) will analogously be called \emph{\(x\) guide for \(\xi\)}.
+
+    \paragraph{Vanilla Guide Constructor.}\deflab{vanilla guide constructor}[]
+    This guide constructor aims to formalize the assignment of lexical items to inner nodes achieved by the transportation in the extraction of lexical \abrv{lcfrs} rules described in the previous section.
+    Similar to the prerequisites in that section, the guide is defined for binary constituent structures.
+    A guide produced by this constructor maps each node position either to the rightmost\footnote{
+        In the original publication \citep{Rup22}, this constructor mapped each node to its leftmost leaf that is a direct successor.
+        This is a slight change in the same manner as the split of rules with two terminal symbols in step \ref{enum:lcfrs:step4} in the extraction and lexicalization of \abrv{lcfrs} (cf.\@ \cref{footnote:lcfrs:split}).
+    } leaf that is a direct successor or (if not available) to the leftmost leaf in the yield of its right successor.
+    It is formally defined as follows:
+    \[
+    \mathrm{van}(\xi)(\rho) = \begin{cases}
+        \xi(\rho)   & \text{if $\rho \in \lpos(\xi)$}\\
+        \max L_\rho & \text{if $L_\rho \neq \emptyset$} \\
+%        \mathrm{van}(\xi)(\rho \cdot 1) & \text{if $L_\rho = \emptyset$ and $|\children_\xi(\rho) \cap \pos(\xi)| = 1$} \\
+        \min\;\yield(\xi|_{\rho\cdot 2}) &\text{otherwise}
+    \end{cases}
+    \]
+    where the set \(L_\rho\) denotes the set of leaves just below a node that was not assigned to an ancestor node:
+    \begin{align*}
+        L_\rho &= \big\{\xi(\rho') \in \yield(\xi) \mid \rho' \in \lpos(\xi) \cap \children_\xi(\rho) \big\} \setminus \\
+        &\qquad\qquad\qquad  \big\{\mathrm{van}(\xi)(\rho') \in \yield(\xi) \mid \rho' \in \ancestors(\rho)\} \big\}
+    \end{align*}
+    As such, the set depends on the values of \(\mathrm{van}(\xi)\) for ancestor nodes, and the assignment must be determined for each node from top to bottom.
+
+    \begin{theorem}
+        Let \(\xi\) be some binary indexed tree.
+        \begin{compactenum}
+            \item \(\mathrm{van}(\xi)(\rho)\) is well-defined for each \(\rho \in \pos(\xi)\).
+            \item \(\mathrm{van}(\xi)\) is a guide for \(\xi\).
+            \item \(\mathrm{van}(\xi)\) is unitary and therefore admissible.
+        \end{compactenum}
+    \end{theorem}
+
+    \begin{proof}
+        \begin{enumerate}
+            \item
+                The first case in the definition of \(\mathrm{van}(\xi)(\rho)\) trivially satisfies the claim for each \(\rho \in \lpos(\xi)\).
+                For the remaining case \(\rho \in \npos(\xi)\), there is a connection to \cref{lem:firstviasecond} (i).
+                It is important to note that for each subtree in an indexed tree, the children are ordered via the least leaf in the yield, i.e., the minimal leaf in a subtree is the leftmost leaf.
+                Moreover, the set \(L_\rho\) is unambiguously determined from top to bottom for each \(\rho \in \npos(\xi)\).
+                Then, either \(L_\rho \neq \emptyset\) and the value is defined, or we consider the third case in the distinction, which is well-defined by \cref{lem:firstviasecond} (i).
+            \item
+                By definition, each assigned value is trivially an element below the argument position, and \(\mathrm{van}(\xi)\) is a guide.
+            \item
+                The second and third case in the definition are relevant to the unitary property.
+                The second case is only effective if \(L_\rho \neq \emptyset\).
+                Then, we assign a leaf not yet assigned to an ancestor; it can also not be assigned to any non-leaf descendant because it is a direct child.
+                The third case must also assign uniquely determined leaves by \cref{lem:firstviasecond} (ii), and they cannot interfere with values assigned by the second case.
+        \end{enumerate}
+    \end{proof}
+
+    \begin{wrapfigure}[6]{r}{.3\linewidth}
+        \centering
+        \subfile{figures/survey-bin.tex}
+    \end{wrapfigure}
+    \parexample[Vanilla Guide]
+    Consider the constituent structure \(\xi\) of the running example shown to the right.
+    Starting with the topmost node, the set \(L_\rho\) is empty as there are no leaves among its children.
+    The value \(\mathrm{van}(\xi)(\varepsilon)\) is determined by \(\min\;\yield(\xi|_{2}) = \min\;\{2,3\} = 2\).
+    After that, the root's two children can be processed.
+    For the node at position \(1\), the set \(L_{1}\) is \(\{4\} \setminus \{2\} = \{4\}\), therefore the value of \(\mathrm{van}(\xi)(1)\) is \(4\).
+    In case of position \(2\), the set \(L_{2}\) is \(\{2,3\} \setminus \{2\} = \{3\}\) and \(\mathrm{van}(\xi)(1)=3\).
+    As we continue with the nodes to the bottom, the second set in the term for \(L_\rho\) grows with the values that we assigned to the positions on the path from the root to \(\rho\) and may thus exclude considered leaves in the yield below \(\rho\).
+    \exampleqed
+
+    \paragraph{Strict Guide Constructor.}\deflab{strict guide constructor}[]
+    This is a slight adjustment of the vanilla guide constructor that removes the special case where an inner node is assigned to a leaf below it.
+    As mentioned previously, this constructor is defined for binary constituent structures.
+    A guide constructed by it maps each inner node to the least leaf of the second successor.
+    Each inner node of rank 1 assumes the assignment of its child.
+    Formally, it is defined as follows:
+    \[
+    \mathrm{strict}(\xi)(\rho) = \begin{cases}
+        \xi(\rho)   & \text{if $\rho \in \lpos(\xi)$}\\
+        \min\;\yield(\xi|_{\rho\cdot 2}) &\text{otherwise}
+    \end{cases}
+%        \mathrm{strict}(\xi)(\rho) = \min \; \yield(\xi|_{\rho\cdot 2})
+    \]
+
+    \begin{theorem}
+        Let \(\xi\) be some binary indexed tree.
+        \begin{compactenum}
+            \item \(\mathrm{strict}(\xi)(\rho)\) is well-defined for each \(\rho \in \pos(\xi)\).
+            \item \(\mathrm{strict}(\xi)\) is a guide for \(\xi\).
+            \item \(\mathrm{strict}(\xi)\) is unitary and therefore admissible.
+        \end{compactenum}
+    \end{theorem}
+
+    \begin{proof}
+        Items (i) and (iii) easily follow from \cref{lem:firstviasecond} (i) and (ii).
+        Item (ii) is (again trivially) satisfied since each assigned value is a leaf below the argument.
+    \end{proof}
+
+    \begin{example}
+        The values assigned by the strict guide are independent of each other.
+        E.g.\@ we may determine the values \(\mathrm{strict}(\xi)(2) = \min\;\yield(\xi|_{2\,2}) = \min\;\{3\} = 3\) or \(\mathrm{strict}(\xi)(1\,1) = \min\;\yield(\xi|_{1\,1\,2}) = \mid\;\{5,6\}\) without computing any other values beforehand.
+    \end{example}
+
+    \paragraph{Least and Near Guide Constructors.}
+    These two guide constructors were developed to
+    \begin{inparaenum}
+        \item assign as many nodes as possible to direct children (\deflab{least guide constructor}), and
+        \item assign each node to a leaf that is as close as possible (\deflab{near guide constructor}).
+    \end{inparaenum}
+    Both intentions are similar, but the heuristic solutions used in these constructors' definitions are sometimes different.
+    \Cref{fig:guides:diff} shows an example.
+    The leaf for each inner position is determined in both cases via a breadth-first search for the first leaf that was not assigned to
+    \begin{inparaenum}
+        \item a descendant node, or
+        \item an antecedent node, respectively.
+    \end{inparaenum}
+    This is formalized in the equation
+    \[
+    g(\xi)(\rho) = \xi\big( \min^{\unlhd} \: \big\{\rho' \in \descendants_\xi(\rho) \cap \lpos(\xi) \mid \xi(\rho') \notin L^g_\rho \big\} \big)
+    \]
+    where \(g\) is one of \(\{\mathrm{least}, \mathrm{near}\}\), and \(\unlhd\) is the total ordering of tree positions according to breadth-first search and set \(L^g_\rho\) keeps track of the previously assigned leaves.
+    The total order \(\unlhd \subseteq \DN^* \times \DN^*\) is defined such that \(\rho \unlhd \tau\) if and only if \(|\rho| < |\tau|\) or \(|\rho| = |\tau| \land \rho <^* \tau\) (\(<^*\) denotes the lexicographic order of integer sequences).
+    In case of
+    \begin{inparaenum}
+        \item \(g = \mathrm{least}\), it excludes all assigned leaves below \(\rho\) from the breadth-first search:
+        \(L^{\text{least}}_\rho = \{ g(\xi)(\rho') \in \yield(\xi) \mid \rho' \in \descendants_\xi(\rho) \cap \npos(\xi) \}\); and if
+        \item \(g = \mathrm{near}\), it excludes all leaves assigned to nodes above \(\rho\):
+        \(L^{\text{near}}_\rho = \{ g(\xi)(\rho') \in \yield(\xi) \mid \rho' \in \ancestors(\rho) \cap \npos(\xi) \}\).
+    \end{inparaenum}
+    Similarly to the vanilla guide constructor, the dependencies for \(L^g_\rho\) determine the order in which the values are computed:
+    \begin{inparaenum}
+        \item For the least guide constructor, the values must be determined from bottom to top.
+        \item For the near guide constructor, the values must be determined from top to bottom.
+    \end{inparaenum}
+    Since both guide constructors define surjective functions, the number of inner nodes must be less or equal to the number of leaves in each subtree of the constituent structure.
+    We solve this by binarizing the constituent tree before defining the guide, but merging unary nodes (as done during the binarization) should be sufficient in general.
+
+    \begin{figure}
+        \null\hfill
+        \begin{minipage}{.35\linewidth}
+            \centering
+            \subfile{figures/guides/different-least-guide.tex}
+            \subcaption{least guide}
+        \end{minipage}
+        \hfill
+        \begin{minipage}{.35\linewidth}
+            \centering
+            \subfile{figures/guides/different-near-guide.tex}
+            \subcaption{near guide}
+        \end{minipage}
+        \hfill\null
+        \caption{\label{fig:guides:diff}
+            Example for different solutions for guides by the least and near guide constructors for the same tree \(\xi\).
+            Whereas the least guide assigns the distant leaf 7 to the root node, the near guide assigns 4.
+            The least guide assigns five of six nodes to direct children, and the near guide only three.
+        }
+    \end{figure}
+
+    \begin{claim}
+        Let \(\xi\) be some binary indexed tree and \(g \in \{\mathrm{least}, \mathrm{near}\}\).
+        \begin{compactenum}
+            \item \(g(\xi)(\rho)\) is well-defined for each \(\rho \in \pos(\xi)\).
+            \item \(g(\xi)\) is a guide for \(\xi\).
+            \item \(g(\xi)\) is unitary and therefore admissible.
+        \end{compactenum}
+    \end{claim}
+
+    \needspace{3cm}
+    \begin{wrapfigure}[6]{r}{.3\linewidth}
+        \centering
+        \subfile{figures/survey-bin.tex}
+    \end{wrapfigure}
+    \parexample[Least Guide]
+    The assignments for the least guide are computed from bottom to top.
+    In our running example that is again illustrated to the right, we may start with the node at position \(1\,1\,2\): The set \(L_{1\,1\,2}\) is empty, as there are no inner child nodes. The assigned value \(\mathrm{least}(\xi)(1\,1\,2)\) is the leftmost leaf with the shortest distance to the node, i.e.\@ \(5\).
+    Next, for the node at \(1\,1\), the set \(L_{1\,1}\) contains each leaf that was assigned to an inner child, i.e.\@ it is \(\{5\}\), and the assigned value is \(\mathrm{least}(\xi)(1\,1) = 1\).
+    \exampleqed
+
+    \begin{example}[Near Guide]
+        The construction for the near guide starts from the topmost node.
+        The value \(\mathrm{near}(\xi)(\varepsilon)\) is \(2\) because it is the leftmost leaf with the shortest distance.
+        For the child at position \(2\), the set \(L_{2} = \{2\}\) contains the leaves that were assigned to its ancestors.
+        When \(\mathrm{near}(\xi)(2)\) is determined, the leaf \(2\) is excluded as a potential value, which leaves us the leaf \(3\).
+    \end{example}
+
+    Whereas the previous constructors were defined solely according to the constituent structure, the remaining two take a head assignment into account to incorporate further lunguistic information into the extraction process.
+    This also requires special treatment concerning binarization, which is applied to the constituent structures for the two following guide constructors.
+    This is explained further in the following paragraphs.
+
+    \paragraph{Head Guide Constructor.}
+    As the name suggests, these guides assign the lexical head to each inner node of the constituent structure.
+    This implements an intuitive approach to deal with the relation between the inner nodes and their assigned lexical head: For each lexical symbol, there will be a lexical rule that contains the information to produce precisely the inner nodes it is head of.
+    Naturally, this requires that the constituent structure is equipped with the necessary lexical head assignment.
+    Formally, consider the lexical head assignment \(\head_{(\xi,p,w)}\) for the constituent tree \((\xi, p, w)\).
+    The \deflab{head guide constructor} is defined as follows: \(\mathrm{hguide}(\xi)(\rho) = \head_{(\xi,p,w)}(\rho)\).
+
+    With this guide, our grammar extraction procedure aims to mimic the strategies established in dependency parsing \citep{kuhlmann2009treebank} as follows:
+    \begin{itemize}
+        \item Each constituent structure is interpreted as a dependency tree by combining the nodes that are assigned to the same lexical head. This will yield a tree consisting of sentence positions, each occurring exactly once.
+        \item The \abrv{lcfrs} compositions are constructed then in the same manner as for dependency grammars: There is one for each position in the sentence; it is constructed using the ordered contiguous sequences of positions in the subtree rooted at the position such that, for each child, its sequences of positions are replaced by appropriate variable symbols.
+        \item The resulting derivation has the same shape as the dependency tree. For each position in the dependency tree for the lexical head \(i\), there is a lexical rule with the terminal \(i\) in the derivation at the same position.
+    \end{itemize}
+    \Cref{sec:extractionalg} shows an example of the extraction of a derivation using the head guide.
+
+    \begin{theorem}
+        Let \(\xi\) be an indexed tree with a head assignment.
+        \begin{compactenum}
+            \item \(\mathrm{hguide}(\xi)(\rho)\) is well-defined for each \(\rho \in \pos(\xi)\) and \(\mathrm{hguide}(\xi)\) is a guide for \(\xi\).
+            \item \(\mathrm{hguide}(\xi)\) is admissible.
+        \end{compactenum}
+    \end{theorem}
+
+    \begin{proof}
+        Item (i) follows trivially from the definition of head assignments, as they map each inner node to a leaf in its yield.
+        For item (ii), we consider the properties of head assignments:
+        Consider a position \(\rho \in \npos(\xi)\).
+        By the structure of head assignments, \(\mathrm{hguide}(\xi)(\rho) = \head_{(\xi,p,w)}(\rho)\) is a leaf directly below \(\rho\) or the head of a child of \(\rho\).
+        Therefore, any ancestor of \(\rho\) cannot be assigned to any leaf below \(\rho\) but \(\head_{(\xi,p,w)}(\rho)\), and the function satisfies the property (i) for admissible guides.
+        For the property (ii), we consider a descendant position \(\rho' \in \descendants_\xi(\rho) \setminus \{\rho\}\).
+        If \(\head_{(\xi,p,w)}(\rho) = \head_{(\xi,p,w)}(\rho')\), we see again quickly the property as mentioned earlier that this leaf must also be the head at all positions between \(\rho\) and \(\rho'\).
+    \end{proof}
+
+    \paragraph{Dependent Guide Constructor.}
+    Dependent guides aim to offer assignments that complement head-outward binarized constituent structures.
+    They assign the head of a dependent to each inner node in the constituent structure.
+    We consider these guides only for head-outward binarized constituent structures, as each inner node has precisely one dependent.
+    Formally, consider the lexical head assignment \(\head_{(\xi,p,w)}\) for the constituent tree \((\xi, p, w)\).
+    The \deflab{dependent guide constructor} is defined as follows:
+    \[
+        \mathrm{dguide}(\xi)(\rho) = \begin{cases}
+            \head_{(\xi,p,w)}(\rho\cdot2) & \text{if $\rho \in \npos{\xi}$ and $\head_{(\xi,p,w)}(\rho) \in \yield(\xi|_{\rho\cdot 1})$} \\
+            \head_{(\xi,p,w)}(\rho\cdot1) & \text{if $\rho \in \npos{\xi}$ and $\head_{(\xi,p,w)}(\rho) \in \yield(\xi|_{\rho\cdot 2})$} \\
+            \xi(\rho) & \text{otherwise} \\
+        \end{cases}
+    \]
+
+    \begin{claim}
+        Let \(\xi\) be a head-outward binarized indexed tree with a head assignment.
+        \begin{compactenum}
+            \item \(\mathrm{dguide}(\xi)(\rho)\) is well-defined for each \(\rho \in \pos(\xi)\).
+            \item \(\mathrm{dguide}(\xi)\) is a guide for \(\xi\).
+            \item \(\mathrm{dguide}(\xi)\) is unitary and therefore admissible.
+        \end{compactenum}
+    \end{claim}
+
+    \begin{figure}
+        \begin{minipage}{.27\textwidth}
+            \resizebox{\textwidth}{!}{\subfile{figures/guides/example-guide-van.tex}}
+            \subcaption{vanilla guide}
+        \end{minipage}\hfill
+        \begin{minipage}{.27\textwidth}
+            \resizebox{\textwidth}{!}{\subfile{figures/guides/example-guide-strict.tex}}
+            \subcaption{strict guide}
+        \end{minipage}\hfill
+        \begin{minipage}{.27\textwidth}
+            \resizebox{\textwidth}{!}{\subfile{figures/guides/example-guide-least.tex}}
+            \subcaption{least guide}
+        \end{minipage}
+
+        \vspace{.5cm}
+
+        \begin{minipage}[b]{.27\textwidth}
+            \resizebox{\textwidth}{!}{\subfile{figures/guides/example-guide-near.tex}}
+            \subcaption{near guide}
+        \end{minipage}\hfill
+        \begin{minipage}[b]{.27\textwidth}
+            \resizebox{\textwidth}{!}{\subfile{figures/guides/example-guide-head.tex}}
+            \subcaption{head guide}
+        \end{minipage}\hfill
+        \begin{minipage}[b]{.27\textwidth}
+            \resizebox{\textwidth}{!}{\subfile{figures/guides/example-guide-dep.tex}}
+            \subcaption{dependent guide}
+        \end{minipage}
+
+        \caption{\label{fig:guides}
+            Overview of the guide constructors in an example constituent structure.
+            Gray integers show the leaf assigned to each inner node for the binary constituent structure.
+            Encircled leaves are not in the image of the guide.}
+    \end{figure}
+\end{document}

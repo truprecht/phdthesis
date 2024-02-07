@@ -1,0 +1,104 @@
+\documentclass[../../document.tex]{subfiles}
+
+\begin{document}
+    \subsection{Lexical Derivation Extraction}\label{sec:extractionalg}
+    This small subsection describes how we define a derivation of lexical hybrid grammar rules using the discussed prerequisites.
+    Consider a constituent structure \(\xi\), an admissible guide \(\varphi\) for \(\xi\) and a nonterminal constructor \(\psi\).
+    We define the following two functions using the guide \(\varphi\) and the constiuent strcutre \(\xi\):
+    \begin{itemize}
+        \item
+            \(\varphi^{\text{top}}\colon \pos(\xi) \parto \yield(\xi)\) is a partial function that restricts the assignments to the topmost tree positions for each leaf:
+            For each \(\rho \in \pos(\xi)\), we define \(\varphi^{\text{top}}(\rho) = \varphi(\rho)\) only if there is no \(\rho' \in \ancestors(\rho)\) with \(\varphi(\rho') = \varphi(\rho)\), and otherwise it is undefined.
+        \item
+            The function \(L\colon \pos(\xi) \to \power(\yield(\xi))\) maps each position \(\rho\in \pos(\xi)\) to the set of all leaves that \(\varphi^{\text{top}}\) assigns to positions at or below \(\rho\):
+                % \vspace{-\baselineskip}
+                \begin{align*}
+                    L(\rho) &= \{ i \in \yield(\xi) \mid \exists \rho' \in \descendants_\xi(\rho)\colon \varphi^{\text{top}}(\rho') = i \} \\
+                            &= \yield(\xi|_\rho) \setminus \{ \varphi(\rho') \mid \rho' \in \ancestors(\rho) \}
+                \end{align*}
+    \end{itemize}
+    The derivation for \(\xi\), \(\varphi\) and \(\psi\) is defined from top to bottom as follows:
+    \begin{itemize}
+        \item We start with the root position \(\rho_0 = \varepsilon\).
+        \item
+            For the position \(\rho_0\), let \(s\in \DN\), and \(\rho_1, \ldots, \rho_s \in \descendants_\xi(\rho_0) \setminus \{\rho_0\}\) be the sequence of topmost parallel positions below \(\rho_0\) such that
+            \begin{inparaenum}
+                \item \(\varphi(\rho_i) \neq \varphi(\rho_0)\) for each \(i\in[s]\), and
+                \item \(\rho_1, \ldots, \rho_s\) are ordered concerning the least leaf in \(L(\rho_1), \ldots, L(\rho_s)\).
+            \end{inparaenum}
+            Formally, we specify the two properties as follows:
+            \begin{enumerate}
+                \item For each \(j \in [s]\), \(\varphi(\parent(\rho_j)) = \varphi(\rho_0) \neq \varphi^{\text{top}}(\rho_j)\), and there is no other \(\rho_{s+1}\) which fulfills this property.
+                \item Each pair \(j,k \in [s]\) with \(j<k\) satisfies \(\min L(\rho_j) < \min L(\rho_k)\).
+            \end{enumerate}
+        \item The rule for \(\rho_0\) is \(r_{\rho_0} = A_0 \to c_1 \, c_2\; (A_1, \ldots, A_s)\) where
+        \begin{itemize}
+            \item \(A_i = \psi(\xi, \rho_i, L(\rho_i))\) for each \(i \in [0,s]\),
+            \item \(c_1 = \mathrm{comp}(L(\rho_0), L(\rho_1), \ldots, L(\rho_s))\), and
+            \item \(c_2 = \mathrm{scomp}(\xi, (\rho_0, L(\rho_0)), (\rho_1, L(\rho_1)), \ldots, (\rho_s, L(\rho_s)))\).
+        \end{itemize}
+        \item The derivation for \(\rho_0\) is \(d_{\rho_0} = r_{\rho_0}\,(d_{\rho_1}, \ldots, d_{\rho_s})\) where, for each \(i\in[s]\), the identifier \(d_{\rho_i}\) denotes the (recursively constructed) derivation for \(\rho_i\).
+    \end{itemize}
+
+    The derivation \(d_\varepsilon\) contains exactly one rule per leaf in \(\yield(\xi)\), and it is an admissible hybrid grammar derivation.
+    For each \(i \in \yield(\xi)\), the \abrv{dcp} composition with the lexical symbol \(i\) in \(d_\varepsilon\) contains exactly the constituent symbols at the inner node positions in \(\xi\) that \(\varphi\) assigns to \(i\).
+    Each derivation \(d_{\rho_0}\) that was extracted starting at the top node position \(\rho_0\) contains one rule for each leaf in \(L(\rho_0)\) such that
+    \begin{itemize}
+        \item the yield of the \abrv{lcfrs} projection \(\yield(\pi_{\abrv{lcfrs}}(d_{\rho_0}))\) is the linearization of \(L(\rho_0)\), and
+        \item the yield of the \abrv{dcp} projection \(\yield(\pi_{\abrv{dcp}}(d_{\rho_0}))\) is the subtree \(\xi|_{\rho_0}\) except, if \(\yield(\xi|_{\rho_0}) \neq L(\rho_0)\), then the leaf in the singleton set \(\yield(\xi|_{\rho_0}) \neq L(\rho_0)\) is replaced by the variable symbol \(\y\).
+    \end{itemize}
+
+    \begin{wrapfigure}[8]{r}{0pt}
+        \subfile{figures/guides/example-guide-head.tex}
+    \end{wrapfigure}
+    \parexample\label{ex:extraction:head}
+    The tree to the right shows a running example constituent structure \(\xi\) with the usual illustration of values assigned by the guide \(\varphi\) next to each inner node.
+    The partial function \(\varphi^{\text{top}}\) restricts the assignments by \(\varphi\) to the topmost positions; this is illustrated using encircled values.
+    In our example, \(\varphi^{\text{top}}\) only assigns the position \(\varepsilon\) to the leaf \(4\).
+    Both of its descendants that \(\varphi\) assigns to the leaf \(4\), the positions \(1\) and \(1\,1\), are not in the domain of \(\varphi^{\text{top}}\).
+    The function \(L\) maps each position to the encircled values illustrated at descendant positions.
+    For instance, the root position is mapped to the set of all leaves; the set \(L(1) = \{1,2,3,5,6\}\) for its child does not contain the leaf $4$; and the set \(L(1\,1\,1)\) for the lower \nt{vp} node is \(\{1,5,6\}\).
+    Let us consider the construction for the root position \(\rho_0 = \varepsilon\), and the classic nonterminal constructor denoted by \(\psi\).
+    The topmost descendent positions below \(\varepsilon\) that \(\varphi^{\text{top}}\) assigns to other leaves are \(\rho_1 = 1\,1\,1\) (the bottom \nt{vp} node) and \(\rho_2 = 1\,2\) (the \nt{np} node).
+    The \abrv{lhs} \(A_0\) and \abrv{rhs} nonterminals \(A_1, A_2\) are determined from the nodes at these three positions, respectively, as well as the fanouts of the three sets \(L(\rho_0) = [6]\), \(L_(\rho_1) = \{1,5,6\}\) and \(L(\rho_2) = \{2,3\}\); they are \(A_0 = \nt{sbar}_1\), \(A_1 = \nt{vp}_2\) and \(A_2 = \nt{np}_1\).
+    The \abrv{lcfrs} composition is determined from three sets \(L(\rho_0)\), \(L_(\rho_1)\) and \(L(\rho_2)\) in the usual manner, it is \(c_1 = \mathrm{comp}([6], \{1,5,6\}, \{2,3\}) = (\x_1^1\x_2^1\,4\,\x_1^2)\).
+    The \abrv{dcp} composition is constructed from the nodes in \(\xi\) between \(\rho_0\) and its descendents \(\rho_1\) and \(\rho_2\), it is \(c_2 = \mathrm{scomp}(\xi, (\varepsilon, [6]), (1\,1\,1, \{1,5,6\}), (1\,2, \{2,3\})) = \cn{sbar}(\cn{s}(\cn{vp}(\x_1(\varepsilon), 4), \x_2(\varepsilon)))\,\y\).
+    The two successors in the derivation are determined in the same fashion starting with \(\rho_1\) and \(\rho_2\).
+    In the end, we obtain the following derivation for the whole tree.
+    \begin{center}
+        \subfile{figures/hybrid/headed.tex}
+    \end{center}
+    \exampleqed
+
+    \subsection{Viable Combinations of Extraction Parameters}\label{sec:viable-paramters}
+    \Cref{sec:binarization,sec:ntconstructors,sec:guides} introduced parameters for the extraction procedure.
+    As we have seen in \cref{sec:guides}, the guide constructors expect different prerequisites such that not all combinations of parameter values are compatible.
+    The vanilla, strict, least, and near guide constructors make no assumptions regarding the binarization strategy and can be freely combined.
+    However, we suspect the vanilla and strict guide constructors are best combined with right-branching binarization because these guides are defined via the right successor of each node.
+
+    The dependent guide constructor expects a binary constituent structure complemented by a head assignment; thus, it can only be coupled with the head-outward binarization strategy.
+    Similarly, the head guide constructor expects a head assignment and cannot be coupled with the left- or right-branching binarization strategy.
+    Formally, the head-outward binarization strategy produces viable inputs for the head guide constructor, but the canonical head assignments are not helpful when it comes to the extraction:
+        A head guide combines all artificial nodes introduced during the binarization and assigns them the same lexical head; hence, the effects of the rank transformation are void.
+    The following example illustrates this setting; it produces a rule of rank four that combines all nodes introduced during the head-outward binarization of the former root labeled \cn{s}.
+    In our experiments, we use the head guide constructor exclusively in case of no applied rank transformations or case of the head-inward transformation.
+
+    \begin{wrapfigure}[7]{r}{0pt}
+        \subfile{figures/hybrid/pilot-ho-head.tex}
+    \end{wrapfigure}
+    \parexample[Continues \cref{fig:ex:markovization}]
+    Consider the constituent structure after applying the head-outward binarization strategy from the previous example and the values assigned by its head guide.
+    All nodes constructed from the \cn{s} constituent are assigned to the lexical head \(3\).
+    For the root position $\rho_0 = \varepsilon$, four descendant positions are assigned to different lexical heads: $\rho_1 = 1\,1\,1$, $\rho_2=1\,1\,2$, $\rho_3 =1\,2$ and $\rho_4=2$.
+    Three of them, namely $\rho_1$, $\rho_2$ and $\rho_4$, are positions of the leaves 1, 2, and 6, respectively; the position \(\rho_3\) points to the subtree with the $\cn{np}$ node.
+    The compositions constructed for the root position assume four arguments; the \abrv{dcp} composition contains all the artificial nodes introduced during the binarization.
+    The following illustration shows the resulting derivation.
+    \begin{center}
+        \subfile{figures/hybrid/pilot-ho-head-deriv.tex}
+    \end{center}
+    \exampleqed
+
+    Aside from these restrictions of compatible binarization strategies and guide constructors, the nonterminal constructors and Markovization parameters can be chosen freely.
+    They determine the structure and number of the extracted supertag blueprints.
+    \Cref{sec:gridsearch,sec:gridsearch:other} show a vast series of experiments that extract supertag blueprints using many combinations of extraction parameters.
+\end{document}
