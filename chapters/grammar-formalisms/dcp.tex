@@ -26,6 +26,7 @@
         The \(\DN\)-indexed family \((S_k = \{x(v) \mid x \in \X_k, v \in \T_\varGamma(\varSigma \cup Y)^*\} \mid k \in \DN)\) denotes substitution sites with variables up to subscript \(k\).
         The \(\DN\)-indexed family of \deflabs<composition>{\abrv{dcp} composition} over \(\varSigma\) and \(\varGamma\) is \((\C^{\varGamma\varSigma}_k \mid k \in \DN)\) such that \(\C^{\varGamma\varSigma}_k\) contains each nonempty sequence \(c\) in \((\T_\varGamma(\varSigma \cup \Y \cup S_k))^+\) such that each variable in \(\X_k \cup \Y\) occurs exactly once in \(c\).
         The identifier \(\C^{\varGamma\varSigma}\) denotes the set of all \abrv{dcp} compositions \(\bigcup_{k \in \DN} \C^{\varGamma\varSigma}_{k}\).
+        We usually abbreviate compositions with a trailing occurrence of the variable \(\y\) by omitting it, and each subsitution site of the form \(x(\varepsilon)\) by \(x\) and omitting the empty argument with the wrapping parentheses, as long as it improves the readability.
 
         Each composition \(c \in \C^{\varGamma\varSigma}_k\) is associated with a function \[
             \sem{c}\colon \big(\T_\varGamma(\varSigma \cup Y)^*\big)^k \to \T_\varGamma(\varSigma \cup Y)^*
@@ -40,7 +41,7 @@
         %        \item We omit trailing occurrences of the variable \(\y\) if it does not occur as a successor of any node; e.g.\@ instead of \(\text{S}(\x_1)\,\y \), we just write \(\text{S}(\x_1)\).
         %    \end{compactenum}
 
-    \begin{example}\label{ex:dcp:comp}
+    \begin{example}\label{ex:dcp:comp}\NoEndMark
         Consider the following six \abrv{dcp} compositions over the two alphabets \(\varGamma = \{ \cn{sbar}, \cn{s}, \cn{vp}, \cn{np} \}\) and \(\varSigma = \{\tn{where}, \tn{the}, \tn{survey}, \tn{was}, \tn{carried}, \tn{out}\}\):
         \begin{align*}
             c_1 &= \tn{where} \, \y,
@@ -59,6 +60,17 @@
             &= \cn{vp}(\x_1(\y) \, \x_2(\tn{carried}))[\x_1(\y)=(\tn{where} \, \y), \x_2(\tn{carried})=(\tn{carried}\, \tn{out})] \\
             &= \cn{vp}(\tn{where} \, \y \; \tn{carried out}) \text{.}
         \end{align*}
+
+        Consider the two compositions \(c_7 = (\cn{vp}(\x_1(\varepsilon) \, \x_2(\tn{carried}))\,\y)\) and \(c_8 = (\cn{vp}(\x_1(\varepsilon) \, \tn{was})\,\y)\), and the term \(\sem{c_8}\big( \sem{c_7}\big(\sem{c_1}(), \sem{c_2}()\big) \big)\) that is evaluated as follows:
+        \begin{align*}
+            \sem{c_8}\big( \sem{c_7}\big(\sem{c_1}(), \sem{c_2}()\big) \big)
+            &= \sem{c_8}\big( \sem{c_7}\big((\tn{where} \; \y), (\y \; \tn{out})\big) \big)\\
+            &= \sem{c_8}\big( (\cn{vp}(\tn{where} \; \tn{carried} \; \tn{out} )\,\y)  \big)\\
+            &= \cn{vp} (\cn{vp}(\tn{where} \; \tn{carried} \;\tn{out} )\, \tn{was})\,\y\text{.}
+        \end{align*}
+        The occurrences of the variable symbol \(\y\) in the compositions \(c_1\) and \(c_7\) are replaced by \(\varepsilon\), they are essentially removed and do not play any role in the result.
+        In such situations, we abbreviate the compositions by omitting the trailing occurrences of $\y$ as well as the argument \((\varepsilon)\) at the substitution sites; we just denote \(c_1 = \tn{where}\), \(c_7 = \cn{vp}(\x_1 \, \x_2(\tn{carried}))\) and \(c_8 = \cn{vp}(\x_1\, \tn{was})\,\y\).
+        \\\null\hfill\exampleqed
     \end{example}
 
     When we assume the above form of compositions, \abrv{dcp} grammars, \deflab<derivation>{\abrv{dcp} derivation}[derivations], and most of the concepts of rule and grammar forms are defined analogously to \abrv{lcfrs}; we will refrain from repeating these definitions completely but focus on the differences.
@@ -73,7 +85,7 @@
     As \abrv{lcfrs}, we deal with \abrv{dcp} grammars that are instantiated with sentence positions as lexical symbols during the rule extraction as well as parsing.
     An instantiated \abrv{dcp} grammar for a sequence of length \(n\) is of the form \((N, \varGamma, [n], S, R')\) and defined analogously to instantiated \abrv{lcfrs}.
     For any composition \(c \in \C^{\varGamma\,[n]}\) and any derivation \(d \in \derivs^{R'}\), let us denote the set of all lexical symbols within \(c\) by \(\mathrm{lex}(c)\) and all lexical symbols within \(d\) by \(\mathrm{lex}(d)\).
-    We call a derivation \(d \in \derivs^{R'}\) of the form \(A \to c\,(B_1, \ldots, B_k) \big( d_1, \ldots, d_k \big)\) \deflab<admissible>{admissible \abrv{dcp} derivation}[admissible] if all the following sets are mutually exclusive: \(\mathrm{lex}(c), \mathrm{lex}(d_1), \ldots, \mathrm{lex}(d_k)\); that is, no instantiated lexical symbol occurs twice.\footnote{
+    We call a derivation \(d \in \derivs^{R'}\) of the form \(A \to c\,(B_1, \ldots, B_k) \big( d_1, \ldots, d_k \big)\) \deflab<admissible>{admissible \abrv{dcp} derivation}[admissible] if all its successors \(d_1, \ldots, d_k\) are admissible and all the following sets are mutually exclusive: \(\mathrm{lex}(c), \mathrm{lex}(d_1), \ldots, \mathrm{lex}(d_k)\); that is, no instantiated lexical symbol occurs twice.\footnote{
         Such ``unrestricted \abrv{dcp}'' showed to be infeasible for parsing during our experiments, so we equipped each rule with a fanout (which does not need to be consistent among all rules for a \abrv{lhs} nonterminal).
         This is discussed in more detail in \cref{sec:supertags,sec:parsing:dcp}.
     }

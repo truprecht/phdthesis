@@ -24,7 +24,7 @@
             For the position \(\rho_0\), let \(s\in \DN\), and \(\rho_1, \ldots, \rho_s \in \descendants_\xi(\rho_0) \setminus \{\rho_0\}\) be the sequence of topmost parallel positions below \(\rho_0\) such that
             \begin{inparaenum}
                 \item \(\varphi(\rho_i) \neq \varphi(\rho_0)\) for each \(i\in[s]\), and
-                \item \(\rho_1, \ldots, \rho_s\) are ordered concerning the least leaf in \(L(\rho_1), \ldots, L(\rho_s)\).
+                \item \(\rho_1, \ldots, \rho_s\) are ordered concerning the least leaves in \(L(\rho_1), \ldots, L(\rho_s)\).
             \end{inparaenum}
             Formally, we specify the two properties as follows:
             \begin{enumerate}
@@ -45,24 +45,24 @@
     Each derivation \(d_{\rho_0}\) that was extracted starting at the top node position \(\rho_0\) contains one rule for each leaf in \(L(\rho_0)\) such that
     \begin{itemize}
         \item the yield of the \abrv{lcfrs} projection \(\yield(\pi_{\abrv{lcfrs}}(d_{\rho_0}))\) is the linearization of \(L(\rho_0)\), and
-        \item the yield of the \abrv{dcp} projection \(\yield(\pi_{\abrv{dcp}}(d_{\rho_0}))\) is the subtree \(\xi|_{\rho_0}\) except, if \(\yield(\xi|_{\rho_0}) \neq L(\rho_0)\), then the leaf in the singleton set \(\yield(\xi|_{\rho_0}) \neq L(\rho_0)\) is replaced by the variable symbol \(\y\).
+        \item the yield of the \abrv{dcp} projection \(\yield(\pi_{\abrv{dcp}}(d_{\rho_0}))\) is the subtree \(\xi|_{\rho_0}\) except, if \(\yield(\xi|_{\rho_0}) \neq L(\rho_0)\), then the leaf in the singleton set \(\yield(\xi|_{\rho_0}) \setminus L(\rho_0)\) is replaced by the variable symbol \(\y\).
     \end{itemize}
 
     \begin{wrapfigure}[8]{r}{0pt}
         \subfile{figures/guides/example-guide-head.tex}
     \end{wrapfigure}
     \parexample\label{ex:extraction:head}
-    The tree to the right shows a running example constituent structure \(\xi\) with the usual illustration of values assigned by the guide \(\varphi\) next to each inner node.
+    The tree to the right shows our running example constituent structure \(\xi\) with the usual illustration of values assigned by the guide \(\varphi\) next to each inner node.
     The partial function \(\varphi^{\text{top}}\) restricts the assignments by \(\varphi\) to the topmost positions; this is illustrated using encircled values.
     In our example, \(\varphi^{\text{top}}\) only assigns the position \(\varepsilon\) to the leaf \(4\).
     Both of its descendants that \(\varphi\) assigns to the leaf \(4\), the positions \(1\) and \(1\,1\), are not in the domain of \(\varphi^{\text{top}}\).
     The function \(L\) maps each position to the encircled values illustrated at descendant positions.
     For instance, the root position is mapped to the set of all leaves; the set \(L(1) = \{1,2,3,5,6\}\) for its child does not contain the leaf $4$; and the set \(L(1\,1\,1)\) for the lower \nt{vp} node is \(\{1,5,6\}\).
     Let us consider the construction for the root position \(\rho_0 = \varepsilon\), and the classic nonterminal constructor denoted by \(\psi\).
-    The topmost descendent positions below \(\varepsilon\) that \(\varphi^{\text{top}}\) assigns to other leaves are \(\rho_1 = 1\,1\,1\) (the bottom \nt{vp} node) and \(\rho_2 = 1\,2\) (the \nt{np} node).
-    The \abrv{lhs} \(A_0\) and \abrv{rhs} nonterminals \(A_1, A_2\) are determined from the nodes at these three positions, respectively, as well as the fanouts of the three sets \(L(\rho_0) = [6]\), \(L_(\rho_1) = \{1,5,6\}\) and \(L(\rho_2) = \{2,3\}\); they are \(A_0 = \nt{sbar}_1\), \(A_1 = \nt{vp}_2\) and \(A_2 = \nt{np}_1\).
+    The topmost descendant positions below \(\varepsilon\) that \(\varphi^{\text{top}}\) assigns to other leaves are \(\rho_1 = 1\,1\,1\) (the bottom \cn{vp} node) and \(\rho_2 = 1\,2\) (the \cn{np} node).
+    The \abrv{lhs} \(A_0\) and \abrv{rhs} nonterminals \(A_1, A_2\) are determined from the constituent symbols at these three positions, respectively, as well as the fanouts of the three sets \(L(\rho_0) = [6]\), \(L_(\rho_1) = \{1,5,6\}\) and \(L(\rho_2) = \{2,3\}\); they are \(A_0 = \nt{sbar}_1\), \(A_1 = \nt{vp}_2\) and \(A_2 = \nt{np}_1\).
     The \abrv{lcfrs} composition is determined from three sets \(L(\rho_0)\), \(L_(\rho_1)\) and \(L(\rho_2)\) in the usual manner, it is \(c_1 = \mathrm{comp}([6], \{1,5,6\}, \{2,3\}) = (\x_1^1\x_2^1\,4\,\x_1^2)\).
-    The \abrv{dcp} composition is constructed from the nodes in \(\xi\) between \(\rho_0\) and its descendents \(\rho_1\) and \(\rho_2\), it is \(c_2 = \mathrm{scomp}(\xi, (\varepsilon, [6]), (1\,1\,1, \{1,5,6\}), (1\,2, \{2,3\})) = \cn{sbar}(\cn{s}(\cn{vp}(\x_1(\varepsilon), 4), \x_2(\varepsilon)))\,\y\).
+    The \abrv{dcp} composition is constructed from the nodes in \(\xi\) between \(\rho_0\) and its descendants \(\rho_1\) and \(\rho_2\), it is \(c_2 = \mathrm{scomp}(\xi, (\varepsilon, [6]), (1\,1\,1, \{1,5,6\}), (1\,2, \{2,3\})) = \cn{sbar}(\cn{s}(\cn{vp}(\x_1(\varepsilon), 4), \x_2(\varepsilon)))\,\y\).
     The two successors in the derivation are determined in the same fashion starting with \(\rho_1\) and \(\rho_2\).
     In the end, we obtain the following derivation for the whole tree.
     \begin{center}
