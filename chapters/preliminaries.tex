@@ -87,11 +87,11 @@
     The concatenation of a whole collection of sequences \((w_i \in A^* \mid i \in [k])\) in order of their indices is denoted with an ellipsis \(w_1 \ldots w_k\).  
 
     A \deflab{subsequence} \(v \in A^*\) in \(w\in A^*\) is a sequence of elements occurring consecutively within \(w\).
-    The subsequence \(v\) is located within \(w\) by a pair of indices for its start \(s \in [|w|+1]\) and its end \(e \in [s, |w|+1]\) such that \(v_i = w_{s-1+i}\) for each \(i \in [e-s]\).
-    Whenever such a subsequence in \(w\) is identified using its location between the indices \(s\) and \(e\), it is denoted by \(w_{s:e}\).
+    A non-empty subsequence \(v\) is located within \(w\) by a pair of indices for its start \(s \in [|w|]\) and its end \(e \in [s,|w|]\) such that \(v_i = w_{s-1+i}\) for each \(i \in [e-s+1]\); that is, \(v_1 \ldots v_{e-s+1} = w_s \ldots w_e\).
+    Whenever such a non-empty subsequence in \(w\) is identified using its location between the indices \(s\) and \(e\), it is denoted by \(w_{s:e}\); we assume the empty subsequence, if this notation is used with any \(s < 1\) or \(e < s\).
     If one of the two indices is left empty, it denotes a \deflab{prefix} or \deflab{postfix}[postfix in \(w\)], respectively.
-    For instance, \(w_{:s}\) is the prefix in \(w\) containing the first \(s-1\) elements, and \(w_{s:}\) denotes the postfix in \(w\) that contains the trailing \(|w|-s-1\) elements.
-    For each \(e \in [|w|]\), the subsequence \(w_{:e}\) is called \deflab<prefix>{proper prefix}[proper prefix in \(w\)]; analogously, for each \(s\in [1,|w|+1]\), the subsequence \(w_{s:}\) is a \deflab<postfix>{proper postfix}[proper postfix in \(w\)].
+    For instance, \(w_{:s}\) is the prefix in \(w\) containing the first \(s\) elements, and \(w_{s:}\) denotes the postfix in \(w\) that contains the trailing \(|w|-s+1\) elements.
+    In the case of \(w\in A^+\) and for each \(e \in [|w|]\), the subsequence \(w_{:e-1}\) is called \deflab<prefix>{proper prefix}[proper prefix in \(w\)]; analogously, for each \(s\in [|w|]\), the subsequence \(w_{s+1:}\) is a \deflab<postfix>{proper postfix}[proper postfix in \(w\)].
 
     Let \(\unlhd\) be a total order on \(A\), the \deflab{lexicographic order}[lexicographic order on \(A^*\)], denoted by \(\unlhd^*\), is defined such that
     \begin{inparaenum}
@@ -100,7 +100,7 @@
     \end{inparaenum}
     For example, \(\leq^*\) is the lexicographic order over sequences of numerical values where \(\varepsilon \leq^* 1\:1\:2\) and \(1\:1\:2\leq^*1\:2\).
     
-    We extend the operators \(\argmax\) (and \(\argmin\)) to determine ordered seqences of \(k\) maximal (or minimal, respectively) elements, for each \(k \in \DN_+\).
+    We extend the operators \(\argmax\) (and \(\argmin\)) to determine ordered sequences of \(k\) maximal (or minimal, respectively) elements, for each \(k \in \DN_+\).
     In this case, we denote the length \(k\) of these sequences in parentheses as superscript of the operator.
     In the case that there is also a specified (non-numeric) total order, we denote both as superscript in the form \(\argmax^{(k), \unlhd}\).
     For instance, the expression \(\argmin^{(5)}_{i \in [n]} p_i\) is the set of all sequences over \([n]\) of length \(m = \min \{5, n\}\) where each is of the form \(i_1 i_2 \ldots i_m\) and determined such that \(p_{i_1} \leq p_{i_2} \leq \ldots \leq p_{i_m}\) and \(p_{i_m} \leq j\) for each \(j \in [n]\setminus\{i_1,\ldots,i_m\}\).
@@ -132,8 +132,8 @@
     As such, trees are finite structures, but unlike strings, we do not consider empty trees.
     In case \(\varGamma \subseteq \varSigma\), the symbols at the leaves are not distinguished from inner nodes; then the set \(\T_\varSigma(\varGamma)\) is abbreviated by \(\T_\varSigma\).
 
-    A \deflab{node}[node in the tree \(t \in \T_\varSigma(\varGamma)\)] is an occurrence of a symbol in \(\varSigma \cup \varGamma\) within \(t\); it is a combination of the symbol \(\sigma\) and the position it occurs.
-    If a node is accompanied by a sequence of trees denoted in parentheses behind the symbol, these trees are called the \deflab{child}[children] of the node.
+    A \deflab{node in a tree}[node in the tree \(t \in \T_\varSigma(\varGamma)\)] is an occurrence of a symbol in \(\varSigma \cup \varGamma\) within \(t\); it is a combination of the symbol \(\sigma\) and the position it occurs.
+    If a node is accompanied by a sequence of trees denoted in parentheses behind the symbol, these trees are called the \deflab{child trees/nodes}[children] or \deflab{successor trees/nodes}[successors] of the node.
     Vice versa, from the viewpoint of a child node, the node before the wrapping parenthesis is called the \deflab{parent node}[parent].
     Each other node within the parenthesis is called a \deflab{sibling}.
     The leftmost node is called the \deflab{root node}[root] of the tree; each node without children is called a \deflab{leaf node}[leaf] of the tree; and each node with children is called an \deflab{inner node}.
@@ -161,13 +161,8 @@
     If \(\rho\) is of the form \(\rho = p_1 \ldots p_\ell\) for some \(\ell \in \DN_+\) and \(p_1, \ldots, p_\ell \in \DN_+\), then \(\ancestors(\rho) = \{ p_1 \ldots p_i \mid 0 \leq i \leq \ell-1 \}\).
     The \deflab{descendant}[descendants of \(\rho\) in \(t\)] are all positions in the subtree below \(\rho\), denoted by \(\descendants_t(\rho) = \{ \rho \cdot \rho' \in \pos(t) \mid \rho' \in \pos(t|_\rho) \}\).
     The symbol at a position \(\rho\) in \(t\) is denoted  \(t(\rho)\).
-    We use the same terminology for position as for nodes, for instance, the terms child position, parent position, etc.\@ are used interchangeably in the same manner; \(\children_t(\rho) = \{\rho\} \cdot \DN_+ \cap \pos(t)\) denotes the set of child positions below each position \(\rho\) in \(t\), and \(\parent(\rho) = \rho_{:|\rho|}\) the parent position for each \(\rho \in {\DN_+}^+\).
-    Two positions \(\rho, \rho' \in \pos(t)\) are called \deflab{independent positions}[independent], if \(\rho\) is neither a descendant nor an ancestor of \(\rho'\).
-
-    % A \deflab{subforest} of \(t\) is a sequence of trees occurring consecutively (as siblings) within \(t\).
-    % A subforest may be located within \(t\) using a position \(\rho\) accompanied by a concluding child index that is greater or equal to the last child index in \(\rho\).
-    % Let \(i, e \in \DN_+\) and \(\rho' \in \pos(t)\) such that \(\rho = \rho' \cdot i\) and \(e \in [i,\rank(t|_{\rho'})+1]\).
-    % Analogously to the location of subsequences, the notation \(t|_{\rho:e}\) denotes the subforest in \(t\) at positions \(\rho' \cdot i, \rho' \cdot (i+1), \ldots, \rho \cdot (e-1)\).
+    We use the same terminology for position as for nodes, for instance, the terms child position, parent position, etc.\@ are used interchangeably in the same manner; \(\children_t(\rho) = \{\rho\} \cdot \DN_+ \cap \pos(t)\) denotes the set of child positions below each position \(\rho \in \pos(t)\), and \(\parent(\rho) = \rho_{:|\rho|-1}\) the parent position for each \(\rho \in {\DN_+}^+\).
+    Two positions \(\rho, \rho' \in \pos(t)\) are called \deflab{independent tree positions}[independent], if \(\rho\) is neither a descendant nor an ancestor of \(\rho'\).
 
     \begin{lemma}\label{lem:firstviasecond}
         Let \(\xi \in \T_{\varSigma}(\varGamma)\) be a binary tree over some alphabet \(\varSigma\) and a set \(\varGamma\).
@@ -242,7 +237,7 @@
     \end{example}
 
     \section{Modeling Natural Languages using Formal Methods}\label{sec:preliminaries:ctrees}
-    In the syntactic analysis of sentences in natural languages, we deal with \deflabs{constituent tree}.
+    In the syntactic analysis of sentences in natural languages, we deal with \emph{constituent trees}.
     Each constituent tree illustrates a hierarchy of sub-phrases in a sentence, where a category symbol labels each element in the hierarchy, called \deflab{constituent symbol}.
     These sub-phrases do not necessarily form contiguous regions in the sentence:
     If such a tree contains a node with a non-contiguous sub-phrase, we call it \deflab{discontinuous}; otherwise, it is \deflab{continuous}.
@@ -296,7 +291,7 @@
     The assigned lexical head is found by following the double-struck edges down to a leaf.
     For instance, \cref{fig:pre:ctree} shows such an illustration and the lexical head of its root is \(4\) (representing the fourth word ``was'' in $w$).
     Let us assume a binary constituent structure \(t\) and an inner node position \(\rho \in \npos(t)\).
-    If the leaf \(\head_{(t,p,w)}(\rho)\) is located at or below position \(\rho \cdot 1\), then the subtree at \(\rho \cdot 2\) is called the \deflab[dependent]{dependent of $\rho$}; vice versa, the subtree at \(\rho \cdot 1\) is called dependent of $\rho$ if \(\head_{(t,p,w)}(\rho)\) is at or below \(\rho \cdot 2\).
+    If the leaf \(\head_{(t,p,w)}(\rho)\) is located at or below position \(\rho \cdot 1\), then the subtree at \(\rho \cdot 2\) is called the \deflab{dependent}[dependent of $\rho$]; vice versa, the subtree at \(\rho \cdot 1\) is called dependent of $\rho$ if \(\head_{(t,p,w)}(\rho)\) is at or below \(\rho \cdot 2\).
 
     A \deflab{treebank} is a finite set of constituent trees.
     They are assembled by linguists for texts collected from news articles, written speeches, etc., and annotated with their constituent structure.

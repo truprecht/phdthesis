@@ -63,7 +63,7 @@
                                  & 82.2$^{\pm0.2}$ & 56.9$^{\pm0.7}$ & 127$^{\pm8}$
                                 & 90.7$^{\pm0.1}$ & 74.1$^{\pm0.9}$ & 131$^{\pm36}$\\
             \midrule
-            \multirow{6}{*}{\parbox{2cm}{\centering{}pretrained\\bert-base}}
+            \multirow{6}{*}{\parbox{2cm}{\centering{}pre-trained\\bert-base}}
                 & 91.7 & 73.4 & 183 & 89.5 & 72.1 & 173 & 94.5 & 82.1 & 165 \\
                 & 91.6 & 74.9 & 190 & 89.4 & 71.8 & 177 & 94.4 & 82.3 & 172 \\
                 & 91.7 & 74.0 & 188 & 89.6 & 71.8 & 187 & 94.6 & 83.6 & 190 \\
@@ -74,7 +74,7 @@
                 & 89.5$^{\pm0.1}$ & 71.8$^{\pm0.4}$ & 174$^{\pm11}$
                 & 94.5$^{\pm0.1}$ & 82.8$^{\pm0.6}$ & 175$^{\pm9}$\\
             \midrule
-            \multirow{4}{*}{\parbox{2cm}{\centering{}pretrained\\roberta or\\gbert-large}}
+            \multirow{4}{*}{\parbox{2cm}{\centering{}pre-trained\\roberta or\\gbert-large}}
                 & 93.9 & 80.3 & 144 & 91.7 & 77.1 & 135 & 95.7 & 85.3 & 135 \\
                 & 93.5 & 79.4 & 143 & 91.6 & 76.6 & 141 & 95.7 & 84.9 & 136 \\
                 & 94.1 & 80.6 & 144 & 91.7 & 76.1 & 140 & 95.6 & 84.4 & 136 \\
@@ -99,7 +99,7 @@
     The comparisons in the table should all be taken with at least two grains of salt:
     \begin{inparaenum}
         \item The parsing speed strongly depends on the used hardware, especially for approaches using artificial neural networks. This mainly includes GPUs. We used a (semi-dated) consumer graphics card for our results, and other authors used professional graphic units specifically designed for applications with neural networks. For example, \citet{Cor20} used Tesla K100 GPUs that are significantly faster and have more memory than the RTX 2080.
-        \item As remarked earlier for our parser, many results listed in the following tables depend on pseudo-random initializations and are thus variable to a certain degree. Unfortunately, most of the referenced publications do not report results using multiple experiment runs, but only one. At least in one case, the reported results can be doubted: In an attempt to reproduce the results reported by \citet{Cor20} with their provided implementation, Richard Mörbitz obtained notably lower scores. Unfortunately, \citeauthor{Cor20} could not explain the gap between the two results when Richard Mörbitz reached out. We decided to compare all results to the averages we obtained as shown in \cref{tbl:averages}.
+        \item As remarked earlier for our parser, many results listed in the following tables depend on pseudo-random initialization and are thus variable to a certain degree. Unfortunately, most of the referenced publications do not report results using multiple experiment runs, but only one. At least in one case, the reported results can be doubted: In an attempt to reproduce the results reported by \citet{Cor20} with their provided implementation, Richard Mörbitz obtained notably lower scores. Unfortunately, \citeauthor{Cor20} could not explain the gap between the two results when Richard Mörbitz reached out. We decided to compare all results to the averages we obtained as shown in \cref{tbl:averages}.
     \end{inparaenum}
 
     \begin{table*}
@@ -109,7 +109,7 @@
         \defcitealias{FerGon21b}{Fern{\'a}ndez-G., G{\'o}mez-R., 2021b}
         \caption{
             Our results on test sets compared to other published parsers for discontinuous constituents using exclusively supervised methods.
-            The column ``Type'' gives a rough classification of the parsing approach in the following concepts: G -- statistical grammar-based, GS -- grammar-based with supertagging, C -- grammarless chart-based, T -- transition-based, and N -- untraditional neural approaches.
+            The column ``Type'' gives a rough classification of the parsing approach in the following concepts: G -- statistical grammar-based, GS -- grammar-based with supertagging, C -- grammarless chart-based, T -- transition-based, and N -- nontraditional neural approaches.
             \label{tbl:supervised}
         }
         \small\centering
@@ -156,7 +156,7 @@
         \caption{
             Our results on test sets compared to other published parsers for discontinuous constituents.
             All use medium-sized transformer embeddings, like \emph{bert-base} or similar.
-            The column ``Type'' gives a rough classification of the parsing approach in the following concepts: GS -- grammar-based with supertagging, C -- grammarless chart-based, T -- transition-based, and N -- untraditional neural methods.
+            The column ``Type'' gives a rough classification of the parsing approach in the following concepts: GS -- grammar-based with supertagging, C -- grammarless chart-based, T -- transition-based, and N -- nontraditional neural methods.
             \label{tbl:pretrained:small}
         }
         \small\centering
@@ -194,7 +194,7 @@
         \caption{
             Our results on test sets compared to other published parsers for discontinuous constituents.
             All use large transformer embeddings,  i.e.\@ \emph{bert-large}, \emph{roberta-large}, \emph{gbert-large} or similar.
-            The column ``Type'' gives a rough classification of the parsing approach in the following concepts: GS -- grammar-based with supertagging, N -- untraditional neural methods.
+            The column ``Type'' gives a rough classification of the parsing approach in the following concepts: GS -- grammar-based with supertagging, N -- nontraditional neural methods.
             \label{tbl:pretrained:large}
         }
         \small\centering

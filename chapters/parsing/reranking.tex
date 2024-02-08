@@ -74,14 +74,14 @@
 
 
     \begin{example}\label{ex:dop}\NoEndMark
-        \Cref{fig:ex:dop} shows five rules of a disco-dop grammar that consist of fragments in the constituent tree shown in the left of the illutrastion.
+        \Cref{fig:ex:dop} shows five rules of a disco-dop grammar that consist of fragments in the constituent tree shown in the left of the illustration.
         The rules denoted in the form of discontinuous tree substitution grammars as characterized by \citet{CraSchBod16}.
         They denote them similarly to \abrv{lcfrs}:
             Each leaf that is a substitution site is complemented with a sequence of variables, and each leaf that is a terminal has an index, such that each of these objects uniquely occurs within each rule.
             A composition below the root node indicates how terminals may be concatenated by the rules using the variables and indices from the leaves.
             The compositions are tuples, allowing discontinuities in the same sense as in \abrv{lcfrs}.
         
-        We interprete the five tree fragments as rules in an \abrv{lcfrs} with latent annotations as follows.
+        We interpret the five tree fragments as rules in an \abrv{lcfrs} with latent annotations as follows.
         The set of latent symbols is the integer index set of size 5 (one plus the number of fragments) \(L = [5]\), and the set of constituent symbols is \(\{\cn{vp}, \cn{np} \cn{s}, \cn{sbar}, \cn{wh}, \cn{prt}\}\); thus, the set of nonterminals symbols is \(
             \{ A^{(\lambda)} \mid A \in \{\cn{vp}, \cn{np} \cn{s}, \cn{sbar}, \cn{wh}, \cn{prt}\} , \lambda \in [5]\}  \text{.}
         \)
@@ -99,7 +99,7 @@
             &\cn{vp}^{(1)} \to (\x^1_1\,\cn{vbd}\,\x_1^2)\;(\cn{vp}^{(1)})\text{.} \tag{$\zeta_5$}
         \end{align*}
 
-        Consider that the five fragments in \cref{fig:ex:dop} are supplied with some probabilitic weights \((\weight(\zeta_i) \in \DR \mid i \in [5])\).
+        Consider that the five fragments in \cref{fig:ex:dop} are supplied with some probabilistic weights \((\weight(\zeta_i) \in \DR \mid i \in [5])\).
         These weights are assigned to the \abrv{lcfrs} rules for the root of each fragment, such that:
         \begin{align*}
             \weight(\cn{sbar}^{(1)} \to (\x^1_1)\;(\cn{s}^{(2)})) &= \weight(\zeta_1), \\[.2cm]
@@ -114,8 +114,8 @@
         First the constituent tree is transformed into the derivation illustrated below.
         The gray values next to each node show the weights computed at each subtree from bottom to the top and for each latent symbol; all values that are not shown are zero.
         For example, there are the two rules \(\cn{prt}^{(4)} \to (\cn{wrb})\;()\) and  \(\cn{prt}^{(4)} \to (\cn{rp})\;()\), each with the weight \(1\), for the bottom-most nodes at positions \(1\,1\,1\,1\) and \(1\,1\,1\,2\).
-        At both ofthose positions, we consider the weight \(1\) for the latent symbol \(4\) and \(0\) for all other latent symbols.
-        For their parent possition \(1\,1\,1\), we identify the matching rule \(\cn{vp}^{(1)} \to (\x_1^1\,\cn{vbn}\,\x_2^1)\;(\cn{wh}^{(4)}, \cn{prt}^{(4)})\) and determine the weight \(w_{1\,1\,1}^{(1)} = \weight(\zeta_3) \cdot w_{1\,1\,1\,1}^{(4)} \cdot w_{1\,1\,1\,2}^{(4)} = \weight(\zeta_3)\).
+        At both of those positions, we consider the weight \(1\) for the latent symbol \(4\) and \(0\) for all other latent symbols.
+        For their parent position \(1\,1\,1\), we identify the matching rule \(\cn{vp}^{(1)} \to (\x_1^1\,\cn{vbn}\,\x_2^1)\;(\cn{wh}^{(4)}, \cn{prt}^{(4)})\) and determine the weight \(w_{1\,1\,1}^{(1)} = \weight(\zeta_3) \cdot w_{1\,1\,1\,1}^{(4)} \cdot w_{1\,1\,1\,2}^{(4)} = \weight(\zeta_3)\).
         For the rightmost node at position \(1\,2\), there are two matching rules for the latent symbols \(1\) and \(5\) at the \abrv{lhs} nonterminal; hence, there are the two non-zero weights \(w_{1\,2}^{(1)} = \weight(\zeta_2)\) and \(w_{1\,2}^{(5)} = 1\).
 
         \vspace{.5cm}

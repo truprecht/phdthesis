@@ -21,12 +21,12 @@
 
     \begin{definition}[Composition]
         We fix the \(\DN\)-indexed family of finite sets of variable symbols \((\X_k = \{\x_i \mid i \in [k]\} \mid k \in \DN)\), and the singleton set \(\Y = \{\y\}\).
-        The identifier \(\X\) denotes the set of the variable symobl \(\x\) with all subscripts \(\X = \{\x_i \mid i \in \DN\}\).
+        The identifier \(\X\) denotes the set of the variable symbol \(\x\) with all subscripts \(\X = \{\x_i \mid i \in \DN\}\).
         Let \(\varSigma\) and \(\varGamma\) be alphabets such that both are disjoint from \(\X \cup \Y\).
         The \(\DN\)-indexed family \((S_k = \{x(v) \mid x \in \X_k, v \in \T_\varGamma(\varSigma \cup Y)^*\} \mid k \in \DN)\) denotes substitution sites with variables up to subscript \(k\).
         The \(\DN\)-indexed family of \deflabs<composition>{\abrv{dcp} composition} over \(\varSigma\) and \(\varGamma\) is \((\C^{\varGamma\varSigma}_k \mid k \in \DN)\) such that \(\C^{\varGamma\varSigma}_k\) contains each nonempty sequence \(c\) in \((\T_\varGamma(\varSigma \cup \Y \cup S_k))^+\) such that each variable in \(\X_k \cup \Y\) occurs exactly once in \(c\).
         The identifier \(\C^{\varGamma\varSigma}\) denotes the set of all \abrv{dcp} compositions \(\bigcup_{k \in \DN} \C^{\varGamma\varSigma}_{k}\).
-        We usually abbreviate compositions with a trailing occurrence of the variable \(\y\) by omitting it, and each subsitution site of the form \(x(\varepsilon)\) by \(x\) and omitting the empty argument with the wrapping parentheses, as long as it improves the readability.
+        We usually abbreviate compositions with a trailing occurrence of the variable \(\y\) by omitting it, and each substitution site of the form \(x(\varepsilon)\) by \(x\) and omitting the empty argument with the wrapping parentheses, as long as it improves the readability.
 
         Each composition \(c \in \C^{\varGamma\varSigma}_k\) is associated with a function \[
             \sem{c}\colon \big(\T_\varGamma(\varSigma \cup Y)^*\big)^k \to \T_\varGamma(\varSigma \cup Y)^*
@@ -90,7 +90,7 @@
         This is discussed in more detail in \cref{sec:supertags,sec:parsing:dcp}.
     }
     The identifier \(\aderivs^{R'}\) denotes the set of admissible derivations in \(R'\).
-    For each derivation \(d \in \aderivs^{R'}\), the constituent structure for \(d\) is the yield of \(d\).
+    For each derivation \(d \in \aderivs^{R'}\), the \deflab{constituent structure for a \abrv{dcp} derivation}[constituent structure for \(d\)] is the yield of \(d\).
     For each set of derivations \(D \subseteq \derivs^{R'}\) of \abrv{dcp} rules, we define the \(N\)-indexed family \((D_A \subseteq D \mid A \in N)\) such that each derivation in \(D_A\) is rooted in a rule with the \abrv{lhs} nonterminal \(A\); and, for each \(\pi \subseteq [n]\), we denote the set of all derivations with the lexical symbols \(\pi\) by \(D(\pi) = \{d\in D \mid \mathrm{lex}(d) = \pi\}\).
 
     \begin{example}[Continues \cref{ex:dcp:comp}]\NoEndMark
@@ -139,7 +139,7 @@
 
     The following definition is used for the extraction of \abrv{dcp} compositions from an indexed tree.
     It identifies a coherent set of positions in the input tree using a sequence of parallel (bottom) positions and a common ancestor.
-    Each position is complemented with a set of leaves to accomodate missing elements that are represented by second-order substitution sites.
+    Each position is complemented with a set of leaves to accommodate missing elements that are represented by second-order substitution sites.
 
     \begin{definition}\label{def:dcp:comp}
         Consider an indexed tree \(\xi \in \itrees_{\varGamma}\) over any alphabet \(\varGamma\) together with

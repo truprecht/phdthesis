@@ -14,7 +14,7 @@
 \begin{document}
     \section{Statistical Parsing with Predicted Supertags}\label{sec:parsing}
     This section describes the algorithms involved in combining the predicted supertag blueprints into derivations.
-    We destinguish two cases:
+    We distinguish two cases:
     \begin{inparaenum}[]
         \item In the case of \abrv{lcfrs} or hybrid grammar supertags, we rely on algorithms that are well established in statistical parsing with these two grammars formalisms to obtain derivations. \Cref{sec:parsing:lcfrs} elaborates on this subject and gives references to the literature.
         \item Since \abrv{dcp} have not been used in such a setting before, we dedicate \cref{sec:parsing:dcp} to an adaption of well-established algorithms from \abrv{lcfrs} to the case of \abrv{dcp} supertags.
@@ -32,7 +32,7 @@
     \Cref{alg:parsing:incremental} illustrates the incremental parsing algorithm as described by \citet[Section~5.1]{Clark04} and \citet[Section~2.2.2]{Auli12} with some adjustments for our setting.
     It works as follows:
     \begin{itemize}
-        \item The algorihm iterates over the growing confidence interval sizes \(\beta_1, \beta_2, \ldots\) (line 2) and computes the least confidence within the interval \(\delta^{(i)}\) for each position in the input sentence (line 3).
+        \item The algorithm iterates over the growing confidence interval sizes \(\beta_1, \beta_2, \ldots\) (line 2) and computes the least confidence within the interval \(\delta^{(i)}\) for each position in the input sentence (line 3).
         \item Then, it collects the supertag blueprints predicted within this confidence interval for each sentence position and instantiates them (line 4).
         \item The weight assignment \(\weight\) for the resulting set of rules is determined from the family \(\varphi\) of prediction confidences (line 5).
         \item If there is any admissible derivation in the set of supertags \(S\), then it returns an ordered sequence of (at most \(n\)) admissible derivations and ends (lines 6--8). Thus, only the supertags within the least possible prediction confidence interval are used to determine the derivations.
@@ -81,7 +81,7 @@
 
     \begin{algorithm}
         \caption{\label{alg:parsing:chart}
-            This listing illustrates an algorithms to compute a parse chart, i.e.\@ a compact representation of admissible derivations and their weights, for \abrv{dcp} supertags.
+            This listing illustrates an algorithm to compute a parse chart, i.e.\@ a compact representation of admissible derivations and their weights, for \abrv{dcp} supertags.
             This coarsely resembles the algorithm for parsing \abrv{lcfrs} as shown by \citet[the ``na\"ive algorithm'' in Section~3]{Burden05}.
         }
         \subfile{algorithms/parsing.tex}
@@ -99,9 +99,9 @@
         \item the input sentence length \(\ell \in \DN_+\).
     \end{inparaitem}
     Additionally, we utilize a distinct symbol \(X_i \notin N\) for each position \(i \in [\ell]\) that does not occur as a nonterminal; these symbols will be used as markers representing the lexical symbol within each supertag.
-    In the ramainder, we describe the algorithm first by explaining the structures and meaning of the occurring objects, then we discuss the procedure shown in the listing, and lastly, we discuss the properties of the output.
+    In the remainder, we describe the algorithm first by explaining the structures and meaning of the occurring objects, then we discuss the procedure shown in the listing, and lastly, we discuss the properties of the output.
 
-    \paragraph{Parse items, backtraces and parse states.} During the procedures, we construct tuples of the form \((a, b, w)\) (in lines 7--9, 18--19 and 26--29); each of this tuple represents an investigation in a derivtation rooted in a \abrv{dcp} supertag \(s \in S\) as follows:
+    \paragraph{Parse items, backtraces and parse states.} During the procedures, we construct tuples of the form \((a, b, w)\) (in lines 7--9, 18--19 and 26--29); each of this tuple represents an investigation in a derivation rooted in a \abrv{dcp} supertag \(s \in S\) as follows:
     \begin{itemize}
         \item The first component \(a\) is a tuple of the form \((A, f, B_1 \ldots B_j, L)\) where
             \begin{compactitem}
@@ -166,7 +166,7 @@
             The first and third case correspond to the ``combine'' inference rule in \abrv{bl}.
     \end{itemize}
     In contrast to \abrv{bl}, we investigate the parse states in reverse order of the \abrv{rhs} nonterminals.
-    This is due to the properties of admissible \abrv{dcp} supertag derivations; that is, for each derivation of the form \(d\,(d_1, \ldots, d_k)\), the successor derivations \(d_1, \ldots, d_k\) must be orderd according to their least lexical symbols.
+    This is due to the properties of admissible \abrv{dcp} supertag derivations; that is, for each derivation of the form \(d\,(d_1, \ldots, d_k)\), the successor derivations \(d_1, \ldots, d_k\) must be ordered according to their least lexical symbols.
     For each step during the investigation and in reverse order, this boils down to the check in line 25 (\(\min L' < \min L\)).
     If we investigated in order from left to right in the sequence of \abrv{rhs} nonterminals, then we needed to additionally store the least lexical symbol from the previous investigation step.
 
@@ -207,7 +207,7 @@
     Aside the two structures \(C\) and \(W\) from the previous step, the algorithm expects the following inputs:
     \begin{inparaitem}[]
         \item the length \(\ell \in \DN_+\) of the input sentence,
-        \item the set of supertags \(S\)  with the set of nonterminals \(N\) and the et of initial nonterminals \(N_0\),
+        \item the set of supertags \(S\)  with the set of nonterminals \(N\) and the set of initial nonterminals \(N_0\),
         \item the weight assignment \(\weight\colon S \to \DR\) for each supertag, and
         \item the number of best derivations \(n \in \DN_+\) to enumerate.
     \end{inparaitem}
@@ -249,7 +249,7 @@
     \paragraph{Procedure and function discussion.}
     There are three functions and two procedures in the listings:
     \begin{itemize}
-        \item The function \textsc{weight} computes the weight of a derivation identified by an indixed backtrace.
+        \item The function \textsc{weight} computes the weight of a derivation identified by an indexed backtrace.
             It uses pre-computed values for the successors stored in \(W'\); these values are determined during the initialization (line 3) or during the execution of \textsc{LazyKthBest} (line 24).
         \item The procedure \textsc{LazyNext} determines a set of follow-up indexed backtraces; each of these follow-ups is constructed from a given indexed backtrace by incrementing exactly one index \(i \in [k]\) among the \(k\) successors (line 9).
             Each follow-up indexed backtrace is inserted into the priority queue \(Q\) (line 11) if there is the necessary \((m_i+1)\)th derivation for the \(i\)th successor.
@@ -260,7 +260,7 @@
             It initializes a queue \(H_{(A, L)}\) of indexed backtraces (with all indices set to 1) for each backtrace in the parse chart \(C\) (lines 14--15) if it has not been initialized before.
             The loop starting at line 16 determines one derivation in each iteration and stores the corresponding indexed backtrace until the \(m\)th is found.
             During the loop, the priority queue \(H_{(A, L)}\) is repopulated in lines 17--18:
-                If there is at least one indexed backtrace for \(A\) and \(L\) in \(D\), then it adds the each indexed backtraces where exactly one index is incremented using the procedure \textsc{LazyNext}.
+                If there is at least one indexed backtrace for \(A\) and \(L\) in \(D\), then it adds each indexed backtrace where exactly one index is incremented using the procedure \textsc{LazyNext}.
             If the heap stays empty after this step of re-population, then there are no further candidates, and we abort in lines 19--20.
             Otherwise, there we determine the next best derivation identified by the best weighted indexed backtrace in the priority queue \(H_{(A, L)}\) (line 21).
             It is stored accordingly in \(D\), and its weight in \(W'\) (lines 23--24).
@@ -268,7 +268,7 @@
         \item \textsc{readDerivation} in \cref{alg:parsing:deriv2} reconstructs a derivation for an indexed parse item \((A, L, m)\) from the indexed backtraces stored in \(D\).
             It acquires the indexed backtrace at \(D_{(A, L, m)}\) and keeps its supertag as the root of the derivation (lines 27 and 30).
             The successor derivations are reconstructed in recursive calls of the function for each child of the indexed parse item (lines 28--29).
-        \item The last procedure, \textsc{derivations} in \cref{alg:parsing:deriv2}, enumerates a sequence \(\vec{d}\) the best derivation trees.
+        \item The last procedure, \textsc{derivations} in \cref{alg:parsing:deriv2}, enumerates an \(n\)-best sequence \(\vec{d}\) of derivation trees.
             It exploits the strategy used in the function \textsc{LazyKthBest} to aggregate the derivations for the initial nonterminals.
             The set \(\hat{H}\) stores references to each complete derivation starting with an initial nonterminal.
             Each element \((A, m) \in \hat{H}\) is equal to an indexed item of the form \((A, [\ell], m)\).

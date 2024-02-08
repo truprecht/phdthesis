@@ -2,7 +2,7 @@
 
 \begin{document}
     \section{Neural Network Architectures and Training}\label{sec:models}
-    We implement the prediction of supertags using two nerural network architectures, 
+    We implement the prediction of supertags using two neural network architectures, 
     \begin{enumerate}
         \item
             The first architecture is pretty common in the \abrv{nlp} community for token-wise classification tasks and was used, for instance, by \citet{vaswani2016supertagging}, \citet{StaSte20} and \citet{Cor20}.
@@ -48,11 +48,11 @@
 
     For the prediction, we view each model as two parallel tagging models, \(\psi_B\) for supertag blueprints and \(\psi_\varPi\) for \abrv{pos} symbols, as follows:
     \begin{itemize}
-        \item The parallel tagging model \(\psi_B\colon (\bigcup_{i\in\DN_+} \varSigma^i \times B^i) \to \DR\) for the supertag blueprints is denfined such that \(\psi_B^{(i)}(w, b) = \log(p_b^{(i)})\) is the score for each input position \(i\) and supertag blueprint \(b\) in the same form as above.
-        \item Analogously, the parallel tagging model \(\psi_\varPi\colon (\bigcup_{i\in\DN_+} \varSigma^i \times \varPi^i) \to \DR\) for the \abrv{pos} tags is denfined such that \(\psi_\varPi^{(i)}(w, \pi) = \log(q_\pi^{(i)})\) gives a score for each input position \(i\) and \abrv{pos} tag \(\pi\) in the same form as above.
+        \item The parallel tagging model \(\psi_B\colon (\bigcup_{i\in\DN_+} \varSigma^i \times B^i) \to \DR\) for the supertag blueprints is defined such that \(\psi_B^{(i)}(w, b) = \log(p_b^{(i)})\) is the score for each input position \(i\) and supertag blueprint \(b\) in the same form as above.
+        \item Analogously, the parallel tagging model \(\psi_\varPi\colon (\bigcup_{i\in\DN_+} \varSigma^i \times \varPi^i) \to \DR\) for the \abrv{pos} tags is defined such that \(\psi_\varPi^{(i)}(w, \pi) = \log(q_\pi^{(i)})\) gives a score for each input position \(i\) and \abrv{pos} tag \(\pi\) in the same form as above.
     \end{itemize}
 
-    \subsection*{Model and Training Hyperparamters}
+    \subsection*{Model and Training Hyperparameters}
     As already mentioned in \cref{sec:preliminaries:nn:training}, there is a multitude of extensions and hyperparameters used in the training with artificial neural networks.
     Moreover, the architecture of the supervised model imposes its own set of hyperparameters with the size of the vectors computed by the embeddings, \abrv{lstm} layers and in intermediate layers of the concluding \abrv{mlp}.
     For all experiments in this thesis, we will consider fixed values for the hyperparameters in both models.
@@ -65,7 +65,7 @@
         \item the size of the \abrv{lstm} module vectors is 1024 (512 in each direction), and
         \item the size of the vectors in intermediate layers of the \abrv{mlp} is 2048.
     \end{itemize}
-    We use the advised values for the hyperparamters of the pre-trained model \citep[cf.\@][]{Devlin2019}:
+    We use the advised values for the hyperparameters of the pre-trained model \citep[cf.\@][]{Devlin2019}:
     \begin{itemize}
         \item the dropout probability between the modules is \(0.1\), and
         \item the weight decay factor is \(0.01\).

@@ -41,7 +41,7 @@
     \exampleqed
 
     \paragraph{Classic Nonterminal Constructor.}
-    This constructor intends to produce nonterminals akin to usual strategies in \abrv{lcrrs} extraction \citep{MaierSogaard08}.
+    This constructor intends to produce nonterminals akin to usual strategies in \abrv{lcfrs} extraction \citep{MaierSogaard08}.
     It combines the superscript and subscript of the vanilla nonterminals and annotates constituent symbols with their sum.
     Moreover, each occurrence of a constituent symbol that is the product of a merge during a rank transformation (cf.\@ merging a chain of unary nodes in \cref{sec:binarization}) is replaced by the topmost constituent symbol of such chain.
     We define a modified set of constituent symbols \(\varGamma' = \{ f(\gamma) \mid \gamma \in \varGamma \}\) where \(f(\gamma)\) is the symbol obtained by replacing each occurrence of the form \(\nt{A$_1$+A$_2$+...+A$_k$}\) in \(\gamma\) by \(\nt{A$_1$}\).
@@ -49,7 +49,7 @@
     The \deflab{classic nonterminal constructor} is the function \(\psi\) with \(\psi(\xi, \rho, L) = f(\xi(\rho))_{\fanout(L)}\) for each indexed tree \(\xi\), position \(\rho \in \pos(\xi)\) and set of leaves \(L \subseteq \yield(\xi|_\rho)\).
 
     \begin{example}[Classic Nonterminals]
-        For the classic nonterminal constructed for the root in the example indexed tree above, we determine the set \(L = \yield(\xi) = \{1,\ldots,6\}\).
+        Using the classic nonterminal constructor for the root in the example indexed tree above, we determine the set of leaves \(L = \yield(\xi) = \{1,\ldots,6\}\).
         The nonterminal consists of the symbol \(\cn{sbar}\) and the fanout \(\fanout(L) = 1\) and is illustrated as \(\cn{sbar}_1\).
     \end{example}
 

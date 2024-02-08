@@ -7,7 +7,7 @@
     As proposed by \citet{Ned14}, we will focus on \abrv{lcfrs}/\abrv{dcp}\footnote{
         As \citet{Ned14} and all following publications, we use a syntactically restricted form of \abrv{dcp} that prevents circular argument passing. They call it \abrv{sdcp}.
         The definition given in \cref{sec:grammar:dcp} is even more restricted and does not allow producing multiple noncontiguous tree sequences.
-    } hybrid grammars for constituent parsing, and simply refer to them as hybrid grammars (or even shorter: \defabrv*{hybrid grammar}{hg}).
+    } hybrid grammars for constituent parsing, and simply refer to them as hybrid grammars (or even shorter: \defabrv*{hybrid grammar}{\abrv{hg}}).
     Intuitively, the \abrv{lcfrs} compositions are in charge of processing input strings during parsing and defining the sets of derivations for given sentences.
     The \abrv{dcp} compositions induce constituent structures for the found derivations.
 
@@ -138,7 +138,7 @@
     In a position instantiated \abrv{hg}, each pair of lexical symbols is replaced by the same position.
     Each derivation \(d\) is called \emph{admissible} if its projection \(\pi_{\abrv{lcfrs}}(d)\) is an admissible \abrv{lcfrs} derivation.
     In the case of an admissible position instantiated derivation, the concept of alignments between lexical symbols is superfluous, as each position must occur at most once (synchronously in a tuple of compositions).
-    The constituent structure for \(d\) coincides with the yield of the projection \(\pi_{\abrv{dcp}}(d)\).
+    The \deflab{constituent structure for an \abrv{hg} derivation}[constituent structure for \(d\)] coincides with the yield of the projection \(\pi_{\abrv{dcp}}(d)\).
 
     \vspace{\baselineskip}
 

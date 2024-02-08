@@ -134,7 +134,7 @@ sup. &   5  & 90.71 & 2.6 & 9 & 90.55 & 5.4 & 13 & 90.56 & 7.0 & 14 \\
     This set of experiments shows only small differences in parsing quality.
     We suppose they are negligible and decide on the single most promising combination for each model via the highest f1-score and least amount of parse fails and end up with
     \begin{compactitem}
-        \item the head guide and coarse nonterminal constructors, no added vertival Markovization context ($v=1$) and hybrid grammar supertags for the pre-trained model, and
+        \item the head guide and coarse nonterminal constructors, no added vertical Markovization context ($v=1$) and hybrid grammar supertags for the pre-trained model, and
         \item the strict guide and coarse nonterminal constructors, vertical Markovization context \(v=2\) and hybrid grammar supertags for the supervised model.
     \end{compactitem}
     Finally, we train models using these hyperparameters and conduct a small grid search for the two parsing parameters \(k\) and \(\beta\). The results are shown in \cref{tbl:experiments:dptb:k}.
@@ -190,8 +190,8 @@ sup. &   5  & 90.71 & 2.6 & 9 & 90.55 & 5.4 & 13 & 90.56 & 7.0 & 14 \\
     The supervised model also reproduces this trend, except for one instance (cf.\@ f1-score using the dependent guide and classic nonterminal constructor, $v=1$, but with significantly more parse fails).
     We pick the following combination for each model:
     \begin{compactitem}
-        \item strict guide and coarse nonterminal constructors, no added vertival Markovization context ($v=1$) and hybrid grammar supertags for the pre-trained model, and
-        \item strict guide and classic nonterminal constructors, no added vertival Markovization context ($v=1$) and hybrid grammar supertags for the supervised model.
+        \item strict guide and coarse nonterminal constructors, no added vertical Markovization context ($v=1$) and hybrid grammar supertags for the pre-trained model, and
+        \item strict guide and classic nonterminal constructors, no added vertical Markovization context ($v=1$) and hybrid grammar supertags for the supervised model.
     \end{compactitem}
 
     \begin{table}
