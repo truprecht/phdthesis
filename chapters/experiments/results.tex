@@ -4,7 +4,7 @@
     \section{Results and Comparison to Other Parsers}\label{sec:results}
     This section presents the assessment results with the test portion of the three investigated treebanks.
     We extract supertag blueprints and parse each treebank using the hyperparameters found in the previous two sections; \cref{tbl:hyperparameters} gives an overview of the final configurations.
-    We repeat the training process for each model and treebank multiple times because the training process of the supertag classifiers depends on pseudo-random initialization, and the outcomes vary slightly.
+    We repeat the training process multiple times for each model and treebank because the training process for the supertag prediction models depends on pseudo-random initialization, and the outcomes vary slightly.
     For this set of final results, we use a longer training process for each classifier; each model is trained until the AnnealOnPlateau scheduler reduces the learning rate a third time, but at most 32 epochs.
     \Cref{tbl:averages} shows the result of five runs for the supervised and pre-trained models that utilize language-specific \emph{bert-base} embeddings.
     We also report three runs for pre-trained models with large transformer embeddings.
@@ -87,7 +87,7 @@
     \end{table}
 
     \crefrange{tbl:supervised}{tbl:pretrained:large} show the results for the three models respectively and put them into the context of other publications in the field of discontinuous constituent parsing.
-    Each table only contains results of publications with comparable training paradigms and information, i.e.\@, the first table does only include published supervised models, and the two latter tables include semi-supervised models that utilize \emph{bert-base}/\emph{bert-large}-equivalent pre-trained embeddings.
+    Each table only contains results of publications with comparable training paradigms and information; that is, the first table does only include published supervised models, and the two latter tables include semi-supervised models that utilize \emph{bert-base}/\emph{bert-large}-equivalent pre-trained embeddings.
     The tables distinguish between five types of parsing approaches as discussed in \cref{sec:literature}:
     \begin{compactitem}
         \item grammar-based parsers (G),
@@ -98,8 +98,8 @@
     \end{compactitem}
     The comparisons in the table should all be taken with at least two grains of salt:
     \begin{inparaenum}
-        \item The parsing speed strongly depends on the hardware used for approaches using artificial neural networks. This mainly includes GPUs. We used a (semi-dated) consumer graphics card for our results, and other authors used professional graphic units specifically designed for applications with neural networks. (E.g.\@ \citet{Cor20} used Tesla K100 GPUs that are significantly faster and have more memory than the RTX 2080.)
-        \item As remarked earlier for our parser, many results listed in the following tables depend on pseudo-random initializations and are thus variable to a certain degree. Unfortunately, most of the referenced publications do not report results using multiple experiment runs, but only one, and in at least one case, the reported results are in doubt. In an attempt to reproduce the results reported by \citet{Cor20} with their provided implementation, Richard Mörbitz obtained notably lower scores. Unfortunately, the author could not explain the gap between the two results when Richard Mörbitz reached out. We decided to compare all results to the averages we obtained as shown in \cref{tbl:averages}.
+        \item The parsing speed strongly depends on the used hardware, especially for approaches using artificial neural networks. This mainly includes GPUs. We used a (semi-dated) consumer graphics card for our results, and other authors used professional graphic units specifically designed for applications with neural networks. For example, \citet{Cor20} used Tesla K100 GPUs that are significantly faster and have more memory than the RTX 2080.
+        \item As remarked earlier for our parser, many results listed in the following tables depend on pseudo-random initializations and are thus variable to a certain degree. Unfortunately, most of the referenced publications do not report results using multiple experiment runs, but only one. At least in one case, the reported results can be doubted: In an attempt to reproduce the results reported by \citet{Cor20} with their provided implementation, Richard Mörbitz obtained notably lower scores. Unfortunately, \citeauthor{Cor20} could not explain the gap between the two results when Richard Mörbitz reached out. We decided to compare all results to the averages we obtained as shown in \cref{tbl:averages}.
     \end{inparaenum}
 
     \begin{table*}
@@ -144,7 +144,7 @@
 
     Among the supervised models in \cref{tbl:supervised}, the results reported by \citet{Cor20} stand out with a rather large margin to all other publications.
     Comparing our supervised results to other discontinuous parsers that rely on grammars (G/GS), we suggest that supertagging can implement more accurate and faster parsers than traditional statistical grammars.
-    Comparing our results to all values in the table, we are close to or among the state-of-the-art published in the field of discontinuous parsing.
+    Comparing our results to all values in the table, we are among the state-of-the-art published in the field of discontinuous parsing.
     The results obtained during this work shall be interpreted as an update to the ones in \citet{Rup22}.
     However, we reach lower scores with the supervised model but are notably faster.
 
@@ -220,7 +220,7 @@
     \end{table*}
 
     \Cref{tbl:pretrained:small,tbl:pretrained:large} show the results of the pre-trained models with transformer embeddings.
-    Comparing the scores with the previous two tables gives an impression of why these models have been established as a standard tool for many areas of natural language processing in recent years: they produce significantly more accurate results without any effort during modeling and training for the downstream task.
+    Comparing the scores with the previous two tables gives an impression of why these models have been established as a standard tool for many areas of natural language processing in recent years: They produce significantly more accurate results without any effort during modeling and training for the downstream task.
     In these two tables, it is even more apparent that the scores among the state-of-the-art parsers are incredibly close, with ours right among them.
 
     \ifSubfilesClassLoaded{%

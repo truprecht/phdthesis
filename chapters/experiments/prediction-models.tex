@@ -5,21 +5,21 @@
     We implement the prediction of supertags using two nerural network architectures, 
     \begin{enumerate}
         \item
-            The first one is pretty common in the \abrv{nlp} community for token-wise classification tasks and was used, for instance, by \citet{vaswani2016supertagging}, \citet{StaSte20} and \citet{Cor20}.
-            It contains two modules for embedding, a static word embedding and character-wise embeddings, which are followed by two layers of bidirectional recurrent modules utilizing \abrv{lstm}, and finally a three-layered \abrv{mlp} with ReLU activations.
-            Two instances of dropout are set-up between the embeddings and the \abrv{lstm} layers, and between the \abrv{lstm} layers and the \abrv{mlp}.
+            The first architecture is pretty common in the \abrv{nlp} community for token-wise classification tasks and was used, for instance, by \citet{vaswani2016supertagging}, \citet{StaSte20} and \citet{Cor20}.
+            It contains two modules for embedding, static word embeddings and character-wise embeddings, which are followed by two layers of bidirectional recurrent modules utilizing \abrv{lstm}s, and finally a three-layered \abrv{mlp} with ReLU activations.
+            Two instances of dropout are set up, the first between the embeddings and the \abrv{lstm} layers, and the second between the \abrv{lstm} layers and the \abrv{mlp}.
             \Cref{fig:architecture:supervised} shows the architecture in an illustration.
             It does not rely on pre-trained modules and implements supervised learning to predict supertags and \abrv{pos} tags; we will refer to this architecture as \emph{supervised model} in the following.
         \item
             The second architecture consists of a pre-trained \abrv{llm} that is topped by one linear layer for the predicted tags; this design is recommended for classification predictions using \abrv{llm} embeddings, for instance by \citet{Devlin2019}.
-            If we consider the \abrv{llm} as a black box, it is conceptually extremely simple yet effective, but its strength relies upon the complex design and pre-training of the \abrv{llm}.
-            Using such a pre-trained model is considered semi-supervised learning for predicting supertags.
+            If we consider the \abrv{llm} as a black box, it is conceptually extremely simple yet effective, but its strength relies upon the complex design and pre-training of the \abrv{llm}s.
+            Using such a pre-trained model is considered semi-supervised learning.
             In our experiments, we use four language-specific pre-trained \abrv{llm}s:
             \begin{itemize}
                 \item \emph{bert-base-cased} for English and \emph{bert-base-german-cased} \citep{Devlin2019} for German treebanks, and
                 \item \emph{roberta-large} \citep{roberta} for English and \emph{gbert-large} \citep{Cha20} for German treebanks.
             \end{itemize}
-            The latter two are significantly larger than the first two modules; we will only use the first two modules during grid search.
+            The latter two are significantly larger than the first two modules; we will only use the first two modules during the search for extraction parameters.
             We will refer to this architecture as \emph{pre-trained model} in the following.
     \end{enumerate}
     In both cases, the vectors computed by the final layers are interpreted as probability distributions over the supertag blueprints and \abrv{pos} tags, respectively, using the softmax function.
@@ -27,8 +27,8 @@
     For each input sequence \(w \in \varSigma^n\) of length \(n \in \DN_+\), the function yields a sequence of real-valued vectors \(\varphi_\theta(w) = (\varphi^{(i)}_\theta(w) \in \DR^{|B|+|\varPi|} \mid i \in [n])\).
     We view the first \(|B|\) indices of each output vector as a score for each supertag blueprint and the latter \(|\varPi|\) elements as a score for each \abrv{pos} tag.
     Consider some bijections \(b\colon [|B|] \to B\) and \(\pi\colon [|B|+1, |B|+|\varPi|] \to \varPi\) between the indices and the set of supertag blueprints and \abrv{pos} tags, respectively.
-    The probability for each supertag blueprint \(b(j) \in B\) at position \(i \in [n]\) is \(p_j^{(i)} \in \DR\) such that \((p_{b(j)}^{(i)} \mid j \in [|B|]) = \mathrm{softmax}((\varphi^{(i)}_\theta(w))_{:|B|})\) for each position \(i\in [n]\).
-    Analogously, the probability for each \abrv{pos} tag \(\pi(j) \in \varPi\) at position \(i \in [n]\) is \(q_{\pi(j)}^{(i)} \in \DR\) such that \((q_{\pi(j)}^{(i)} \mid j \in [|B|+1, |B|+|\varPi|]) = \mathrm{softmax}((\varphi^{(i)}_\theta(w))_{|B|+1:|B|+|\varPi|})\) for each position \(i\in [n]\).
+    The probability for each supertag blueprint \(b' \in B\) at position \(i \in [n]\) is \(p_{b'}^{(i)} \in \DR\) such that \((p_{b(j)}^{(i)} \mid j \in [|B|]) = \mathrm{softmax}((\varphi^{(i)}_\theta(w))_{:|B|})\) for each position \(i\in [n]\).
+    Analogously, the probability for each \abrv{pos} tag \(\pi' \in \varPi\) at position \(i \in [n]\) is \(q_{\pi'}^{(i)} \in \DR\) such that \((q_{\pi(j)}^{(i)} \mid j \in [|B|+1, |B|+|\varPi|]) = \mathrm{softmax}((\varphi^{(i)}_\theta(w))_{|B|+1:|B|+|\varPi|})\) for each position \(i\in [n]\).
     Finally, the loss function \(l\colon \varTheta \times T \to \DR\) is defined as \[
         l(\theta, T) = \sum_{(w, \vec{b}, \vec{\pi}) \in T} \; \sum_{i \in [|w|]} - \log(p_{\vec{b}_i}^{(i)}) - \log(q_{\vec{\pi}_i}^{(i)})
     \]
@@ -42,21 +42,21 @@
             Illustration of the supervised \abrv{ann} architecture for the supertag prediction.
             Each box with circles in different shades of gray represents a vector; boxes directly put on top of each other are concatenated vectors; arrows indicate the dependencies for the computed vectors.
             The input sentence (bottom) is embedded using static word embeddings and character-based embeddings; the latter are illustrated to the right and consist of static character embeddings fed into a bidirectional \abrv{lstm}.
-            The embeddings are topped by bidirectional \abrv{lstm} layers (in this illustration 2) and a linear layer such that the input size is the number of supertag blueprints.
+            The embeddings are topped by two bidirectional \abrv{lstm} layers and a multi-layer perceptron such that the output size is the number of supertag blueprints.
         }
     \end{figure}
 
     For the prediction, we view each model as two parallel tagging models, \(\psi_B\) for supertag blueprints and \(\psi_\varPi\) for \abrv{pos} symbols, as follows:
     \begin{itemize}
-        \item The parallel tagging model \(\psi_B\colon (\bigcup_{i\in\DN_+} \varSigma^i \times B^i) \to \DR\) is denfined such that \(\psi_B^{(i)}(w, b) = \log(p_b^{(i)})\) is the score for each input position \(i\) and supertag blueprint \(b\) in the same form as above.
-        \item Analogously, the parallel tagging model \(\psi_\varPi\colon (\bigcup_{i\in\DN_+} \varSigma^i \times \varPi^i) \to \DR\) is denfined such that \(\psi_\varPi^{(i)}(w, \pi) = \log(q_\pi^{(i)})\) gives a score for each input position \(i\) and \abrv{pos} tag \(\pi\) in the same form as above.
+        \item The parallel tagging model \(\psi_B\colon (\bigcup_{i\in\DN_+} \varSigma^i \times B^i) \to \DR\) for the supertag blueprints is denfined such that \(\psi_B^{(i)}(w, b) = \log(p_b^{(i)})\) is the score for each input position \(i\) and supertag blueprint \(b\) in the same form as above.
+        \item Analogously, the parallel tagging model \(\psi_\varPi\colon (\bigcup_{i\in\DN_+} \varSigma^i \times \varPi^i) \to \DR\) for the \abrv{pos} tags is denfined such that \(\psi_\varPi^{(i)}(w, \pi) = \log(q_\pi^{(i)})\) gives a score for each input position \(i\) and \abrv{pos} tag \(\pi\) in the same form as above.
     \end{itemize}
 
     \subsection*{Model and Training Hyperparamters}
     As already mentioned in \cref{sec:preliminaries:nn:training}, there is a multitude of extensions and hyperparameters used in the training with artificial neural networks.
     Moreover, the architecture of the supervised model imposes its own set of hyperparameters with the size of the vectors computed by the embeddings, \abrv{lstm} layers and in intermediate layers of the concluding \abrv{mlp}.
     For all experiments in this thesis, we will consider fixed values for the hyperparameters in both models.
-    In case of the supervised model, we decided upon the hyperparameters for the architecture following the experiments by \citet{Cor20} and \citet{StaSte20} as follows:
+    In case of the supervised model, we decided upon the hyperparameters for the architecture following the experiments by \citet{Cor20} and \citet{StaSte20} as well as our previously conducted experiments \citep{RupMoe21,Rup22} as follows:
     \begin{itemize}
         \item the size of the word and character-level embeddings are 256 and 128 (64 in each direction), respectively,
         \item the minimal required number of token occurrences to constitute an own word embedding (otherwise it is replaced by a collective unknown word embedding) is 3,
@@ -65,7 +65,7 @@
         \item the size of the \abrv{lstm} module vectors is 1024 (512 in each direction), and
         \item the size of the vectors in intermediate layers of the \abrv{mlp} is 2048.
     \end{itemize}
-    We assume the advised hyperparamters for the pre-trained model \citep[cf.\@][]{Devlin2019}:
+    We use the advised values for the hyperparamters of the pre-trained model \citep[cf.\@][]{Devlin2019}:
     \begin{itemize}
         \item the dropout probability between the modules is \(0.1\), and
         \item the weight decay factor is \(0.01\).

@@ -73,8 +73,8 @@
         }
 
         \node[inner sep=0, outer sep=0, fit=(cef-1) (ceb-1)] (ce-1) {};
-        \node[left=2em of ce-1, align=right,font=\footnotesize, outer sep=0pt] (cbelabel) {character-based\\[-.5ex]word embedding};
-        \node[left=2em of we-1, align=right,font=\footnotesize] {static word\\[-.5ex]embedding};
+        \node[left=2em of ce-1, align=right,font=\footnotesize, outer sep=0pt] (cbelabel) {character-based\\[-.5ex]word embeddings};
+        \node[left=2em of we-1, align=right,font=\footnotesize] {static word\\[-.5ex]embeddings};
         \node[inner sep=0, outer sep=0, fit=(llf-1-1) (llb-1-1)] (ll-1-1) {};
         \node[left=2em of ll-1-1,font=\footnotesize] {bi-\abrv{lstm} layer};
         \node[inner sep=0, outer sep=0, fit=(llf-2-1) (llb-2-1)] (ll-2-1) {};
@@ -107,7 +107,7 @@
             (cllf-2) edge[->] (cllf-3)
             (cllb-3) edge[->] (cllb-2)
             (cllb-2) edge[->] (cllb-1);
-        \node[right=1.5em of cwe-3, font=\footnotesize, align=left] (cwelabel) {static character\\[-.5ex]embedding};
+        \node[right=1.5em of cwe-3, font=\footnotesize, align=left] (cwelabel) {static character\\[-.5ex]embeddings};
         \node[inner sep=0, outer sep=0, fit=(cllf-3) (cllb-3)] (cll-3) {};
         \coordinate[above right=2ex of cllf-3] (wendekreis);
         \node[right=1.5em of cll-3, font=\footnotesize] (cllabel) {bi-\abrv{lstm} layer};
