@@ -25,7 +25,7 @@
 \begin{document}
     \maketitle
 
-    This thesis is devoted to the analyzation of syntax in natural language sentences.
+    This thesis is devoted to the analysis of syntax in natural language sentences.
     Specifically, we focus on \emph{constituent trees} \citep[Section~3]{Cho56} that illustrate a hierarchy of (sub-)phrases in a sentence.
     In certain languages, there are phenomena where such a hierarchy contains non-contiguous subphrases within a sentence; in such a case, we call the constituent tree \emph{discontinuous}.
     \Cref{fig:constituent} shows two examples of constituent trees, and the right one is discontinuous.
@@ -38,23 +38,23 @@
         \caption{\label{fig:constituent}
             Discontinuous constituent tree for the phrase ``where the survey was carried out'' }
     \end{wrapfigure}
-    \emph{Supertagging} \citep{bangalore1999supertagging} is an approach at parsing that utilizes formal grammars as well as discriminative classifiers such as neural networks.
-    With this approach, we aim to find an agreement between the speed and accuracy of parsing with deep neural networks and the simplicity and interpretability of the traditional formal grammars.
+    \emph{Supertagging} \citep{bangalore1999supertagging} is an approach to parsing that utilizes formal grammars as well as discriminative classifiers such as neural networks.
+    With this approach, we aim to find an agreement between the speed and accuracy of parsing with deep neural networks and the simplicity and interpretability of the traditional formal grammar framework.
     The process assumes an underlying lexicalized grammar and uses the discriminative classifier to predict a tiny grammar instance for each input sentence.
     After that, this grammar instance is used to find a derivation which is transformed into a constituent tree.
 
     In this thesis, we describe extraction procedures for lexicalized grammars in three formalisms \emph{linear context-free rewriting systems} \citep{VijWeiJos87}, \emph{definite clause programs} \citep{Der85} and \emph{hybrid grammars} \citep{Ned14}.
     We identify multiple parameters that steer the structure of the resulting grammar rules, most notably \emph{guide constructors} that determine which tokens (words, punctuation marks, etc.) are associated with which nodes in the constituent tree, and \emph{nonterminal constructors} that influence the granularity of the grammar rules.
     While the extraction procedures themselves are extended and more formalized versions of earlier publications \citep{RupMoe21,Rup22}, we add new options for the extraction parameters in this thesis.
-    Moreover, we describe a unified framework for supertagging and parsing with the extracted grammars.
-    Since definite clause programs by themselves have not been used for parsing before, that does also include a new adaption of a parsing algorithm for this formalism.
+    Moreover, we describe a unified framework for supertagging and parsing with the extracted grammar instances.
+    Since definite clause programs by themselves have not been used for parsing before, that also includes a new adaption of a parsing algorithm for this formalism.
     We provide an implementation of the extraction as well as the parsing procedures, it is publicly available as free software.\footnote{\url{https://github.com/truprecht/disutapa}}
     We used this implementation in an extensive set of experiments to find appropriate parameters for the extraction and to evaluate the parsing accuracy and speed.
 
-    Our experiments show that we can achieve state-of-the-art accuracy in three commonly used treebanks for discontinuous constituency parsing in the English and German language.
+    Our experiments show that we can achieve state-of-the-art accuracy in three commonly used treebanks for discontinuous constituency parsing in the English and German languages.
     Specifically, we improve upon the accuracy of other grammar-based parsers while being magnitudes faster with exclusively supervised learning.
-    In contrast to the traditional approaches, we can exploit pretrained \emph{large language models} to implement semi-supervised learning and achieve vastly more accurate results.
-    Compared to all other recent discontinuous constituent parsers that feature deep neural networks, we obtain similar results.
+    In contrast to the traditional approaches, we can exploit pre-trained \emph{large language models} to implement semi-supervised learning and achieve vastly more accurate results.
+    Compared to other recent discontinuous constituent parsers that feature deep neural networks, we obtain very similar results in terms of accuracy and speed.
     With these results, we suggest that grammar formalisms can still offer a solid base for the implementation of accurate parsers, even though parts of the parsing community have written them off as being too inaccurate and slow in recent years.
     
     \bibliography{references}
