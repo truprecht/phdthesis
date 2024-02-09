@@ -6,12 +6,13 @@
 \usepackage[german, english, iso]{isodate}
 \input{mathops}
 \usepackage[pdfborderstyle={/S/U/W 1}]{hyperref}
-\usepackage{natbib, paralist, makeidx, xifthen, wrapfig, subcaption, needspace, booktabs, xfp, algorithm, algorithmicx, multirow, doi}
+\usepackage{natbib, paralist, makeidx, xifthen, wrapfig, subcaption, needspace, booktabs, xfp, algorithm, algorithmicx, multirow, doi, etoolbox}
 \usepackage[table]{xcolor}
 \usepackage[capitalize,noabbrev,nameinlink]{cleveref}
 \usepackage[noend]{algpseudocode}
 \bibliographystyle{abbrvnatsc}
 \BeforeBeginEnvironment{wrapfigure}{\setlength{\intextsep}{0pt}}
+\appto{\theindex}{\spaceskip=.33333em plus .33333em minus .11111em }
 \makeindex
 
 % fix multiple defined references by algorithmicx
