@@ -12,12 +12,12 @@
         Let \(Y\) be a set of labels and \(\mathcal{C}\) a set of confidence values.
         A reranker is a function \(\psi \colon Y \times \mathcal{C} \to \mathcal{C}\) that assigns a confidence value to each pair of a label and \emph{prior confidence value}.
     Often, only a tiny fraction \(\hat{Y} \subseteq Y\) of the set of labels, called \emph{search space}, is considered for the reranking process.
-    In the case of reranking in parsing, the search space is the collection of constituent trees within an \(n\)-best sequence, and the reranking process is used to find the highest scoring among those.
+    In the case of reranking in parsing, the search space is the collection of constituent trees within an \(n\)-best sequence and the reranking process is used to find the highest scoring among those.
     Consider a sequence of \(n\) labels \((t_1, \ldots, t_n) \in Y^n\) and an assignment of prior confidence values \(\phi \colon Y \to C\).
     We call a label \(t\) that maximizes the reranker \(\psi\)'s confidence value a \deflab{pick among a sequence}[\(\psi\)-pick among \(t_1 \ldots t_n\)], that is, \(
         t \in \argmax_{\hat{t} \in \hat{Y}} \psi(\hat{t}, \phi(\hat{t}))
     \) where \(\hat{Y} = \{t_i \mid i \in [n]\}\) is the search space.
-    \Cref{sec:references:reranking} gives a summary of the literature for reranking procedures applied in the field of parsing constiutent trees.
+    \Cref{sec:references:reranking} gives a summary of the literature for reranking procedures applied in the field of parsing constituent trees.
 
     In this work, we rerank constituent trees using the \deflab{discontinuous data-oriented parsing} \defabrv{discontinuous data-oriented parsing}{disco-dop} formalism.
     Disco-dop has been characterized as an instance of \abrv{lcfrs} with latent annotations \citep[Section~4]{Cra11} as well as hybrid grammars \citep[Section~8.5.1]{Geb20}.
@@ -42,16 +42,16 @@
     \end{figure}
 
     To compute the weight that such a disco-dop grammar assigns to a constituent tree, we follow the interpretation as weighted \abrv{lcfrs} with latent annotation.
-    Consider that we extract a disco-dop grammar from a treebank with the set of consituent symbols \(\varGamma\), \abrv{pos} symbols \(\varPi\) and the set of tokens \(\varSigma\).
+    Consider that we extract a disco-dop grammar from a treebank with the set of constituent symbols \(\varGamma\), \abrv{pos} symbols \(\varPi\) and the set of tokens \(\varSigma\).
     Then such an interpretation is an \abrv{lcfrs} of the form \(G = (\varGamma \times L, \varPi, R, N_0)\) and weight function \(\weight\colon R \to \DR\)  where
     \begin{itemize}
         \item  \(L\) is a non-empty and finite set of latent symbols (e.g., we use a non-empty integer index set \(L \subset \DN_+\), its size depends on the number of extracted tree fragments),
         \item \(R\) is the set of rules for the extracted tree fragments, and
         \item \(N_0 \subset \varGamma \times \{l_0\}\) is a set of constituent symbols appearing at the root supplied with a distinct latent symbol \(l_0\) (in our case \(l_0 = 1\)).
     \end{itemize}
-    The rules in \(R\) are of the same form as the usual treebank \abrv{lcfrs} (cf.\@ \cref{sec:extraction:lcfrs}, Step \ref{enum:lcfrs:step2}) except that \abrv{pos} symbols occur as lexical symbols in the rules, and the nonterminal symbols are extended using the latent symbols to accomodate the tree fragments that are split into multiple rules.
-    The latent symbol \(1 \in L\) occurs at each nonterminal for the root and leaves of such a tree fragment; we denote the noterminal \((A, \lambda)\) with \(A\in \varGamma\) and \(\lambda \in L\) in the form \(A^{(\lambda)}\).
-    \Cref{ex:dop} shows examples of such tree fragments in a disco-dop grammar and an interpretation as \abrv{lcfrs} rules with latent anotations.
+    The rules in \(R\) are of the same form as the usual treebank \abrv{lcfrs} (cf.\@ \cref{sec:extraction:lcfrs}, Step \ref{enum:lcfrs:step2}) except that \abrv{pos} symbols occur as lexical symbols in the rules, and the nonterminal symbols are extended using the latent symbols to accommodate the tree fragments that are split into multiple rules.
+    The latent symbol \(1 \in L\) occurs at each nonterminal for the root and leaves of such a tree fragment; we denote the nonterminal \((A, \lambda)\) with \(A\in \varGamma\) and \(\lambda \in L\) in the form \(A^{(\lambda)}\).
+    \Cref{ex:dop} shows examples of such tree fragments in a disco-dop grammar and an interpretation as \abrv{lcfrs} rules with latent annotations.
     The process to determine the weight of a constituent tree \(\xi \in \Xi_{\varGamma, \varPi, \varSigma}\) assigned by the disco-dop grammar \(G\) is as follows:
     \begin{enumerate}
         \item First, the constituent structure of \(\xi\) is transformed into a \abrv{lcfrs} derivation \(d\) (as in Step \ref{enum:lcfrs:step2} of the extraction in \cref{sec:extraction:lcfrs}), and the lexical symbols are replaced by the corresponding \abrv{pos} symbols of the constituent tree \(\xi\). The rules in \(d\) have nonterminals in \(\varGamma\) and terminals in \(\varPi\).
@@ -65,17 +65,17 @@
     
     We implement the disco-dop grammar into our parsing process as follows:
     \begin{itemize}
-        \item The weighted disco-dop grammar \((G,\weight)\) is extracted from training portion of the treebank (the same trees that are used top extract the supertag blueprints).
+        \item The weighted disco-dop grammar \((G,\weight)\) is extracted from the training portion of the treebank (the same trees that are used to extract the supertag blueprints).
         \item We define the reranker \(\varPsi\colon \Xi_{\varGamma, \varPi, \varSigma} \times \DR \to \DR\) as \(\varPsi(\xi, v) = \weight(\xi)\) where \(\DR\) is the domain of our confidence values. It does not use any prior scores and solely relies on the probability assigned by the disco-dop grammar.
         \item Let \(\xi_1 \ldots \xi_n \in {(\Xi_{\varGamma, \varPi, \varSigma})}^n\) be a sequence of constituent trees of length \(n\in \DN_+\) and the input to the reranking process.
-        The \(\varPsi\)-pick among \(\xi_1 \ldots \xi_n\) is the constituent tree with greatest probability assigned by the weighted disco-dop grammar.
+        The \(\varPsi\)-pick among \(\xi_1 \ldots \xi_n\) is the constituent tree with the greatest probability assigned by the weighted disco-dop grammar.
         It is the result of the reranking process and thus the result of our parsing process.
     \end{itemize}
 
 
     \begin{example}\label{ex:dop}\NoEndMark
-        \Cref{fig:ex:dop} shows five rules of a disco-dop grammar that consist of fragments in the constituent tree shown in the left of the illustration.
-        The rules denoted in the form of discontinuous tree substitution grammars as characterized by \citet{CraSchBod16}.
+        \Cref{fig:ex:dop} shows five rules of a disco-dop grammar that consist of fragments in the constituent tree shown on the left of the illustration.
+        The rules are denoted in the form of discontinuous tree substitution grammars as characterized by \citet{CraSchBod16}.
         They denote them similarly to \abrv{lcfrs}:
             Each leaf that is a substitution site is complemented with a sequence of variables, and each leaf that is a terminal has an index, such that each of these objects uniquely occurs within each rule.
             A composition below the root node indicates how terminals may be concatenated by the rules using the variables and indices from the leaves.
@@ -111,7 +111,7 @@
         All other rules are assigned to the probability \(1\).
 
         Let us consider the above process to assign a weight to the example constituent tree using these rules and probabilities.
-        First the constituent tree is transformed into the derivation illustrated below.
+        First, the constituent tree is transformed into the derivation illustrated below.
         The gray values next to each node show the weights computed at each subtree from bottom to the top and for each latent symbol; all values that are not shown are zero.
         For example, there are the two rules \(\cn{prt}^{(4)} \to (\cn{wrb})\;()\) and  \(\cn{prt}^{(4)} \to (\cn{rp})\;()\), each with the weight \(1\), for the bottom-most nodes at positions \(1\,1\,1\,1\) and \(1\,1\,1\,2\).
         At both of those positions, we consider the weight \(1\) for the latent symbol \(4\) and \(0\) for all other latent symbols.

@@ -3,7 +3,7 @@
 \begin{document}
     \section{Extracting and Lexicalizing \abrv{Lcfrs}} \label{sec:extraction:lcfrs}
     This extraction scheme for supertags with \abrv{lcfrs} rules was the product of a joint work with Richard Mörbitz \citep{MoeRup20,RupMoe21}.
-    It is based the extraction of \abrv{lcfrs} treebank grammars as shown by \citet{KalMai13} followed by a per-tree lexicalization inspired by the procedures presented by \citet{EngMalMan18}.
+    It is based on the extraction of \abrv{lcfrs} treebank grammars as shown by \citet{KalMai13} followed by a per-tree lexicalization inspired by the procedures presented by \citet{EngMalMan18}.
     This section is an extended version of the extraction described in one of our publications \citep{RupMoe21} with some adaptions to fit into the framework of this thesis.
     We describe the extraction procedure independently for each constituent tree in a treebank in five steps:\footnote{\label{footnote:lcfrs:split}
         The original formulation contained two additional steps that were called \emph{dechain} and \emph{fuseterm}.
@@ -21,7 +21,7 @@
             A binary \abrv{lcfrs} derivation is read from the constituent tree.
             The derivation is instantiated in the sequence of tokens of the constituent tree.
 %        \item\label{enum:lcfrs:step1}
-%            The derivation's leaves are dismissed, and their lexical symbols are moved into their parents by each replacing a variable.
+%            The derivation's leaves are dismissed and their lexical symbols are moved into their parents by each replacing a variable.
 %            The \abrv{rhs} nonterminals of all rules are adjusted to accommodate the removed rules.
         \item\label{enum:lcfrs:step3}
             The derivation is transformed by \emph{transporting} the lexical symbols into unlexical rules according to a fixed strategy.
@@ -139,7 +139,7 @@
         \item If \(\mu\) is \(\rho\), we insert the last removed terminal right before the variable \(\x^1_2\) in the rule's composition at \(\mu\).
     \end{itemize}
     Consider the case \(\mu \neq \rho\), and let \(\hat{\mu}\) be the parent of $\mu$ and $\mu$ the \(i\)th child of $\hat{\mu}$.
-    If, after removal of the first terminal in the composition at \(\mu\), the first component in the composition is empty:
+    If, after the removal of the first terminal in the composition at \(\mu\), the first component in the composition is empty:
     \begin{itemize}
         \item we annotate the \abrv{lhs} nonterminal at \(\mu\) and the \(i\)th \abrv{rhs} nonterminal at \(\hat{\mu}\) with $^{-1}$ and remove the empty component, and
         \item if \(i = 1\) (resp.\@ \(i = 2\)), we remove \(\x^1_1\) (resp.\@ \(\x_2^1\)) and replace every other occurrence of \(\x_1^i\) by \(\x_1^{i-1}\) (resp.\@ \(\x_2^j\) by \(\x_2^{j-1}\)) at $\hat{\mu}$.

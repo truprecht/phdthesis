@@ -6,7 +6,7 @@
     \Cref{sec:preliminaries:math} starts with the most basic notions.
     \Cref{sec:preliminaries:trees} deals with all concepts involved in string and tree structures.
     \Cref{sec:preliminaries:ctrees} sets these terms into the context of syntactic parsing of natural languages.
-    And finally, \cref{sec:predictions} overviews some aspects of machine learning that we use to model a framework for supertagging and parsing.
+    Finally, \cref{sec:predictions} overviews some aspects of machine learning that we use to model a framework for supertagging and parsing.
 
     \section{Mathematical Notation}\label{sec:preliminaries:math}
     Sets are considered with the usual notation \(\subseteq\), \(\subset\), \(\cup\), \(\cap\) and \(\setminus\) for the inclusive and exclusive subset relation, as well as the operations for union, intersection, and difference, respectively.
@@ -101,12 +101,12 @@
     For example, \(\leq^*\) is the lexicographic order over sequences of numerical values where \(\varepsilon \leq^* 1\:1\:2\) and \(1\:1\:2\leq^*1\:2\).
     
     We extend the operators \(\argmax\) (and \(\argmin\)) to determine ordered sequences of \(k\) maximal (or minimal, respectively) elements, for each \(k \in \DN_+\).
-    In this case, we denote the length \(k\) of these sequences in parentheses as superscript of the operator.
-    In the case that there is also a specified (non-numeric) total order, we denote both as superscript in the form \(\argmax^{(k), \unlhd}\).
+    In this case, we denote the length \(k\) of these sequences in parentheses as a superscript of the operator.
+    In the case that there is also a specified (non-numeric) total order, we denote both as superscripts in the form \(\argmax^{(k), \unlhd}\).
     For instance, the expression \(\argmin^{(5)}_{i \in [n]} p_i\) is the set of all sequences over \([n]\) of length \(m = \min \{5, n\}\) where each is of the form \(i_1 i_2 \ldots i_m\) and determined such that \(p_{i_1} \leq p_{i_2} \leq \ldots \leq p_{i_m}\) and \(p_{i_m} \leq j\) for each \(j \in [n]\setminus\{i_1,\ldots,i_m\}\).
 
     Consider a finite set of integers \(I \subset \DZ\).
-    We call the set \(I\) \deflab<contiguous>{contiguous set}[contiguous], if there is a least element \(\mathit{min} = \min I\) and a greatest element \(\mathit{max} = \max I\) such that \(I = [\mathit{min}, \mathit{max}]\) includes exactly the integers in the interval between them.
+    We call the set \(I\) \deflab<contiguous>{contiguous set}[contiguous] if there is a least element \(\mathit{min} = \min I\) and a greatest element \(\mathit{max} = \max I\) such that \(I = [\mathit{min}, \mathit{max}]\) includes exactly the integers in the interval between them.
     A \deflab<contiguous>{contiguous sequence} is a non-empty sequence over \(\DZ\) of some length \(n \in \DN_+\) of the form \(i (i+1) (i+2) \ldots (i+n)\); that is, the leftmost element \(i\) is the least, and the rightmost element \(i+n\) is the greatest in the sequence, and the elements between them increase by one at each position.
 
     \section{Strings and Trees}\label{sec:preliminaries:trees}
@@ -446,7 +446,7 @@
 
     \paragraph{Sequence Prediction and Tagging.}
     \emph{Sequence prediction} is a coarse category of tasks where the set of inputs consists of sequences.
-    In such cases a model is a function of the form \(X^* \times Y \to C\), where \(X\) now denotes the set of individual elements in the input sequences.
+    In such cases, a model is a function of the form \(X^* \times Y \to C\), where \(X\) now denotes the set of individual elements in the input sequences.
     \deflab{tagging}[Tagging], on the other hand, is a category of tasks within sequence prediction where the set of outputs are sequences as well, and the outputs are of the same length as the input.
     Such a model for tagging is a function of the form \(\big( \bigcup_{i \in \DN} X^i \times Y^i \big) \to C\), where now also \(Y\) is a set of individual elements in the output sequences; these elements of \(Y\) are called \emph{tags}.
     In this thesis, we focus on \deflabs{parallel tagging model}.
@@ -462,7 +462,7 @@
     \deflab{training}[Training] is the process of tuning the model parameters in terms of a \deflab{training objective}.
     A training objective assesses the assignment of confidence values by a model in a sample of input and output pairs and defines a criterion for optimal parameters.
     For instance, such an objective can take the shape of maximizing a cumulative confidence function \(c\colon \varTheta \times \power(X \times Y) \to \mathcal{C}\) of the form \(c(\theta, T) = \sum_{(x,y) \in T} \varphi_\theta(x, y)\), where \(T \subseteq X \times Y\) is a sample of gold input and output pairs; the training process then aims for \(\argmax^{\rel}_{\theta \in \varTheta} c(\theta, T)\).
-    In some cases, it is possible to compute the model parameters that optimize the training objective in closed-form.
+    In some cases, it is possible to compute the model parameters that optimize the training objective in closed form.
     In other cases, iterative processes change the parameters to improve upon the criterion gradually.
     Despite that the terms learning and training are sometimes used interchangeably, there are some delicate nuances between them.
     While both describe a process that fits a model to available data, training is specifically about tuning model parameters using labeled examples.
@@ -510,7 +510,7 @@
 
     In their most primitive form, we consider each neural network as a \(\varTheta\)-parametrized function of the form \(f_\theta\colon X \to \DR^n\) where \(\varTheta\) is some domain of variables, \(X\) is a set of inputs, and the outputs are real-valued vectors of length \(n \in \DN_+\).
     There is a set of well-studied \abrv{ann}s that are used as \deflabs{module} and combined to form new \abrv{ann}s by composition, addition, or concatenation of their results.
-    Each module defines suitable sets of inputs \(X\) as well as a parameter domains \(\varTheta\). 
+    Each module defines suitable sets of inputs \(X\) as well as a parameter domain \(\varTheta\). 
     A collection of such modules is called an \deflab{architecture}.
     In the following, some common modules are briefly explained.
 
@@ -625,7 +625,7 @@
             Semantic frameworks, like WordNet \citep{wordnet}, aim to map words with similar meanings to similar vectors using training with large semantic word networks.
         \item
             As the name suggests, \deflabs{large language model} \defabrv{large language model}{\abrv{llm}} are not only single modules but large architectures for sequence processing.
-            Such models are usually pre-trained regarding multiple tasks associated with the field of language understanding, for instance missing word prediction and next sentence prediction in the case of \abrv{bert}.
+            Such models are usually pre-trained regarding multiple tasks associated with the field of language understanding, for instance, missing word prediction and next sentence prediction in the case of \abrv{bert}.
             The vector assigned to each token in a sequence by an \abrv{llm} is considered context-sensitive:
                 It does not only depend on the token itself but on its position and all other tokens in the sequence as well.
                 This is achieved using positional embeddings and transformer architectures.

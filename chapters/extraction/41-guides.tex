@@ -67,7 +67,7 @@
     This guide constructor aims to formalize the assignment of lexical items to inner nodes achieved by the transportation in the extraction of lexical \abrv{lcfrs} rules described in the previous section.
     Similar to the prerequisites in that section, the guide is defined for binary constituent structures.
     A guide produced by this constructor maps each node position either to the rightmost\footnote{
-        In the original publication \citep{Rup22}, this constructor mapped each node to its leftmost leaf that is a direct successor.
+        In the original publication \citep{Rup22}, this constructor mapped each node to its leftmost leaf which is a direct successor.
         This is a slight change in the same manner as the split of rules with two terminal symbols in step \ref{enum:lcfrs:step4} in the extraction and lexicalization of \abrv{lcfrs} (cf.\@ \cref{footnote:lcfrs:split}).
     } leaf that is a direct successor or (if not available) to the leftmost leaf in the yield of its right successor.
     It is formally defined as follows:
@@ -106,7 +106,7 @@
             \item
                 By definition, each assigned value is trivially an element below the argument position, and \(\mathrm{van}(\xi)\) is a guide.
             \item
-                The second and third case in the definition are relevant to the unitary property.
+                The second and third cases in the definition are relevant to the unitary property.
                 The second case is only effective if \(L_\rho \neq \emptyset\).
                 Then, we assign a leaf not yet assigned to an ancestor; it can also not be assigned to any non-leaf descendant because it is a direct child.
                 The third case must also assign uniquely determined leaves by \cref{lem:firstviasecond} (ii), and they cannot interfere with values assigned by the second case.

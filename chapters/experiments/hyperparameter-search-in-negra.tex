@@ -18,7 +18,7 @@
         \item A \emph{pre-trained model} utilizing a \emph{bert-base} model as embedding. (Specifically, we use \emph{bert-base-cased-german} for the German \negra{} treebank during the hyperparameter search.)
         \item A \emph{supervised model} without any pre-trained modules.
     \end{itemize}
-    During this grid search, both models are trained for only 10 epochs; we chose this rather small amount of training iterations to conduct the experiments in reasonable time.
+    During this grid search, both models are trained for only 10 epochs; we chose this rather small amount of training iterations to conduct the experiments in a reasonable time.
 
     In this section, we compare experiments with each combination of hyperparameter values in the following dimensions:
     \begin{enumerate}
@@ -419,7 +419,7 @@ coarse (table) & 1 & 1 & 86.97 & 0.88 & 11.90 & 7 & 85.33 & 0.86 & 13.16 & 73 & 
         In these cases, we might achieve more cases where we find any parse tree with the given set of supertag blueprints, but then the quality can suffer.
         With the nonterminals in the current set of experiments, we might have overstepped a viable degree of coarse nonterminals.
         When we add the vertical Markovization context, then we add back information and obtain finer nonterminals.
-        In the case of the head and dependent guides, the set of nonterminals is usually finer than with a strict guide, as we use a directive markers by default.
+        In the case of the head and dependent guides, the set of nonterminals is usually finer than with a strict guide, as we use directive markers by default.
     In the case of the dependent guide, however, the parse time without Markovization context is significantly higher than with supertags using the strict guide or with added Markovization context.
     We blame the higher ambiguity for this result as well.
 
@@ -636,7 +636,7 @@ coarse-nof  & 90.97 & 0.90 & 9.43 & 0 & 90.42 & 0.88 & 16.05 &  6 &   --- &  ---
     \end{itemize}
     Generally, for both tables, we do not see any consistent improvements beyond \(k=20\), but small advantages of \(k=20\) as opposed to \(k=10\).
     Beyond values of \(\beta = 2\), the results seem to degenerate.
-    Interestingly, while we could achieve higher scores with \abrv{dcp} supertags using the supervised model, the trend is opposite with the pre-trained one.
+    Interestingly, while we could achieve higher scores with \abrv{dcp} supertags using the supervised model, the trend is the opposite with the pre-trained one.
     We pick a few configurations for each model in advance of the experiments with reranking:
     \begin{itemize}
         \item for the supervised model, we fix \abrv{dcp} supertags with \(k = 20\) and \(\beta \in \{0.1,0.5,2\}\),

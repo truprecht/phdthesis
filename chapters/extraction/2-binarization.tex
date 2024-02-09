@@ -122,7 +122,7 @@
     \paragraph{Minimizing Fanout or Parsing Complexity.}
     Two binarization strategies specifically consider the properties of \abrv{lcfrs} instances extracted from constituent treebanks after binarization.
     \Citet{gomez2009optimal} criticize that the usual strategies can produce constituent nodes with larger fanout than in the original treebank.
-    The parsing complexity with \abrv{lcfrs} instances depends on the fanouts, so binarization strategies may have influence on it.
+    The parsing complexity with \abrv{lcfrs} instances depends on the fanouts, so binarization strategies may have an influence on it.
     They propose a binarization strategy that minimizes the fanouts in its results.
     \Citet{Gil10} argues that the parsing complexity not only depends on the single occurring fanouts but on the combination of fanouts in each node and its children.
     \Citeauthor{Gil10} adapts the strategy to minimize the sum of fanouts in such node triplets.
@@ -203,7 +203,7 @@
     It can be seen as the opposite of head-outward binarization because when a node is expanded with artificial children, it does keep the child carrying the head at the topmost position.
     All other children are distributed as or into (artificial) child nodes to the left or right of this head-carrying child.
     The process coincides with the node splitting in right-branching binarization if the head assignment strictly maps each inner node to the leftmost leaf (and vice versa).
-    However, we omit removing unary nodes in this transformation, so the results may appear different even in said cases.
+    However, we omit to remove unary nodes in this transformation, so the results may appear different even in said cases.
 
     More formally:  
         Consider an inner node \(\rho\) with \(n \geq 2\) successors and whose head is located in the \(i\)th child (for some \(i \in [n]\)).
@@ -211,7 +211,7 @@
     These artificial nodes and the \(i\)th child are attached to \(\rho\), composing a node with at most three non-leaf successors.
     For the resulting tree, there is a canonical head assignment that preserves the head for each non-artificial node; the head of each artificial node is the head of its left successor.
     The process is extended with Markovization and directive indicators for the artificial nodes in the same manner as the binarization strategies.
-    Moreover, we add an artificial (unary) nodes concluding each sequence of right-branching artificial nodes as a parent of the \(i-1\)th and \(n\)th successor.
+    Moreover, we add an artificial (unary) node concluding each sequence of right-branching artificial nodes as a parent of the \(i-1\)th and \(n\)th successor.
     \Cref{fig:ex:head-inward} shows an example of a constituent structure obtained by this rank transformation.
 
     \begin{figure}

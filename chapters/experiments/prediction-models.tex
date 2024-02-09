@@ -54,9 +54,9 @@
 
     \subsection*{Model and Training Hyperparameters}
     As already mentioned in \cref{sec:preliminaries:nn:training}, there is a multitude of extensions and hyperparameters used in the training with artificial neural networks.
-    Moreover, the architecture of the supervised model imposes its own set of hyperparameters with the size of the vectors computed by the embeddings, \abrv{lstm} layers and in intermediate layers of the concluding \abrv{mlp}.
+    Moreover, the architecture of the supervised model imposes its own set of hyperparameters with the size of the vectors computed by the embeddings, \abrv{lstm} layers, and intermediate layers of the concluding \abrv{mlp}.
     For all experiments in this thesis, we will consider fixed values for the hyperparameters in both models.
-    In case of the supervised model, we decided upon the hyperparameters for the architecture following the experiments by \citet{Cor20} and \citet{StaSte20} as well as our previously conducted experiments \citep{RupMoe21,Rup22} as follows:
+    In the case of the supervised model, we decided upon the hyperparameters for the architecture following the experiments by \citet{Cor20} and \citet{StaSte20} as well as our previously conducted experiments \citep{RupMoe21,Rup22} as follows:
     \begin{itemize}
         \item the size of the word and character-level embeddings are 256 and 128 (64 in each direction), respectively,
         \item the minimal required number of token occurrences to constitute an own word embedding (otherwise it is replaced by a collective unknown word embedding) is 3,
@@ -72,7 +72,7 @@
     \end{itemize}
 
     We use a common framework for the training with both models.
-    Each model is trained using the AdamW optimizer with default configuration ($\beta_1 = 0.99$ and $\beta_2 = 0.999$), we use the AnnealOnPlateau learning rate scheduler (with patience 2 and factor \(0.2\)), and cross entropy loss as discussed before.
+    Each model is trained using the AdamW optimizer with default configuration ($\beta_1 = 0.99$ and $\beta_2 = 0.999$), we use the AnnealOnPlateau learning rate scheduler (with patience 2 and factor \(0.2\)), and cross-entropy loss as discussed before.
     The initial learning rate is \(5\cdot 10^{-5}\) for the pre-trained model and \(10^{-3}\) for the supervised model.
     The AnnealOnPlateau learning rate scheduler and AdamW optimizer adapt the learning rate for each model parameter during the training process.
     The model architectures as well as the training framework coincide with our earlier experiments \citep{RupMoe21,Rup22}.

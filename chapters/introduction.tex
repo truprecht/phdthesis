@@ -56,7 +56,7 @@
     A constituent tree illustrates a hierarchy of (sub-)phrases in a sentence; each phrase is labeled with a common category that denotes its function within the sentence or in a superseded phrase.
     \Cref{fig:constituent} shows two examples of constituent trees.
     In each constituent tree, the analyzed sentence is illustrated at the bottom.
-    At the next higher level, there are part-of-speech tags, which constitute the most simple syntactic structures in natural language and classify the role of each single word.
+    At the next higher level, there are part-of-speech tags, which constitute the most simple syntactic structures in natural language and classify the role of every single word.
     Each symbol beyond that denotes a constituent with connections drawn to all words or subphrases that are part of the constituent.
     For example, in the first tree, ``survey'' is a word in the sentence, ``\cn{nn}'' is its assigned part-of-speech tag \emph{noun}, and the symbol ``\cn{np}'' above it denotes a \emph{noun phrase} that consists of ``the survey''.
     These two expressions for the syntax are not mutually exclusive, and we will later consider the lexical head as an extension, but for now, we focus on constituent trees.
@@ -77,14 +77,14 @@
 
     The theory of natural language syntax analysis is due to \citet{Cho56}.
     \Citeauthor{Cho56} formalized a rule-based framework for the syntax-based definition of languages, called \deflabs{grammar}, and the famous \emph{Chomsky hierarchy} of grammar formalisms.
-    \Citeauthor{Cho56} aimed to explain the syntax of natural languages using \deflabs{context-free grammar}, the second out of four levels of grammars in the hierarchy.
+    \Citeauthor{Cho56} aimed to explain the syntax of natural languages using \deflabs{context-free grammar}, the second out of four levels of grammar formalisms in the hierarchy.
     These grammars were defined with rules that directly model the parent-child relationship within constituent trees, such as \(\nt{S} \to \nt{NP}\,\nt{VP}\).
     However, context-free grammars cannot model the discontinuities that appear in natural language \citep{Shieber85}.
     The grammar formalism for the next higher level in the hierarchy, called \deflabs{context-sensitive grammar}, was dismissed for the modeling and analysis of natural languages due to its complexity.
     As a consequence, there have been multiple proposals for formalisms that aim to add just enough power to context-free grammars to be able to handle discontinuous constituents and still allow efficient analyses:
         tree-adjoining grammars \citep{JosLevTak75}, multiple context-free grammars \citep{SekMatFujKas91}, linear context-free rewriting systems \citep{VijWeiJos87} and combinatory categorial grammars \citep{Ste11} to name a few.
     These formalisms were later brought under the umbrella term \deflabs{mildly context-sensitive grammar}, a class that supersedes context-free and is strictly included in context-sensitive grammars.
-    Later chapters of this thesis deal with such mildly context-sensitive grammar formalisms, particularly linear context-free rewriting systems and an extension of them, called hybrid grammars \citep{Ned14}.
+    Later chapters of this thesis deal with mildly context-sensitive grammar formalisms, particularly linear context-free rewriting systems and an extension of them, called hybrid grammars \citep{Ned14}.
 
     \section*{Autonomous Parsing of Natural Languages Sentences}
     Grammar formalisms have been used for parsing natural language sentences.
@@ -99,12 +99,12 @@
     
     The research on parsing with grammars that can model discontinuities has been delayed by a few years and distributed across several concurrent formalisms.
     Starting with \citet{MaierSogaard08} and \citet{Kal10}, parsing procedures for natural languages with multiple context-free grammars have been studied.
-    Similar refinements as for parsing with context-free grammars have been introduced to the formalism, such as latent annotations by \citet{Geb20} and discontinuous data-oriented parsing by \citet{Cra11}.
-    Some of these extensions are under criticism for undermining the interpretability of the underlying grammar instances \citep[Chapter 9]{Geb20}.
+    Similar refinements for parsing with context-free grammars have been introduced to the formalism, such as latent annotations by \citet{Geb20} and discontinuous data-oriented parsing by \citet{Cra11}.
+    Some of these extensions are criticized for undermining the interpretability of the underlying grammar instances \citep[Chapter 9]{Geb20}.
 
     Other research involves parsers that do not rely on grammars; for instance, parsers modeled as transition systems by \citet{Verseley14} or \citet{CoaCoh19}, or conditional random fields by \citet{Petrov08}.
     Most notably, since the advent of deep learning, such parsing models based on discriminative classifiers became state-of-the-art in terms of accuracy and parse time; parses solely based on grammar formalisms could not keep up with them.
-    Although, there is one significant advantage of grammar formalisms that still convinces some people to put effort into parsing with them:
+    However, there is one significant advantage of grammar formalisms that still convinces some people to put effort into parsing with them:
         Grammar instances are easily interpretable, as they explicitly describe the constituent structures; deep neural networks do not allow any straightforward interpretation of their computation.
     Some approaches combine grammar-based parsers with discriminative classifiers to merge the advantages of both techniques, thus implementing interpretable, accurate, and fast parsing procedures.
     One of them is the topic of this thesis: \deflab{supertagging}.

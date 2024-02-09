@@ -108,7 +108,7 @@
 
     \subsubsection*{Pseudocontinuous Parsing}
     Some authors decided to avoid discontinuous structures and their expensive parsing procedures altogether.
-    In pseudo-continuous parsing, the discontinuous treebanks are transformed into continuous ones to extract good-enough context-free grammars for constituent parsing.
+    In pseudo-continuous parsing, the discontinuous treebanks are transformed into continuous ones to extract good enough context-free grammars for constituent parsing.
     \Citet{DubKel03} derived a continuous variant of the \negra{} treebank by shifting subtrees of discontinuous nodes into their antecedents; this transformation is called \emph{node raising}, and unfortunately, it is not reversible in a straightforward manner.
     \Citet{levy-manning-2004-deep} contributed an algorithm that heuristically identifies the shifted nodes and can recover a discontinuous constituent tree.
     However, they concluded that this approach is not suited to processing languages with relatively free word order, such as German, as the context-free transformation seemed a poor approximation in their experiments.
@@ -150,7 +150,7 @@
 
     Another track that fits into the concept of reranking involves coarse-to-fine parsing approaches with grammar formalisms.
     These approaches define pipelines with multiple parsing stages and a coarser/finer relation on a set of grammar instances that they used for parsing.
-    Comparing two stages, the earlier uses a coarser and the later a finer grammar instance; the latter stage uses the results of its predecessors to filter unviable items during its parsing process.
+    Comparing two consecutive stages, the earlier uses a coarser and the latter a finer grammar instance; the latter stage uses the results of its predecessors to filter unviable items during its parsing process.
     We consider each stage after the first a reranking process that refines the result of the previous one.
     \Citet{Cha06} used probabilistic context-free grammars for parsing and defined the coarser/finer relation over the nonterminal symbols.
     They started with defining a usual (binarized and Markovized) treebank grammar at the finest level and constructed a coarser grammar by replacing nonterminal symbols with equivalence classes.
@@ -160,7 +160,7 @@
     Both approaches describe a filtering mechanism by relating nonterminals (and thus parse items) between stages and testing in the finer stage if the related parse item exists or is better than some threshold weight.
     \Citet{Denkinger17} used similar techniques to mimic the coarse-to-fine parsing approach in automata formalisms instead of grammar formalisms.
     Together, we implemented a coarse-to-fine parser that utilizes an automata characterization for \abrv{lcfrs} in two stages, one with a context-free approximation and another refining the results by rejecting inappropriate derivations \citep{RupDen19}.
-    These approaches share that they use reranking (or coarse-to-fine pipelines, respectively) primarily with the aim for efficient parsing, as opposed to the aim to increase accuracy in the first set of approaches.
+    These approaches share that they use reranking (or coarse-to-fine pipelines, respectively) primarily with the aim of efficient parsing, as opposed to the aim to increase accuracy in the first set of approaches.
 
 
     \subsection{Bottom-up and Top-down Parsing with Discriminative Scoring}\label{sec:literature:chart}
@@ -169,7 +169,7 @@
     Similar to reranking (c.f.\@ \cref{sec:reranking}), these functions are not limited to the locality restrictions of weighted grammars.
     They are interpreted as a \emph{score} that assesses each derivation.
     \Citet{Johnson99} presented a framework for \emph{maximum-entropy models}, where score functions are built around \emph{features}.
-    Each feature is specific pattern that is counted within the constituent tree, very similar to the reranking mechanism described by \citet{collins2001convolution}.
+    Each feature is a specific pattern that is counted within the constituent tree, very similar to the reranking mechanism described by \citet{collins2001convolution}.
     The score is computed using a linear combination of the feature counts and interpreted as the probability of the derivation conditioned on the sequence of tokens.
     \Citet{Miyao02} extended the framework by a more efficient training procedure involving the computation of inside-outside-values.
     However, it still required computing all possible derivations for each sentence in the training set and their score, which was very demanding at the time.
@@ -180,7 +180,7 @@
     \Citet{Turian06} introduced an algorithm that does not require any underlying grammar.
     Starting with the sequence of \abrv{pos} symbols, it incrementally constructs a constituent tree from a sequence of hypothesis trees (in a bottom-up fashion) by choosing a subsequence to be combined with a new root node that maximizes the score for the new tree.
     \Citet{Stern17} proposed the opposite direction, a \emph{top-down} parsing algorithm.
-        Their algorithm maintains a sequence of hypothesis nodes, initially it is solely the root node.
+        Their algorithm maintains a sequence of hypothesis nodes; initially, it is solely the root node.
         Incrementally, it chooses a node from the sequence and predicts a split index (constructing two new nodes) and two child constituent symbols.
     In contrast to the previous approach, their algorithm is \emph{greedy}; it does not maintain an agenda and cannot backtrack from suboptimal results.
     Like existing approaches, it features maximum-margin training but drops the concept of explicitly defined features in favor of scores computed using artificial neural networks.
@@ -188,7 +188,7 @@
     Yet, these are restricted to a small degree in discontinuity, specifically to fanout 2 like \abrv{tag}.
 
     \subsection{Transition Systems}\label{sec:literature:transition}
-    Transition systems have a tradition in parsing, for example \emph{shift-reduce parsers} for deterministic context-free languages such as programming languages \citep[Section~4.6]{aho2020compilers}.
+    Transition systems have a tradition in parsing, for example, \emph{shift-reduce parsers} for deterministic context-free languages such as programming languages \citep[Section~4.6]{aho2020compilers}.
     They are built around operations that incrementally construct a tree using two data structures for intermediate results:
     \begin{compactitem}
         \item a \emph{buffer} that initially contains the tokens of the input sequence, they are consumed from left to right during the parsing process and
@@ -217,7 +217,7 @@
     The operation is parametrized with a natural number \(i \ge 1\). It shifts the \(i\)th buffer element to the stack, directly forming a gap between the two last stack elements without the need to swap anything back.
     \Citet{Coavoux17} formulated an alternative operation, called \emph{gap}, that moves a pointer on the stack to the left starting from the second rightmost element.
     The pointer indicates the element to be combined with the rightmost stack element during the next reduce operation, forming a discontinuous constituent if a gap operation was applied before.
-    After each shift or reduce operation the pointer is reset to the second rightmost element.
+    After each shift or reduce operation, the pointer is reset to the second rightmost element.
     \Citet{CoaCoh19} introduced a transition system that manages without a distinguished operation for discontinuities.
     Their reduce operation is parametrized with an additional index on the stack to indicate the element to be combined with the rightmost one during its application; this index is part of the prediction for the upcoming operation.
 
@@ -298,7 +298,7 @@
     The dependency relations within a sentence can be illustrated as a tree, such that the tokens of the sentence are the inner nodes and leaves, and the relations are denoted as arrows between parent and child nodes.
     The type of relations between parent and child are usually denoted at each arrow.
     Analogously to discontinuity in constituent trees, there is the concept of \emph{non-projectivity} in dependency trees.
-    Such a dependency tree is called non-projective if one of its subtree's nodes do not form a consecutive substring in the sentence.
+    Such a dependency tree is called non-projective if one of its subtree's nodes does not form a consecutive substring in the sentence.
 
     As for constituent parsing, there are several approaches for parsing dependencies.
     The following list summarizes techniques that share some aspects with the previously discussed styles of constituency parsing:
