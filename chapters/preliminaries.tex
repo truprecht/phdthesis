@@ -11,7 +11,7 @@
     \section{Mathematical Notation}\label{sec:preliminaries:math}
     Sets are considered with the usual notation \(\subseteq\), \(\subset\), \(\cup\), \(\cap\) and \(\setminus\) for the inclusive and exclusive subset relation, as well as the operations for union, intersection, and difference, respectively.
     The symbol \(\emptyset\) denotes the empty set and \(\power(A)\) is the power set, i.e., the set containing all subsets, of some set \(A\).
-    The sets of integers, naturals (including zero), positives, and rationals are denoted by $\DZ$, $\DN$, $\DN_+$, and $\DR$, respectively.
+    The sets of integers, naturals (including zero), positive integers, and reals are denoted by $\DZ$, $\DN$, $\DN_+$, and $\DR$, respectively.
     The \deflab{range} of integers between the pair \(n, m \in \DZ\) with \(n \leq m\) is denoted by \([n,m] = \{i \in \DZ \mid n \leq i \leq m\}\).
     For any positive integer \(n\), the notion \([n]\) abbreviates \([1,n]\), and \([0]\) is the empty set \(\emptyset\).
 
@@ -20,7 +20,7 @@
     The cross product \(A \times B\) is the set of all tuples \(\{(a,b) \mid a \in A, b\in B\}\).
     A \deflab{relation}[relation from \(A\) to \(B\)] is a set \(R \subseteq A \times B\).
     In case \(A\) and \(B\) coincide, we call \(R\) an \deflab{endorelation}[endorelation on \(A\)].
-    For two elements \(a \in A\) and \(b \in B\), the term \(a \mathrel{R} b\) denotes the boolean statement \((a,b) \in R\) and \(a \not\mathrel{R} b\) denotes \((a,b) \notin R\).
+    For two elements \(a \in A\) and \(b \in B\), the term \(a \mathrel{R} b\) denotes the Boolean statement \((a,b) \in R\) and \(a \not\mathrel{R} b\) denotes \((a,b) \notin R\).
     A \deflab{total order}[total order on \(A\)] is an endorelation \(\rel\) on \(A\) such that for each \(a, b \in A\)
     \begin{inparaenum}
         \item if \(a = b\) then \(a \rel b\),
@@ -56,7 +56,7 @@
     For example, we write \(\min [k]\) instead of \(\min_{i \in [k]} i\).
     The minima and maxima are determined according to the usual numerical order.
     In case we encounter different objects or we use any other total ordering \(\unlhd\), we denote it as a superscript, for instance, \(\min^{\unlhd}\).
-    The symbol \(\argmin\) denotes the set of all indices with minimal value, for instance, \(\argmin_{i \in [k]} v_i\) is the subset \(M \subseteq [k]\) such that each pair \((\hat{i}, j) \in M \times [k]\) satisfies \(\hat{i} \leq j\).
+    The symbol \(\argmin\) denotes the set of all indices with minimal value, for instance, \(\argmin_{i \in [k]} v_i\) is the subset \(M \subseteq [k]\) such that each pair \((\hat{i}, j) \in M \times [k]\) satisfies \(v_{\hat{i}} \leq v_j\).
     Vice versa, \(\argmax\) yields the indices for maximal values.
 
     An \deflab{partition}[\(A\)-indexed partition of \(B\)] is an \(A\)-indexed family \(p\) over subsets in \(\power(B)\) such that:
@@ -103,7 +103,7 @@
     We extend the operators \(\argmax\) (and \(\argmin\)) to determine ordered sequences of \(k\) maximal (or minimal, respectively) elements, for each \(k \in \DN_+\).
     In this case, we denote the length \(k\) of these sequences in parentheses as a superscript of the operator.
     In the case that there is also a specified (non-numeric) total order, we denote both as superscripts in the form \(\argmax^{(k), \unlhd}\).
-    For instance, the expression \(\argmin^{(5)}_{i \in [n]} p_i\) is the set of all sequences over \([n]\) of length \(m = \min \{5, n\}\) where each is of the form \(i_1 i_2 \ldots i_m\) and determined such that \(p_{i_1} \leq p_{i_2} \leq \ldots \leq p_{i_m}\) and \(p_{i_m} \leq j\) for each \(j \in [n]\setminus\{i_1,\ldots,i_m\}\).
+    For instance, the expression \(\argmin^{(5)}_{i \in [n]} p_i\) is the set of all sequences over \([n]\) of length \(m = \min \{5, n\}\) where each is of the form \(i_1 i_2 \ldots i_m\) and determined such that \(p_{i_1} \leq p_{i_2} \leq \ldots \leq p_{i_m}\) and \(p_{i_m} \leq p_j\) for each \(j \in [n]\setminus\{i_1,\ldots,i_m\}\).
 
     Consider a finite set of integers \(I \subset \DZ\).
     We call the set \(I\) \deflab<contiguous>{contiguous set}[contiguous] if there is a least element \(\mathit{min} = \min I\) and a greatest element \(\mathit{max} = \max I\) such that \(I = [\mathit{min}, \mathit{max}]\) includes exactly the integers in the interval between them.
@@ -124,21 +124,21 @@
     \begin{inparaenum}
         \item \(\varGamma \subseteq T\) and
         \item for each symbol \(\sigma \in \varSigma\), positive integer \(k \in \DN_+\) and trees \(t_1, \ldots, t_k \in T\), the sequence \(\sigma(t_1 \cdots t_k)\) is in \(T\).\footnote{
-            We do not consider ranked trees.
             Each symbol \(\sigma \in \varSigma\) in a tree may occur with an arbitrary amount of successors denoted in parentheses after it.
-            Moreover, such a symbol may occur multiple times in a tree with varying amounts of successors.
+            The same symbol may even occur multiple times in the same tree with varying amounts of successors.
+            Such trees are called \emph{unranked trees} in the literature \citep[cf.\@][Sec.\@ 8.2]{Comon08}, as opposed to \emph{ranked trees} where each symbol is considered with a fixed amount of children.
         }
     \end{inparaenum}
     As such, trees are finite structures, but unlike strings, we do not consider empty trees.
-    In case \(\varGamma \subseteq \varSigma\), the symbols at the leaves are not distinguished from inner nodes; then the set \(\T_\varSigma(\varGamma)\) is abbreviated by \(\T_\varSigma\).
 
-    A \deflab{node in a tree}[node in the tree \(t \in \T_\varSigma(\varGamma)\)] is an occurrence of a symbol in \(\varSigma \cup \varGamma\) within \(t\); it is a combination of the symbol \(\sigma\) and the position it occurs.
-    If a node is accompanied by a sequence of trees denoted in parentheses behind the symbol, these trees are called the \deflab{child trees/nodes}[children] or \deflab{successor trees/nodes}[successors] of the node.
+    A \deflab{node in a tree}[node in the tree \(t \in \T_\varSigma(\varGamma)\)] is an occurrence of a symbol in \(\varSigma \cup \varGamma\) within \(t\); it is a combination of the symbol \(\sigma\) and the position in the sequence that it occurs at.
+    If a node \(\rho\) in \(t\) is accompanied by a sequence of trees denoted in parentheses behind the symbol, these trees are called the \deflab{child trees/nodes}[children] or \deflab{successor trees/nodes}[successors] of \(\rho\); analogously their roots are called child/successor nodes of \(\rho\).
     Vice versa, from the viewpoint of a child node, the node before the wrapping parenthesis is called the \deflab{parent node}[parent].
-    Each other node within the parenthesis is called a \deflab{sibling}.
-    The leftmost node is called the \deflab{root node}[root] of the tree; each node without children is called a \deflab{leaf node}[leaf] of the tree; and each node with children is called an \deflab{inner node}.
+    Each other node within the same set of parentheses and at the same level of nesting is called a \deflab{sibling}.
+    The leftmost node is called the \deflab{root node}[root] of the tree; each node without children is called a \deflab{leaf node}[leaf] of the tree; and each node with at least one child is called an \deflab{inner node}.
+    In case \(\varGamma \subseteq \varSigma\), the symbols at the leaves are not distinguished from those occurring at inner nodes; then the set \(\T_\varSigma(\varGamma)\) is abbreviated by \(\T_\varSigma\).
     The sequence of all symbols at leaves in a tree \(t\) from left to right is called the \deflab{yield}[yield of \(t\)] and denoted by \(\yield(t)\).
-    The \deflab<rank>{rank of a node} is its number of children, \(\rank(t)\) denotes the rank of the root in \(t\).
+    The \deflab<rank>{rank of a node} is the number of its children, \(\rank(t)\) denotes the rank of the root in \(t\).
     Each leaf is of rank zero; nodes of rank one are called \deflab<unary>{unary node}[unary], and those of rank two are called \deflab<binary>{binary node}[binary].
     A tree is called \deflab<binary>{binary tree}[binary] if each inner node has exactly two successors.
 
@@ -153,10 +153,11 @@
         \item if \(t \in \varGamma\), then it is \(\pos(t) = \{\varepsilon\}\), and
         \item if \(t = \sigma(t_1 \cdots t_k)\) for some \(\sigma\in \varSigma\) and \(t_1, \ldots, t_k \in \T_\varSigma(\varGamma)\), then it is \(\pos(t) = \{\varepsilon\} \cup \bigcup_{i\in[k]} \{i\}\cdot \pos(t_i)\).
     \end{inparaenum}
-    The set of all inner node positions in \(t\) is denoted by \(\npos(t)\), and the set of leaf positions is \(\lpos(t)\).
     Let \(\rho \in \pos(t)\) be some position.
     Each subsequence in \(t\) that is also a tree in \(\T_\varSigma(\varGamma)\) is called a \deflab{subtree}[subtree in \(t\)].
     The subtree at a position \(\rho\) is denoted by \(t|_\rho\).
+    In case that \(\rho\) is the position of a leaf (i.e.\@ \(t_\rho \in \varGamma\)), we call \(\rho\) a leaf position; otherwise it is an inner node position.
+    The set of all inner node positions in \(t\) is denoted by \(\npos(t)\), and the set of leaf positions is \(\lpos(t)\).
     The \deflab{ancestor}[ancestors of \(\rho\)] are all proper prefixes of the sequence \(\rho\), denoted by \(\ancestors(\rho)\).
     If \(\rho\) is of the form \(\rho = p_1 \ldots p_\ell\) for some \(\ell \in \DN_+\) and \(p_1, \ldots, p_\ell \in \DN_+\), then \(\ancestors(\rho) = \{ p_1 \ldots p_i \mid 0 \leq i \leq \ell-1 \}\).
     The \deflab{descendant}[descendants of \(\rho\) in \(t\)] are all positions in the subtree below \(\rho\), denoted by \(\descendants_t(\rho) = \{ \rho \cdot \rho' \in \pos(t) \mid \rho' \in \pos(t|_\rho) \}\).
@@ -166,7 +167,7 @@
 
     \begin{lemma}\label{lem:firstviasecond}
         Let \(\xi \in \T_{\varSigma}(\varGamma)\) be a binary tree over some alphabet \(\varSigma\) and a set \(\varGamma\).
-        And let \((f_\rho \in \lpos(\xi) \mid \rho \in \npos(\xi))\) denote a leaf position for each inner node position such that, for each \(\rho \in \lpos(\xi)\), the position \(f_\rho\) is the leftmost leaf in the right subtree below \(\rho\).
+        And let \((f_\rho \in \lpos(\xi) \mid \rho \in \npos(\xi))\) denote a family of leaf positions such that, for each inner node position \(\rho \in \npos(\xi)\), the position \(f_\rho\) is the leftmost leaf in the right subtree below \(\rho\).
         Then
         \begin{inparaenum}
             \item \(f_\rho\) is well-defined for each \(\rho \in \npos(\xi)\) and
@@ -191,22 +192,25 @@
 %    \end{proof}
 
     \paragraph{Indexed Trees.}
-    An \deflab{indexed tree}[indexed tree over \(\varSigma\)] is an element in \(\T_{\varSigma}(\DN_+)\); that is, inner nodes are symbols in \(\varSigma\), and leaves are positive integers, such that each leaf occurs at most once.
-    For each inner node in an indexed tree, the children are ordered by the least value occurring at a leaf.
+    An \deflab{indexed tree}[indexed tree over \(\varSigma\)] is a tree \(t \in \T_{\varSigma}(\DN_+)\) such that \begin{inparaenum}
+        % \item the value \(t(\rho)\) at each leaf \(\rho\in\lpos(t)\) occurs at most once in \(t\), and
+        \item the value at each leaf occurs exactly once in \(t\), and
+        \item for each inner node \(\rho \in \npos(t)\), the children of \(\rho\) are ordered according to the least value occurring at a leaf below them.
+    \end{inparaenum}
+    That is, in each indexed tree, the symbols in \(\varSigma\) occur exclusively at inner nodes and the values in \(\DN_+\) occurring at leaves are unique.
     The notation for positions, indexing, and substitution are inherited from trees; the yield of an indexed tree is its set of leaves instead of a string.
     The right half of \cref{fig:pre:ctree} shows such an indexed tree.
     The set of all indexed trees over \(\varSigma\) is denoted by \(\itrees_\varSigma\).
 
     \paragraph{Substitution.}
     Let \(X\) be a finite set of variable symbols, \(\varSigma\) some alphabet that is disjoint from \(X\), and \(c\) a string in \((X \cup \varSigma)^*\).
-    A (first-order) \deflab<substitution>{first-order substitution}[substitution of \(X\) in \(c\)] is defined by an \(X\)-indexed family \((v_x \in \varSigma^* \mid x \in X)\), denoted by \(c[v]\), and yields the string in \(\varSigma^*\) obtained from \(c\) by replacing every occurrence of symbols \(x \in X\) by \(v_x\).
-    To avoid explicitly defining a family for each substitution, we may also denote it by enumerating the values in the form \(c[x_1=v_{x_1}, \ldots, x_{k}=v_{x_k}]\) where \(k\) is some natural number and \(X = \{x_1, \ldots, x_k\}\) with \(x_i \neq x_j\) for each pair \(i,j \in [k]\) if \(i\neq j\).
-    If the string \(c\) does not contain some variables in \(\X\), we may omit them in this notation.
+    A (first-order) \deflab<substitution>{first-order substitution}[substitution of \(X\) in \(c\)] is defined by an \(X\)-indexed family \((v_x \in \varSigma^* \mid x \in X)\), denoted by \(c[v]\), and yields the string in \(\varSigma^*\) obtained from \(c\) by replacing the occurrence of each variable symbol \(x \in X\) by \(v_x\).
+    To avoid explicitly defining a family for each substitution, we often denote the substitution by enumerating the value \(v_x\) for each variable \(x\) occurring in \(c\) in the form \(c[x_1=v_{x_1}, \ldots, x_{k}=v_{x_k}]\) where \(k \in \DN\) and \(x_1, \ldots, x_k \in X\) are the variables occurring in \(c\) with \(x_i \neq x_j\) for each pair \(i,j\in [k]\) if \(i\neq j\).
 
     The concept of \deflab<substitution>{second-order substitution} introduces a second layer by parameterizing the values before inserting them.
     For the scope of this thesis, the number of parameters for each value is limited to exactly one to keep the definition simple.
-    Let's consider a single distinct variable \(y \notin X\), a set of shallow trees \(X(\varSigma^*) = \{ x(w) \mid x \in X, w \in \varSigma^* \}\) and a string \(c\) in \((X(\varSigma^*) \cup \varSigma)^*\).
-    A second-order substitution of \(X\) in \(c\) defined by an \(X\)-indexed family \((v_x \in (\varSigma \cup \{y\})^* \mid x \in X)\) yields the string in \(\varSigma^*\) obtained from \(c\) by replacing each occurrence of shallow trees \(x(w) \in X(\varSigma^*)\) by \(v_x[y=w]\).
+    Let's consider a single distinct variable \(y \notin X\), a set \(X(\varSigma^*) = \{ x(w) \mid x \in X, w \in \varSigma^* \}\) and a string \(c\) in \((X(\varSigma^*) \cup \varSigma)^*\); we call each element in \(X(\varSigma^*)\) a \deflab<substitution>{substitution site}.
+    A second-order substitution of \(X\) in \(c\) defined by an \(X\)-indexed family \((v_x \in (\varSigma \cup \{y\})^* \mid x \in X)\) yields the string in \(\varSigma^*\) obtained from \(c\) by replacing each substitution site \(x(w) \in X(\varSigma^*)\) by \(v_x[y=w]\).
     We specifically stress that the variable \(y\) may be an element in \(\varSigma\), and the result \(c[v]\) might also contain it.
 
     Because trees are just specific strings, both definitions of substitution are easily lifted to trees and sequences of trees as long as the variables do not coincide with parentheses.
@@ -272,21 +276,19 @@
     A \deflab{constituent tree} is a triple \((t, p, w)\) where
     \begin{compactitem}
         \item \(w\) is a string of tokens in \(\varSigma^*\),
-        \item \(t\) is an indexed tree over \(\varGamma\) such that each position in \([|w|]\) occurs exactly once as a leaf, and
+        \item \(t\) is an indexed tree over \(\varGamma\) such that the set of values occurring at the leaves is \([|w|]\), and
         \item \(p\) is a string of \abrv{pos} tags in \(\varPi^{|w|}\).
     \end{compactitem}
-    In such a triple, we distinguish three parts of each constituent tree: its sequence of tokens \(w\), the \abrv{pos} tag for each token in \(p\), and the \deflab{constituent structure} \(t\) that contains the constituent symbols and defines the hierarchical structure.
-    To accommodate discontinuous constituents, the constituent structure \(t\) is defined as an indexed tree and each leaf acts as the position of a token.
+    The component \(t\) is called \deflab{constituent structure}.
+    Its leaves indicate an alignment to the positions in the string \(w\) and enable us to denote discontinuous constituents, as shown in \cref{fig:pre:ctree}.
     The set of all such constituent trees is denoted by \(\Xi_{\varGamma, \varPi, \varSigma}\).
 
-    A \deflab{head assignment}[head assignment for a constituent tree $(t,p,w)$] is a function \(h\colon \pos(t) \to \DN_+\) assigning each position in the constituent structure \(t\) to one of the leaves at or below it.
-    For each \(\rho \in \lpos(t)\), the value \(h(\rho)\) is \(\xi(\rho)\); for each \(\rho \in \npos(t)\), the value \(h(\rho)\) must be assigned to a child of \(\rho\) as well, that is, \[
+    For each inner node at position \(\rho \in \npos(t)\), we consider exactly one position in \(\yield(t|_\rho)\) as most significant for the constituent symbol \(t(\rho)\), this position is called the \deflab{lexical head}[lexical head of \(t|_\rho\)].
+    The \deflab{lexical head assignment}[lexical head assignment for a constituent tree $(t,p,w)$] is a function \(h\colon \pos(t) \to \DN_+\) that assigns each inner node position \(\rho \in \npos(t)\) to the lexical head of \(t|_\rho\), and each leaf position \(\rho \in \lpos(t)\) to the leaf \(t(\rho)\).
+    For each inner node position \(\rho \in \npos(t)\), the value \(h(\rho)\) must be assigned to a child of \(\rho\) as well, that is, \[
         h(\rho) \in \{ h(\rho') \mid \rho' \in \children_t(\rho) \} \text{.}
     \]
-    The \deflab<head assignment>{lexical head assignment}[lexical head assignment for $(t,p,w)$] is such a head assignment.
-    For each (sub-)phrase within \(w\) that is governed by the node at position \(\rho \in \npos(t)\), it determines the word that is critical for the constituent symbol \(t(\rho)\).
-    We consider the lexical head assignment a complementary and fixed object for each constituent tree; the identifier \(\head_{(t,p,w)}\) denotes the lexical head assignment for \((t,p,w)\).
-    The leaf \(\head_{(t,p,w)}(\rho)\) is called the \deflab{lexical head} of the node at \(\rho\).
+    As the lexical heads have a distinct linguistic connotation, we view the lexical head assignment as a fixed function for each constituent tree \((t,p,w)\); the identifier \(\head_{(t,p,w)}\) denotes the lexical head assignment for \((t,p,w)\).
     When the lexical head assignment is considered in an illustration of a constituent tree, there is exactly one double-struck path exiting each inner node of the constituent structure.
     The assigned lexical head is found by following the double-struck edges down to a leaf.
     For instance, \cref{fig:pre:ctree} shows such an illustration and the lexical head of its root is \(4\) (representing the fourth word ``was'' in $w$).
@@ -317,13 +319,18 @@
         The time is taken for the prediction of a constituent structure for each sentence in the test set.
     This time is reported either as the sum for the whole test set or as quotient \(\frac{\text{number of sentences}}{\text{parsing time}}\) for the number of parsed sentences per second.
 
-    The \emph{evalb}-style labeled \deflab{f1-score} \citep{Black91,Col97} was established as the standard for measuring the accuracy of predicted constituent structures.
+    The labeled \deflab{f1-score}\footnote{
+        The reference implementation for the computation of the labeled f1-score is called \abrv{evalb} \citep{Black91}; sometimes the score also called \abrv{evalb}.
+    } \citep{Black91,Col97} has been established as the standard for measuring the accuracy of predicted constituent structures.
     This score is computed as follows:
-    The sets of predicted and the gold constituent structures are mapped each into a set that contains a tuple \((w, A, \mathit{yd})\) for each constituent structure \(\xi\) with the sequence of tokens \(w\) and each of its inner nodes with label \(A\) and yield \(\mathit{yd}\).
-    According to these two sets \(P\) for all predictions and \(G\) for the gold constituent trees, the precision (\(p = \frac{|P \cap G|}{|P|}\)), recall (\(r = \frac{|P \cap G|}{|G|}\)) and f1-score (\(\frac{2\cdot p\cdot r}{p + r}\)) are computed in the usual fashion.
+    The sets of predicted and the gold\footnote{
+        The term \emph{gold} refers to the data that is supplied in a treebank (cf.\@ \pageref{pg:def:gold}).
+        The gold constituent structures and gold \abrv{pos} tags are the ``correct'' ones  that we compare our predictions to.
+    } constituent structures are mapped each into a set that contains a tuple \((w, A, \mathit{yd})\) for each constituent structure \(\xi\) with the sequence of tokens \(w\) and each of its inner nodes with label \(A\) and yield \(\mathit{yd}\).
+    According to these two sets \(P\) for all predictions and \(G\) for the gold constituent structures, the precision (\(p = \frac{|P \cap G|}{|P|}\)), recall (\(r = \frac{|P \cap G|}{|G|}\)) and f1-score (\(\frac{2\cdot p\cdot r}{p + r}\)) are computed in the usual fashion.
     The \abrv{pos} tags are often part of the prediction but not assessed as part of the f1-score.
     They are rather reported separately as the accuracy of the predicted \abrv{pos} tags compared to the gold ones.
-    The Python tool \emph{discodop} supplies an implementation for both the f1-score of constituent structures and the accuracy of \abrv{pos} tags \citep{CraSchBod16}.
+    The Python tool \texttt{disco-dop} supplies an implementation for both the f1-score of constituent structures and the accuracy of \abrv{pos} tags \citep{CraSchBod16}.
 
     \begin{figure}
         \null\hfill
@@ -426,8 +433,8 @@
     A \deflab{task} defines a general setting of the prediction, including the sets of possible inputs and labels and an assessment function for the predictions.
     Since the domains of inputs and labels strongly depend on available data, it is also a part of the task.
 
-    A \deflab{model}[(prediction) model] is a specification that defines how each input is mapped to a label.
-    Each model chooses a label that optimizes a \deflab{confidence} value (e.g., a score or probability) for a given input, so we view each model as a function that computes this value for each input and label.
+    A \deflab{model}[(prediction) model] is a specification that defines how each input is processed to predict a label.
+    This prediction chooses a label that optimizes a computed \deflab{confidence} value (e.g., a score or probability) for a given input, so we view each model as a function that computes this value for each input and label.
     The model specifies variables (called \deflabs{parameter}) steering the computation of confidence values.
     Let us denote the set of inputs by \(X\), the labels by \(Y\), and the domain of confidence values by \(\mathcal{C}\) with a total order \(\rel\) on \(\mathcal{C}\).
     We view each model as a \(\varTheta\)-parametrized function \(\varphi_\theta\colon X \times Y \to \mathcal{C}\) where \(\theta\) are parameters (or variables) in some associated domain \(\varTheta\).
@@ -446,9 +453,9 @@
 
     \paragraph{Sequence Prediction and Tagging.}
     \emph{Sequence prediction} is a coarse category of tasks where the set of inputs consists of sequences.
-    In such cases, a model is a function of the form \(X^* \times Y \to C\), where \(X\) now denotes the set of individual elements in the input sequences.
+    In such cases, a model is a function of the form \(X^* \times Y \to \mathcal{C}\), where \(X\) now denotes the set of individual elements in the input sequences.
     \deflab{tagging}[Tagging], on the other hand, is a category of tasks within sequence prediction where the set of outputs are sequences as well, and the outputs are of the same length as the input.
-    Such a model for tagging is a function of the form \(\big( \bigcup_{i \in \DN} X^i \times Y^i \big) \to C\), where now also \(Y\) is a set of individual elements in the output sequences; these elements of \(Y\) are called \emph{tags}.
+    Such a model for tagging is a function of the form \(\big( \bigcup_{i \in \DN} X^i \times Y^i \big) \to \mathcal{C}\), where now also \(Y\) is a set of individual elements in the output sequences; these elements of \(Y\) are called \emph{tags}.
     In this thesis, we focus on \deflabs{parallel tagging model}.
     In such models, the confidence values are computed independently for each output position.
     For each parallel tagging model \(\varphi\), each input \(\vec{x} \in X^k\) of length \(k \in \DN_+\), each tag \(y\in Y\) and position \(i \in [k]\), we denote the score of the tag \(y\) at position \(i\) of the output in the form \(\varphi^{(i)}(\vec{x}, y)\).
@@ -461,7 +468,7 @@
 
     \deflab{training}[Training] is the process of tuning the model parameters in terms of a \deflab{training objective}.
     A training objective assesses the assignment of confidence values by a model in a sample of input and output pairs and defines a criterion for optimal parameters.
-    For instance, such an objective can take the shape of maximizing a cumulative confidence function \(c\colon \varTheta \times \power(X \times Y) \to \mathcal{C}\) of the form \(c(\theta, T) = \sum_{(x,y) \in T} \varphi_\theta(x, y)\), where \(T \subseteq X \times Y\) is a sample of gold input and output pairs; the training process then aims for \(\argmax^{\rel}_{\theta \in \varTheta} c(\theta, T)\).
+    For instance, such an objective can take the shape of maximizing a cumulative confidence function \(c\colon \varTheta \times \power(X \times Y) \to \mathcal{C}\) of the form \(c(\theta, T) = \sum_{(x,y) \in T} \varphi_\theta(x, y)\), where \(T \subseteq X \times Y\) is a sample of gold\label{pg:def:gold} input and output pairs; the training process then aims for \(\argmax^{\rel}_{\theta \in \varTheta} c(\theta, T)\).
     In some cases, it is possible to compute the model parameters that optimize the training objective in closed form.
     In other cases, iterative processes change the parameters to improve upon the criterion gradually.
     Despite that the terms learning and training are sometimes used interchangeably, there are some delicate nuances between them.
@@ -485,7 +492,7 @@
         One task that we consider is discontinuous constituent parsing with the \negra{} treebank \citep{Skut98}.
         Consider the alphabets of constituent symbols \(\varGamma\), and \abrv{pos} symbols \(\varPi\) in the \negra{} treebank as well as a set of tokens \(\varSigma\).
         The domain of inputs is the set of sequences over tokens \(\varSigma^*\), and the domain of labels is the set of constituent trees \(\Xi_{\varGamma, \varPi, \varSigma}\).
-        There are distinct sections in the \negra{} treebank that act as training, dev and test portions.
+        There are distinct sections in the \negra{} treebank that act as training, development, and test portions.
 
         Parsing is a process that predicts a constituent structure for a given sequence of tokens.
         Statistical grammars have proven successful in this setting in the past.
@@ -498,7 +505,7 @@
         As the sequence of tokens \(w \in \varSigma^*\) is a part of the constituent tree \(\xi\), the function \(p_{\theta}\) is trivially equivalent to a joint probability distribution \(\hat{p}_\theta\colon \Xi_{\varGamma, \varPi, \varSigma} \times \varSigma^* \to \DR\) that assigns \(\hat{p}_\theta(\xi, w) = p_\theta(\xi)\) if \(w\) is the sequence of tokens in \(\xi\) and \(0\) otherwise.
         Such a form of joint probability distribution over input and output tuples is characteristic for a generative model.
         The values assigned by the function \(\theta\) act as the model parameters; they are restricted to form probability distributions.
-        One approach at training with probabilistic grammars is \emph{maximum likelihood estimation} defined by the objective \(\argmax_{\theta \in \varTheta} \prod{\xi \in T} p_{\theta}(\xi)\) where \(T\) denotes the training portion of the treebank, and \(\varTheta\) is a set of viable probability distributions.
+        One approach at training with probabilistic grammars is \emph{maximum likelihood estimation} defined by the objective \(\argmax_{\theta \in \varTheta} \prod_{\xi \in T} p_{\theta}(\xi)\) where \(T\) denotes the training portion of the treebank, and \(\varTheta\) is a set of viable probability distributions.
         Learning this task is supervised because the training portion \(T\) contains sentences as well as their constituent trees.
     \end{example}
 
@@ -538,7 +545,7 @@
     \subsubsection{Linear Layers, Activation Functions, and Multi-Layer Perceptrons}
     After embeddings, linear layers are an essential part of \abrv{ann}s.
     They are a linear transformation of vectors from a specified input to an output dimension.
-    Formally, let \(m, n \in \DN_+\) be some input and output dimensions.
+    Formally, let \(m, n \in \DN_+\) be some input dimension and output dimension, respectively.
     Then a linear layer is a function \(f_{(W,b)}\colon \DR^m \to \DR^n\) such that \(f_{(W,b)}(x) = Wx+b\), and the matrix \(W \in \DR^{(m\times n)}\) as well as the bias vector \(b\in \DR^n\) are parameters.
 
     Activation functions are a general term for non-linear functions used between compositions of modules and on top of linear layers.

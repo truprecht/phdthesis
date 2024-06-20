@@ -3,9 +3,9 @@
 \begin{document}
     \Inputs \\
         \IOElem{$\ell$}{length of the input sentence}\\
-        \IOElem{$S$}{set of \abrv{dcp} supertags}\\
+        \IOElem{$S$}{set of \abrv{dcp} supertags with nonterminals \(N\)}\\
         \IOElem{$\weight$}{a weight for each supertag \(\weight = (\weight(s) \in \DR \mid s \in S)\)}\\
-        \IOElem{$X$}{one artificial nonterminal for each sentence position $X = \{ X_i \notin N \mid i \in [\ell] \}$}
+        \IOElem{$X$}{a set of nonterminals, one for each sentence position $X = \{ X_i \notin N \mid i \in [\ell] \}$}
     \Outputs \\
         \IOElem{$C$}{family of backtraces \(C = (C_{(A, L)} \subseteq \mathcal{P}(S \times \mathcal{P}([\ell])^*) \mid A \in N, L \subseteq [\ell] )\)}\\
         \IOElem{$W$}{family of best weights \(W = (W_{(A, L)} \in \DR \cup \{-\infty\} \mid A \in N, L \subseteq [\ell] )\)}

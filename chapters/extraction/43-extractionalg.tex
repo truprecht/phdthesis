@@ -3,7 +3,7 @@
 \begin{document}
     \subsection{Lexical Derivation Extraction}\label{sec:extractionalg}
     This small subsection describes how we define a derivation of lexical hybrid grammar rules using the discussed prerequisites.
-    Consider a constituent structure \(\xi\), an admissible guide \(\varphi\) for \(\xi\) and a nonterminal constructor \(\psi\).
+    Consider a constituent structure \(\xi\), an admissible guide \(\varphi\) for \(\xi\), and a nonterminal constructor \(\psi\).
     We define the following two functions using the guide \(\varphi\) and the constituent structure \(\xi\):
     \begin{itemize}
         \item
@@ -76,9 +76,9 @@
     The vanilla, strict, least, and near guide constructors make no assumptions regarding the binarization strategy and can be freely combined.
     However, we suspect the vanilla and strict guide constructors are best combined with right-branching binarization because these guides are defined via the right successor of each node.
 
-    The dependent guide constructor expects a binary constituent structure complemented by a head assignment; thus, it can only be coupled with the head-outward binarization strategy.
-    Similarly, the head guide constructor expects a head assignment and cannot be coupled with the left- or right-branching binarization strategy.
-    Formally, the head-outward binarization strategy produces viable inputs for the head guide constructor, but the canonical head assignments are not helpful when it comes to the extraction:
+    The dependent guide constructor expects a binary constituent structure complemented by a lexical head assignment; thus, it can only be coupled with the head-outward binarization strategy.
+    Similarly, the head guide constructor expects a lexical head assignment and cannot be coupled with the left- or right-branching binarization strategy.
+    Formally, the head-outward binarization strategy produces viable inputs for the head guide constructor, but the canonical lexical head assignments are not helpful when it comes to the extraction:
         A head guide combines all artificial nodes introduced during the binarization and assigns them the same lexical head; hence, the effects of the rank transformation are void.
     The following example illustrates this setting; it produces a rule of rank four that combines all nodes introduced during the head-outward binarization of the former root labeled \cn{s}.
     In our experiments, we use the head guide constructor exclusively in case of no applied rank transformations or in case of the head-inward transformation.

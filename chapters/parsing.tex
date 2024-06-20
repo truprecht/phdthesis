@@ -4,7 +4,7 @@
 \begin{document}
     \chapter{Parsing via Supertagging}\label{chp:parsing}
     This chapter describes a unified framework of a supertagging-based parsing process with the grammar formalisms explained in \cref{sec:grammars}.
-    For this process, we assume an alphabet of tokens \(\varSigma\), an input sentence \(w = (w_i \in \varSigma \mid i \in [\ell])\) of length \(\ell \in \DN_+\), a set of supertag blueprints \(B\) and a set of initial nonterminals \(N_0\)
+    For this process, we assume an alphabet of tokens \(\varSigma\), an input sentence \(w = (w_i \in \varSigma \mid i \in [\ell])\) of length \(\ell \in \DN_+\), a set of supertag blueprints \(B\), and a set of initial nonterminals \(N_0\).
     The parsing process is divided into four consecutive steps as illustrated in \cref{fig:parsing:overview}; the last step is an optional refinement procedure (reranking):
     \begin{enumerate}
         \item\label{parsing:item:1}

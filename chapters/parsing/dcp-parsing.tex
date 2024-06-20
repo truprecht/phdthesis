@@ -54,7 +54,7 @@
     Parsing procedures for \abrv{lcfrs} are well documented, e.g.\@ as described by \citet[Section~7.1]{Kal10}.
     For the case of \(n\)-best parsing, the approach can be extended using the techniques described by \citet{HuaChia05} to enumerate found derivations with increasing weight.
     In previous publications, we used the \abrv{lcfrs} parser implemented by \citet{CraSchBod16} and extended it for our purposes.\footnote{
-        For using \emph{disco-dop} with our predicted supertags, we implemented some transformations to accommodate that it is only able to parse with binary and simple \abrv{lcfrs}.
+        For using the software \texttt{disco-dop} \citep{CraSchBod16} with our predicted supertags, we implemented some transformations to accommodate that it is only able to parse with binary and simple \abrv{lcfrs}.
         Each supertag is transformed into a collection of appropriate rules by splitting the terminal symbol into a separate rule where the supertag is its \abrv{lhs} nonterminal.
         The transformation constructs a ternary rule for each supertag that contains a lexical binary rule; it is then split into two using the usual binarization techniques and introducing a unique intermediate nonterminal.
         These rules are connected using unique nonterminals, so they must occur together in derivations.

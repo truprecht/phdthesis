@@ -10,21 +10,22 @@
         \item
             Constructing lexical \abrv{lcfrs} rules picks a sentence position for each inner node of the constituent structure according to a fixed strategy (cf.\@ step \ref{enum:lcfrs:step3} in \cref{sec:extraction:lcfrs}).
             Such a strategy is now formalized by a \emph{guide} that maps each inner node position of a constituent structure to sentence position in its yield.
-            The concept is generalized by introducing multiple strategies to define guides for a given constituent structure called \emph{guide constructors}.
+            This section introduces multiple strategies to define guides for a given constituent structure; these strategies are called \emph{guide constructors}.
         \item
             LCFRS rules are constructed with constituent symbols as nonterminals, which are then supplemented with annotations during the lexicalization process.
             This section decouples the nonterminals from the other extraction processes and introduces multiple strategies to define them, called \emph{nonterminal constructors}.
     \end{itemize}
+    The nonterminal and guide constructors are chosen before the extraction process with a treebank; both choices, as well as a chosen rank transformation, act as parameters for the extraction process across the whole treebank.
+    Note that there are certain restrictions to the configuration of the parameters, as explained in \cref{sec:viable-paramters}.
     This section picks up on the published generalizations and describes the extraction procedure in a more formal setting with \abrv{lcfrs}/\abrv{dcp} hybrid grammar rules.
-    Similar to the previous section, this extraction process is characterized by four consecutive steps:
+    Similar to the previous section, this extraction process is characterized by four consecutive steps that are applied to each individual constituent tree in the treebank:
     \begin{enumerate}
         \item\label{extraction:hg:ranktrans}
-            The tree is processed by a rank transformation that is compatible with the chosen guide constructor.
-            In some cases, applying no rank transformation at all may be a viable choice.
+            The constituent tree is processed the chosen rank transformation.
         \item\label{extraction:hg:guide}
-            A guide constructor selects a sentence position for each constituent node.
+            The chosen guide constructor defines a guide for the constituent structure.
         \item\label{extraction:hg:alg}
-            An admissible derivation of lexical hybrid grammar rules is constructed using the constituent tree, the guide from the previous step, and a nonterminal constructor.
+            An admissible derivation of lexical hybrid grammar rules is constructed using the constituent structure, the guide from the previous step, and the chosen nonterminal constructor.
             The \abrv{lhs} nonterminal at the root of the derivation is collected as an initial nonterminal.
         \item
             In the final step, the rules are collected as a sequence in the order of their lexical symbols.

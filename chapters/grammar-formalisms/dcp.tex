@@ -23,8 +23,8 @@
         We fix the \(\DN\)-indexed family of finite sets of variable symbols \((\X_k = \{\x_i \mid i \in [k]\} \mid k \in \DN)\), and the singleton set \(\Y = \{\y\}\).
         The identifier \(\X\) denotes the set of the variable symbol \(\x\) with all subscripts \(\X = \{\x_i \mid i \in \DN\}\).
         Let \(\varSigma\) and \(\varGamma\) be alphabets such that both are disjoint from \(\X \cup \Y\).
-        The \(\DN\)-indexed family \((S_k = \{x(v) \mid x \in \X_k, v \in \T_\varGamma(\varSigma \cup Y)^*\} \mid k \in \DN)\) denotes substitution sites with variables up to subscript \(k\).
-        The \(\DN\)-indexed family of \deflabs<composition>{\abrv{dcp} composition} over \(\varSigma\) and \(\varGamma\) is \((\C^{\varGamma\varSigma}_k \mid k \in \DN)\) such that \(\C^{\varGamma\varSigma}_k\) contains each nonempty sequence \(c\) in \((\T_\varGamma(\varSigma \cup \Y \cup S_k))^+\) such that each variable in \(\X_k \cup \Y\) occurs exactly once in \(c\).
+        The \(\DN\)-indexed family \((S_k = \{x(v) \mid x \in \X_k, v \in \T_\varGamma(\varSigma \cup Y)^*\} \mid k \in \DN)\) denotes the substitution sites in \(X(\T_\varGamma(\varSigma \cup Y)^*)\) with variables up to subscript \(k\).
+        The \(\DN\)-indexed family of \deflabs<composition>{\abrv{dcp} composition} over \(\varSigma\) and \(\varGamma\) is \((\C^{\varGamma\varSigma}_k \mid k \in \DN)\) such that \(\C^{\varGamma\varSigma}_k\) contains each nonempty sequence \(c\) in \((\T_\varGamma(\varSigma \cup \Y \cup S_k))^+\) where each variable in \(\X_k \cup \Y\) occurs exactly once.
         The identifier \(\C^{\varGamma\varSigma}\) denotes the set of all \abrv{dcp} compositions \(\bigcup_{k \in \DN} \C^{\varGamma\varSigma}_{k}\).
         We usually abbreviate compositions with a trailing occurrence of the variable \(\y\) by omitting it, and each substitution site of the form \(x(\varepsilon)\) by \(x\) and omitting the empty argument with the wrapping parentheses, as long as it improves the readability.
 
@@ -74,7 +74,7 @@
     \end{example}
 
     When we assume the above form of compositions, \abrv{dcp} grammars, \deflab<derivation>{\abrv{dcp} derivation}[derivations], and most of the concepts of rule and grammar forms are defined analogously to \abrv{lcfrs}; we will refrain from repeating these definitions completely but focus on the differences.
-    As we have seen, \abrv{dcp} compositions contain elements from two alphabets, \(\varGamma\) for inner nodes (which we assume to be constituent symbols) and  \(\varSigma\) for leaf nodes (tokens or sentence positions, respectively), only the symbols in \(\varSigma\) are considered lexical symbols.
+    As we have seen, \abrv{dcp} compositions contain elements from two alphabets, \(\varGamma\) for inner nodes (which we assume to be constituent symbols) and  \(\varSigma\) for leaf nodes (tokens or sentence positions, respectively), only the symbols in \(\varSigma\) are considered as lexical symbols.
     The tuple for a \abrv{dcp} grammar is extended by the additional alphabet; it is of the form \((N, \varGamma, \varSigma, S, R)\).
     There is no fanout in \abrv{dcp} because the sequences of trees produced by the above compositions are not meant to be separated.
     To avoid that a derivation for an initial nonterminal produces more than one tree, we require that the composition in each rule of rank \(k>0\) whose \abrv{lhs} nonterminal is in \(S\) is either of the form \(\gamma( \omega) \y\) or \(\gamma(\omega)\) for some \(\gamma \in \varGamma\) and \(\omega \in \T_\varGamma(\varSigma \cup S_k)^+\); that is, there is at least one inner node that assembles the results of all successor rules.
@@ -91,7 +91,7 @@
     }
     The identifier \(\aderivs^{R'}\) denotes the set of admissible derivations in \(R'\).
     For each derivation \(d \in \aderivs^{R'}\), the \deflab{constituent structure for a \abrv{dcp} derivation}[constituent structure for \(d\)] is the yield of \(d\).
-    For each set of derivations \(D \subseteq \derivs^{R'}\) of \abrv{dcp} rules, we define the \(N\)-indexed family \((D_A \subseteq D \mid A \in N)\) such that each derivation in \(D_A\) is rooted in a rule with the \abrv{lhs} nonterminal \(A\); and, for each \(\pi \subseteq [n]\), we denote the set of all derivations with the lexical symbols \(\pi\) by \(D(\pi) = \{d\in D \mid \mathrm{lex}(d) = \pi\}\).
+    For each set of \abrv{dcp} derivations \(D \subseteq \derivs^{R'}\), we define the \(N\)-indexed family \((D_A \subseteq D \mid A \in N)\) such that each derivation in \(D_A\) is rooted in a rule with the \abrv{lhs} nonterminal \(A\); and, for each \(\pi \subseteq [n]\), we denote the set of all derivations with the lexical symbols \(\pi\) by \(D(\pi) = \{d\in D \mid \mathrm{lex}(d) = \pi\}\).
 
     \begin{example}[Continues \cref{ex:dcp:comp}]\NoEndMark
         Consider a \abrv{dcp} \((N, \varGamma, [|w|], \nt{s}, R)\) that is a position instantiation for \(w = \text{``where the survey was carried out''}\), with \(N = \{\nt{v}^\nt{L}, \nt{v}, \nt{n}, \nt{s} \}\) and \(\varGamma = \{\cn{vp}, \cn{sbar}, \cn{s}, \cn{np}\}\), and
@@ -106,7 +106,7 @@
             \quad \Big\} \text{.}
         \end{align*}
 
-        The tree \(d\) illustrated below (left) is a derivation in \(\derivs^R_\nt{s}\), its constituent structure \(\yield(d)\) is shown to the right.
+        The tree \(d\) illustrated below (left) is a derivation in \(\aderivs^R_\nt{s}\), its constituent structure \(\yield(d)\) is shown to the right.
         A part of the computations (for the bottom \(\cn{vp}\)-node) was already shown in the previous example in detail.
 
         \null\hfill
@@ -149,13 +149,13 @@
                 a common ancestor position \(\rho_0 \in \bigcap_{i \in [k]} \ancestors(\rho_i)\), as well as
             \item
                 a non-empty set of leaves \((L_i \subseteq \yield(\xi|_{\rho_i}) \mid i \in [0, k])\) for each of the positions such that
-                \(L_0\) subsumes all other sets: \(\bigcup_{i\in[k]} L_i \subseteq L_0\). Additionally, \(L_i\) must differ at most by one leaf from the set of leaves \(\yield(\xi|_{\rho_i})\) for each \(i \in [0,k]\).
+                \(L_0\) subsumes all other sets: \(\bigcup_{i\in[k]} L_i \subseteq L_0\). Additionally, for each \(i \in [0,k]\), the set \(\yield(\xi|_{\rho_i})\) must contain at most one additional leaf compared to \(L_i\).
         \end{itemize}
 
         The \abrv{dcp} composition \(c \in \C^{\varGamma L_0}_k\) for \(\xi\) and \(((\rho_i, L_i) \mid i \in [0,k])\) is defined as follows:
         \begin{itemize}
             \item
-                The \([k]\)-indexed family of substitution site arguments \((\omega_i \in L_0 \cup \{\varepsilon\} \mid i \in [k])\) is defined such that, for each \(i\in[k]\), \(\omega_i = \varepsilon\) if \(\yield(\xi|_{\rho_i}) = L_i\) and otherwise there is an \(\ell_i \in \yield(\xi|_{\rho_i})\) such that \(\yield(\xi|_{\rho_i}) = L_i \cup \{\ell_i\}\) and \(\omega_i = \ell_i\).
+                The \([k]\)-indexed family of substitution site arguments \((\omega_i \in L_0 \cup \{\varepsilon\} \mid i \in [k])\) is defined such that, for each \(i\in[k]\), if \(\yield(\xi|_{\rho_i}) = L_i\) then \(\omega_i = \varepsilon\) and otherwise \(\omega_i = \ell_i\) where \(\ell_i \in \yield(\xi|_{\rho_i})\) is the leaf such that \(\yield(\xi|_{\rho_i}) = L_i \cup \{\ell_i\}\).
             \item
                 The composition \(c' \in \C^{\varGamma\,\yield(\xi|_{\rho_0})}_k\) is obtained from \(\xi|_{\rho_0}\) be replacing each subtree at position \(\rho_i\) with the substitution site \(\x_i(\omega_i)\) for each \(i \in [k]\).
             \item
@@ -171,7 +171,7 @@
         The composition \(\mathrm{scomp}(\xi, (\rho_0, L_0), (\rho_1, L_1), (\rho_2, L_2))\) is obtained as follows:
         \begin{itemize}
             \item  we define two arguments for second-order substitution, \(\omega_1 = \varepsilon\) since \(L_1 = \yield(\xi|_{\rho_1})\), and \(\omega_2 = 2\) since \(L_2 = \yield(\xi|_{\rho_2}) \setminus \{2\}\);
-            \item \(c'\) consists of the nodes in \(\xi\) starting with the root \(\rho_0 = \varepsilon\) to the bottom up to the positions \(\rho_1\) and \(\rho_2\) which are replaced by the variables \(\x_1\) and \(\x_2\) extended by the parameters \(\omega_1\) and \(\omega_2\), it is \(c' = \cn{sbar}(\cn{s} (\x_1(\varepsilon), \x_2(2)))\),
+            \item \(c'\) consists of the nodes in \(\xi\) starting with the root \(\rho_0 = \varepsilon\) down to the positions \(\rho_1\) and \(\rho_2\); the subtrees at \(\rho_1\) and \(\rho_2\) are replaced by the substitution sites \(\x_1(\omega_1)\) and \(\x_2(\omega_2)\), respectively; we obtain \(c' = \cn{sbar}(\cn{s} (\x_1(\varepsilon), \x_2(2)))\),
             \item the composition \(c\) is \(c'\) extended by a trailing occurrence of the variable \(\y\), since \(L_0 = \yield(\xi_{\rho_0})\), hence \(\mathrm{scomp}(\xi, (\rho_0, L_0), (\rho_1, L_1), (\rho_2, L_2)) = \cn{sbar}(\cn{s} (\x_1(\varepsilon), \x_2(2))) \, \y\).
         \end{itemize}
  
@@ -211,7 +211,7 @@
     \end{example}
 
     \begin{lemma}
-        Let \(\xi \in \itrees_{\varGamma}\), \(k \in \DN\) and \(((\rho_i, L_i) \in \pos(\xi) \times \power(\yield({\xi})) \mid i \in [0,k])\) be an indexed tree, positions and sets of leaves as specified in \cref{def:dcp:comp}.
+        Let \(\xi \in \itrees_{\varGamma}\), \(k \in \DN\), and \(((\rho_i, L_i) \in \pos(\xi) \times \power(\yield({\xi})) \mid i \in [0,k])\) be an indexed tree, positions, and sets of leaves, respectively, as specified in \cref{def:dcp:comp}.
         Moreover, let \((\xi_i' \in \T_\varGamma(\yield(\xi|_{\rho_i}) \cup \{\y\}) \mid i \in [0,k])\) be trees such that, for each \(i \in [0,k]\) the tree \(\xi_i'\) is obtained from \(\xi|_{\rho_i}\) as follows:
         \begin{compactitem}
             \item if \(\yield(\xi|_{\rho_i}) \neq L_i\), then by replacing the leaf in \(\yield(\xi|_{\rho_i}) \setminus L_i\) with the variable \(\y\),

@@ -45,7 +45,7 @@
         \subfile{figures/lcfrs/ctree.tex}
         \hspace{.5cm}
         \begin{minipage}{.4\linewidth}
-            \subcaption{Example for a binary constituent structure from the running example shown in \cref{fig:ex:binarization}.}
+            \subcaption{Step \ref{enum:lcfrs:step1} constructs a binary constituent structure with fanout annotations. This example shows a constituent structure obtained with right-branching binarization from the running example shown in \cref{fig:ex:binarization:5}.}
         \end{minipage}
 
         \vspace{1cm}
@@ -53,7 +53,7 @@
         \begin{minipage}{.4\linewidth}
             \subcaption{
                 Step \ref{enum:lcfrs:step2} constructs a binary \abrv{lcfrs} derivation for the constituent structure above.
-                Gray dashed arrows indicate the transportation of terminal symbols in step \ref{enum:lcfrs:step3}.
+                Gray dashed arrows indicate the transportation of terminal symbols in the following step \ref{enum:lcfrs:step3}.
             }
         \end{minipage}
         \hspace{.5cm}
@@ -96,7 +96,7 @@
     Let \((\xi, \pi, w)\) be a binary constituent tree.
     We use the usual techniques for \abrv{lcfrs} rule induction to read a derivation \(d\) from the constituent structure \(\xi\).
     There are no rules involving the \abrv{pos} symbols \(\pi\) in the derivation \(d\).
-    The terminal symbols in \(d\) are the leaves in \(\xi\). We can consider it an implicit instantiation in the string \(w\).
+    The terminal symbols in \(d\) are the leaves in \(\xi\). We can consider it as an implicit instantiation in the string \(w\).
     Specifically, \(d\) is a tree over \abrv{lcfrs} rules such that \(\pos(d) = \npos(\xi)\) and at each position \(\rho \in \pos(d)\) the rule \(d(\rho) = r\) is as follows:
     \begin{compactitem}
         \item The \abrv{lhs} nonterminal in \(r\) is \(\xi(\rho)\).
@@ -163,7 +163,7 @@
 %            Then \(\pi' = \pi \setminus \{i\}\) is the set of positions in \(t|_\rho\).
 %            The \abrv{lhs} nonterminal in \(r\) is that in \(d(\rho)\) plus the annotation \(^{\pm 0}\) if \(gaps(\pi') = gaps(\pi)\), otherwise plus the annotation \(^{-1}\) and it holds \(gaps(\pi') = gaps(\pi)-1\).
 %            The composition in \(r\) is unambiguously determined by \(\mathrm{comp}\) via \(\pi'\) and the sets of positions in the subtrees below \(\rho\) in \(t\).
-%            The boolean \(s\) is ``true'' if and only if \(d(\rho)\) is unary and \(i\) is the lexical symbol in \(d(\rho)\).
+%            The Boolean \(s\) is ``true'' if and only if \(d(\rho)\) is unary and \(i\) is the lexical symbol in \(d(\rho)\).
 %    \end{compactitem}
 
 

@@ -13,9 +13,9 @@
         \begin{scope}[edge from parent path={(\tikzparentnode.south) -- ++(0,-1mm) -| (\tikzchildnode.north)}, every path/.style={line width=.2ex}]
             \node (croot) {\cn{vp}}
             [sibling distance=11ex]
-            child { node {\cn{vp}}
+            child { node {$\cn{vp}_2$}
                 [sibling distance=12ex]
-                child { node {\cn{np}}
+                child { node {$\cn{np}_2$}
                     [sibling distance=8ex]
                     child { node {\cn{np}}
                         [sibling distance=2.5ex]
@@ -28,7 +28,7 @@
                             [sibling distance=2.5ex]
                             child { node {6}}
                             child { node {7}}}}}
-                child { node {\cn{vp\binsym{}}}
+                child { node {$\cn{vp\binsym{}_2$}}
                     [sibling distance=2.5ex]
                     child {node {4}}
                     child {node (mid) {8}}}}

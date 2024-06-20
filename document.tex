@@ -15,6 +15,9 @@
 \appto{\theindex}{\spaceskip=.33333em plus .33333em minus .11111em }
 \makeindex
 
+% subcaptions with roman literals
+\renewcommand\thesubfigure{\roman{subfigure}}
+
 % fix multiple defined references by algorithmicx
 % https://tex.stackexchange.com/questions/177025/hyperref-cleveref-and-algpseudocode-same-identifier-warning
 \makeatletter

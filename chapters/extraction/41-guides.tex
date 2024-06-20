@@ -157,7 +157,7 @@
 
     \begin{example}
         The values assigned by the strict guide are independent of each other.
-        E.g.\@ we may determine the values \(\mathrm{strict}(\xi)(2) = \min\;\yield(\xi|_{2\,2}) = \min\;\{3\} = 3\) or \(\mathrm{strict}(\xi)(1\,1) = \min\;\yield(\xi|_{1\,1\,2}) = \mid\;\{5,6\}\) without computing any other values beforehand.
+        E.g.\@ we may determine the values \(\mathrm{strict}(\xi)(2) = \min\;\yield(\xi|_{2\,2}) = \min\;\{3\} = 3\) or \(\mathrm{strict}(\xi)(1\,1) = \min\;\yield(\xi|_{1\,1\,2}) = \min\;\{5,6\} = 5\) without computing any other values beforehand.
     \end{example}
 
     \paragraph{Least and Near Guide Constructors.}
@@ -175,7 +175,7 @@
     \end{inparaenum}
     This is formalized in the equation
     \[
-    g(\xi)(\rho) = \xi\big( \min^{\unlhd} \: \big\{\rho' \in \descendants_\xi(\rho) \cap \lpos(\xi) \mid \xi(\rho') \notin L^g_\rho \big\} \big)
+    g(\xi)(\rho) = \xi\big( \mathrm{min}^{\unlhd} \: \big\{\rho' \in \descendants_\xi(\rho) \cap \lpos(\xi) \mid \xi(\rho') \notin L^g_\rho \big\} \big)
     \]
     where \(g\) is one of \(\{\mathrm{least}, \mathrm{near}\}\), and \(\unlhd\) is the total ordering of tree positions according to breadth-first search and set \(L^g_\rho\) keeps track of the previously assigned leaves.
     The total order \(\unlhd \subseteq \DN^* \times \DN^*\) is defined such that \(\rho \unlhd \tau\) if and only if \(|\rho| < |\tau|\) or \(|\rho| = |\tau| \land \rho <^* \tau\) (\(<^*\) denotes the lexicographic order of integer sequences).
@@ -242,7 +242,7 @@
         When \(\mathrm{near}(\xi)(2)\) is determined, the leaf \(2\) is excluded as a potential value, which leaves us the leaf \(3\).
     \end{example}
 
-    Whereas the previous constructors were defined solely according to the constituent structure, the remaining two take a head assignment into account to incorporate further linguistic information into the extraction process.
+    Whereas the previous constructors were defined solely according to the constituent structure, the remaining two take a lexical head assignment into account to incorporate further linguistic information into the extraction process.
     This also requires special treatment concerning binarization, which is applied to the constituent structures for the two following guide constructors.
     This is explained further in the following paragraphs.
 
@@ -262,7 +262,7 @@
     \Cref{sec:extractionalg} shows an example of the extraction of a derivation using the head guide.
 
     \begin{theorem}
-        Let \(\xi\) be an indexed tree with a head assignment.
+        Let \(\xi\) be an indexed tree with a lexical head assignment.
         \begin{compactenum}
             \item \(\mathrm{hguide}(\xi)(\rho)\) is well-defined for each \(\rho \in \pos(\xi)\) and \(\mathrm{hguide}(\xi)\) is a guide for \(\xi\).
             \item \(\mathrm{hguide}(\xi)\) is admissible.
@@ -270,10 +270,10 @@
     \end{theorem}
 
     \begin{proof}
-        Item (i) follows trivially from the definition of head assignments, as they map each inner node to a leaf in its yield.
-        For item (ii), we consider the properties of head assignments:
+        Item (i) follows trivially from the definition of lexical head assignments, as they map each inner node to a leaf in its yield.
+        For item (ii), we consider the properties of lexical head assignments:
         Consider a position \(\rho \in \npos(\xi)\).
-        By the structure of head assignments, \(\mathrm{hguide}(\xi)(\rho) = \head_{(\xi,p,w)}(\rho)\) is a leaf directly below \(\rho\) or the head of a child of \(\rho\).
+        By the structure of lexical head assignments, \(\mathrm{hguide}(\xi)(\rho) = \head_{(\xi,p,w)}(\rho)\) is a leaf directly below \(\rho\) or the head of a child of \(\rho\).
         Therefore, any ancestor of \(\rho\) cannot be assigned to any leaf below \(\rho\) but \(\head_{(\xi,p,w)}(\rho)\), and the function satisfies the property (i) for admissible guides.
         For the property (ii), we consider a descendant position \(\rho' \in \descendants_\xi(\rho) \setminus \{\rho\}\).
         If \(\head_{(\xi,p,w)}(\rho) = \head_{(\xi,p,w)}(\rho')\), we see again quickly the property as mentioned earlier that this leaf must also be the head at all positions between \(\rho\) and \(\rho'\).
@@ -294,7 +294,7 @@
     \]
 
     \begin{claim}
-        Let \(\xi\) be a head-outward binarized indexed tree with a head assignment.
+        Let \(\xi\) be a head-outward binarized indexed tree with a lexical head assignment.
         \begin{compactenum}
             \item \(\mathrm{dguide}(\xi)(\rho)\) is well-defined for each \(\rho \in \pos(\xi)\).
             \item \(\mathrm{dguide}(\xi)\) is a guide for \(\xi\).
