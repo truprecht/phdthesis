@@ -91,13 +91,13 @@
     \end{figure}
 
     \paragraph{Left- or Right-Branching Binarization.}
-    These strategies replace each node \(\rho_0\) that has \( n>2 \) successors \(\rho_1, \ldots, \rho_n\) with a series of \( n-1 \) binary nodes \(\ceta_1, \ldots, \ceta_{n-1}\).
+    These strategies replace each node \(\rho_0\) that has \( n>2 \) successors \(\rho_1, \ldots, \rho_n\) with a series of \( n-1 \) binary nodes \(\zeta_1, \ldots, \zeta_{n-1}\).
     The \deflab{right-branching binarization}[right-branching strategy] \defabrv{right-branching binarization}{\abrv{rb}} constructs this sequence of nodes as follows:
     \begin{itemize}
-        \item The first node \(\ceta_1\) has the same symbol as the original node \(\rho_0\).
-        \item For each \(2 \leq i \leq n-1\), the symbol for the node \(\ceta_i\) consists of the symbol of the original node \(\rho_0\) and the symbols of its rightmost \(n-i+1\) successors \(\rho_{i}, \ldots, \rho_n\). Each of these symbols is denoted in the form \(A\binsym{B_i,B_{i+1},\ldots,B_n}\) where \(A\) is symbol at \(\rho_0\) and \(B_1, \ldots, B_n\) are the symbols at its children \(\rho_1, \ldots, \rho_n\).
-        \item For each \(1 \leq i \leq n-2\), the left successor of the node \(\ceta_i\) is the node \(\rho_i\), and its right successor is \(\ceta_{i+1}\).
-        \item The successors of the last node \(\ceta_{n-1}\) are \(\rho_{n-1}\) and \(\rho_{n-2}\).
+        \item The first node \(\zeta_1\) has the same symbol as the original node \(\rho_0\).
+        \item For each \(2 \leq i \leq n-1\), the symbol for the node \(\zeta_i\) consists of the symbol of the original node \(\rho_0\) and the symbols of its rightmost \(n-i+1\) successors \(\rho_{i}, \ldots, \rho_n\). Each of these symbols is denoted in the form \(A\binsym{B_i,B_{i+1},\ldots,B_n}\) where \(A\) is symbol at \(\rho_0\) and \(B_1, \ldots, B_n\) are the symbols at its children \(\rho_1, \ldots, \rho_n\).
+        \item For each \(1 \leq i \leq n-2\), the left successor of the node \(\zeta_i\) is the node \(\rho_i\), and its right successor is \(\zeta_{i+1}\).
+        \item The successors of the last node \(\zeta_{n-1}\) are \(\rho_{n-1}\) and \(\rho_{n-2}\).
     \end{itemize}
     The \deflab{left-branching binarization}[left-branching strategy] \defabrv{left-branching binarization}{\abrv{lb}} mirrors the right-branching strategy: It constructs a series of binary nodes connected via their left successors in the opposite direction.
     If a binarized constituent tree was complemented by a lexical head assignment, then it is lost after applying the left- or right-branching binarization strategy; there is no reasonable lexical head assignment that can be obtained after such binarization.
