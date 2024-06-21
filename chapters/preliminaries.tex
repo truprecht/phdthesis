@@ -131,7 +131,7 @@
     \end{inparaenum}
     As such, trees are finite structures, but unlike strings, we do not consider empty trees.
 
-    A \deflab{node in a tree}[node in the tree \(t \in \T_\varSigma(\varGamma)\)] is an occurrence of a symbol in \(\varSigma \cup \varGamma\) within \(t\); it is a combination of the symbol \(\sigma\) and the position in the sequence that it occurs at.
+    A \deflab{node in a tree}[node in the tree \(t \in \T_\varSigma(\varGamma)\)] is an occurrence of a symbol in \(\varSigma \cup \varGamma\) within \(t\); it is a combination of the symbol \(\sigma\) and the position in the sequence where it occurs.
     If a node \(\rho\) in \(t\) is accompanied by a sequence of trees denoted in parentheses behind the symbol, these trees are called the \deflab{child trees/nodes}[children] or \deflab{successor trees/nodes}[successors] of \(\rho\); analogously their roots are called child/successor nodes of \(\rho\).
     Vice versa, from the viewpoint of a child node, the node before the wrapping parenthesis is called the \deflab{parent node}[parent].
     Each other node within the same set of parentheses and at the same level of nesting is called a \deflab{sibling}.
@@ -270,8 +270,8 @@
 
     Now, let us formalize the above.
     We assume a set \(\varSigma\) of words, punctuation marks, parentheses, etc.\@ that are used to form sentences; we call the elements in \(\varSigma\) \deflabs{token}.
-    Additionally, there are two alphabets: The set \(\varPi\) of \abrv{pos} tags and the set \(\varGamma\) of constituent symbols.
     \(\varSigma^*\) denotes the set of all strings over these tokens, a superset that contains all grammatical sentences (and also everything else that consists of the tokens in \(\varSigma\)).
+    Additionally, there are two alphabets: the set \(\varPi\) of \abrv{pos} tags and the set \(\varGamma\) of constituent symbols.
 
     A \deflab{constituent tree} is a triple \((t, p, w)\) where
     \begin{compactitem}
@@ -306,7 +306,7 @@
     Besides constituent trees, there are also \deflabs{dependency tree} that express a syntactic analysis of natural language.
     They present grammatical relations between phrases within a sentence, such as arguments, adjuncts, complements, and sometimes even more fine-grained ones, like distinctions between subjects and objects.
     These relations are illustrated in a tree where each phrase is represented by its lexical head.
-    There are similar phenomena as (dis-)continuity in dependency trees. They are referred to as \emph{(un-)projectivity}.
+    There are similar phenomena as (dis-)continuity in dependency trees. They are referred to as \emph{(non-)projectivity}.
     We will not engage in dependency trees in this work. Some references are discussed in \cref{sec:literature:beyond}.
 
     \subsection{Assessing the Prediction of Constituent Structures}
@@ -546,7 +546,7 @@
     After embeddings, linear layers are an essential part of \abrv{ann}s.
     They are a linear transformation of vectors from a specified input to an output dimension.
     Formally, let \(m, n \in \DN_+\) be some input dimension and output dimension, respectively.
-    Then a linear layer is a function \(f_{(W,b)}\colon \DR^m \to \DR^n\) such that \(f_{(W,b)}(x) = Wx+b\), and the matrix \(W \in \DR^{(m\times n)}\) as well as the bias vector \(b\in \DR^n\) are parameters.
+    Then a linear layer is a function \(f_{(W,b)}\colon \DR^m \to \DR^n\) such that \(f_{(W,b)}(x) = Wx+b\), and the matrix \(W \in \DR^{(n\times m)}\) as well as the bias vector \(b\in \DR^n\) are parameters.
 
     Activation functions are a general term for non-linear functions used between compositions of modules and on top of linear layers.
     Some options implement desirable properties or interpretations, such as the following:

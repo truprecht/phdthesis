@@ -91,11 +91,11 @@
     \end{definition}
 
     \begin{example}[Continues \cref{ex:lcfrs:comp}]\label{ex:lcfrs:rules}
-        Consider the alphabet of nonterminal symbols \(\mathrm{N} = \{\nt{v}, \nt{v}_2, \nt{n}, \nt{n}_2, \nt{p}, \arg(\nt{n})\}\) and the \abrv{lcfrs} \(\mathrm{G} = (\mathrm{N}, \Sigma, \{\nt{v}\}, \mathrm{R})\) with
+        Consider the alphabet of nonterminal symbols \(\mathrm{N} = \{\nt{v}, \nt{v}_2, \nt{n}, \nt{n}_2, \nt{p}, \nt{d}\}\) and the \abrv{lcfrs} \(\mathrm{G} = (\mathrm{N}, \Sigma, \{\nt{v}\}, \mathrm{R})\) with
         \begin{align*}
             \mathrm{R} = \big\{\;
-            \arg(\nt{n}) &\to (\tn{A}), &\nt{n} &\to (\tn{issue}), &\nt{n} &\to (\tn{today}), &\\
-            \nt{n} &\to (\x_1^1 \, \tn{hearing})\:(\arg(\nt{n})), &\nt{p} &\to (\tn{the}\,\x_1^1)\:(\nt{n}), \\
+            \nt{d} &\to (\tn{A}), &\nt{n} &\to (\tn{issue}), &\nt{n} &\to (\tn{today}), &\\
+            \nt{n} &\to (\x_1^1 \, \tn{hearing})\:(\nt{d}), &\nt{p} &\to (\tn{the}\,\x_1^1)\:(\nt{n}), \\
             \nt{n}_2 &\to (\x_1^1, \tn{on} \, \x_2^1)\:(\nt{n}, \nt{p}), \\
             \nt{v}_2 &\to (\x_1^1, \tn{scheduled} \, \x_1^2 \, \x_2^1)\:(\nt{n}_2, \nt{n}), \\
             \nt{v} &\to (\x_1^1 \, \tn{is} \, \x_1^2)\:(\nt{v}_2)
@@ -132,8 +132,8 @@
         \null\hfill
         \begin{tikzpicture}[level distance=6ex, font=\small, sibling distance=3.7cm, inner sep=2pt]
             \node (root) {\(\nt{n}_2 \to (\x_1^1, \tn{on} \, \x_2^1)\:(\nt{n}, \nt{p})\)}
-            child {node {\(\nt{n} \to (\x_1^1 \, \tn{hearing})\:(\nt{n}^\nt{L})\)}
-                child {node {\(\nt{n}^\nt{L} \to (\tn{A})\)}}}
+            child {node {\(\nt{n} \to (\x_1^1 \, \tn{hearing})\:(\nt{d})\)}
+                child {node {\(\nt{d} \to (\tn{A})\)}}}
             child {node {\(\nt{p} \to (\tn{the}\,\x_1^1)\:(\nt{n})\)}
                 child {node {\(\nt{n} \to (\tn{issue})\)}}};
         \end{tikzpicture}
@@ -178,8 +178,8 @@
         \null\hfill
         \begin{tikzpicture}[level distance=6ex, font=\small, sibling distance=3.7cm, inner sep=2pt]
             \node {\(\nt{n}_2 \to (\x_1^1, \tn{5} \, \x_2^1)\:(\nt{n}, \nt{p})\)}
-            child {node {\(\nt{n} \to (\x_1^1 \, \tn{2})\:(\nt{n}^\nt{L})\)}
-                child {node {\(\nt{n}^\nt{L} \to (\tn{1})\)}}}
+            child {node {\(\nt{n} \to (\x_1^1 \, \tn{2})\:(\nt{d})\)}
+                child {node {\(\nt{d} \to (\tn{1})\)}}}
             child {node {\(\nt{p} \to (\tn{6}\,\x_1^1)\:(\nt{n})\)}
                 child {node {\(\nt{n} \to (\tn{7})\)}}};
         \end{tikzpicture}
@@ -188,7 +188,7 @@
             \node {\(\nt{n}_2\)}
             child {node {\(\nt{n}\)}
                 [sibling distance=3em]
-                child {node {\(\nt{n}^\nt{L}\)}
+                child {node {\(\nt{d}\)}
                     child { node {\(\tn{1}\)}}}
                 child {node {\(\tn{2}\)}}}
             child {node {\(\tn{5}\)}}
@@ -211,8 +211,9 @@
         The \deflab{linearization} of \(\pi\) is the sequence of the greatest contiguous sequences within \(\pi\); that is, the sequence \((w_j \in \pi^+ \mid j \in [s])\) such that
         \begin{compactitem}
             \item \(s = |\{i \in \pi \mid i+1 \notin \pi\}|\) is the number of the greatest contiguous sets in \(\pi\),
-            \item \(w_j\) is a contiguous sequence of positive integers for each \(j \in [s]\),
-            \item for each \(j \in [s-1]\), the last (and therefore greatest) element in \(w_j\) is at least two less than the first (and therefore least) element in \(w_{j+1}\).
+            \item \(w_j\) is a contiguous sequence of increasing positive integers for each \(j \in [s]\),
+            \item for each \(j \in [s]\), if \(i\) is the first (and therefore smallest) element in \(w_j\), then \(i-1 \notin \pi\); vice versa, if \(i\) is the last (and therefore greatest) element in \(w_j\), then \(i+1 \notin \pi\).
+            % \item for each \(j \in [s-1]\), the last (and therefore greatest) element in \(w_j\) is at least two less than the first (and therefore least) element in \(w_{j+1}\).
         \end{compactitem}
         The positive integer \(s\) is called \deflab<fanout>{fanout of a set}[fanout of the set \(\pi\)].
     \end{definition}

@@ -94,15 +94,15 @@
     For each set of \abrv{dcp} derivations \(D \subseteq \derivs^{R'}\), we define the \(N\)-indexed family \((D_A \subseteq D \mid A \in N)\) such that each derivation in \(D_A\) is rooted in a rule with the \abrv{lhs} nonterminal \(A\); and, for each \(\pi \subseteq [n]\), we denote the set of all derivations with the lexical symbols \(\pi\) by \(D(\pi) = \{d\in D \mid \mathrm{lex}(d) = \pi\}\).
 
     \begin{example}[Continues \cref{ex:dcp:comp}]\NoEndMark
-        Consider a \abrv{dcp} \((N, \varGamma, [|w|], \nt{s}, R)\) that is a position instantiation for \(w = \text{``where the survey was carried out''}\), with \(N = \{\nt{v}^\nt{L}, \nt{v}, \nt{n}, \nt{s} \}\) and \(\varGamma = \{\cn{vp}, \cn{sbar}, \cn{s}, \cn{np}\}\), and
+        Consider a \abrv{dcp} \((N, \varGamma, [|w|], \nt{s}, R)\) that is a position instantiation for \(w = \text{``where the survey was carried out''}\), with \(N = \{\nt{d}, \nt{v}, \nt{n}, \nt{s} \}\) and \(\varGamma = \{\cn{vp}, \cn{sbar}, \cn{s}, \cn{np}\}\), and
         \begin{align*}
             R = \Big\{ \quad
-            \nt{v}^\nt{L} &\to (\tn{1} \, \y),
+            \nt{d} &\to (\tn{1} \, \y),
             \quad \nt{v} \to (\y \, \tn{6}),
             &\nt{n} &\to (\cn{np} (\y \, \tn{3})), \\
             \nt{v} &\to (\cn{vp}(\x_1(\y) \, \tn{4}))\:(\nt{v}),  \\
             \nt{s} &\to (\cn{sbar} (\cn{s} (\x_1(\y) \, \x_2(\tn{2}))))\:(\nt{v}, \nt{n}),
-            &\nt{v} &\to (\cn{vp}(\x_1(\y) \, \x_2(\tn{5})))\:(\nt{v}^\nt{L}, \nt{v})
+            &\nt{v} &\to (\cn{vp}(\x_1(\y) \, \x_2(\tn{5})))\:(\nt{d}, \nt{v})
             \quad \Big\} \text{.}
         \end{align*}
 
@@ -113,8 +113,8 @@
         \begin{tikzpicture}[level distance=6ex, font=\small, sibling distance=3.7cm, inner sep=2pt]
             \node {\(\nt{s} \to (\cn{sbar} (\cn{s} (\x_1(\y) \, \x_2(\tn{2}))))\:(\nt{v}, \nt{n})\)}
                 child {node {\(\nt{v} \to (\cn{vp}(\x_1(\y) \, \tn{4}))\:(\nt{v})\)}
-                    child {node {\(\nt{v} \to (\cn{vp}(\x_1(\y) \, \x_2(\tn{5})))\:(\nt{v}^\nt{L}, \nt{v})\)}
-                        child {node {\(\nt{v}^\nt{L} \to (\tn{1} \, \y)\)}}
+                    child {node {\(\nt{v} \to (\cn{vp}(\x_1(\y) \, \x_2(\tn{5})))\:(\nt{d}, \nt{v})\)}
+                        child {node {\(\nt{d} \to (\tn{1} \, \y)\)}}
                         child {node {\(\nt{v} \to (\y \, \tn{6})\)}}}}
                 child {node {\(\nt{n} \to (\cn{np} (\y \, \tn{3}))\)}};
         \end{tikzpicture}

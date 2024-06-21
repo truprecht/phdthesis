@@ -2,8 +2,8 @@
 
 \begin{document}
     \newcommand{\staglist}[2][4cm]{\tikz[every node/.style={text width=#1, draw, rounded corners, line width=.3mm, align=left}]{%
-            \node[fill=black!40] (stag1) {\vphantom{\strut $V^L\xrightarrow{0.2}$}};
-            \node[fill=black!20, below right=.1cm of stag1.north west, anchor=north west] (stag2) {\vphantom{\strut $V^L\xrightarrow{0.2}$}};
+            \node[fill=black!40] (stag1) {\vphantom{\strut $D\xrightarrow{0.2}$}};
+            \node[fill=black!20, below right=.1cm of stag1.north west, anchor=north west] (stag2) {\vphantom{\strut $D\xrightarrow{0.2}$}};
             \node[fill=black!5, below right=.1cm of stag2.north west, anchor=north west] {\strut\  #2};}}
     
     \begin{tikzpicture}[font=\small, node distance=1em, remember picture]
@@ -24,16 +24,16 @@
                 $\nt{S} \to (\cn{sbar}(\cn{s} (\x_1, \x_2(\tn{*}))))\;(\nt{V}_2, \nt{N})$\\
                 $\nt{N} \to (\cn{np}(y, \tn{*}))$\\
                 $\nt{V}_2 \to (\cn{vp}(\x_1, \tn{*}))\;(\nt{V}_2)$\\
-                $\nt{V}_2 \to (\cn{vp}(\x_1, \x_2(\tn{*}))) (\mathrm{arg}(\nt{V}), \nt{V\binsym{}})$\\
-                $\mathrm{arg}(\nt{V}) \to (\cn{wh}(\tn{*}))$ \\
+                $\nt{V}_2 \to (\cn{vp}(\x_1, \x_2(\tn{*}))) (\nt{D}, \nt{V\binsym{}})$\\
+                $\nt{D} \to (\cn{wh}(\tn{*}))$ \\
                 $\nt{V\binsym{}} \to (\cn{prt}(\tn{*}))$\\
             };
             \matrix[below right=2cm and 1.25cm of term] (stag) [matrix of nodes,nodes in empty cells,row sep=3pt] {
-                \staglist{$\mathrm{arg}(\nt{V})\xrightarrow{0.6} (\cn{wh}(\tn{1}))$} \\
+                \staglist{$\nt{D} \xrightarrow{0.6} (\cn{wh}(\tn{1}))$} \\
                 \staglist{$\nt{S} \xrightarrow{0.57} (\cn{sbar}(\cn{s} (\x_1, \x_2(\tn{2}))))\;(\nt{V}_2, \nt{N})$}\\
                 \staglist{$\nt{N} \xrightarrow{0.8} (\cn{np}(y, \tn{3}))$}\\
                 \staglist{$\nt{V}_2 \xrightarrow{0.55} (\cn{vp}(\x_1, \tn{4}))\;(\nt{V}_2)$}\\
-                \staglist{$\nt{V}_2 \xrightarrow{0.6} (\cn{vp}(\x_1, \x_2(\tn{5}))) (\mathrm{arg}(\nt{V}), \nt{V\binsym{}})$}\\
+                \staglist{$\nt{V}_2 \xrightarrow{0.6} (\cn{vp}(\x_1, \x_2(\tn{5}))) (\nt{D}, \nt{V\binsym{}})$}\\
                 \staglist{$\nt{V\binsym{}} \xrightarrow{0.7} (\cn{prt}(\tn{6}))$}\\
             };
         \end{scope}

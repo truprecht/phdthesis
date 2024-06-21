@@ -34,8 +34,8 @@
 
     \begin{figure}
         \begin{tikzpicture}[baseline=(v.base), level distance=6ex, font=\small, sibling distance=3.7cm, inner sep=2pt, level 2/.style={sibling distance=6em}, level 1/.style={sibling distance=10em}]
-            \node (root) {\(\nt{root} \to (\x_1^1\,\x_2^1\,\tn{was}\,\x_2^2)\,(\nt{v}_2, \nt{n})\)}
-            child {node (v) {\(\nt{v}_2 \to (\x_1^1, \tn{carried})\,(\nt{a}, \nt{a})\)}
+            \node (root) {\(\nt{root} \to (\x_1^1\,\x_2^1\,\tn{was}\,\x_1^2)\,(\nt{v}_2, \nt{n})\)}
+            child {node (v) {\(\nt{v}_2 \to (\x_1^1, \tn{carried} \x_2^1)\,(\nt{a}, \nt{a})\)}
                 child {node {\( \nt{a} \to (\tn{where})\)}}
                 child {node {\( \nt{a} \to (\tn{out})\)}}}
             child {node {\(\nt{n} \to (\x_1^1\, \tn{survey})\,(\nt{a})\)}

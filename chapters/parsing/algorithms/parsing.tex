@@ -18,7 +18,7 @@
 
             \For{$s := (A \to c\,(B_1,\ldots,B_k), f)$ in $S$ with lexical symbol $i \in [\ell]$ in \(c\)}
                 \State{$B_1' \ldots B_{k+1}' :=$ order $B_1, \ldots, B_k, X_i$ according to the occurrences in $c$}
-                \State{$\mathit{item} := (A, f, B_1' \ldots B_{k+1}', \emptyset))$}
+                \State{$\mathit{item} := (A, f, B_1' \ldots B_{k+1}', \emptyset)$}
                 \State{add $(\mathit{item}, s, \weight(s))$ to $Q$}
             \EndFor
 
@@ -35,7 +35,7 @@
                     \State{add $(\mathit{item}, \mathit{bt}, \mathit{wt})$ to Q}
                 \ElsIf{$k > 0$}
                     \State{add $((A, B_1 \ldots B_{k-1} B_k, L), \mathit{bt}, \mathit{wt})$ to $I_{B_k}$}
-                    \For{$L' \in [n]$ with $C_{B_k, L'} \neq \emptyset$}
+                    \For{$L' \subseteq [n]$ with $C_{B_k, L'} \neq \emptyset$}
                         \State{\Call{addSuccessor}{$Q$, $W$, $((A, B_1 \ldots B_{k-1} B_k, L), \mathit{bt}, \mathit{wt})$, $L'$}}
                     \EndFor
                 \EndIf

@@ -109,7 +109,7 @@
     \subsubsection*{Pseudocontinuous Parsing}
     Some authors decided to avoid discontinuous structures and their expensive parsing procedures altogether.
     In pseudo-continuous parsing, the discontinuous treebanks are transformed into continuous ones to extract good enough context-free grammars for constituent parsing.
-    \Citet{DubKel03} derived a continuous variant of the \negra{} treebank by shifting subtrees of discontinuous nodes into their antecedents; this transformation is called \emph{node raising}, and unfortunately, it is not reversible in a straightforward manner.
+    \Citet{DubKel03} derived a continuous variant of the \negra{} treebank by shifting subtrees of discontinuous nodes into their ancestors; this transformation is called \emph{node raising}, and unfortunately, it is not reversible in a straightforward manner.
     \Citet{levy-manning-2004-deep} contributed an algorithm that heuristically identifies the shifted nodes and can recover a discontinuous constituent tree.
     However, they concluded that this approach is not suited to processing languages with relatively free word order, such as German, as the context-free transformation seemed a poor approximation in their experiments.
     \Citet{boyd-2007-discontinuity} proposed an alternative transformation that splits each discontinuous node into continuous siblings.
