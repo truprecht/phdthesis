@@ -48,35 +48,6 @@
         \item Each \abrv{pos} symbol originating from a merge is replaced by the trailing pos symbol, and the sequence of unary nodes is inserted atop the corresponding leaf in the constituent structure.
     \end{compactenum}
 
-    \paragraph{Left- or Right-Branching Binarization.}
-    These strategies replace each node \(\rho_0\) that has \( n>2 \) successors \(\rho_1, \ldots, \rho_n\) with a series of \( n-1 \) binary nodes \(\ceta_1, \ldots, \ceta_{n-1}\).
-    The \deflab{right-branching binarization}[right-branching strategy] \defabrv{right-branching binarization}{\abrv{rb}} constructs this sequence of nodes as follows:
-    \begin{itemize}
-        \item The first node \(\ceta_1\) has the same symbol as the original node \(\rho_0\).
-        \item For each \(2 \leq i \leq n-1\), the symbol for the node \(\ceta_i\) consists of the symbol of the original node \(\rho_0\) and the symbols of its rightmost \(n-i+1\) successors \(\rho_{i}, \ldots, \rho_n\). Each of these symbols is denoted in the form \(A\binsym{B_i,B_{i+1},\ldots,B_n}\) where \(A\) is symbol at \(\rho_0\) and \(B_1, \ldots, B_n\) are the symbols at its children \(\rho_1, \ldots, \rho_n\).
-        \item For each \(1 \leq i \leq n-2\), the left successor of the node \(\ceta_i\) is the node \(\rho_i\), and its right successor is \(\ceta_{i+1}\).
-        \item The successors of the last node \(\ceta_{n-1}\) are \(\rho_{n-1}\) and \(\rho_{n-2}\).
-    \end{itemize}
-    The \deflab{left-branching binarization}[left-branching strategy] \defabrv{left-branching binarization}{\abrv{lb}} mirrors the right-branching strategy: It constructs a series of binary nodes connected via their left successors in the opposite direction.
-    If a binarized constituent tree was complemented by a lexical head assignment, then it is lost after applying the left- or right-branching binarization strategy; there is no reasonable lexical head assignment that can be obtained after such binarization.
-    \Cref{fig:ex:pilot} shows an example with a constituent tree that underlines the binarization strategies due to its flat structure; \cref{fig:ex:binarization} shows the binarization strategies with our running examples.
-
-    \paragraph{Head-Outward Binarization.}
-    The \deflab{head-outward binarization}[head-outward strategy] \defabrv{head-outward binarization}{\abrv{ho}} mixes the left- and right-branching strategies at each higher-ranked node depending on the successor that contains its lexical head.
-    If the node is of rank \(k\) and its lexical head is at or below its \(n\)th successor, then
-    \begin{enumerate}
-        \item the trailing \(k-n\) successors are split according to the left-branching binarization strategy forming \(k-n-1\) artificial nodes, and
-        \item the first \(n-1\) successors are split according to the right-branching binarization strategy, forming another \(n-1\) artificial nodes.
-    \end{enumerate}
-    In the resulting constituent tree, the lexical head is in the yield of the bottom-most constructed node.
-    In bottom-up parsing processes, the bottom-most nodes are explored first, and the constituent symbol is determined.
-    This binarization strategy can be advantageous in such settings, as the first explored node contains the lexical head.
-    We use distinct symbols for the introduced top left-branching nodes and the bottom right-branching nodes to avoid ambiguities during parsing with the extracted grammar instances.
-    In these constituent symbols, the left symbol ``\scalebox{.4}[.8]{\textless{}}'' is doubled in left-branching nodes, and the right symbol ``\scalebox{.4}[.8]{\textgreater{}}'' is doubled in right-branching nodes.
-    We call these \emph{directive indicators} for artificial nodes; \cref{fig:ex:pilot,fig:ex:markovization} show examples involving these indicators.
-    For each constituent tree that is binarized using the head-outward strategy, there is a canonical lexical head assignment that is obtained by additionally assigning each artificial node to its origin's head; the first and last tree in \cref{fig:ex:pilot} illustrate an example.
-    The head-outward strategy is the only investigated rank transformation that obtains binary trees complemented with a lexical head assignment.
-
     \begin{figure}
         \null\hfill
         \subfile{figures/binarization/pilot.tex}
@@ -118,6 +89,35 @@
             A constituent tree was binarized with left-branching, right-branching, and head-outward binarization strategies.
         }
     \end{figure}
+
+    \paragraph{Left- or Right-Branching Binarization.}
+    These strategies replace each node \(\rho_0\) that has \( n>2 \) successors \(\rho_1, \ldots, \rho_n\) with a series of \( n-1 \) binary nodes \(\ceta_1, \ldots, \ceta_{n-1}\).
+    The \deflab{right-branching binarization}[right-branching strategy] \defabrv{right-branching binarization}{\abrv{rb}} constructs this sequence of nodes as follows:
+    \begin{itemize}
+        \item The first node \(\ceta_1\) has the same symbol as the original node \(\rho_0\).
+        \item For each \(2 \leq i \leq n-1\), the symbol for the node \(\ceta_i\) consists of the symbol of the original node \(\rho_0\) and the symbols of its rightmost \(n-i+1\) successors \(\rho_{i}, \ldots, \rho_n\). Each of these symbols is denoted in the form \(A\binsym{B_i,B_{i+1},\ldots,B_n}\) where \(A\) is symbol at \(\rho_0\) and \(B_1, \ldots, B_n\) are the symbols at its children \(\rho_1, \ldots, \rho_n\).
+        \item For each \(1 \leq i \leq n-2\), the left successor of the node \(\ceta_i\) is the node \(\rho_i\), and its right successor is \(\ceta_{i+1}\).
+        \item The successors of the last node \(\ceta_{n-1}\) are \(\rho_{n-1}\) and \(\rho_{n-2}\).
+    \end{itemize}
+    The \deflab{left-branching binarization}[left-branching strategy] \defabrv{left-branching binarization}{\abrv{lb}} mirrors the right-branching strategy: It constructs a series of binary nodes connected via their left successors in the opposite direction.
+    If a binarized constituent tree was complemented by a lexical head assignment, then it is lost after applying the left- or right-branching binarization strategy; there is no reasonable lexical head assignment that can be obtained after such binarization.
+    \Cref{fig:ex:pilot} shows an example with a constituent tree that underlines the binarization strategies due to its flat structure; \cref{fig:ex:binarization} shows the binarization strategies with our running examples.
+
+    \paragraph{Head-Outward Binarization.}
+    The \deflab{head-outward binarization}[head-outward strategy] \defabrv{head-outward binarization}{\abrv{ho}} mixes the left- and right-branching strategies at each higher-ranked node depending on the successor that contains its lexical head.
+    If the node is of rank \(k\) and its lexical head is at or below its \(n\)th successor, then
+    \begin{enumerate}
+        \item the trailing \(k-n\) successors are split according to the left-branching binarization strategy forming \(k-n-1\) artificial nodes, and
+        \item the first \(n-1\) successors are split according to the right-branching binarization strategy, forming another \(n-1\) artificial nodes.
+    \end{enumerate}
+    In the resulting constituent tree, the lexical head is in the yield of the bottom-most constructed node.
+    In bottom-up parsing processes, the bottom-most nodes are explored first, and the constituent symbol is determined.
+    This binarization strategy can be advantageous in such settings, as the first explored node contains the lexical head.
+    We use distinct symbols for the introduced top left-branching nodes and the bottom right-branching nodes to avoid ambiguities during parsing with the extracted grammar instances.
+    In these constituent symbols, the left symbol ``\scalebox{.4}[.8]{\textless{}}'' is doubled in left-branching nodes, and the right symbol ``\scalebox{.4}[.8]{\textgreater{}}'' is doubled in right-branching nodes.
+    We call these \emph{directive indicators} for artificial nodes; \cref{fig:ex:pilot,fig:ex:markovization} show examples involving these indicators.
+    For each constituent tree that is binarized using the head-outward strategy, there is a canonical lexical head assignment that is obtained by additionally assigning each artificial node to its origin's head; the first and last tree in \cref{fig:ex:pilot} illustrate an example.
+    The head-outward strategy is the only investigated rank transformation that obtains binary trees complemented with a lexical head assignment.
 
     \paragraph{Minimizing Fanout or Parsing Complexity.}
     Two binarization strategies specifically consider the properties of \abrv{lcfrs} instances extracted from constituent treebanks after binarization.

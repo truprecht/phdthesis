@@ -309,7 +309,7 @@
     There are similar phenomena as (dis-)continuity in dependency trees. They are referred to as \emph{(non-)projectivity}.
     We will not engage in dependency trees in this work. Some references are discussed in \cref{sec:literature:beyond}.
 
-    \subsection{Assessing the Prediction of Constituent Structures}
+    \section{Assessing the Prediction of Constituent Structures}
     When assessing the quality of a parser, we measure two essential dimensions:
     \begin{inparaenum}
         \item the time needed for the prediction process, and
@@ -327,7 +327,7 @@
         The term \emph{gold} refers to the data that is supplied in a treebank (cf.\@ \pageref{pg:def:gold}).
         The gold constituent structures and gold \abrv{pos} tags are the ``correct'' ones  that we compare our predictions to.
     } constituent structures are mapped each into a set that contains a tuple \((w, A, \mathit{yd})\) for each constituent structure \(\xi\) with the sequence of tokens \(w\) and each of its inner nodes with label \(A\) and yield \(\mathit{yd}\).
-    According to these two sets \(P\) for all predictions and \(G\) for the gold constituent structures, the precision (\(p = \frac{|P \cap G|}{|P|}\)), recall (\(r = \frac{|P \cap G|}{|G|}\)) and f1-score (\(\frac{2\cdot p\cdot r}{p + r}\)) are computed in the usual fashion.
+    According to these two sets \(P\) for all predictions and \(G\) for the gold constituent structures, the precision (\(p = \frac{|P \cap G|}{|P|}\)), recall (\(r = \frac{|P \cap G|}{|G|}\)) and f1-score (\(\frac{2\cdot p\cdot r}{p + r}\)) are computed in the usual fashion; \cref{fig:ex:f1} shows an example for the computation of the involved sets and scores.
     The \abrv{pos} tags are often part of the prediction but not assessed as part of the f1-score.
     They are rather reported separately as the accuracy of the predicted \abrv{pos} tags compared to the gold ones.
     The Python tool \texttt{disco-dop} supplies an implementation for both the f1-score of constituent structures and the accuracy of \abrv{pos} tags \citep{CraSchBod16}.
@@ -416,7 +416,7 @@
             \end{align*}
         \end{minipage}
 
-        \caption{
+        \caption{\label{fig:ex:f1}
             Example for the f1-score computation for a single pair of gold (\(\xi_\text{G}\)) and predicted (\(\xi_\text{P}\)) constituent structures, both for the sequence of tokens \(w = \textit{where the survey was carried out}\).
             The sets of constituent tuples for both trees and the set of common constituents are illustrated below.
             The upper right corner shows the precision, recall, and f1-score values.
@@ -509,7 +509,7 @@
         Learning this task is supervised because the training portion \(T\) contains sentences as well as their constituent trees.
     \end{example}
 
-    \subsection{Neural Networks}\label{sec:preliminaries:nn}
+    \section{Neural Networks}\label{sec:preliminaries:nn}
     We use \deflabs{artificial neural network} (short: \defabrv*{artificial neural network}{\abrv{ann}}, or just \defabrv*{artificial neural network}{neural network}) to implement the prediction of supertags for each position of an input sentence.
     \abrv{Ann}s emerged in the last decades and proved extremely useful in many tasks, including ones settled in natural language processing, for instance in the field of semantic analysis like sentiment analysis \citep{sentiment} or relation extraction \citep{relationextraction}, in the field of syntax analysis like dependency \citep{dependencyparsing} or constituency parsing \citep{FerGom20a}, or in high-level tasks like question answering \citep{Devlin2019}, summarization \citep{bertgeneration}, or dialogue systems \citep{dialoguesystems}.
     We will only briefly overview the concepts needed to understand the implementations discussed in this thesis; the specific instances used in the experiments are discussed in \cref{sec:models}.
