@@ -41,7 +41,7 @@
                 \If{$H_{(A, L)} = \emptyset$}
                     \State{\Return False}
                 \EndIf
-                \State{pop $(s, \vec{L}, \vec{m}) \in \argmax_{(\hat{s}, \hat{\vec{L}}, \hat{\vec{m}}) \in H_{(A, L)}} \Call{weight}{\hat{s}, \hat{\vec{L}}, \hat{\vec{m}}}$ from \(H_{(A, L)}\)}
+                \State{pop $(s, \vec{L}, \vec{m}) \in \argmax_{(s', \vec{L}', \vec{m}') \in H_{(A, L)}} \Call{weight}{s', \vec{L}', \vec{m}'}$ from \(H_{(A, L)}\)}
                 \State{$m' := m' + 1$}
                 \State{$D_{(A, L, m')} := (s, \vec{L}, \vec{m})$}
                 \State{$W_{(A, L, m')}' := \Call{weight}{s, \vec{L}, \vec{m}}$}

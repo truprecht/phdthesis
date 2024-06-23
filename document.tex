@@ -1,13 +1,25 @@
 % LTeX: enabled=false
+\pdfminorversion=7
+\begin{filecontents*}[overwrite]{\jobname.xmpdata}
+    \Title{On the Extraction of Lexicalized Grammars\\and Parsing via Supertagging\\for Discontinuous Constituent Structures}
+    \Author{Thomas Ruprecht}
+    \Language{en-US}
+    % \Subject{The abstract or short description.}
+    % \Keywords{keyword1\sep keyword2\sep keyword3}
+\end{filecontents*}
+\PassOptionsToPackage{table}{xcolor}
 \documentclass[toc=bib,toc=idx]{scrbook}
 
 \usepackage[tt=false]{libertine}
 \usepackage{subfiles}
 \usepackage[german, english, iso]{isodate}
 \input{mathops}
-\usepackage[pdfborderstyle={/S/U/W 1}]{hyperref}
+% \usepackage[pdfborderstyle={/S/U/W 1}]{hyperref}
+
+\usepackage[a-1b]{pdfx}   % for PDF/A-1b
+\hypersetup{pdfborderstyle={/S/U/W 1}}
 \usepackage{natbib, paralist, makeidx, xifthen, wrapfig, subcaption, needspace, booktabs, xfp, algorithm, algorithmicx, multirow, doi, etoolbox}
-\usepackage[table]{xcolor}
+% \usepackage[table]{xcolor}
 \usepackage[capitalize,noabbrev,nameinlink]{cleveref}
 \usepackage[noend]{algpseudocode}
 \bibliographystyle{abbrvnatsc}
