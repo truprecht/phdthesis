@@ -28,3 +28,5 @@ auto
 *.ist
 *.glstex
 *.thm
+*.xmpi
+*.xmpdata

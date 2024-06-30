@@ -21,33 +21,6 @@
     We coarsely follow \citet{Cra12} and characterize the approaches in terms of a \deflab{rank transformation strategy} that defines the structural transformation and extensions (\emph{Markovization, directive indicators} and \emph{trailing nodes}) that alter the artificial constituent symbols introduced during this step.
     Lastly, we introduce a new strategy to construct trees with at most three successors per node, called head-inward transformation in \cref{sec:extraction:bin:hi}.
 
-    \subsection{Binarization}\label{sec:binarization}
-    The \deflab{binarization} of constituent structures removes and replaces nodes that have either one or more than two successors.
-    These two cases are handled separately.
-
-    All the binarization strategies described in this section share the approach for dealing with chains of nodes having one successor:
-    \begin{inparaenum}
-        \item If the successor of the bottom-most node in the chain is an inner node, then they are merged into this successor.
-        \item If the successor of the bottom-most node in the chain is a leaf, they are merged with the \abrv{pos} symbol for the leaf.
-    \end{inparaenum}
-    The merged symbols must not occur in the original alphabets of constituent and \abrv{pos} symbols and must be unique for each sequence of merged constituent/\abrv{pos} symbols.
-    Here, the merged nodes are denoted by concatenating the symbols interleaved by ``\cn{+}''.
-    For instance, a chain of unary nodes ``\cn{root}'', ``\cn{s}'' that is merged with the \abrv{pos} symbol ``\cn{\$.}'' is the new symbol ``\cn{root+s+\$.}''.
-    This approach of handling nodes with one successor is done after dealing with nodes with more than two successors.
-    Because this is common among all binarization strategies, we view only the other case as part of the strategies.
-
-    Each node carrying \( n > 2 \) successors is split into \( n-1 \) binary nodes that are connected in some parent-child constellation depending on the strategy.
-    The topmost node of these new binary nodes carries the label of the original node.
-    Each following node contains a new symbol of the form \(A\binsym{B_1, \ldots, B_k}\) where \(A\) original node's symbol and \(B_1, \ldots, B_k\) are some successor symbols determined by the binarization strategy.
-    Because all binarization strategies are defined per node, we describe each binarization strategy as a function that replaces the root node in a constituent tree (if it has more than two successors) with a collection of binary nodes.
-    The function is then called recursively to handle each subtree.
-    The reversal of the binarization procedure is independent of the binarization strategy:
-    \begin{compactenum}
-        \item Each binary node with a symbol introduced during the binarization procedure is removed, and its children are appended to its parents.
-        \item Each node originating from a merge of unary nodes is expanded by replacing it with the chain of unary nodes.
-        \item Each \abrv{pos} symbol originating from a merge is replaced by the trailing pos symbol, and the sequence of unary nodes is inserted atop the corresponding leaf in the constituent structure.
-    \end{compactenum}
-
     \begin{figure}
         \null\hfill
         \subfile{figures/binarization/pilot.tex}
@@ -90,14 +63,41 @@
         }
     \end{figure}
 
+    \subsection{Binarization}\label{sec:binarization}
+    The \deflab{binarization} of constituent structures removes and replaces nodes that have either one or more than two successors.
+    These two cases are handled separately.
+
+    All the binarization strategies described in this section share the approach for dealing with chains of nodes having one successor:
+    \begin{inparaenum}
+        \item If the successor of the bottom-most node in the chain is an inner node, then they are merged into this successor.
+        \item If the successor of the bottom-most node in the chain is a leaf, they are merged with the \abrv{pos} symbol for the leaf.
+    \end{inparaenum}
+    The merged symbols must not occur in the original alphabets of constituent and \abrv{pos} symbols and must be unique for each sequence of merged constituent/\abrv{pos} symbols.
+    Here, the merged nodes are denoted by concatenating the symbols interleaved by ``\cn{+}''.
+    For instance, a chain of unary nodes ``\cn{root}'', ``\cn{s}'' that is merged with the \abrv{pos} symbol ``\cn{\$.}'' is the new symbol ``\cn{root+s+\$.}''.
+    This approach of handling nodes with one successor is done after dealing with nodes with more than two successors.
+    Because this is common among all binarization strategies, we view only the other case as part of the strategies.
+
+    Each node carrying \( n > 2 \) successors is split into \( n-1 \) binary nodes that are connected in some parent-child constellation depending on the strategy.
+    The topmost node of these new binary nodes carries the label of the original node.
+    Each following node contains a new symbol of the form \(A\binsym{B_1, \ldots, B_k}\) where \(A\) original node's symbol and \(B_1, \ldots, B_k\) are some successor symbols determined by the binarization strategy.
+    Because all binarization strategies are defined per node, we describe each binarization strategy as a function that replaces the root node in a constituent tree (if it has more than two successors) with a collection of binary nodes.
+    The function is then called recursively to handle each subtree.
+    The reversal of the binarization procedure is independent of the binarization strategy:
+    \begin{compactenum}
+        \item Each binary node with a symbol introduced during the binarization procedure is removed, and its children are appended to its parents.
+        \item Each node originating from a merge of unary nodes is expanded by replacing it with the chain of unary nodes.
+        \item Each \abrv{pos} symbol originating from a merge is replaced by the trailing pos symbol, and the sequence of unary nodes is inserted atop the corresponding leaf in the constituent structure.
+    \end{compactenum}
+
     \paragraph{Left- or Right-Branching Binarization.}
-    These strategies replace each node \(\rho_0\) that has \( n>2 \) successors \(\rho_1, \ldots, \rho_n\) with a series of \( n-1 \) binary nodes \(\zeta_1, \ldots, \zeta_{n-1}\).
+    These strategies replace each node \(\rho_0\) that has \( n>2 \) successors \(\rho_1, \ldots, \rho_n\) with a series of \( n-1 \) binary nodes \(\mu_1, \ldots, \mu_{n-1}\).
     The \deflab{right-branching binarization}[right-branching strategy] \defabrv{right-branching binarization}{\abrv{rb}} constructs this sequence of nodes as follows:
     \begin{itemize}
-        \item The first node \(\zeta_1\) has the same symbol as the original node \(\rho_0\).
-        \item For each \(2 \leq i \leq n-1\), the symbol for the node \(\zeta_i\) consists of the symbol of the original node \(\rho_0\) and the symbols of its rightmost \(n-i+1\) successors \(\rho_{i}, \ldots, \rho_n\). Each of these symbols is denoted in the form \(A\binsym{B_i,B_{i+1},\ldots,B_n}\) where \(A\) is symbol at \(\rho_0\) and \(B_1, \ldots, B_n\) are the symbols at its children \(\rho_1, \ldots, \rho_n\).
-        \item For each \(1 \leq i \leq n-2\), the left successor of the node \(\zeta_i\) is the node \(\rho_i\), and its right successor is \(\zeta_{i+1}\).
-        \item The successors of the last node \(\zeta_{n-1}\) are \(\rho_{n-1}\) and \(\rho_{n-2}\).
+        \item The first node \(\mu_1\) has the same symbol as the original node \(\rho_0\).
+        \item For each \(2 \leq i \leq n-1\), the symbol for the node \(\mu_i\) consists of the symbol of the original node \(\rho_0\) and the symbols of its rightmost \(n-i+1\) successors \(\rho_{i}, \ldots, \rho_n\). Each of these symbols is denoted in the form \(A\binsym{B_i,B_{i+1},\ldots,B_n}\) where \(A\) is symbol at \(\rho_0\) and \(B_1, \ldots, B_n\) are the symbols at its children \(\rho_1, \ldots, \rho_n\).
+        \item For each \(1 \leq i \leq n-2\), the left successor of the node \(\mu_i\) is the node \(\rho_i\), and its right successor is \(\mu_{i+1}\).
+        \item The successors of the last node \(\mu_{n-1}\) are \(\rho_{n-1}\) and \(\rho_{n-2}\).
     \end{itemize}
     The \deflab{left-branching binarization}[left-branching strategy] \defabrv{left-branching binarization}{\abrv{lb}} mirrors the right-branching strategy: It constructs a series of binary nodes connected via their left successors in the opposite direction.
     If a binarized constituent tree was complemented by a lexical head assignment, then it is lost after applying the left- or right-branching binarization strategy; there is no reasonable lexical head assignment that can be obtained after such binarization.
@@ -154,7 +154,7 @@
         \hfill
         \begin{minipage}[b]{.32\linewidth}
             \resizebox{\linewidth}{!}{\subfile{figures/binarization/hearing-binary.tex}}
-            \subcaption{right-branching binarization}
+            \subcaption{\label{fig:ex:binarization:5}right-branching binarization}
         \end{minipage}
         \hfill
         \begin{minipage}[b]{.3\linewidth}

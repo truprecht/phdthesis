@@ -21,12 +21,12 @@
 
         \begin{scope}[every node/.style={anchor=west, inner sep=0pt, outer sep=0pt, font=\tiny}]
             \matrix[right=1.5cm of term.north east, anchor=north west, fill=black!5, draw, rounded corners, line width=.3mm, inner sep=2pt] (blueprints) [matrix of nodes,nodes in empty cells,row sep=3pt] {
-                $\nt{S} \to (\cn{sbar}(\cn{s} (\x_1, \x_2(\tn{*}))))\;(\nt{V}_2, \nt{N})$\\
-                $\nt{N} \to (\cn{np}(y, \tn{*}))$\\
-                $\nt{V}_2 \to (\cn{vp}(\x_1, \tn{*}))\;(\nt{V}_2)$\\
-                $\nt{V}_2 \to (\cn{vp}(\x_1, \x_2(\tn{*}))) (\nt{D}, \nt{V\binsym{}})$\\
-                $\nt{D} \to (\cn{wh}(\tn{*}))$ \\
-                $\nt{V\binsym{}} \to (\cn{prt}(\tn{*}))$\\
+                $\nt{S} \to (\cn{sbar}(\cn{s} (\x_1, \x_2(\wildcard{}))))\;(\nt{V}_2, \nt{N})$\\
+                $\nt{N} \to (\cn{np}(y, \wildcard{}))$\\
+                $\nt{V}_2 \to (\cn{vp}(\x_1, \wildcard{}))\;(\nt{V}_2)$\\
+                $\nt{V}_2 \to (\cn{vp}(\x_1, \x_2(\wildcard{}))) (\nt{D}, \nt{V\binsym{}})$\\
+                $\nt{D} \to (\cn{wh}(\wildcard{}))$ \\
+                $\nt{V\binsym{}} \to (\cn{prt}(\wildcard{}))$\\
             };
             \matrix[below right=2cm and 1.25cm of term] (stag) [matrix of nodes,nodes in empty cells,row sep=3pt] {
                 \staglist{$\nt{D} \xrightarrow{0.6} (\cn{wh}(\tn{1}))$} \\
