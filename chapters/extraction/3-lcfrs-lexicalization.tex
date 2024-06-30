@@ -31,7 +31,7 @@
             Now the derivation contains at most one rule equipped with two terminal symbols. Each other rule in the derivation is lexical.
             It is split by replacing one of the symbols with a variable and adding a new nullary rule.
             The result of this step is an admissible \abrv{lcfrs} supertag derivation.
-        \item
+        \item\label{enum:lcfrs:step5}
             In the final step, the rules are collected as a sequence in order of the positions according to the instantiation.
             All occurring terminal symbols are replaced by a wildcard symbol ``\wildcard{}''.
             The result is a sequence of \abrv{lcfrs} supertag blueprints such that the \(i\)th blueprint is for the \(i\)th position in the sentence.
