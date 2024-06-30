@@ -49,12 +49,12 @@
         \item \(R\) is the set of rules for the extracted tree fragments, and
         \item \(N_0 \subset \varGamma \times \{l_0\}\) is a set of constituent symbols appearing at the root supplied with a distinct latent symbol \(l_0\) (in our case \(l_0 = 1\)).
     \end{itemize}
-    The rules in \(R\) are of the same form as the usual treebank \abrv{lcfrs} (cf.\@ \cref{sec:extraction:lcfrs}, Step \ref{enum:lcfrs:step2}) except that \abrv{pos} symbols occur as lexical symbols in the rules, and the nonterminal symbols are extended using the latent symbols to accommodate the tree fragments that are split into multiple rules.
+    The rules in \(R\) are of the same form as the usual treebank \abrv{lcfrs} (cf.\@ \cref{sec:extraction:lcfrs}, \sref{enum:lcfrs:step2}) except that \abrv{pos} symbols occur as lexical symbols in the rules, and the nonterminal symbols are extended using the latent symbols to accommodate the tree fragments that are split into multiple rules.
     The latent symbol \(1 \in L\) occurs at each nonterminal for the root and leaves of such a tree fragment; we denote the nonterminal \((A, \lambda)\) with \(A\in \varGamma\) and \(\lambda \in L\) in the form \(A^{(\lambda)}\).
     \Cref{ex:dop} shows examples of such tree fragments in a disco-dop grammar and an interpretation as \abrv{lcfrs} rules with latent annotations.
     The process to determine the weight of a constituent tree \(\xi \in \Xi_{\varGamma, \varPi, \varSigma}\) assigned by the disco-dop grammar \(G\) is as follows:
     \begin{enumerate}
-        \item First, the constituent structure of \(\xi\) is transformed into a \abrv{lcfrs} derivation \(d\) (as in Step \ref{enum:lcfrs:step2} of the extraction in \cref{sec:extraction:lcfrs}), and the lexical symbols are replaced by the corresponding \abrv{pos} symbols of the constituent tree \(\xi\). The rules in \(d\) have nonterminals in \(\varGamma\) and terminals in \(\varPi\).
+        \item First, the constituent structure of \(\xi\) is transformed into a \abrv{lcfrs} derivation \(d\) (as in \sref{enum:lcfrs:step2} of the extraction in \cref{sec:extraction:lcfrs}), and the lexical symbols are replaced by the corresponding \abrv{pos} symbols of the constituent tree \(\xi\). The rules in \(d\) have nonterminals in \(\varGamma\) and terminals in \(\varPi\).
         \item For each position \(\rho\) in \(d\) (in the direction from bottom to the top) and each latent symbol \(\lambda \in L\), we compute the weight \(w_\rho^{(\lambda)} \in \DR\). Let the subtree \(d|_\rho\) be of the form \(A \to c\,(B_1, \ldots, B_k)\;\big(d_1, \ldots, d_k)\), then the weight is as follows:
             \[
                 w_\rho^{(\lambda)} = \sum_{A^{(\lambda)} \to c\,(B_1^{(\lambda_1)}, \ldots, B_k^{(\lambda_k)}) \in R} \weight(A^{(\lambda)} \to c\,(B_1^{(\lambda_1)}, \ldots, B_k^{(\lambda_k)})) \cdot \prod_{i \in [k]} w_{\rho\cdot i}^{(\lambda_i)} \text{.}

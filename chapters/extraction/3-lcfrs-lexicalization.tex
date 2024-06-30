@@ -33,66 +33,78 @@
             The result of this step is an admissible \abrv{lcfrs} supertag derivation.
         \item
             In the final step, the rules are collected as a sequence in order of the positions according to the instantiation.
-            All occurring terminal symbols are replaced by a wildcard symbol ``\tn{*}''.
+            All occurring terminal symbols are replaced by a wildcard symbol ``\wildcard{}''.
             The result is a sequence of \abrv{lcfrs} supertag blueprints such that the \(i\)th blueprint is for the \(i\)th position in the sentence.
     \end{enumerate}
-    After step \ref{enum:lcfrs:step4}, the topmost \abrv{lhs} nonterminal is collected for each tree and set aside as an initial nonterminal for later.
-    In the following, the steps \ref{enum:lcfrs:step2} to \ref{enum:lcfrs:step4} are described in more detail.
+    After \sref{enum:lcfrs:step4}, the topmost \abrv{lhs} nonterminal is collected for each tree and set aside as an initial nonterminal for later.
+    In the following, the steps (\ref{enum:lcfrs:step2}) to (\ref{enum:lcfrs:step4}) are described in more detail.
     % The section concludes with a procedure to revert the process and transform an \abrv{lcfrs} supertag derivation into a constituent structure.
 
     \begin{figure}
         \null\hfill
         \subfile{figures/lcfrs/ctree.tex}
-        \hspace{.5cm}
+        \hfill
         \begin{minipage}{.4\linewidth}
-            \subcaption{Step \ref{enum:lcfrs:step1} constructs a binary constituent structure with fanout annotations. This example shows a constituent structure obtained with right-branching binarization from the running example shown in \cref{fig:ex:binarization:5}.}
+            \subcaption{\Sref{enum:lcfrs:step1} constructs a binary constituent structure with fanout annotations. This example shows a constituent structure obtained with right-branching binarization from the running example shown in \cref{fig:ex:binarization:5}.}
         \end{minipage}
 
-        \vspace{1cm}
+        \vspace{.3cm}
 
         \begin{minipage}{.4\linewidth}
             \subcaption{
-                Step \ref{enum:lcfrs:step2} constructs a binary \abrv{lcfrs} derivation for the constituent structure above.
-                Gray dashed arrows indicate the transportation of terminal symbols in the following step \ref{enum:lcfrs:step3}.
+                \Sref{enum:lcfrs:step2} constructs a binary \abrv{lcfrs} derivation for the constituent structure above.
+                Gray dashed arrows indicate the transportation of terminal symbols in the following \sref{enum:lcfrs:step3}.
             }
         \end{minipage}
-        \hspace{.5cm}
+        \hfill
         \subfile{figures/lcfrs/step2.tex}
         \hfill\null
 
-        \vspace{1cm}
+        \vspace{.3cm}
 
         \null\hfill
         \subfile{figures/lcfrs/step3.tex}
-        \hspace{.5cm}
+        \hfill
         \begin{minipage}{.4\linewidth}
             \subcaption{
-                Each rule has at least one terminal symbol after the transportation in step \ref{enum:lcfrs:step3}.
+                Each rule has at least one terminal symbol after the transportation in \sref{enum:lcfrs:step3}.
                 The nodes of the tree are not illustrated as tuples but as the rules found in the first component where the superscript ``$^{\mathrm{swap}}$'' is added if and only if the transportation marker in the second component is ``true''.
                 The bottom-left-most rule in the derivation is equipped with two terminals.
             }
         \end{minipage}
 
-        \vspace{1cm}
+        \vspace{.6cm}
 
         \begin{minipage}{.4\linewidth}
             \subcaption{
-                After splitting the rule with two terminals in step \ref{enum:lcfrs:step4}, each rule in the derivation is lexical.
+                After splitting the rule with two terminals in \sref{enum:lcfrs:step4}, each rule in the derivation is lexical.
             }
         \end{minipage}
-        \hspace{.5cm}
-        \subfile{figures/lcfrs/step4.tex}
+        \hfill
+        \resizebox{.46\linewidth}{!}{\subfile{figures/lcfrs/step4.tex}}
         \hfill\null
 
-        \vspace{1cm}
+        \vspace{0cm}
+
+        \null{\hfill}
+        {\scriptsize\subfile{figures/lcfrs/step5.tex}}
+        \hfill
+        \begin{minipage}{.4\linewidth}
+            \subcaption{
+                The final step transforms the \abrv{lcfrs} supertag derivation into a sequence of \abrv{lcfrs} supertag blueprints.
+            }
+        \end{minipage}
+
+        \vspace{.3cm}
+
 
         \caption{\label{fig:extraction:lcfrs}
-            Examples for the steps \ref{enum:lcfrs:step2} to \ref{enum:lcfrs:step4} in the extraction for \abrv{lcfrs} supertags.
+            Examples for the steps (\ref{enum:lcfrs:step1}) to (\ref{enum:lcfrs:step5}) in the extraction for \abrv{lcfrs} supertags.
         }
     \end{figure}
 
 
-    \paragraph{Step \ref{enum:lcfrs:step2}.}
+    \paragraph{\Sref{enum:lcfrs:step2}.}
     Let \((\xi, \pi, w)\) be a binary constituent tree.
     We use the usual techniques for \abrv{lcfrs} rule induction to read a derivation \(d\) from the constituent structure \(\xi\).
     There are no rules involving the \abrv{pos} symbols \(\pi\) in the derivation \(d\).
@@ -111,7 +123,7 @@
     \end{inparaitem}
 
 
-    \paragraph{Step \ref{enum:lcfrs:step3}.}
+    \paragraph{\Sref{enum:lcfrs:step3}.}
     Let us consider an \abrv{lcfrs} derivation \(d\) obtained by the previous step.
     Consider an occurrence of a binary rule $A \to c(B_1, B_2)$ at position \(\rho\) in \(d\).
     This step aims to move the first terminal from the yield of the right subtree below \(\rho\) into the composition \(c\).
@@ -167,7 +179,7 @@
 %    \end{compactitem}
 
 
-    \paragraph{Step \ref{enum:lcfrs:step4}.}
+    \paragraph{\Sref{enum:lcfrs:step4}.}
     After the previous step, there is at most one leaf where the \abrv{lcfrs} composition contains two terminal symbols, either of the form \(A \to (\sigma_1 \sigma_2)\) or \(A \to (\sigma_1, \sigma_2)\).
     It is split into a chain of two, one unary and one nullary rule, such that the bottom nullary rule contains the first/left, and the top rule contains the second/right symbol.\footnote{
         In the previous formulation of the extraction procedure, it was the other way around: the top rule contained the left symbol and vice versa.

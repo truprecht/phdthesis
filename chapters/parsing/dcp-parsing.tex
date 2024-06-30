@@ -6,7 +6,7 @@
 %     \item the input sentence \(w\) has the length \(\ell\),
 %     \item the set of supertag blueprints is denoted by \(B\),
 %     \item the previous step predicted \(k \in \DN_+\) supertag blueprints per position,
-%     \item the family \((b^{(i)}_{\kappa} \in B \mid i \in [\ell], \kappa \in [k])\) of predicted supertags with confidence \((\varphi^{(i)}(w, b^{(i)}_{\kappa}) \mid i \in [\ell], \kappa \in [k])\) fom the previous step \ref{parsing:item:1},
+%     \item the family \((b^{(i)}_{\kappa} \in B \mid i \in [\ell], \kappa \in [k])\) of predicted supertags with confidence \((\varphi^{(i)}(w, b^{(i)}_{\kappa}) \mid i \in [\ell], \kappa \in [k])\) fom the previous \sref{parsing:item:1},
 %     \item a growing sequence of confidence interval sizes \((\beta_i \in \DR \mid i \in I)\) for some non-empty integer index set \(I\), and
 %     \item we aim to find a collection of up to \(n \in \DN_+\) best derivations in this step.
 % \end{itemize}
@@ -87,7 +87,7 @@
         \subfile{algorithms/parsing.tex}
     \end{algorithm}
 
-    \subsubsection*{Step \ref{step:parsing:chart}: Computing the Parse Chart}
+    \subsubsection*{\Sref{step:parsing:chart}: Computing the Parse Chart}
     \Cref{alg:parsing:chart} illustrates a process that implements this step.
     It is derived from an \abrv{lcfrs} parsing algorithm as presented by \citet[the na\"ive algorithm in Section~3]{Burden05}.
     In the following, we will refer to this original presentation of the parsing algorithm by \abrv{bl}.
@@ -197,7 +197,7 @@
         \subfile{algorithms/read-derivation-2.tex}
     \end{algorithm}
 
-    \subsubsection*{Step \ref{step:parsing:derivation}: Reading Derivations from the Parse Chart}
+    \subsubsection*{\Sref{step:parsing:derivation}: Reading Derivations from the Parse Chart}
     The listings in \cref{alg:parsing:deriv,alg:parsing:deriv2} show how the parse chart \(C\) and the weight assignment \(W\) obtained in the previous step are used to enumerate derivation trees with respect to their weight.
     The algorithm is derived from the \(n\)-best parsing algorithm introduced by \citet[Algorithms~1, 2 and 3]{HuaChia05} with some adjustments to accommodate our grammar format and notation (e.g.\@ non-binary grammars, the specific form of \abrv{dcp} supertags, and multiple initial nonterminals).\footnote{
         \Citet{HuaChia05} described their algorithms in terms of weighted hypergraphs that represent all derivations within a grammar instance for an input sentence; that is, such a weighted hypergraph denotes a parse chart.

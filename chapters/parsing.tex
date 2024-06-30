@@ -12,7 +12,7 @@
             This step requires a classifier that computes a score for each supertag blueprint at each position in the input sentence:
                 We assume a parallel tagging model \(\varphi\colon \big(\bigcup_{i\in \DN_+} \varSigma^i \times B^i \big) \to \DR\) that computes the score \(\varphi^{(i)}(w, b) \in \DR\) for the input sentence \(w\), each supertag blueprint \(b \in B\) and position \(i \in [\ell]\).
             In our experiments, we use artificial neural networks to implement \(\varphi\); \cref{sec:models} focuses on the concrete architectures that we use to realize such parallel tagging models.
-            For the coming step \ref{parsing:item:2}, we consider two objects from this step:
+            For the coming \sref{parsing:item:2}, we consider two objects from this step:
             \begin{itemize}
                 \item the family of predicted supertag blueprints \((b^{(i)}_{\kappa} \in B \mid i \in [\ell], \kappa \in [k])\) such that, for each position \(i\in [\ell]\), the sequence \((b^{(i)}_{\kappa} \in B \mid \kappa \in [k])\) is a collection of \(k\) best supertag blueprints in \(\argmax^{(k)}_{b \in B} \varphi^{(i)}(w, b)\), and
                 \item the confidence \((\varphi^{(i)}(w, b^{(i)}_{\kappa}) \mid i \in [\ell], \kappa \in [k])\) for each of these predictions.

@@ -1,0 +1,14 @@
+\documentclass[../../../../document.tex]{subfiles}
+
+\begin{document}
+    \begin{tabular}{l}
+        \(\text{arg}(\cn{np}) \to (\wildcard{})\) \\[1mm]
+        \(\cn{np} \to (\x_1^1\;\wildcard{})\;(\text{arg}(\cn{np}))\)\\[1mm]
+        \(\cn{vp} \to (\x^1_1\,\wildcard{}\,\x^1_2)\;(\cn{vp}_2)\) \\[1mm]
+        \(\cn{vp}_2 \to (\x^1_1, \wildcard{}\,\x^1_2\,\x^2_1)\;(\cn{np}_2, \cn{vp\binsym{}}_2^{-1})\)\\[1mm]
+        \(\cn{np}_2 \to (\x_1^1, \wildcard{}\,\x^2_1)\;(\cn{np}, \cn{pp}^{\pm 0})\)\\[1mm]
+        \(\cn{pp}^{\pm 0} \to (\wildcard{}\,\x^1_1)\;(\cn{np}^{\pm 0})^{\mathrm{swap}}\)\\[1mm]
+        \(\cn{np}^{\pm 0} \to (\wildcard{})\)\\[1mm]
+        \(\cn{vp\binsym{}}_2^{-1} \to (\wildcard{})\)
+    \end{tabular}
+\end{document}
