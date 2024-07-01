@@ -14,31 +14,31 @@
       every node/.style={font=\small}
     ]
     \matrix (pos) [matrix of nodes, outer sep=0pt, inner sep=0pt, row sep=0pt, column sep=7pt] {
-      \(\mathit{pos}\): & WRB   & PT  & NN      & VBD & VBN     & RP  \\
+      \(\mathit{pos}\): & \cn{wrb}   & \cn{pt}  & \cn{nn}      & \cn{vbd} & \cn{vbn}     & \cn{rp}  \\
       \(w\):            & where & the & survey  & was & carried & out \\};
     \node[above=10ex of pos-1-1] {\(\xi\):};
 
     \tikzstyle{headnode} = [] % [draw=lightgray, dashed]
 
     \begin{scope}[every node/.style={inner sep=2pt, font=\small}]
-        \node[above=17.5ex of pos-1-3] (sbar) {SBAR}
-        child { node[headnode] (s) {S}
-            child { node[xshift=1em, headnode] (vp1) {VP}
-                child { node[xshift=1.5em] (vp2) {VP}
-                    child { node[above=3.5ex of pos-1-2] (wh) {WH} child {
+        \node[above=17.5ex of pos-1-3] (sbar) {\cn{sbar}}
+        child { node[headnode] (s) {\cn{s}}
+            child { node[xshift=1em, headnode] (vp1) {\cn{vp}}
+                child { node[xshift=1.5em] (vp2) {\cn{vp}}
+                    child { node[above=3.5ex of pos-1-2] (wh) {\cn{wh}} child {
                             node (term0) {0}
                             edge from parent[double]}}
                     child {
                         node[above=0ex of pos-1-6, headnode] (term4) {4}
                         edge from parent[double]}
-                    child { node[above=3.5ex of pos-1-7] (prt) {PRT} child {
+                    child { node[above=3.5ex of pos-1-7] (prt) {\cn{prt}} child {
                             node (term5) {5}
                             edge from parent[double]}}}
                 child {
                     node[above=0ex of pos-1-5, headnode] (term3) {3}
                     edge from parent[double] }
                 edge from parent[double]}
-            child { node[xshift=-1em,yshift=-7ex] (np) {NP}
+            child { node[xshift=-1em,yshift=-7ex] (np) {\cn{np}}
                 child { node[above=0ex of pos-1-3] {1} }
                 child {
                     node[above=0ex of pos-1-4, headnode] (term2) {2}

@@ -24,17 +24,17 @@
         \coordinate[fit=(pos-1-1)(pos-1-6)] (pos) {};
 
         \begin{scope}[every node/.style={font=\small, inner sep=1pt}]
-            \node[above=18ex of pos, xshift=-3em] (s) {SBAR}
+            \node[above=18ex of pos, xshift=-3em] (s) {\cn{sbar}}
             child {node (sbar) {S}
-                child { node[xshift=3em] (vp1) {VP}
-                    child { node[xshift=2em] (vp2) {VP}
+                child { node[xshift=3em] (vp1) {\cn{vp}}
+                    child { node[xshift=2em] (vp2) {\cn{vp}}
                         child { node[above= of pos-1-1] {0} }
 %                        child { node[xshift=13.5ex] (vpbin) {VP\!\texttt{|\!<\!>}}
                         child { node[above=of pos-1-5] (term4) {4} }
                         child { node[above=of pos-1-6] (prt) {5}   }} %}
                     child {
                         node[above=of pos-1-4] (term3) {3}}}
-                child { node[yshift=-7ex, xshift=-2.5em] (np) {NP}
+                child { node[yshift=-7ex, xshift=-2.5em] (np) {\cn{np}}
                     child { node[above=of pos-1-2] (term1) {1} }
                     child {
                         node[above=of pos-1-3] (term2) {2}}}};

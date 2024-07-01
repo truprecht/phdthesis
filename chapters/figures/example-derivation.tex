@@ -17,12 +17,12 @@
         },
     }%
 %    \input{00-survey-lexderiv-commands.tex}%
-    \newcommand{\rootclause}{\tikz[tcomp]\node{SBAR} child { node {S} child {node{$x_1$}} child { node {$x_2$} child { node {2}}}};}%
-    \newcommand{\uppervclause}{\tikz[tcomp]\node{VP} child {node{$\x_1$}} child { node {4}};}%
-    \newcommand{\lowervclause}{\tikz[tcomp]\node{VP} child {node{$\x_1$}} child { node {$\x_2$} child { node {5}}};}%
-    \newcommand{\whclause}{\tikz[tcomp]\node{WH} child {node{1}};}%
-    \newcommand{\prtclause}{\tikz[tcomp]{\node(r) {$\y$};\node[right=of r]{PRT} child {node{6}};}}%
-    \newcommand{\nnclause}{\tikz[tcomp]\node{NP} child {node {$\y$}} child {node{3}};}%
+    \newcommand{\rootclause}{\tikz[tcomp]\node{\cn{sbar}} child { node {\cn{s}} child {node{$x_1$}} child { node {$x_2$} child { node {2}}}};}%
+    \newcommand{\uppervclause}{\tikz[tcomp]\node{\cn{vp}} child {node{$\x_1$}} child { node {4}};}%
+    \newcommand{\lowervclause}{\tikz[tcomp]\node{\cn{vp}} child {node{$\x_1$}} child { node {$\x_2$} child { node {5}}};}%
+    \newcommand{\whclause}{\tikz[tcomp]\node{\cn{wh}} child {node{1}};}%
+    \newcommand{\prtclause}{\tikz[tcomp]{\node(r) {$\y$};\node[right=of r]{\cn{prt}} child {node{6}};}}%
+    \newcommand{\nnclause}{\tikz[tcomp]\node{\cn{np}} child {node {$\y$}} child {node{3}};}%
     %
     \begin{tikzpicture}[anchor=center, outer sep=0px, inner sep=1pt]
         \node (root) {\(\nt{s} \to [\x_1^1\,\text{2}\,\x^1_2\,\x_1^2]\begin{bmatrix}\rootclause{}\end{bmatrix} (\nt{v}_2, \nt{n})\)}
