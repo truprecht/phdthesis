@@ -21,20 +21,20 @@
 
         \begin{scope}[every node/.style={anchor=west, inner sep=0pt, outer sep=0pt, font=\tiny}]
             \matrix[right=1.5cm of term.north east, anchor=north west, fill=black!5, draw, rounded corners, line width=.3mm, inner sep=2pt] (blueprints) [matrix of nodes,nodes in empty cells,row sep=3pt] {
-                $\nt{S} \to (\cn{sbar}(\cn{s} (\x_1, \x_2(\wildcard{}))))\;(\nt{V}_2, \nt{N})$\\
-                $\nt{N} \to (\cn{np}(y, \wildcard{}))$\\
-                $\nt{V}_2 \to (\cn{vp}(\x_1, \wildcard{}))\;(\nt{V}_2)$\\
-                $\nt{V}_2 \to (\cn{vp}(\x_1, \x_2(\wildcard{}))) (\nt{D}, \nt{V\binsym{}})$\\
-                $\nt{D} \to (\cn{wh}(\wildcard{}))$ \\
-                $\nt{V\binsym{}} \to (\cn{prt}(\wildcard{}))$\\
+                $\nt{s} \to (\cn{sbar}(\cn{s} (\x_1, \x_2(\wildcard{}))))\;(\nt{v}_2, \nt{n})$\\
+                $\nt{n} \to (\cn{np}(y, \wildcard{}))$\\
+                $\nt{v}_2 \to (\cn{vp}(\x_1, \wildcard{}))\;(\nt{v}_2)$\\
+                $\nt{v}_2 \to (\cn{vp}(\x_1, \x_2(\wildcard{}))) (\nt{d}, \nt{v}\binsym{})$\\
+                $\nt{d} \to (\cn{wh}(\wildcard{}))$ \\
+                $\nt{v}\binsym{} \to (\cn{prt}(\wildcard{}))$\\
             };
             \matrix[below right=2cm and 1.25cm of term] (stag) [matrix of nodes,nodes in empty cells,row sep=3pt] {
-                \staglist{$\nt{D} \xrightarrow{0.6} (\cn{wh}(\tn{1}))$} \\
-                \staglist{$\nt{S} \xrightarrow{0.57} (\cn{sbar}(\cn{s} (\x_1, \x_2(\tn{2}))))\;(\nt{V}_2, \nt{N})$}\\
-                \staglist{$\nt{N} \xrightarrow{0.8} (\cn{np}(y, \tn{3}))$}\\
-                \staglist{$\nt{V}_2 \xrightarrow{0.55} (\cn{vp}(\x_1, \tn{4}))\;(\nt{V}_2)$}\\
-                \staglist{$\nt{V}_2 \xrightarrow{0.6} (\cn{vp}(\x_1, \x_2(\tn{5}))) (\nt{D}, \nt{V\binsym{}})$}\\
-                \staglist{$\nt{V\binsym{}} \xrightarrow{0.7} (\cn{prt}(\tn{6}))$}\\
+                \staglist{$\nt{d} \xrightarrow{0.6} (\cn{wh}(\tn{1}))$} \\
+                \staglist{$\nt{s} \xrightarrow{0.57} (\cn{sbar}(\cn{s} (\x_1, \x_2(\tn{2}))))\;(\nt{v}_2, \nt{n})$}\\
+                \staglist{$\nt{n} \xrightarrow{0.8} (\cn{np}(y, \tn{3}))$}\\
+                \staglist{$\nt{v}_2 \xrightarrow{0.55} (\cn{vp}(\x_1, \tn{4}))\;(\nt{v}_2)$}\\
+                \staglist{$\nt{v}_2 \xrightarrow{0.6} (\cn{vp}(\x_1, \x_2(\tn{5}))) (\nt{d}, \nt{v}\binsym{})$}\\
+                \staglist{$\nt{v\binsym{}} \xrightarrow{0.7} (\cn{prt}(\tn{6}))$}\\
             };
         \end{scope}
 

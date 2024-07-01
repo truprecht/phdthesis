@@ -320,7 +320,7 @@
     } \citep{Black91,Col97} has been established as the standard for measuring the accuracy of predicted constituent structures.
     This score is computed as follows:
     The sets of predicted and the gold\footnote{
-        The term \emph{gold} refers to the data that is supplied in a treebank (cf.\@ \pageref{pg:def:gold}).
+        The term \emph{gold} refers to the data that is supplied in a treebank (cf.\@ page \pageref{pg:def:gold}).
         The gold constituent structures and gold \abrv{pos} tags are the ``correct'' ones  that we compare our predictions to.
     } constituent structures are mapped each into a set that contains a tuple \((w, A, \mathit{yd})\) for each constituent structure \(\xi\) with the sequence of tokens \(w\) and each of its inner nodes with label \(A\) and yield \(\mathit{yd}\).
     According to these two sets \(P\) for all predictions and \(G\) for the gold constituent structures, the precision (\(p = \frac{|P \cap G|}{|P|}\)), recall (\(r = \frac{|P \cap G|}{|G|}\)) and f1-score (\(\frac{2\cdot p\cdot r}{p + r}\)) are computed in the usual fashion; \cref{fig:ex:f1} shows an example for the computation of the involved sets and scores.

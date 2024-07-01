@@ -32,12 +32,12 @@
 
         \begin{scope}[every node/.style={anchor=west, inner sep=0pt, outer sep=0pt}]
             \matrix[right=2cm of term] (stag) [matrix of nodes,nodes in empty cells,row sep=3pt] {
-                \staglist[2.5cm]{$\nt{D} \xrightarrow{0.6}[\text{1}][\ldots]$} \\
-                \staglist[3.9cm]{$\mathit{S} \xrightarrow{0.57} [x_1\,\text{2}\,y_1\,x_2][\ldots] (V_2, N)$}\\
-                \staglist[1.9cm]{$N \xrightarrow{0.8} [\text{3}] [\ldots]$}\\
-                \staglist[3.4cm]{$V_2 \xrightarrow{0.55} [x_1, \text{4}\, x_2] [\ldots] (V_2)$}\\
-                \staglist[4.3cm]{$V_2 \xrightarrow{0.6} [x_1, \text{5}\, y_1] [\ldots](\nt{D}, V\text{-}B)$}\\
-                \staglist[2.2cm]{$V\text{-}B \xrightarrow{0.7} [\text{6}][\ldots]$}\\
+                \staglist[2.5cm]{$\nt{d} \xrightarrow{0.6}[\text{1}][\ldots]$} \\
+                \staglist[3.9cm]{$\nt{s} \xrightarrow{0.57} [x_1\,\text{2}\,y_1\,x_2][\ldots] (\nt{v}_2, \nt{n})$}\\
+                \staglist[1.9cm]{$\nt{n} \xrightarrow{0.8} [\text{3}] [\ldots]$}\\
+                \staglist[3.4cm]{$\nt{v}_2 \xrightarrow{0.55} [x_1, \text{4}\, x_2] [\ldots] (\nt{v}_2)$}\\
+                \staglist[4.3cm]{$\nt{v}_2 \xrightarrow{0.6} [x_1, \text{5}\, y_1] [\ldots](\nt{d}, \nt{v}\binsym{})$}\\
+                \staglist[2.2cm]{$\nt{v}\binsym{} \xrightarrow{0.7} [\text{6}][\ldots]$}\\
             };
         \end{scope}
         \node[gray, anchor=west, inner sep=0pt] (staglab) at (stag.west|-sentence) {supertags + weight};

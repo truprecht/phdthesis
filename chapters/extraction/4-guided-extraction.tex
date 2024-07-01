@@ -12,7 +12,7 @@
             Such a strategy is now formalized by a \emph{guide} that maps each inner node position of a constituent structure to sentence position in its yield.
             This section introduces multiple strategies to define guides for a given constituent structure; these strategies are called \emph{guide constructors}.
         \item
-            LCFRS rules are constructed with constituent symbols as nonterminals, which are then supplemented with annotations during the lexicalization process.
+            \abrv{Lcfrs} rules are constructed with constituent symbols as nonterminals, which are then supplemented with annotations during the lexicalization process.
             This section decouples the nonterminals from the other extraction processes and introduces multiple strategies to define them, called \emph{nonterminal constructors}.
     \end{itemize}
     The nonterminal and guide constructors are chosen before the extraction process with a treebank; both choices, as well as a chosen rank transformation, act as parameters for the extraction process across the whole treebank.
@@ -21,7 +21,7 @@
     Similar to the previous section, this extraction process is characterized by four consecutive steps that are applied to each individual constituent tree in the treebank:
     \begin{enumerate}
         \item\label{extraction:hg:ranktrans}
-            The constituent tree is processed the chosen rank transformation.
+            The constituent tree is processed using the chosen rank transformation.
         \item\label{extraction:hg:guide}
             The chosen guide constructor defines a guide for the constituent structure.
         \item\label{extraction:hg:alg}

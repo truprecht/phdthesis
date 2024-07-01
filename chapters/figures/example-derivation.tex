@@ -25,13 +25,13 @@
     \newcommand{\nnclause}{\tikz[tcomp]\node{NP} child {node {$\y$}} child {node{3}};}%
     %
     \begin{tikzpicture}[anchor=center, outer sep=0px, inner sep=1pt]
-        \node (root) {\(\mathit{S} \to [\x_1^1\,\text{2}\,\x^1_2\,\x_1^2]\begin{bmatrix}\rootclause{}\end{bmatrix} (V_2, N)\)}
+        \node (root) {\(\nt{s} \to [\x_1^1\,\text{2}\,\x^1_2\,\x_1^2]\begin{bmatrix}\rootclause{}\end{bmatrix} (\nt{v}_2, \nt{n})\)}
         [sibling distance=7em,level distance=8ex]
-        child { node (vp1) {\(V_2 \to [\x_1^1, \text{4}\, \x_1^2] \begin{bmatrix}\uppervclause{}\end{bmatrix} (V_2)\)}
+        child { node (vp1) {\(\nt{v}_2 \to [\x_1^1, \text{4}\, \x_1^2] \begin{bmatrix}\uppervclause{}\end{bmatrix} (\nt{v}_2)\)}
             [sibling distance=6.5em]
-            child{ node[yshift=-2ex] (vp2) {\(V_2 \to [\x_1^1, \text{5}\, \x_2^1] \begin{bmatrix}\lowervclause{}\end{bmatrix} (\nt{D}, V\binsym{})\)}
-                child { node (term0) {\(\nt{D} \to[\text{1}] \begin{bmatrix}\whclause{}\end{bmatrix}\)}}
-                child { node[xshift=2em] (term5) {\(V\binsym{} \to [\text{6}] \begin{bmatrix}\prtclause{}\end{bmatrix}\)}}}}
-        child { node[yshift=-5ex] (np) {\(N \to [\text{3}] \begin{bmatrix}\nnclause{}\end{bmatrix}\)}};
+            child{ node[yshift=-2ex] (vp2) {\(\nt{v}_2 \to [\x_1^1, \text{5}\, \x_2^1] \begin{bmatrix}\lowervclause{}\end{bmatrix} (\nt{d}, \nt{v}\binsym{})\)}
+                child { node (term0) {\(\nt{d} \to[\text{1}] \begin{bmatrix}\whclause{}\end{bmatrix}\)}}
+                child { node[xshift=2em] (term5) {\(\nt{v}\binsym{} \to [\text{6}] \begin{bmatrix}\prtclause{}\end{bmatrix}\)}}}}
+        child { node[yshift=-5ex] (np) {\(\nt{n} \to [\text{3}] \begin{bmatrix}\nnclause{}\end{bmatrix}\)}};
     \end{tikzpicture}
 \end{document}
